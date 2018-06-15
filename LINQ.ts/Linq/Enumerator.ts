@@ -1,9 +1,17 @@
 ﻿interface IEnumerable<T> {
 
+    readonly Count: number;
+    readonly [index: number]: T;
+
     /**
      * This function should returns a clone copy of the source sequence.
     */
     ToArray(): T[];
+}
+
+class Group<TKey, T> extends Enumerator<T> {
+    public Key: TKey;
+    public Group: T[];
 }
 
 /**
@@ -12,6 +20,13 @@
 */
 class Enumerator<T> implements IEnumerable<T> {
 
+    readonly [index: number]: T;
+
+    /**
+     * The number of elements in the data sequence.
+    */
+    readonly Count: number;
+
     /**
      * The data sequence with specific type.
     */
@@ -19,6 +34,15 @@ class Enumerator<T> implements IEnumerable<T> {
 
     constructor(source: T[]) {
         this.sequence = source;
+        this.Count = source.length;
+    }
+
+    public First(): T {
+        return this.sequence[0];
+    }
+
+    public Last(): T {
+        return this.sequence[this.Count - 1];
     }
 
     /**
@@ -52,6 +76,28 @@ class Enumerator<T> implements IEnumerable<T> {
             return Number(e);
         }
         return Enumerable.OrderByDescending(this.sequence, project)[0];
+    }
+
+    public Average(project: (e: T) => number = null): number {
+        if (this.Count == 0) {
+            return 0;
+        } else {
+            return this.Sum(project) / this.sequence.length;
+        }
+    }
+
+    public Sum(project: (e: T) => number = null): number {
+        var x: number = 0;
+
+        if (!project) project = (e) => {
+            return Number(e);
+        }
+
+        for (var i = 0; i < this.sequence.length; i++) {
+            x += project(this.sequence[i]);
+        }
+
+        return x;
     }
 
     /**

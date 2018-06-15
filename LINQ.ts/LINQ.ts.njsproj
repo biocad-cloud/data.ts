@@ -39,6 +39,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="Linq\Enumerable.ts" />
     <TypeScriptCompile Include="Linq\Enumerator.ts" />
+    <TypeScriptCompile Include="Extensions.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Linq\" />
