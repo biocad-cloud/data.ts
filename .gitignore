@@ -63,3 +63,4 @@ typings/
 *.sqlite
 *.dll
 *.cache
+/LINQ.ts/obj/Debug
