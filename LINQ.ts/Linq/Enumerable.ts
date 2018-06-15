@@ -28,4 +28,70 @@ module Enumerable {
             return -key(e);
         });
     }
+
+    export function Take<T>(source: T[], n: number): Enumerator<T> {
+        var takes: T[] = [];
+
+        for (var i = 0; i < n - 1; i++) {
+            if (i == source.length) {
+                break;
+            } else {
+                takes.push(source[i]);
+            }
+        }
+
+        return new Enumerator<T>(takes);
+    }
+
+    export function Skip<T>(source: T[], n: number): Enumerator<T> {
+        var takes: T[] = [];
+
+        if (n >= source.length) {
+            return new Enumerator<T>([]);
+        }
+
+        for (var i = n; i < source.length; i++) {
+            takes.push(source[i]);
+        }
+
+        return new Enumerator<T>(takes);
+    }
+
+    export function TakeWhile<T>(source: T[], predicate: (e: T) => boolean): Enumerator<T> {
+        var takes: T[] = [];
+
+        source.forEach(o => {
+            if (predicate(o)) {
+                takes.push(o);
+            }
+        });
+
+        return new Enumerator<T>(takes);
+    }
+
+    export function SkipWhile<T>(source: T[], predicate: (e: T) => boolean): Enumerator<T> {
+        return Enumerable.TakeWhile(source, o => {
+            return !predicate(o);
+        });
+    }
+
+    export function All<T>(source: T[], predicate: (e: T) => boolean): boolean {
+        for (var i = 0; i < source.length; i++) {
+            if (!predicate(source[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    export function Any<T>(source: T[], predicate: (e: T) => boolean): boolean {
+        for (var i = 0; i < source.length; i++) {
+            if (predicate(source[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
