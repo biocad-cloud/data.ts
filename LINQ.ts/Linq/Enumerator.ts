@@ -36,6 +36,10 @@ class Enumerator<T> implements IEnumerable<T> {
         return Enumerable.Select<T, TOut>(this.sequence, selector);
     }
 
+    public Where(predicate: (e: T) => boolean): Enumerator<T> {
+        return Enumerable.Where(this.sequence, predicate);
+    }
+
     /**
      * Sorts the elements of a sequence in ascending order according to a key.
      * 
