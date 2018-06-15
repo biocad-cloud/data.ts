@@ -40,6 +40,20 @@ class Enumerator<T> implements IEnumerable<T> {
         return Enumerable.Where(this.sequence, predicate);
     }
 
+    public Min(project: (e: T) => number = null): T {
+        if (!project) project = (e) => {
+            return Number(e);
+        }
+        return Enumerable.OrderBy(this.sequence, project)[0];
+    }
+
+    public Max(project: (e: T) => number = null): T {
+        if (!project) project = (e) => {
+            return Number(e);
+        }
+        return Enumerable.OrderByDescending(this.sequence, project)[0];
+    }
+
     /**
      * Sorts the elements of a sequence in ascending order according to a key.
      * 
