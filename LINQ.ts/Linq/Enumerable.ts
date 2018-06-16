@@ -98,4 +98,21 @@ module Enumerable {
 
         return false;
     }
+
+    export function GroupBy<T, TKey>(source: T[], getKey: (e: T) => TKey, compares: (a: TKey, b: TKey) => number): Group<Tkey, T>[] {
+        var tree = new binaryTree<TKey, T[]>(compares);
+
+        source.forEach(obj => {
+            var key: TKey = getKey(obj);
+            var list: T[] = tree.find(key);
+
+            if (list) {
+                list.push(obj);
+            } else {
+                tree.add(key, [obj]);
+            }
+        }); 
+
+
+    }
 }

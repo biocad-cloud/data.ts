@@ -12,6 +12,12 @@ class binaryTree<T, V> {
         var np: node<T, V> = this.root;
         var cmp: number = 0;
 
+        if (!np) {
+            // 根节点是空的，则将当前的term作为根节点
+            this.root = new node<T, V>(term, value);
+            return;
+        }
+
         while (np) {
             cmp = this.compares(term, np.key);
 
