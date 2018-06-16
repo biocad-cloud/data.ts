@@ -37,6 +37,9 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="BinaryTree\node.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Enumerable.ts" />
     <TypeScriptCompile Include="Linq\Enumerator.ts" />
     <TypeScriptCompile Include="Extensions.ts">
