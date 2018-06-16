@@ -65,4 +65,12 @@ class binaryTree<T, V> {
         // not exists
         return null;
     }
+
+    public ToArray(): node<T, V>[] {
+        return binaryTreeExtensions.populateNodes(this.root);
+    }
+
+    public AsEnumerable(): IEnumerator<node<T, V>> {
+        return new IEnumerator<node<T, V>>(this.ToArray());
+    }
 }

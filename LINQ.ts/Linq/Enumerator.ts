@@ -2,7 +2,7 @@
  * Provides a set of static (Shared in Visual Basic) methods for querying 
  * objects that implement ``System.Collections.Generic.IEnumerable<T>``.
 */
-class Enumerator<T> implements IEnumerable<T> {
+class IEnumerator<T> implements IEnumerable<T> {
 
     readonly [index: number]: T;
 
@@ -14,7 +14,7 @@ class Enumerator<T> implements IEnumerable<T> {
     /**
      * The data sequence with specific type.
     */
-    private sequence: T[];
+    protected sequence: T[];
 
     constructor(source: T[]) {
         this.sequence = source;
@@ -40,11 +40,11 @@ class Enumerator<T> implements IEnumerable<T> {
      *          whose elements are the result of invoking the 
      *          transform function on each element of source.
     */
-    public Select<TOut>(selector: (o: T) => TOut): Enumerator<TOut> {
+    public Select<TOut>(selector: (o: T) => TOut): IEnumerator<TOut> {
         return Enumerable.Select<T, TOut>(this.sequence, selector);
     }
 
-    public Where(predicate: (e: T) => boolean): Enumerator<T> {
+    public Where(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.Where(this.sequence, predicate);
     }
 
@@ -92,7 +92,7 @@ class Enumerator<T> implements IEnumerable<T> {
      * @returns An ``System.Linq.IOrderedEnumerable<T>`` whose elements are 
      *          sorted according to a key.
     */
-    public OrderBy(key: (e: T) => number): Enumerator<T> {
+    public OrderBy(key: (e: T) => number): IEnumerator<T> {
         return Enumerable.OrderBy(this.sequence, key);
     }
 
@@ -104,23 +104,23 @@ class Enumerator<T> implements IEnumerable<T> {
      * @returns An ``System.Linq.IOrderedEnumerable<T>`` whose elements are 
      *          sorted in descending order according to a key.
     */
-    public OrderByOrderByDescending(key: (e: T) => number): Enumerator<T> {
+    public OrderByOrderByDescending(key: (e: T) => number): IEnumerator<T> {
         return Enumerable.OrderByDescending(this.sequence, key);
     }
 
-    public Take(n: number): Enumerator<T> {
+    public Take(n: number): IEnumerator<T> {
         return Enumerable.Take(this.sequence, n);
     }
 
-    public Skip(n: number): Enumerator<T> {
+    public Skip(n: number): IEnumerator<T> {
         return Enumerable.Skip(this.sequence, n);
     }
 
-    public TakeWhile(predicate: (e: T) => boolean): Enumerator<T> {
+    public TakeWhile(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.TakeWhile(this.sequence, predicate);
     }
 
-    public SkipWhile(predicate: (e: T) => boolean): Enumerator<T> {
+    public SkipWhile(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.SkipWhile(this.sequence, predicate);
     }
 

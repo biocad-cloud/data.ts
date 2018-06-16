@@ -1,3 +1,3 @@
-﻿function From<T>(source: T[]): Enumerator<T> {
-    return new Enumerator<T>(source);
+﻿function From<T>(source: T[]): IEnumerator<T> {
+    return new IEnumerator<T>(source);
 }

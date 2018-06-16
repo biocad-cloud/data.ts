@@ -1,16 +1,16 @@
 module Enumerable {
 
-    export function Select<T, TOut>(source: T[], project: (e: T) => TOut): Enumerator<TOut> {
+    export function Select<T, TOut>(source: T[], project: (e: T) => TOut): IEnumerator<TOut> {
         var projections: TOut[] = [];
 
         source.forEach(o => {
             projections.push(project(o));
         });
 
-        return new Enumerator<TOut>(projections);
+        return new IEnumerator<TOut>(projections);
     }
 
-    export function OrderBy<T>(source: T[], key: (e: T) => number): Enumerator<T> {
+    export function OrderBy<T>(source: T[], key: (e: T) => number): IEnumerator<T> {
         // array clone
         var clone: T[] = [...source];
 
@@ -19,17 +19,17 @@ module Enumerable {
             return key(a) - key(b);
         });
 
-        return new Enumerator<T>(clone);
+        return new IEnumerator<T>(clone);
     }
 
-    export function OrderByDescending<T>(source: T[], key: (e: T) => number): Enumerator<T> {
+    export function OrderByDescending<T>(source: T[], key: (e: T) => number): IEnumerator<T> {
         return Enumerable.OrderBy(source, (e) => {
             // b - a
             return -key(e);
         });
     }
 
-    export function Take<T>(source: T[], n: number): Enumerator<T> {
+    export function Take<T>(source: T[], n: number): IEnumerator<T> {
         var takes: T[] = [];
 
         for (var i = 0; i < n - 1; i++) {
@@ -40,28 +40,28 @@ module Enumerable {
             }
         }
 
-        return new Enumerator<T>(takes);
+        return new IEnumerator<T>(takes);
     }
 
-    export function Skip<T>(source: T[], n: number): Enumerator<T> {
+    export function Skip<T>(source: T[], n: number): IEnumerator<T> {
         var takes: T[] = [];
 
         if (n >= source.length) {
-            return new Enumerator<T>([]);
+            return new IEnumerator<T>([]);
         }
 
         for (var i = n; i < source.length; i++) {
             takes.push(source[i]);
         }
 
-        return new Enumerator<T>(takes);
+        return new IEnumerator<T>(takes);
     }
 
-    export function TakeWhile<T>(source: T[], predicate: (e: T) => boolean): Enumerator<T> {
+    export function TakeWhile<T>(source: T[], predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.Where(source, predicate);
     }
 
-    export function Where<T>(source: T[], predicate: (e: T) => boolean): Enumerator<T> {
+    export function Where<T>(source: T[], predicate: (e: T) => boolean): IEnumerator<T> {
         var takes: T[] = [];
 
         source.forEach(o => {
@@ -70,10 +70,10 @@ module Enumerable {
             }
         });
 
-        return new Enumerator<T>(takes);
+        return new IEnumerator<T>(takes);
     }
 
-    export function SkipWhile<T>(source: T[], predicate: (e: T) => boolean): Enumerator<T> {
+    export function SkipWhile<T>(source: T[], predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.Where(source, o => {
             return !predicate(o);
         });
@@ -99,7 +99,10 @@ module Enumerable {
         return false;
     }
 
-    export function GroupBy<T, TKey>(source: T[], getKey: (e: T) => TKey, compares: (a: TKey, b: TKey) => number): Group<Tkey, T>[] {
+    export function GroupBy<T, TKey>(source: T[],
+        getKey: (e: T) => TKey,
+        compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
+
         var tree = new binaryTree<TKey, T[]>(compares);
 
         source.forEach(obj => {
@@ -111,8 +114,10 @@ module Enumerable {
             } else {
                 tree.add(key, [obj]);
             }
-        }); 
+        });
 
-
+        return tree.AsEnumerable().Select(node => {
+            return new Group<TKey, T>(node.key, node.value);
+        });
     }
 }
