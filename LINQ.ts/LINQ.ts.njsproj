@@ -40,6 +40,9 @@
     <TypeScriptCompile Include="BinaryTree\node.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="BinaryTree\binaryTree.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Enumerable.ts" />
     <TypeScriptCompile Include="Linq\Enumerator.ts" />
     <TypeScriptCompile Include="Extensions.ts">
