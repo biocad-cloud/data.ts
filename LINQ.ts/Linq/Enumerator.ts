@@ -44,10 +44,18 @@ class IEnumerator<T> implements IEnumerable<T> {
         return Enumerable.Select<T, TOut>(this.sequence, selector);
     }
 
+    /**
+     * Groups the elements of a sequence according to a key selector function. 
+     * The keys are compared by using a comparer and each group's elements 
+     * are projected by using a specified function.
+    */
     public GroupBy<TKey>(keySelector: (o: T) => TKey, compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
         return Enumerable.GroupBy(this.sequence, keySelector, compares);
     }
 
+    /**
+     * Filters a sequence of values based on a predicate.
+    */
     public Where(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.Where(this.sequence, predicate);
     }
@@ -120,10 +128,17 @@ class IEnumerator<T> implements IEnumerable<T> {
         return Enumerable.Skip(this.sequence, n);
     }
 
+    /**
+     * Returns elements from a sequence as long as a specified condition is true.
+    */
     public TakeWhile(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.TakeWhile(this.sequence, predicate);
     }
 
+    /**
+     * Bypasses elements in a sequence as long as a specified condition is true 
+     * and then returns the remaining elements.
+    */
     public SkipWhile(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.SkipWhile(this.sequence, predicate);
     }
