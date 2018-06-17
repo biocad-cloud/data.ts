@@ -44,6 +44,10 @@ class IEnumerator<T> implements IEnumerable<T> {
         return Enumerable.Select<T, TOut>(this.sequence, selector);
     }
 
+    public GroupBy<TKey>(keySelector: (o: T) => TKey, compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
+        return Enumerable.GroupBy(this.sequence, keySelector, compares);
+    }
+
     public Where(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.Where(this.sequence, predicate);
     }
