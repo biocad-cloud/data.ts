@@ -5,7 +5,9 @@
     "lib": [ "dom", "es5", "dom.iterable", "scripthost" ],
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "outFile": "../../../javascript/linq.js"
+    "outDir": "../dist",
+    "outFile": "../../../javascript/linq.js",
+    "declaration": true
   },
   "exclude": [
     "node_modules"
