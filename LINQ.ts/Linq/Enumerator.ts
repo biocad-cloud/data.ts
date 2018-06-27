@@ -159,6 +159,10 @@ class IEnumerator<T> implements IEnumerable<T> {
         }
     }
 
+    public JoinBy(deli: string, toString: (x: T) => String = (x: T) => x.toString()): string {
+        return this.Select(x => toString(x)).ToArray().join(deli);
+    }
+
     /**
      * This function returns a clone copy of the source sequence.
     */
