@@ -64,3 +64,4 @@ typings/
 *.dll
 *.cache
 /LINQ.ts/obj/Debug
+/LINQ.ts/obj/Release
