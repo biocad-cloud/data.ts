@@ -62,14 +62,14 @@ class IEnumerator<T> implements IEnumerable<T> {
 
     public Min(project: (e: T) => number = null): T {
         if (!project) project = (e) => {
-            return Number(e);
+            return DataExtensions.as_numeric(e);
         }
         return Enumerable.OrderBy(this.sequence, project)[0];
     }
 
     public Max(project: (e: T) => number = null): T {
         if (!project) project = (e) => {
-            return Number(e);
+            return DataExtensions.as_numeric(e);
         }
         return Enumerable.OrderByDescending(this.sequence, project)[0];
     }
