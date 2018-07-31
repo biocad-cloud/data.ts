@@ -17,7 +17,9 @@ class IEnumerator<T> implements IEnumerable<T> {
     protected sequence: T[];
 
     constructor(source: T[]) {
-        this.sequence = source;
+        // 2018-07-31 为了防止外部修改source导致sequence数组被修改
+        // 在这里进行数组复制，防止出现这种情况
+        this.sequence = [...source];
         this.Count = source.length;
     }
 
@@ -48,6 +50,9 @@ class IEnumerator<T> implements IEnumerable<T> {
      * Groups the elements of a sequence according to a key selector function. 
      * The keys are compared by using a comparer and each group's elements 
      * are projected by using a specified function.
+     * 
+     * @param compares 注意，javascript在进行中文字符串的比较的时候存在bug，如果当key的类型是字符串的时候，
+     *                 在这里需要将key转换为数值进行比较，遇到中文字符串可能会出现bug
     */
     public GroupBy<TKey>(keySelector: (o: T) => TKey, compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
         return Enumerable.GroupBy(this.sequence, keySelector, compares);

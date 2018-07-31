@@ -69,7 +69,7 @@ module Enumerable {
                 takes.push(o);
             }
         });
-
+        
         return new IEnumerator<T>(takes);
     }
 
@@ -115,6 +115,8 @@ module Enumerable {
                 tree.add(key, [obj]);
             }
         });
+
+        console.log(tree);
 
         return tree.AsEnumerable().Select(node => {
             return new Group<TKey, T>(node.key, node.value);
