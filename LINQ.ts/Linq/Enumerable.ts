@@ -18,7 +18,8 @@ module Enumerable {
             // a - b
             return key(a) - key(b);
         });
-
+        console.log("clone");
+        console.log(clone);
         return new IEnumerator<T>(clone);
     }
 

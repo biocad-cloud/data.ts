@@ -1,6 +1,6 @@
 ﻿/// <reference path="Linq/Enumerator.ts" />
 
-function From<T>(source: T[]): IEnumerator<T> {    
+function From<T>(source: T[]): IEnumerator<T> {
     return new IEnumerator<T>(source);
 }
 
@@ -17,6 +17,8 @@ module DataExtensions {
             }
         } else if (typeof obj == 'undefined') {
             return 0;
+        } else if (typeof obj == 'string') {
+            return parseFloat(<string>obj);
         } else {
             return 0;
         }
