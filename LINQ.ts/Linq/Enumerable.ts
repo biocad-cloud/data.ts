@@ -2,7 +2,7 @@ module Enumerable {
 
     export function Select<T, TOut>(source: T[], project: (e: T) => TOut): IEnumerator<TOut> {
         var projections: TOut[] = [];
-
+        
         source.forEach(o => {
             projections.push(project(o));
         });
@@ -18,7 +18,8 @@ module Enumerable {
             // a - b
             return key(a) - key(b);
         });
-
+        console.log("clone");
+        console.log(clone);
         return new IEnumerator<T>(clone);
     }
 

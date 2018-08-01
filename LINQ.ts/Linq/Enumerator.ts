@@ -23,10 +23,16 @@ class IEnumerator<T> implements IEnumerable<T> {
         this.Count = source.length;
     }
 
+    /**
+     * Get the first element in this sequence 
+    */
     public First(): T {
         return this.sequence[0];
     }
 
+    /**
+     * Get the last element in this sequence 
+    */
     public Last(): T {
         return this.sequence[this.Count - 1];
     }
@@ -67,16 +73,16 @@ class IEnumerator<T> implements IEnumerable<T> {
 
     public Min(project: (e: T) => number = null): T {
         if (!project) project = (e) => {
-            return Number(e);
+            return DataExtensions.as_numeric(e);
         }
-        return Enumerable.OrderBy(this.sequence, project)[0];
+        return Enumerable.OrderBy(this.sequence, project).First();
     }
 
     public Max(project: (e: T) => number = null): T {
         if (!project) project = (e) => {
-            return Number(e);
+            return DataExtensions.as_numeric(e);
         }
-        return Enumerable.OrderByDescending(this.sequence, project)[0];
+        return Enumerable.OrderByDescending(this.sequence, project).First();
     }
 
     public Average(project: (e: T) => number = null): number {
