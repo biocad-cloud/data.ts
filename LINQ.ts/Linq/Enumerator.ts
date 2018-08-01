@@ -170,6 +170,17 @@ class IEnumerator<T> implements IEnumerable<T> {
         }
     }
 
+    /**
+     * Performs the specified action for each element in an array.
+     * 
+     * @param callbackfn  A function that accepts up to three arguments. forEach 
+     * calls the callbackfn function one time for each element in the array.
+     * 
+    */
+    public ForEach(callbackfn: (x: T, index: number) => void) {
+        this.sequence.forEach(callbackfn);
+    }
+
     public JoinBy(deli: string, toString: (x: T) => String = (x: T) => x.toString()): string {
         return this.Select(x => toString(x)).ToArray().join(deli);
     }
