@@ -18,11 +18,25 @@ class binaryTree<T, V> {
     */
     public compares: (a: T, b: T) => number;
 
-    constructor(comparer: (a: T, b: T) => number) {
+    /**
+     * 构建一个二叉树对象
+     * 
+     * @param comparer 这个函数指针描述了如何进行两个对象之间的比较操作，如果这个函数参数使用默认值的话
+     *                 则只能够针对最基本的数值，逻辑变量进行操作
+    */
+    constructor(comparer: (a: T, b: T) => number = (a: T, b: T) => {
+        var x: number = DataExtensions.as_numeric(a);
+        var y: number = DataExtensions.as_numeric(b);
+
+        return x - y;
+    }) {
         this.compares = comparer;
     }
 
-    public add(term: T, value: V = null) {
+    /**
+     * 向这个二叉树对象之中添加一个子节点
+    */
+    public add(term: T, value: V = null): void {
         var np: node<T, V> = this.root;
         var cmp: number = 0;
 
@@ -62,6 +76,8 @@ class binaryTree<T, V> {
 
     /**
      * 根据key值查找一个节点，然后获取该节点之中与key所对应的值
+     * 
+     * @returns 如果这个函数返回空值，则表示可能未找到目标子节点
     */
     public find(term: T): V {
         var np = this.root;
@@ -83,10 +99,16 @@ class binaryTree<T, V> {
         return null;
     }
 
+    /**
+     * 将这个二叉树对象转换为一个节点的数组
+    */
     public ToArray(): node<T, V>[] {
         return binaryTreeExtensions.populateNodes(this.root);
     }
 
+    /**
+     * 将这个二叉树对象转换为一个Linq查询表达式所需要的枚举器类型
+    */
     public AsEnumerable(): IEnumerator<node<T, V>> {
         return new IEnumerator<node<T, V>>(this.ToArray());
     }

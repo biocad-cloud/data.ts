@@ -1,6 +1,8 @@
 ﻿/**
  * Provides a set of static (Shared in Visual Basic) methods for querying 
  * objects that implement ``System.Collections.Generic.IEnumerable<T>``.
+ * 
+ * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型)
 */
 class IEnumerator<T> implements IEnumerable<T> {
 
@@ -71,20 +73,23 @@ class IEnumerator<T> implements IEnumerable<T> {
         return Enumerable.Where(this.sequence, predicate);
     }
 
-    public Min(project: (e: T) => number = null): T {
-        if (!project) project = (e) => {
-            return DataExtensions.as_numeric(e);
-        }
+    /**
+     * 求取这个序列集合的最小元素，使用这个函数要求序列之中的元素都必须能够被转换为数值
+    */
+    public Min(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
         return Enumerable.OrderBy(this.sequence, project).First();
     }
 
-    public Max(project: (e: T) => number = null): T {
-        if (!project) project = (e) => {
-            return DataExtensions.as_numeric(e);
-        }
+    /**
+     * 求取这个序列集合的最大元素，使用这个函数要求序列之中的元素都必须能够被转换为数值
+    */
+    public Max(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
         return Enumerable.OrderByDescending(this.sequence, project).First();
     }
 
+    /**
+     * 求取这个序列集合的平均值，使用这个函数要求序列之中的元素都必须能够被转换为数值
+    */
     public Average(project: (e: T) => number = null): number {
         if (this.Count == 0) {
             return 0;
@@ -93,6 +98,9 @@ class IEnumerator<T> implements IEnumerable<T> {
         }
     }
 
+    /**
+     * 求取这个序列集合的和，使用这个函数要求序列之中的元素都必须能够被转换为数值
+    */
     public Sum(project: (e: T) => number = null): number {
         var x: number = 0;
 
@@ -154,10 +162,16 @@ class IEnumerator<T> implements IEnumerable<T> {
         return Enumerable.SkipWhile(this.sequence, predicate);
     }
 
+    /**
+     * 判断这个序列之中的所有元素是否都满足特定条件
+    */
     public All(predicate: (e: T) => boolean): boolean {
         return Enumerable.All(this.sequence, predicate);
     }
 
+    /**
+     * 判断这个序列之中的任意一个元素是否满足特定的条件
+    */
     public Any(predicate: (e: T) => boolean = null): boolean {
         if (predicate) {
             return Enumerable.Any(this.sequence, predicate);
