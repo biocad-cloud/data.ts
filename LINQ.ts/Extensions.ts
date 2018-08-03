@@ -22,6 +22,9 @@ function IsNullOrEmpty<T>(array: T[]): boolean {
     }
 }
 
+/**
+ * 通用数据拓展函数集合
+*/
 module DataExtensions {
 
     /**
