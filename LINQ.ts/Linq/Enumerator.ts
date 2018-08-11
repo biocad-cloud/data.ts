@@ -209,25 +209,38 @@ class IEnumerator<T> implements IEnumerable<T> {
         return [...this.sequence];
     }
 
-    public ToDictionary<V>(
+    public ToDictionary<K, V>(
         keySelector: (x: T) => string,
         elementSelector: (x: T) => V = (X: T) => {
             return <V>(<any>X);
-        }): object {
+        }): Dictionary<V> {
 
         var maps = {};
 
         this.sequence.forEach(x => {
+            // 2018-08-11 键名只能够是字符串类型的
             var key: string = keySelector(x);
             var value: V = elementSelector(x);
 
             maps[key] = value;
         })
 
-        return maps
+        return new Dictionary<V>(maps);
     }
 }
 
-class Dictionary<K, V> {
+class Dictionary<V> extends IEnumerator<Map<string, V>>  {
 
+    private maps: object;
+
+    public constructor(maps: object) {
+        super(Dictionary.ObjectMaps<V>(maps));
+        this.maps = maps;
+    }
+
+    public static ObjectMaps<V>(maps: object): Map<string, V>[] {
+        return From(Object.keys(maps))
+            .Select(key => new Map<string, V>(key, maps[key]))
+            .ToArray()
+    }
 }
