@@ -55,6 +55,9 @@
     <TypeScriptCompile Include="Linq\abstract.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\DictionaryMaps.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Range.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

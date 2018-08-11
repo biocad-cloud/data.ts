@@ -40,21 +40,3 @@ class NumericRange implements DoubleRange {
         return `[${this.min}, ${this.max}]`;
     }
 }
-
-/**
- * 描述了一个键值对集合
-*/
-class Map<K, V> {
-
-    public Key: K;
-    public value: V;
-
-    public constructor(key: K = null, value: V = null) {
-        this.Key = key;
-        this.value = value;
-    }
-
-    public toString(): string {
-        return `[${this.Key.toString()}, ${this.value.toString()}]`;
-    }
-}

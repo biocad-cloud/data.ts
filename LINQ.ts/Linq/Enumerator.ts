@@ -228,19 +228,3 @@ class IEnumerator<T> implements IEnumerable<T> {
         return new Dictionary<V>(maps);
     }
 }
-
-class Dictionary<V> extends IEnumerator<Map<string, V>>  {
-
-    private maps: object;
-
-    public constructor(maps: object) {
-        super(Dictionary.ObjectMaps<V>(maps));
-        this.maps = maps;
-    }
-
-    public static ObjectMaps<V>(maps: object): Map<string, V>[] {
-        return From(Object.keys(maps))
-            .Select(key => new Map<string, V>(key, maps[key]))
-            .ToArray()
-    }
-}
