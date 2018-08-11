@@ -208,4 +208,26 @@ class IEnumerator<T> implements IEnumerable<T> {
     public ToArray(): T[] {
         return [...this.sequence];
     }
+
+    public ToDictionary<V>(
+        keySelector: (x: T) => string,
+        elementSelector: (x: T) => V = (X: T) => {
+            return <V>(<any>X);
+        }): object {
+
+        var maps = {};
+
+        this.sequence.forEach(x => {
+            var key: string = keySelector(x);
+            var value: V = elementSelector(x);
+
+            maps[key] = value;
+        })
+
+        return maps
+    }
+}
+
+class Dictionary<K, V> {
+
 }
