@@ -195,6 +195,9 @@ class IEnumerator<T> implements IEnumerable<T> {
         this.sequence.forEach(callbackfn);
     }
 
+    /**
+     * Contract the sequence to string
+    */
     public JoinBy(deli: string, toString: (x: T) => String = (x: T) => x.toString()): string {
         return this.Select(x => toString(x)).ToArray().join(deli);
     }
