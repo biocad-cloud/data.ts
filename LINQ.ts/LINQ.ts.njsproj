@@ -52,10 +52,13 @@
     <TypeScriptCompile Include="Extensions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\abstract.ts">
+    <TypeScriptCompile Include="Linq\Abstract2.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DictionaryMaps.ts">
+    <TypeScriptCompile Include="DictionaryMaps.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\Group.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Range.ts">

@@ -1,5 +1,12 @@
+/**
+ * The linq pipline implements at here. 
+*/
 module Enumerable {
 
+    /**
+     * 进行数据序列的投影操作
+     * 
+    */
     export function Select<T, TOut>(source: T[], project: (e: T) => TOut): IEnumerator<TOut> {
         var projections: TOut[] = [];
         
@@ -10,6 +17,10 @@ module Enumerable {
         return new IEnumerator<TOut>(projections);
     }
 
+    /**
+     * 进行数据序列的排序操作
+     * 
+    */
     export function OrderBy<T>(source: T[], key: (e: T) => number): IEnumerator<T> {
         // array clone
         var clone: T[] = [...source];
