@@ -13,6 +13,10 @@ class NumericRange implements DoubleRange {
     */
     public max: number;
 
+    public get Length(): number {
+        return this.max - this.min;
+    }
+
     public constructor(min: number, max: number) {
         this.min = min;
         this.max = max;
@@ -34,6 +38,16 @@ class NumericRange implements DoubleRange {
         var max: number = seq.Max();
 
         return new NumericRange(min, max);
+    }
+
+    public PopulateNumbers(step: number = (this.Length / 10)): number[] {
+        var data: number[] = [];
+
+        for (var x: number = this.min; x < this.max; x += step) {
+            data.push(x);
+        }
+
+        return data;
     }
 
     public toString(): string {
