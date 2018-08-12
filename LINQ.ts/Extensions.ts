@@ -25,6 +25,13 @@ function IsNullOrEmpty<T>(array: T[]): boolean {
 }
 
 /**
+ * HTML/Javascript: how to access JSON data loaded in a script tag.
+*/
+function LoadJson(id: string): any {
+    return JSON.parse(document.getElementById(id).textContent);
+}
+
+/**
  * 通用数据拓展函数集合
 */
 module DataExtensions {
