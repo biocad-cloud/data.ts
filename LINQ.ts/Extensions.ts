@@ -24,6 +24,20 @@ function IsNullOrEmpty<T>(array: T[]): boolean {
     }
 }
 
+function StringEmpty(str: string, stringAsFactor = false): boolean {
+    if (!str) {
+        return true;
+    } else if (str == undefined) {
+        return true;
+    } else if (str.length == 0) {
+        return true;
+    } else if (stringAsFactor && str.toString() == "undefined") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /**
  * HTML/Javascript: how to access JSON data loaded in a script tag.
 */
