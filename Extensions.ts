@@ -24,6 +24,11 @@ function IsNullOrEmpty<T>(array: T[]): boolean {
     }
 }
 
+/**
+ * 判断给定的字符串是否是空值？
+ * 
+ * @param stringAsFactor 假若这个参数为真的话，那么字符串``undefined``也将会被当作为空值处理
+*/
 function StringEmpty(str: string, stringAsFactor = false): boolean {
     if (!str) {
         return true;
@@ -85,8 +90,15 @@ module DataExtensions {
         return cc;
     }
 
+    /**
+     * 将URL查询字符串解析为字典对象
+     * 
+     * @param queryString URL查询参数
+     * @param lowerName 是否将所有的参数名称转换为小写形式？
+     * 
+     * @returns 键值对形式的字典对象
+    */
     export function parseQueryString(queryString: string, lowerName: boolean = false): object {
-
         // stuff after # is not part of query string, so get rid of it
         // split our query string into its component parts
         var arr = queryString.split('#')[0].split('&');
@@ -139,6 +151,8 @@ module DataExtensions {
 
     /**
      * 尝试将任意类型的目标对象转换为数值类型
+     * 
+     * @returns 一个数值
     */
     export function as_numeric(obj: any): number {
         if (obj == null || obj == undefined) {

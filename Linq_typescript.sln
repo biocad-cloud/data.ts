@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Linq_typescript", "Linq_typescript.njsproj", "{E0AEC189-6D05-47E4-9F69-DAFE43AC8398}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Linq.ts", "Linq.ts.njsproj", "{E0AEC189-6D05-47E4-9F69-DAFE43AC8398}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
