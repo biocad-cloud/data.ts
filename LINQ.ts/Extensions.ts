@@ -68,6 +68,23 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
 */
 module DataExtensions {
 
+    /**
+     * 将字符串转换为字符数组
+     * 
+     * > https://jsperf.com/convert-string-to-char-code-array/9
+     * 经过测试，使用数组push的效率最高
+    */
+    export function ToCharArray(str: string): string[] {
+        var cc: string[] = [];
+        var strLen: number = str.length;
+
+        for (var i = 0; i < strLen; ++i) {
+            cc.push(str.charAt(i));
+        }
+
+        return cc;
+    }
+
     export function parseQueryString(queryString: string, lowerName: boolean = false): object {
 
         // stuff after # is not part of query string, so get rid of it
