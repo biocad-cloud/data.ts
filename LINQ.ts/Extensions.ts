@@ -24,6 +24,20 @@ function IsNullOrEmpty<T>(array: T[]): boolean {
     }
 }
 
+function StringEmpty(str: string, stringAsFactor = false): boolean {
+    if (!str) {
+        return true;
+    } else if (str == undefined) {
+        return true;
+    } else if (str.length == 0) {
+        return true;
+    } else if (stringAsFactor && str.toString() == "undefined") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /**
  * HTML/Javascript: how to access JSON data loaded in a script tag.
 */
@@ -32,9 +46,79 @@ function LoadJson(id: string): any {
 }
 
 /**
+ * Quick Tip: Get URL Parameters with JavaScript
+ * 
+ * > https://www.sitepoint.com/get-url-parameters-with-javascript/
+ * 
+ * @param url get query string from url (optional) or window
+*/
+function getAllUrlParams(url: string = window.location.href): Dictionary<string> {
+    var queryString: string = url.split('?')[1];
+
+    if (queryString) {
+        // if query string exists
+        return new Dictionary<string>(DataExtensions.parseQueryString(queryString));
+    } else {
+        return new Dictionary<string>({});
+    }
+}
+
+/**
  * 通用数据拓展函数集合
 */
 module DataExtensions {
+
+    export function parseQueryString(queryString: string, lowerName: boolean = false): object {
+
+        // stuff after # is not part of query string, so get rid of it
+        // split our query string into its component parts
+        var arr = queryString.split('#')[0].split('&');
+        // we'll store the parameters here
+        var obj = {};
+
+        for (var i = 0; i < arr.length; i++) {
+            // separate the keys and the values
+            var a = arr[i].split('=');
+
+            // in case params look like: list[]=thing1&list[]=thing2
+            var paramNum = undefined;
+            var paramName = a[0].replace(/\[\d*\]/, function (v) {
+                paramNum = v.slice(1, -1);
+                return '';
+            });
+
+            // set parameter value (use 'true' if empty)
+            var paramValue: string = typeof (a[1]) === 'undefined' ? "true" : a[1];
+
+            if (lowerName) {
+                paramName = paramName.toLowerCase();
+            }
+
+            // if parameter name already exists
+            if (obj[paramName]) {
+
+                // convert value to array (if still string)
+                if (typeof obj[paramName] === 'string') {
+                    obj[paramName] = [obj[paramName]];
+                }
+
+                if (typeof paramNum === 'undefined') {
+                    // if no array index number specified...
+                    // put the value on the end of the array
+                    obj[paramName].push(paramValue);
+                } else {
+                    // if array index number specified...
+                    // put the value at that index number
+                    obj[paramName][paramNum] = paramValue;
+                }
+            } else {
+                // if param name doesn't exist yet, set it
+                obj[paramName] = paramValue;
+            }
+        }
+
+        return obj;
+    }
 
     /**
      * 尝试将任意类型的目标对象转换为数值类型
@@ -60,7 +144,7 @@ module DataExtensions {
                 return 0;
             } else {
                 return parseFloat(<string>obj);
-            }            
+            }
         } else {
             return 0;
         }

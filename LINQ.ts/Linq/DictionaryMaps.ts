@@ -37,6 +37,14 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
         return <V>(this.maps[key]);
     }
 
+    public get Keys(): IEnumerator<string> {
+        return From(Object.keys(this.maps));
+    }
+
+    public get Values(): IEnumerator<V> {
+        return this.Keys.Select<V>(key => this.Item(key));
+    }
+
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
