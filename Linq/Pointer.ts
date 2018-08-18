@@ -24,4 +24,9 @@ class Pointer<T> extends IEnumerator<T> {
     public constructor(src: T[] | IEnumerator<T>) {
         super(src);
     }
+
+    public MoveNext(): Pointer<T> {
+        this.i = this.i + 1;
+        return this;
+    }
 }
