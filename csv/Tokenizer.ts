@@ -16,42 +16,47 @@ namespace csv {
         var cellStr = function () {
             return temp.join().replace(dblQuot, quot);
         }
+        var procEscape = function (c: string) {
+            if (!StartEscaping(temp)) {
+
+                // 查看下一个字符是否为分隔符
+                // 因为前面的 Dim c As Char = +buffer 已经位移了，所以在这里直接取当前的字符
+                var peek = buffer.Current;
+                // 也有可能是 "" 转义 为单个 "
+                var lastQuot = (temp.length > 0 && temp[temp.length - 1] != quot);
+
+                if (temp.length == 0 && peek == delimiter) {
+                    // openStack意味着前面已经出现一个 " 了
+                    // 这里又出现了一个 " 并且下一个字符为分隔符
+                    // 则说明是 "", 当前的cell内容是一个空字符串
+                    tokens.push("");
+                    temp = [];
+                    buffer.MoveNext();
+                    openStack = false;
+                } else if ((peek == delimiter || buffer.EndRead) && lastQuot) {
+                    // 下一个字符为分隔符，则结束这个token
+                    tokens.push(cellStr());
+                    temp = [];
+                    // 跳过下一个分隔符，因为已经在这里判断过了
+                    buffer.MoveNext();
+                    openStack = false;
+                } else {
+                    // 不是，则继续添加
+                    temp.push(c);
+                }
+
+            } else {
+                // \" 会被转义为单个字符 "
+                temp[temp.length - 1] = c;
+            }
+        }
 
         while (!buffer.EndRead) {
             var c: string = buffer.Next;
 
             if (openStack) {
                 if (c == quot) {
-                    // \" 会被转义为单个字符 "
-                    if (StartEscaping(temp)) {
-                        temp[temp.length - 1] = c;
-                    } else {
-                        // 查看下一个字符是否为分隔符
-                        // 因为前面的 Dim c As Char = +buffer 已经位移了，所以在这里直接取当前的字符
-                        var peek = buffer.Current;
-                        // 也有可能是 "" 转义 为单个 "
-                        var lastQuot = (temp.length > 0 && temp[temp.length - 1] != quot);
-
-                        if (temp.length == 0 && peek == delimiter) {
-                            // openStack意味着前面已经出现一个 " 了
-                            // 这里又出现了一个 " 并且下一个字符为分隔符
-                            // 则说明是 "", 当前的cell内容是一个空字符串
-                            tokens.push("");
-                            temp = [];
-                            buffer.MoveNext();
-                            openStack = false;
-                        } else if ((peek == delimiter || buffer.EndRead) && lastQuot) {
-                            // 下一个字符为分隔符，则结束这个token
-                            tokens.push(temp.join().replace(dblQuot, quot));
-                            temp = [];
-                            // 跳过下一个分隔符，因为已经在这里判断过了
-                            buffer.MoveNext();
-                            openStack = false;
-                        } else {
-                            // 不是，则继续添加
-                            temp.push(c);
-                        }
-                    }
+                    procEscape(c);
                 } else {
                     // 由于双引号而产生的转义          
                     temp.push(c);
@@ -62,7 +67,7 @@ namespace csv {
                     openStack = true;
                 } else {
                     if (c == delimiter) {
-                        tokens.push(temp.join().replace(dblQuot, quot));
+                        tokens.push(cellStr());
                         temp = [];
                     } else {
                         temp.push(c);
@@ -72,7 +77,7 @@ namespace csv {
         }
 
         if (temp.length > 0) {
-            tokens.push(temp.join().replace(dblQuot, quot));
+            tokens.push(cellStr());
         }
 
         return tokens;
