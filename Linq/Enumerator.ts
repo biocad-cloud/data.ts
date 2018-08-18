@@ -196,10 +196,24 @@ class IEnumerator<T> implements IEnumerable<T> {
     }
 
     /**
-     * Contract the sequence to string
+     * Contract the data sequence to string
+     * 
+     * @param deli Delimiter string that using for the string.join function
+     * @param toString A lambda that describ how to convert the generic type object to string token 
     */
-    public JoinBy(deli: string, toString: (x: T) => String = (x: T) => x.toString()): string {
-        return this.Select(x => toString(x)).ToArray().join(deli);
+    public JoinBy(
+        deli: string,
+        toString: (x: T) => string = (x: T) => {
+            if (typeof x === "string") {
+                return <string><any>x;
+            } else {
+                return x.toString();
+            }
+        }): string {
+
+        return this.Select(x => toString(x))
+            .ToArray()
+            .join(deli);
     }
 
     /**
