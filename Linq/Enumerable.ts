@@ -1,3 +1,5 @@
+/// <reference path="Enumerator.ts" />
+
 /**
  * The linq pipline implements at here. 
 */

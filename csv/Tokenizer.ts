@@ -1,4 +1,6 @@
-﻿namespace csv {
+﻿/// <reference path="../Linq/Pointer.ts" />
+
+namespace csv {
 
     /**
      * 通过Chars枚举来解析域，分隔符默认为逗号
@@ -6,6 +8,22 @@
      * 
     */
     export function CharsParser(s: string, delimiter: string = ",", quot: string = '"'): string[] {
+        var tokens: string[] = [];
+        var temp: string[] = [];
+        var openStack: boolean = false;
+        var buffer: Pointer<string> = From(DataExtensions.ToCharArray(s)).ToPointer();
+        var dblQuot: string = quot + quot;
 
+        while (!buffer.EndRead) {
+
+        }
+
+        if (temp.length > 0) {
+            tokens.push(temp.join().replace(dblQuot, quot));
+        }
+
+        return tokens;
     }
+
+
 }

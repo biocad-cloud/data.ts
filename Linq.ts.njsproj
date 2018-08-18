@@ -71,6 +71,9 @@
     <TypeScriptCompile Include="Linq\Group.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\Pointer.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Range.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

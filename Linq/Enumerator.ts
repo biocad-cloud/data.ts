@@ -251,4 +251,8 @@ class IEnumerator<T> implements IEnumerable<T> {
 
         return new Dictionary<V>(maps);
     }
+
+    public ToPointer(): Pointer<T> {
+        return new Pointer<T>(this);
+    }
 }
