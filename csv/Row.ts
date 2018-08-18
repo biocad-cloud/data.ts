@@ -1,7 +1,13 @@
 ﻿namespace csv {
 
-    export class row {
+    /**
+     * 一行数据
+    */
+    export class row extends IEnumerator<string> {
 
+        /**
+         * 当前的这一个行对象的列数据集合
+        */
         public columns: string[];
 
         /**
@@ -11,6 +17,10 @@
             return From(this.columns)
                 .Select(row.autoEscape)
                 .JoinBy(",");
+        }
+
+        public constructor(cells: string[]) {
+            super(cells);
         }
 
         private static autoEscape(c: string): string {

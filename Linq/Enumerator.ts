@@ -18,11 +18,21 @@ class IEnumerator<T> implements IEnumerable<T> {
     */
     protected sequence: T[];
 
-    constructor(source: T[]) {
-        // 2018-07-31 为了防止外部修改source导致sequence数组被修改
-        // 在这里进行数组复制，防止出现这种情况
-        this.sequence = [...source];
-        this.Count = source.length;
+    /**
+     * 可以从一个数组或者枚举器构建出一个Linq序列
+    */
+    constructor(source: T[] | IEnumerator<T>) {
+        if (!source) {
+            this.sequence = [];
+        } else if (Array.isArray(source)) {
+            // 2018-07-31 为了防止外部修改source导致sequence数组被修改
+            // 在这里进行数组复制，防止出现这种情况
+            this.sequence = [...source];
+        } else {
+            this.sequence = [...source.sequence];
+        }
+
+        this.Count = this.sequence.length;
     }
 
     /**

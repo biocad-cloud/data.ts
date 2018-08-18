@@ -5,7 +5,7 @@
  * 
  * @param source 需要进行数据加工的集合对象
 */
-function From<T>(source: T[]): IEnumerator<T> {
+function From<T>(source: T[] | IEnumerator<T>): IEnumerator<T> {
     return new IEnumerator<T>(source);
 }
 
@@ -14,10 +14,12 @@ function From<T>(source: T[]): IEnumerator<T> {
  * 
  * @param array 如果这个数组对象是空值或者未定义，都会被判定为空，如果长度为零，则同样也会被判定为空值
 */
-function IsNullOrEmpty<T>(array: T[]): boolean {
+function IsNullOrEmpty<T>(array: T[] | IEnumerator<T>): boolean {
     if (array == null || array == undefined) {
         return true;
-    } else if (array.length == 0) {
+    } else if (Array.isArray(array) && array.length == 0) {
+        return true;
+    } else if ((<IEnumerator<T>>(<any>array)).Count == 0) {
         return true;
     } else {
         return false;
