@@ -60,10 +60,23 @@ namespace csv {
         public static Load(url: string, callback: (csv: dataframe) => void = null): dataframe {
             if (callback == null || callback == undefined) {
                 // 同步
+                return dataframe.Parse(HttpHelpers.GET(url));
             } else {
                 // 异步
-                return null;
+                HttpHelpers.GetAsyn(url, (text, code) => {
+                    if (code == 200) {
+                        callback(dataframe.Parse(text));
+                    } else {
+                        throw `Error while load csv data source, http ${code}: ${text}`;
+                    }
+                });
             }
+
+            return null;
+        }
+
+        public static Parse(text: string): dataframe {
+
         }
     }
 }
