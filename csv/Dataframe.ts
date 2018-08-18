@@ -28,6 +28,21 @@ namespace csv {
             return this.Select(r => r.rowLine).JoinBy("\n");
         }
 
+        public Objects<T>(): IEnumerator<T> {
+            var header: string[] = this.headers.ToArray();
+            var objs = this.Skip(1).Select<T>(r => {
+                var o = {};
+
+                r.ForEach((c, i) => {
+                    o[header[i]] = c;
+                });
+
+                return <T>o;
+            });
+
+            return objs;
+        }
+
         /**
          * 使用ajax将csv文件保存到服务器
          * 
