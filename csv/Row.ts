@@ -54,7 +54,7 @@
         }
 
         public static Parse(line: string): row {
-
+            return new row(csv.CharsParser(line));
         }
     }
 }

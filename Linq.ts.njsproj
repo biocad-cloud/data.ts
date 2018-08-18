@@ -54,6 +54,9 @@
     <TypeScriptCompile Include="csv\Dataframe.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="csv\Tokenizer.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Enumerable.ts" />
     <TypeScriptCompile Include="Linq\Enumerator.ts" />
     <TypeScriptCompile Include="Extensions.ts">
