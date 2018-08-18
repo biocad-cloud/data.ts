@@ -11,7 +11,7 @@ module Enumerable {
     */
     export function Select<T, TOut>(source: T[], project: (e: T) => TOut): IEnumerator<TOut> {
         var projections: TOut[] = [];
-        
+
         source.forEach(o => {
             projections.push(project(o));
         });
@@ -83,7 +83,7 @@ module Enumerable {
                 takes.push(o);
             }
         });
-        
+
         return new IEnumerator<T>(takes);
     }
 
@@ -113,11 +113,14 @@ module Enumerable {
         return false;
     }
 
+    /**
+     * Implements a ``group by`` operation by binary tree data structure.
+    */
     export function GroupBy<T, TKey>(source: T[],
         getKey: (e: T) => TKey,
         compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
 
-        var tree = new binaryTree<TKey, T[]>(compares);
+        var tree = new algorithmBTree.binaryTree<TKey, T[]>(compares);
 
         source.forEach(obj => {
             var key: TKey = getKey(obj);
