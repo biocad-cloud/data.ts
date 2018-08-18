@@ -43,12 +43,12 @@ namespace csv {
                 }): void {
 
             var file: string = this.buildDoc();
-            var data = <LinqHelpers.PostData>{
+            var data = <HttpHelpers.PostData>{
                 type: contentType,
                 data: file
             };
 
-            LinqHelpers.UploadFile(url, data, callback);
+            HttpHelpers.UploadFile(url, data, callback);
         }
 
         /**
