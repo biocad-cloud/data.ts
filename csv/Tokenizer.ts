@@ -11,9 +11,10 @@ namespace csv {
         var tokens: string[] = [];
         var temp: string[] = [];
         var openStack: boolean = false;
-        var buffer: Pointer<string> = From(DataExtensions.ToCharArray(s)).ToPointer();
-        var dblQuot: string = quot + quot;
+        var buffer: Pointer<string> = From(DataExtensions.ToCharArray(s)).ToPointer();       
+        var dblQuot: RegExp = new RegExp(`[${quot}]{2}`, 'g');
         var cellStr = function () {
+            // https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
             return temp.join().replace(dblQuot, quot);
         }
         var procEscape = function (c: string) {
