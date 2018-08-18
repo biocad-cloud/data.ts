@@ -20,7 +20,7 @@ namespace csv {
             return new IEnumerator<string>(this.sequence[0]);
         }
 
-        public constructor(rows: row[]) {
+        public constructor(rows: row[] | IEnumerator<row>) {
             super(rows);
         }
 
@@ -76,7 +76,7 @@ namespace csv {
         }
 
         public static Parse(text: string): dataframe {
-
+            return new dataframe(From(text.split(/\n/)).Select(csv.row.Parse));
         }
     }
 }

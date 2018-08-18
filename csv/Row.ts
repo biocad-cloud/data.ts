@@ -30,5 +30,9 @@
                 return c;
             }
         }
+
+        public static Parse(line: string): row {
+
+        }
     }
 }
