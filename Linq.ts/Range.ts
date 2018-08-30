@@ -2,6 +2,7 @@
  * 一个数值范围
 */
 class NumericRange implements DoubleRange {
+
 	// #region Properties (2)
 
 	/**
