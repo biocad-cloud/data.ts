@@ -25,4 +25,17 @@
 
         return test;
     }
+
+    /**
+     * Remove duplicate string values from JS array
+     * 
+     * https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+    */
+    export function uniq(a: string[]): string[] {
+        var seen = {};
+
+        return a.filter(function (item) {
+            return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+        });
+    }
 }

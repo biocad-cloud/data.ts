@@ -19,6 +19,13 @@ class IEnumerator<T> implements IEnumerable<T> {
     protected sequence: T[];
 
     /**
+     * 获取序列的元素类型
+    */
+    public get ElementType(): TypeInfo {
+        return TypeInfo.typeof(this.First());
+    }
+
+    /**
      * 可以从一个数组或者枚举器构建出一个Linq序列
     */
     constructor(source: T[] | IEnumerator<T>) {
