@@ -67,3 +67,6 @@ typings/
 /LINQ.ts/obj/Release
 
 obj/
+/test/linq.js.map
+/test/linq.js
+/test/linq.d.ts
