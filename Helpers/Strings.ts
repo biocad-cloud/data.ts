@@ -18,4 +18,11 @@
             return false;
         }
     }
+
+    export function IsPattern(str: string, pattern: RegExp): boolean {
+        var match: string = str.match(pattern)[0];
+        var test: boolean = match == str;
+
+        return test;
+    }
 }
