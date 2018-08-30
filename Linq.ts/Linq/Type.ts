@@ -8,7 +8,7 @@ class TypeInfo {
     /**
      * 如果这个属性是空的，则说明是js之中的基础类型
     */
-    public readonly Class: string;
+    public readonly class: string;
 
     public readonly property: string[];
     public readonly methods: string[];
@@ -17,7 +17,7 @@ class TypeInfo {
      * 是否是js之中的基础类型？
     */
     public get IsPrimitive(): boolean {
-        return !this.Class;
+        return !this.class;
     }
 
     /**
@@ -29,8 +29,8 @@ class TypeInfo {
 
         return <TypeInfo>{
             TypeOf: typeof obj,
-            Class: isObject ? (<any>obj.constructor).name : "",
-            property: Object.keys(obj),
+            class: isObject ? (<any>obj.constructor).name : "",
+            property: isObject ? Object.keys(obj) : [],
             methods: TypeInfo.GetObjectMethods(obj)
         };
     }
@@ -49,7 +49,7 @@ class TypeInfo {
 
     public toString() {
         if (this.TypeOf == "object") {
-            return `<${this.TypeOf}> ${this.Class}`;
+            return `<${this.TypeOf}> ${this.class}`;
         } else {
             return this.TypeOf;
         }
