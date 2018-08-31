@@ -11,8 +11,13 @@
 	console.log(d);
 	console.log(TypeInfo.typeof(d));
 	
-	var s = "1234567890";
+	var s = "1234567890a";
 	var win = CharEnumerator(s).SlideWindows(3, 2);
 	
 	console.log(win);
+	
+	var c = '"",123,45678,90,abc,"d,e,f",g';
+	var row = csv.row.Parse(c);
+	
+	console.log(row);
 </script>
