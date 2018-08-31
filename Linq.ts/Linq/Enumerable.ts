@@ -1,7 +1,7 @@
 /// <reference path="Enumerator.ts" />
 
 /**
- * The linq pipline implements at here. 
+ * The linq pipline implements at here. (在这个模块之中实现具体的数据序列算法)
 */
 module Enumerable {
 
@@ -120,7 +120,7 @@ module Enumerable {
         getKey: (e: T) => TKey,
         compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
 
-        var tree = new algorithmBTree.binaryTree<TKey, T[]>(compares);
+        var tree = new algorithm.BTree.binaryTree<TKey, T[]>(compares);
 
         source.forEach(obj => {
             var key: TKey = getKey(obj);

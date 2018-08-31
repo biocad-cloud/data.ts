@@ -1,0 +1,23 @@
+<script type="text/javascript" src="./linq.js"></script>
+<script type="text/javascript">
+	var r = new data.NumericRange(-100, 5000);
+	var type = TypeInfo.typeof(r);
+	
+	console.log(r);
+	console.log(type);
+	
+	var d = new csv.dataframe([new csv.row(["1","2","3","4","5"])]);
+	
+	console.log(d);
+	console.log(TypeInfo.typeof(d));
+	
+	var s = "1234567890a";
+	var win = CharEnumerator(s).SlideWindows(3, 2);
+	
+	console.log(win);
+	
+	var c = '"",123,45678,90,abc,"d,e,f",g';
+	var row = csv.row.Parse(c);
+	
+	console.log(row);
+</script>
