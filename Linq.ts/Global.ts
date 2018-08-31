@@ -1,5 +1,5 @@
 ﻿/// <reference path="Linq/Enumerator.ts" />
-/// <reference path="Extensions.ts" />
+/// <reference path="Helpers/Extensions.ts" />
 
 /**
  * Linq数据流程管线的起始函数
