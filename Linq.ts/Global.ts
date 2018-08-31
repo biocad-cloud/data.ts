@@ -10,6 +10,10 @@ function From<T>(source: T[] | IEnumerator<T>): IEnumerator<T> {
     return new IEnumerator<T>(source);
 }
 
+function CharEnumerator(str: string): IEnumerator<string> {
+return 
+}
+
 /**
  * 判断目标对象集合是否是空的？
  * 

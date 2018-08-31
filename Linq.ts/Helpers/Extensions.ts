@@ -4,23 +4,6 @@
 module DataExtensions {
 
     /**
-     * 将字符串转换为字符数组
-     * 
-     * > https://jsperf.com/convert-string-to-char-code-array/9
-     * 经过测试，使用数组push的效率最高
-    */
-    export function ToCharArray(str: string): string[] {
-        var cc: string[] = [];
-        var strLen: number = str.length;
-
-        for (var i = 0; i < strLen; ++i) {
-            cc.push(str.charAt(i));
-        }
-
-        return cc;
-    }
-
-    /**
      * 将URL查询字符串解析为字典对象
      * 
      * @param queryString URL查询参数
