@@ -1,3 +1,0 @@
-D:\GCModeller-Cloud\php\modules\Linq\obj\Debug\Linq_typescript.njsprojAssemblyReference.cache
-D:\GCModeller-Cloud\php\modules\Linq\obj\Debug\Linq_typescript.njsproj.CoreCompileInputs.cache
-D:\GCModeller-Cloud\php\modules\Linq\bin\Microsoft.NodejsTools.WebRole.dll
