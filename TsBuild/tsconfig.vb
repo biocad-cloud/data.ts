@@ -20,11 +20,30 @@ Imports Microsoft.VisualBasic.Serialization.JSON
 ''' </summary>
 Public Class tsconfig
 
-    Public Property compilerOptions As Dictionary(Of String, String)
+    Public Property compilerOptions As compilerOptions
+    Public Property compileOnSave As Boolean
+
     Public Property files As String()
+    Public Property exclude As String()
+    Public Property include As String()
+    Public Property extends As String
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Overrides Function ToString() As String
         Return Me.GetJson
     End Function
+End Class
+
+Public Class compilerOptions
+    Public Property [module] As String
+    Public Property target As String
+    Public Property [lib] As String()
+    Public Property sourceMap As Boolean
+    Public Property allowSyntheticDefaultImports As Boolean
+    Public Property outDir As String
+    Public Property outFile As String
+    Public Property declaration As Boolean
+    Public Property noImplicitAny As Boolean
+    Public Property removeComments As Boolean
+    Public Property preserveConstEnums As Boolean
 End Class
