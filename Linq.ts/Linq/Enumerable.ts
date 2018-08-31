@@ -1,7 +1,7 @@
 /// <reference path="Enumerator.ts" />
 
 /**
- * The linq pipline implements at here. 
+ * The linq pipline implements at here. (在这个模块之中实现具体的数据序列算法)
 */
 module Enumerable {
 

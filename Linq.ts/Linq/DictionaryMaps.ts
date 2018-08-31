@@ -1,7 +1,7 @@
 ﻿/**
  * 描述了一个键值对集合
 */
-class Map<K, V> {
+export class Map<K, V> {
 
     /**
      * 键名称，一般是字符串
@@ -29,7 +29,7 @@ class Map<K, V> {
 /**
  * 键值对映射哈希表
 */
-class Dictionary<V> extends IEnumerator<Map<string, V>>  {
+export class Dictionary<V> extends IEnumerator<Map<string, V>>  {
 
     private maps: object;
 

@@ -74,7 +74,7 @@
     <TypeScriptCompile Include="Linq\Pointer.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Type.ts">
+    <TypeScriptCompile Include="Type.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Range.ts">
