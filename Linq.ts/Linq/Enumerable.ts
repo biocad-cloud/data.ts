@@ -120,7 +120,7 @@ module Enumerable {
         getKey: (e: T) => TKey,
         compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
 
-        var tree = new algorithmBTree.binaryTree<TKey, T[]>(compares);
+        var tree = new algorithm.BTree.binaryTree<TKey, T[]>(compares);
 
         source.forEach(obj => {
             var key: TKey = getKey(obj);
