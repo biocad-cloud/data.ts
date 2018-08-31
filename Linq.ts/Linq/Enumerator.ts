@@ -264,4 +264,8 @@ class IEnumerator<T> implements IEnumerable<T> {
     public ToPointer(): Pointer<T> {
         return new Pointer<T>(this);
     }
+
+    public SlideWindows(winSize: number, step: number = 1): IEnumerator<data.SlideWindow<T>> {
+        return data.SlideWindow.Split(this, winSize, step);
+    }
 }

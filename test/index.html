@@ -1,6 +1,6 @@
 <script type="text/javascript" src="./linq.js"></script>
 <script type="text/javascript">
-	var r = new NumericRange(-100, 5000);
+	var r = new data.NumericRange(-100, 5000);
 	var type = TypeInfo.typeof(r);
 	
 	console.log(r);
@@ -10,4 +10,9 @@
 	
 	console.log(d);
 	console.log(TypeInfo.typeof(d));
+	
+	var s = "1234567890";
+	var win = CharEnumerator(s).SlideWindows(3);
+	
+	console.log(win);
 </script>

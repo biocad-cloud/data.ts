@@ -11,7 +11,7 @@ function From<T>(source: T[] | IEnumerator<T>): IEnumerator<T> {
 }
 
 function CharEnumerator(str: string): IEnumerator<string> {
-return 
+    return new IEnumerator<string>(Strings.ToCharArray(str));
 }
 
 /**
