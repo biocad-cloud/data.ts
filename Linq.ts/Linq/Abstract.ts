@@ -1,4 +1,4 @@
-﻿export interface IEnumerable<T> {
+﻿interface IEnumerable<T> {
 
     readonly Count: number;
     readonly [index: number]: T;

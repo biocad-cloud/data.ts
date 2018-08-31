@@ -1,4 +1,4 @@
-﻿export class Group<TKey, T> extends IEnumerator<T> {
+﻿class Group<TKey, T> extends IEnumerator<T> {
 
     public Key: TKey;
 

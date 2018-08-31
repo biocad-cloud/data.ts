@@ -1,10 +1,12 @@
-﻿/**
+﻿/// <reference path="Abstract.ts" />
+
+/**
  * Provides a set of static (Shared in Visual Basic) methods for querying 
  * objects that implement ``System.Collections.Generic.IEnumerable<T>``.
  * 
  * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型)
 */
-export class IEnumerator<T> implements IEnumerable<T> {
+class IEnumerator<T> implements IEnumerable<T> {
 
     readonly [index: number]: T;
 
