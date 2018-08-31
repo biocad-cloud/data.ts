@@ -5,6 +5,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# VisualStudio
+db.lock
+*.ide
+*.ide-shm
+*.ide-wal
+
 # Runtime data
 pids
 *.pid
