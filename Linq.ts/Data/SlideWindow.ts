@@ -24,7 +24,7 @@
             }
 
             var len: number = src.length - winSize;
-            var windows: SlideWindow<T>[];
+            var windows: SlideWindow<T>[] = [];
 
             for (var i: number = 0; i < len; i += step) {
                 var chunk: T[] = new Array(winSize);
