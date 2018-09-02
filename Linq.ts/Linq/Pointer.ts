@@ -13,7 +13,7 @@ class Pointer<T> extends IEnumerator<T> {
     /**
      * The index pointer is at the end of the data sequence?
     */
-    public get EndRead(): boolean {
+    public get EndRead(): boolean {       
         return this.i >= this.Count;
     }
 
@@ -36,6 +36,10 @@ class Pointer<T> extends IEnumerator<T> {
 
     public constructor(src: T[] | IEnumerator<T>) {
         super(src);
+        // 2018-09-02 在js里面，数值必须要进行初始化
+        // 否则会出现NA初始值，导致使用EndRead属性判断失败
+        // 可能会导致死循环的问题出现
+        this.i = 0;
     }
 
     /**
