@@ -15,7 +15,9 @@ namespace csv {
         var dblQuot: RegExp = new RegExp(`[${quot}]{2}`, 'g');
         var cellStr = function () {
             // https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
-            return temp.join().replace(dblQuot, quot);
+            // 2018-09-02
+            // 如果join函数的参数是空的话，则js之中默认是使用逗号作为连接符的 
+            return temp.join("").replace(dblQuot, quot);
         }
         var procEscape = function (c: string) {
             if (!StartEscaping(temp)) {
