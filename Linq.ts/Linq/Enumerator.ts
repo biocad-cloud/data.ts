@@ -1,31 +1,33 @@
-﻿/// <reference path="Abstract.ts" />
-
-/**
+﻿/**
  * Provides a set of static (Shared in Visual Basic) methods for querying 
  * objects that implement ``System.Collections.Generic.IEnumerable<T>``.
  * 
  * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型)
 */
-class IEnumerator<T> implements IEnumerable<T> {
-
-    readonly [index: number]: T;
-
-    /**
-     * The number of elements in the data sequence.
-    */
-    readonly Count: number;
+class IEnumerator<T> {
 
     /**
      * The data sequence with specific type.
     */
     protected sequence: T[];
 
+    //#region "readonly property"
+
     /**
      * 获取序列的元素类型
     */
     public get ElementType(): TypeInfo {
         return TypeInfo.typeof(this.First());
-    }
+    };
+
+    /**
+     * The number of elements in the data sequence.
+    */
+    public get Count(): number {
+        return this.sequence.length;
+    };
+
+    //#endregion
 
     /**
      * 可以从一个数组或者枚举器构建出一个Linq序列
@@ -40,8 +42,6 @@ class IEnumerator<T> implements IEnumerable<T> {
         } else {
             this.sequence = [...source.sequence];
         }
-
-        this.Count = this.sequence.length;
     }
 
     /**
@@ -235,11 +235,17 @@ class IEnumerator<T> implements IEnumerable<T> {
             .join(deli);
     }
 
+    //#region "conversion"
+
     /**
      * This function returns a clone copy of the source sequence.
     */
     public ToArray(): T[] {
         return [...this.sequence];
+    }
+
+    public ToList(): List<T> {
+        return new List<T>(this.sequence);
     }
 
     public ToDictionary<K, V>(
@@ -268,4 +274,6 @@ class IEnumerator<T> implements IEnumerable<T> {
     public SlideWindows(winSize: number, step: number = 1): IEnumerator<data.SlideWindow<T>> {
         return data.SlideWindow.Split(this, winSize, step);
     }
+
+    //#endregion
 }
