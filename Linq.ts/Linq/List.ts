@@ -18,4 +18,8 @@
 
         return this;
     }
+
+    public IndexOf(x: T): number {
+        return this.sequence.indexOf(x);
+    }
 }
