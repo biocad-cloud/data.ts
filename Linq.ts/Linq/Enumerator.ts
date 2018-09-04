@@ -154,7 +154,7 @@ class IEnumerator<T> implements IEnumerable<T> {
      * @returns An ``System.Linq.IOrderedEnumerable<T>`` whose elements are 
      *          sorted in descending order according to a key.
     */
-    public OrderByOrderByDescending(key: (e: T) => number): IEnumerator<T> {
+    public OrderByDescending(key: (e: T) => number): IEnumerator<T> {
         return Enumerable.OrderByDescending(this.sequence, key);
     }
 
