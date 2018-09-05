@@ -204,6 +204,13 @@ class IEnumerator<T> {
     }
 
     /**
+     * 对序列中的元素进行去重
+    */
+    public Distinct(): IEnumerator<T> {
+
+    }
+
+    /**
      * Performs the specified action for each element in an array.
      * 
      * @param callbackfn  A function that accepts up to three arguments. forEach 
@@ -233,6 +240,17 @@ class IEnumerator<T> {
         return this.Select(x => toString(x))
             .ToArray()
             .join(deli);
+    }
+
+    public Unlist<U>(): IEnumerator<U> {
+        var list: U[] = [];
+
+        this.ForEach(a => {
+            var array: U[] = (<any>a);
+            array.forEach(x => list.push(x));
+        })
+
+        return new IEnumerator<U>(list);
     }
 
     //#region "conversion"
