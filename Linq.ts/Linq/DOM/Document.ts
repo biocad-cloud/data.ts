@@ -25,7 +25,7 @@
     /**
      *
     */
-    export function addEvent(el: any, type: string, fn: (event) => void): void {
+    export function addEvent(el: any, type: string, fn: (event: Event) => void): void {
         if (document.addEventListener) {
             if (el && (el.nodeName) || el === window) {
                 el.addEventListener(type, fn, false);
