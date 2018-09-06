@@ -1,31 +1,33 @@
-﻿/// <reference path="Abstract.ts" />
-
-/**
+﻿/**
  * Provides a set of static (Shared in Visual Basic) methods for querying 
  * objects that implement ``System.Collections.Generic.IEnumerable<T>``.
  * 
  * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型)
 */
-class IEnumerator<T> implements IEnumerable<T> {
-
-    readonly [index: number]: T;
-
-    /**
-     * The number of elements in the data sequence.
-    */
-    readonly Count: number;
+class IEnumerator<T> {
 
     /**
      * The data sequence with specific type.
     */
     protected sequence: T[];
 
+    //#region "readonly property"
+
     /**
      * 获取序列的元素类型
     */
     public get ElementType(): TypeInfo {
         return TypeInfo.typeof(this.First());
-    }
+    };
+
+    /**
+     * The number of elements in the data sequence.
+    */
+    public get Count(): number {
+        return this.sequence.length;
+    };
+
+    //#endregion
 
     /**
      * 可以从一个数组或者枚举器构建出一个Linq序列
@@ -40,8 +42,6 @@ class IEnumerator<T> implements IEnumerable<T> {
         } else {
             this.sequence = [...source.sequence];
         }
-
-        this.Count = this.sequence.length;
     }
 
     /**
@@ -69,7 +69,7 @@ class IEnumerator<T> implements IEnumerable<T> {
      *          whose elements are the result of invoking the 
      *          transform function on each element of source.
     */
-    public Select<TOut>(selector: (o: T) => TOut): IEnumerator<TOut> {
+    public Select<TOut>(selector: (o: T, i: number) => TOut): IEnumerator<TOut> {
         return Enumerable.Select<T, TOut>(this.sequence, selector);
     }
 
@@ -81,7 +81,10 @@ class IEnumerator<T> implements IEnumerable<T> {
      * @param compares 注意，javascript在进行中文字符串的比较的时候存在bug，如果当key的类型是字符串的时候，
      *                 在这里需要将key转换为数值进行比较，遇到中文字符串可能会出现bug
     */
-    public GroupBy<TKey>(keySelector: (o: T) => TKey, compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
+    public GroupBy<TKey>(
+        keySelector: (o: T) => TKey,
+        compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
+
         return Enumerable.GroupBy(this.sequence, keySelector, compares);
     }
 
@@ -154,7 +157,7 @@ class IEnumerator<T> implements IEnumerable<T> {
      * @returns An ``System.Linq.IOrderedEnumerable<T>`` whose elements are 
      *          sorted in descending order according to a key.
     */
-    public OrderByOrderByDescending(key: (e: T) => number): IEnumerator<T> {
+    public OrderByDescending(key: (e: T) => number): IEnumerator<T> {
         return Enumerable.OrderByDescending(this.sequence, key);
     }
 
@@ -204,6 +207,15 @@ class IEnumerator<T> implements IEnumerable<T> {
     }
 
     /**
+     * 对序列中的元素进行去重
+    */
+    public Distinct(key: (o: T) => string = o => o.toString()): IEnumerator<T> {
+        return this
+            .GroupBy(key, Strings.CompareTo)
+            .Select(group => group.First());
+    }
+
+    /**
      * Performs the specified action for each element in an array.
      * 
      * @param callbackfn  A function that accepts up to three arguments. forEach 
@@ -235,11 +247,28 @@ class IEnumerator<T> implements IEnumerable<T> {
             .join(deli);
     }
 
+    public Unlist<U>(): IEnumerator<U> {
+        var list: U[] = [];
+
+        this.ForEach(a => {
+            var array: U[] = (<any>a);
+            array.forEach(x => list.push(x));
+        })
+
+        return new IEnumerator<U>(list);
+    }
+
+    //#region "conversion"
+
     /**
      * This function returns a clone copy of the source sequence.
     */
     public ToArray(): T[] {
         return [...this.sequence];
+    }
+
+    public ToList(): List<T> {
+        return new List<T>(this.sequence);
     }
 
     public ToDictionary<K, V>(
@@ -268,4 +297,6 @@ class IEnumerator<T> implements IEnumerable<T> {
     public SlideWindows(winSize: number, step: number = 1): IEnumerator<data.SlideWindow<T>> {
         return data.SlideWindow.Split(this, winSize, step);
     }
+
+    //#endregion
 }

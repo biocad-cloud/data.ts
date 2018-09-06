@@ -6,7 +6,7 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "../dist",
-    "outFile": "../test/linq.js",
+    "outFile": "../../build/linq.js",
     "declaration": true
   },
   "exclude": [

@@ -9,11 +9,11 @@ module Enumerable {
      * 进行数据序列的投影操作
      * 
     */
-    export function Select<T, TOut>(source: T[], project: (e: T) => TOut): IEnumerator<TOut> {
+    export function Select<T, TOut>(source: T[], project: (e: T, i: number) => TOut): IEnumerator<TOut> {
         var projections: TOut[] = [];
 
-        source.forEach(o => {
-            projections.push(project(o));
+        source.forEach((o, i) => {
+            projections.push(project(o, i));
         });
 
         return new IEnumerator<TOut>(projections);

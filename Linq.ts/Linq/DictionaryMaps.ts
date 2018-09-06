@@ -61,4 +61,8 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
             .Select(key => new Map<string, V>(key, maps[key]))
             .ToArray()
     }
+
+    public ContainsKey(key: string): boolean {
+        return key in this.maps;
+    }
 }

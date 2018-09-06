@@ -54,4 +54,16 @@ class TypeInfo {
             return this.TypeOf;
         }
     }
+
+    public static EmptyObject<V>(names: string[] | IEnumerator<string>, init: () => V): object {
+        var obj: object = {};
+
+        if (Array.isArray(names)) {
+            names.forEach(name => obj[name] = init());
+        } else {
+            names.ForEach(name => obj[name] = init());
+        }
+
+        return obj;
+    }
 }
