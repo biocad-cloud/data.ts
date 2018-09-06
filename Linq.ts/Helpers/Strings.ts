@@ -55,4 +55,37 @@
 
         return cc;
     }
+
+    export function Len(s: string): number {
+        if (!s || s == undefined) {
+            return 0;
+        } else {
+            return s.length;
+        }
+    }
+
+    export function CompareTo(s1: string, s2: string): number {
+        var l1 = Strings.Len(s1);
+        var l2 = Strings.Len(s2);
+        var minl = Math.min(l1, l2);
+
+        for (var i: number = 0; i < minl; i++) {
+            var x = s1.charCodeAt(i);
+            var y = s2.charCodeAt(i);
+
+            if (x > y) {
+                return 1;
+            } else if (x < y) {
+                return -1;
+            }
+        }
+
+        if (l1 > l2) {
+            return 1;
+        } else if (l1 < l2) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }

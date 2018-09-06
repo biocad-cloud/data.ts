@@ -81,7 +81,10 @@ class IEnumerator<T> {
      * @param compares 注意，javascript在进行中文字符串的比较的时候存在bug，如果当key的类型是字符串的时候，
      *                 在这里需要将key转换为数值进行比较，遇到中文字符串可能会出现bug
     */
-    public GroupBy<TKey>(keySelector: (o: T) => TKey, compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
+    public GroupBy<TKey>(
+        keySelector: (o: T) => TKey,
+        compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
+
         return Enumerable.GroupBy(this.sequence, keySelector, compares);
     }
 
@@ -206,8 +209,10 @@ class IEnumerator<T> {
     /**
      * 对序列中的元素进行去重
     */
-    public Distinct(): IEnumerator<T> {
-
+    public Distinct(key: (o: T) => string = o => o.toString()): IEnumerator<T> {
+        return this
+            .GroupBy(key, Strings.CompareTo)
+            .Select(group => group.First());
     }
 
     /**
