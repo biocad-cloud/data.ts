@@ -69,7 +69,7 @@ class IEnumerator<T> {
      *          whose elements are the result of invoking the 
      *          transform function on each element of source.
     */
-    public Select<TOut>(selector: (o: T) => TOut): IEnumerator<TOut> {
+    public Select<TOut>(selector: (o: T, i: number) => TOut): IEnumerator<TOut> {
         return Enumerable.Select<T, TOut>(this.sequence, selector);
     }
 
