@@ -21,6 +21,8 @@
 	
 	console.log(row);
 	
+	console.log(r.constructor.toString());
+	
 	callsTop();
 	
 	function callsTop() {
@@ -33,6 +35,6 @@
 	}
 	
 	function Hello() {
-		alert("caller is " + arguments.callee.caller.toString());
+		console.log(arguments);
 	}
 </script>

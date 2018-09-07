@@ -13,6 +13,7 @@ class TypeInfo {
      * 如果这个属性是空的，则说明是js之中的基础类型
     */
     public readonly class: string;
+    public readonly namespace: string;
 
     /**
      * class之中的字段域列表
