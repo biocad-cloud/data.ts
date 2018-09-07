@@ -44,12 +44,7 @@ Module Program
         tsconfig.SaveJson(tsbuild)
 
         Dim cli$ = $"--project {tsbuild.GetFullPath.CLIPath}"
-        Dim proc As New Process With {
-            .StartInfo = New ProcessStartInfo("tsc", cli)
-        }
-
-        Call proc.Start()
-        Call proc.WaitForExit()
+        Dim proc = Process.Start($"tsc {cli}")
 
         Return proc.ExitCode
     End Function
