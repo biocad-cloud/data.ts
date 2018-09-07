@@ -72,7 +72,17 @@ module Enumerable {
     }
 
     export function TakeWhile<T>(source: T[], predicate: (e: T) => boolean): IEnumerator<T> {
-        return Enumerable.Where(source, predicate);
+        var takes: T[] = [];
+
+        for (var i: number = 0; i < source.length; i++) {
+            if (predicate(source[i])) {
+                takes.push(source[i]);
+            } else {
+                break;
+            }
+        }
+
+        return new IEnumerator<T>(takes);
     }
 
     export function Where<T>(source: T[], predicate: (e: T) => boolean): IEnumerator<T> {
@@ -88,9 +98,17 @@ module Enumerable {
     }
 
     export function SkipWhile<T>(source: T[], predicate: (e: T) => boolean): IEnumerator<T> {
-        return Enumerable.Where(source, o => {
-            return !predicate(o);
-        });
+        for (var i: number = 0; i < source.length; i++) {
+            if (predicate(source[i])) {
+                // skip
+            } else {
+                // end skip
+                return Enumerable.Skip(source, i);
+            }
+        }
+
+        // skip all
+        return new IEnumerator<T>([]);
     }
 
     export function All<T>(source: T[], predicate: (e: T) => boolean): boolean {

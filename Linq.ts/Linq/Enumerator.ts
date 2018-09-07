@@ -171,6 +171,7 @@ class IEnumerator<T> {
 
     /**
      * Returns elements from a sequence as long as a specified condition is true.
+     * (与Where类似，只不过这个函数只要遇到第一个不符合条件的，就会立刻终止迭代)
     */
     public TakeWhile(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.TakeWhile(this.sequence, predicate);

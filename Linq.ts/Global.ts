@@ -35,7 +35,11 @@ function IsNullOrEmpty<T>(array: T[] | IEnumerator<T>): boolean {
  * HTML/Javascript: how to access JSON data loaded in a script tag.
 */
 function LoadJson(id: string): any {
-    return JSON.parse(document.getElementById(id).textContent);
+    return JSON.parse(LoadText(id));
+}
+
+function LoadText(id: string): string {
+    return document.getElementById(id).textContent;
 }
 
 /**
