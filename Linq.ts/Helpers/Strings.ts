@@ -1,5 +1,35 @@
 ﻿module Strings {
 
+    export function GetTagValue(str: string, tag: string = " "): NamedValue<string> {
+        if (!str) {
+            return new NamedValue<string>();
+        } else {
+            return tagValueImpl(str, tag);
+        }
+    }
+
+    function tagValueImpl(str: string, tag: string): NamedValue<string> {
+        var i: number = str.indexOf(tag);
+        var tagLen: number = Len(tag);
+
+        if (i > -1) {
+
+            var name: string = str.substr(0, i);
+            var value: string = str.substr(i + tagLen);
+
+            return <NamedValue<string>>{
+                name: name,
+                value: value
+            };
+
+        } else {
+            return <NamedValue<string>>{
+                name: "",
+                value: str
+            };
+        }
+    }
+
     /**
      * 判断给定的字符串是否是空值？
      * 

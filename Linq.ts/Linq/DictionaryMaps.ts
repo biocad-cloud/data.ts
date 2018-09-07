@@ -26,6 +26,23 @@ class Map<K, V> {
     }
 }
 
+class NamedValue<T> {
+
+    public name: string;
+    public value: T;
+
+    public get TypeOfValue(): TypeInfo {
+        return TypeInfo.typeof(this.value);
+    }
+    public get IsEmpty(): boolean {
+        return Strings.Empty(this.name) && (!this.value || this.value == undefined);
+    }
+
+    public toString(): string {
+        return this.name;
+    }
+}
+
 /**
  * 键值对映射哈希表
 */
