@@ -74,18 +74,30 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
-    public constructor(maps: object) {
+    public constructor(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>>) {
         super(Dictionary.ObjectMaps<V>(maps));
         this.maps = maps;
+    }
+
+    public static FromMaps<V>(maps: Map<string, V>[] | IEnumerator<Map<string, V>>): Dictionary<V> {
+        return new Dictionary<V>(maps);
     }
 
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
-    public static ObjectMaps<V>(maps: object): Map<string, V>[] {
-        return From(Object.keys(maps))
-            .Select(key => new Map<string, V>(key, maps[key]))
-            .ToArray()
+    public static ObjectMaps<V>(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>>): Map<string, V>[] {
+        var type = TypeInfo.typeof(maps);
+
+        if (Array.isArray(maps)) {
+            return maps;
+        } else if (type.class == "IEnumerator") {
+            return (<IEnumerator<Map<string, V>>>maps).ToArray();
+        } else {
+            return From(Object.keys(maps))
+                .Select(key => new Map<string, V>(key, maps[key]))
+                .ToArray();
+        }
     }
 
     public ContainsKey(key: string): boolean {

@@ -3,14 +3,24 @@
 */
 class TypeInfo {
 
-    public readonly TypeOf: string;
+    /**
+     * 直接使用系统内置的``typeof``运算符得到的结果
+    */
+    public readonly typeOf: string;
 
     /**
+     * 类型class的名称，例如TypeInfo, IEnumerator等。
      * 如果这个属性是空的，则说明是js之中的基础类型
     */
     public readonly class: string;
 
+    /**
+     * class之中的字段域列表
+    */
     public readonly property: string[];
+    /**
+     * 函数方法名称列表
+    */
     public readonly methods: string[];
 
     /**
@@ -28,7 +38,7 @@ class TypeInfo {
         var isObject: boolean = type == "object";
 
         return <TypeInfo>{
-            TypeOf: typeof obj,
+            typeOf: typeof obj,
             class: isObject ? (<any>obj.constructor).name : "",
             property: isObject ? Object.keys(obj) : [],
             methods: TypeInfo.GetObjectMethods(obj)
@@ -48,10 +58,10 @@ class TypeInfo {
     }
 
     public toString() {
-        if (this.TypeOf == "object") {
-            return `<${this.TypeOf}> ${this.class}`;
+        if (this.typeOf == "object") {
+            return `<${this.typeOf}> ${this.class}`;
         } else {
-            return this.TypeOf;
+            return this.typeOf;
         }
     }
 
