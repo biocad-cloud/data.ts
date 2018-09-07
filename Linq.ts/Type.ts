@@ -6,23 +6,23 @@ class TypeInfo {
     /**
      * 直接使用系统内置的``typeof``运算符得到的结果
     */
-    public readonly typeOf: string;
+    public typeOf: string;
 
     /**
      * 类型class的名称，例如TypeInfo, IEnumerator等。
      * 如果这个属性是空的，则说明是js之中的基础类型
     */
-    public readonly class: string;
-    public readonly namespace: string;
+    public class: string;
+    public namespace: string;
 
     /**
      * class之中的字段域列表
     */
-    public readonly property: string[];
+    public property: string[];
     /**
      * 函数方法名称列表
     */
-    public readonly methods: string[];
+    public methods: string[];
 
     /**
      * 是否是js之中的基础类型？
@@ -58,12 +58,14 @@ class TypeInfo {
             className = "";
         }
 
-        return <TypeInfo>{
-            typeOf: isArray ? "Array" : typeof obj,
-            class: className,
-            property: isObject ? Object.keys(obj) : [],
-            methods: TypeInfo.GetObjectMethods(obj)
-        };
+        var typeInfo: TypeInfo = new TypeInfo;
+
+        typeInfo.typeOf = isArray ? "Array" : typeof obj;
+        typeInfo.class = className;
+        typeInfo.property = isObject ? Object.keys(obj) : [];
+        typeInfo.methods = TypeInfo.GetObjectMethods(obj);
+
+        return typeInfo;
     }
 
     public static GetObjectMethods<T>(obj: T): string[] {
