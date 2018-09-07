@@ -50,7 +50,16 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
 
     private maps: object;
 
-    public Item(key: string): V {
+    /**
+     * 如果键名称是空值的话，那么这个函数会自动使用caller的函数名称作为键名进行值的获取
+     * 
+     * https://stackoverflow.com/questions/280389/how-do-you-find-out-the-caller-function-in-javascript
+    */
+    public Item(key: string = null): V {
+        if (!key) {
+            key = arguments.callee.caller.toString();
+        }
+
         return <V>(this.maps[key]);
     }
 

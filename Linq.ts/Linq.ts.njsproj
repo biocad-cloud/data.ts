@@ -60,6 +60,9 @@
     <TypeScriptCompile Include="Data\SlideWindow.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\MetaReader.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\DOM\Document.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

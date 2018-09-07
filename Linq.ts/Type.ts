@@ -66,4 +66,20 @@ class TypeInfo {
 
         return obj;
     }
+
+    public static CreateObject<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): object {
+        var obj: object = {};
+
+        if (Array.isArray(nameValues)) {
+            nameValues.forEach(nv => obj[nv.name] = nv.value);
+        } else {
+            nameValues.ForEach(nv => obj[nv.name] = nv.value);
+        }
+
+        return obj;
+    }
+
+    public static CreateMetaReader<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): data.MetaReader {
+        return new data.MetaReader(TypeInfo.CreateObject(nameValues));
+    }
 }
