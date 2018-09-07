@@ -79,7 +79,7 @@ class TypeInfo {
         return obj;
     }
 
-    public static CreateMetaReader<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): data.MetaReader {
-        return new data.MetaReader(TypeInfo.CreateObject(nameValues));
+    public static CreateMetaReader<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): TsLinq.MetaReader {
+        return new TsLinq.MetaReader(TypeInfo.CreateObject(nameValues));
     }
 }

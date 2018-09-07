@@ -216,14 +216,25 @@ class IEnumerator<T> {
             .Select(group => group.First());
     }
 
-    public ChunkWith(isDelimiter: (x: T) => boolean): IEnumerator<T[]> {
+    /**
+     * 将序列按照符合条件的元素分成区块
+     * 
+     * @param isDelimiter 一个用于判断当前的元素是否是分割元素的函数
+     * @param reserve 是否保留下这个分割对象？默认不保留
+    */
+    public ChunkWith(isDelimiter: (x: T) => boolean, reserve: boolean = false): IEnumerator<T[]> {
         var chunks: List<T[]> = new List<T[]>();
         var buffer: T[] = [];
 
         this.sequence.forEach(x => {
             if (isDelimiter(x)) {
                 chunks.Add(buffer);
-                buffer = [];
+
+                if (reserve) {
+                    buffer = [x];
+                } else {
+                    buffer = [];
+                }
             } else {
                 buffer.push(x);
             }
