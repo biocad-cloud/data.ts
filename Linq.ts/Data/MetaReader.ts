@@ -15,7 +15,7 @@
         */
         public GetValue(key: string = null): any {
             if (!key) {
-                key = arguments.callee.caller.toString();
+                key = StackTrace.GetCallerMember().memberName;
             }
 
             if (key in this.meta) {
