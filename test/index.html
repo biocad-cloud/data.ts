@@ -20,4 +20,19 @@
 	var row = csv.row.Parse(c);
 	
 	console.log(row);
+	
+	callsTop();
+	
+	function callsTop() {
+	
+		internal();
+	
+		function internal() {
+			Hello();
+		}
+	}
+	
+	function Hello() {
+		alert("caller is " + arguments.callee.caller.toString());
+	}
 </script>
