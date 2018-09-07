@@ -63,6 +63,15 @@
     <TypeScriptCompile Include="Data\MetaReader.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\StackTrace\StackFrame.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\StackTrace\StackTrace.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\StringBuilder.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\DOM\Document.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -100,6 +109,7 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\StackTrace\" />
     <Folder Include="Linq\" />
     <Folder Include="Data\BinaryTree\" />
     <Folder Include="csv\" />
