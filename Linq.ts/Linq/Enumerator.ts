@@ -215,6 +215,26 @@ class IEnumerator<T> {
             .Select(group => group.First());
     }
 
+    public ChunkWith(isDelimiter: (x: T) => boolean): IEnumerator<T[]> {
+        var chunks: List<T[]> = new List<T[]>();
+        var buffer: T[] = [];
+
+        this.sequence.forEach(x => {
+            if (isDelimiter(x)) {
+                chunks.Add(buffer);
+                buffer = [];
+            } else {
+                buffer.push(x);
+            }
+        });
+
+        if (buffer.length > 0) {
+            chunks.Add(buffer);
+        }
+
+        return chunks;
+    }
+
     /**
      * Performs the specified action for each element in an array.
      * 

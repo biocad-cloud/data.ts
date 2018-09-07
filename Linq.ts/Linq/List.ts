@@ -1,7 +1,7 @@
 ﻿class List<T> extends IEnumerator<T> {
 
-    public constructor(src: T[] | IEnumerator<T>) {
-        super(src);
+    public constructor(src: T[] | IEnumerator<T> = null) {
+        super(src || []);
     }
 
     public Add(x: T): List<T> {

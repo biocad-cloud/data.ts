@@ -65,4 +65,19 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
     public ContainsKey(key: string): boolean {
         return key in this.maps;
     }
+
+    public Add(key: string, value: V): Dictionary<V> {
+        this.maps[key] = value;
+        this.sequence = Dictionary.ObjectMaps<V>(this.maps);
+        return this;
+    }
+
+    public Delete(key: string): Dictionary<V> {
+        if (key in this.maps) {
+            delete this.maps[key];
+            this.sequence = Dictionary.ObjectMaps<V>(this.maps);
+        }
+
+        return this;
+    }
 }
