@@ -20,15 +20,16 @@ Module Program
         ' njsproj -> code files -> tsconfig.json => files -> tsc
         Dim njsproj As Project = [in].LoadXml(Of Project)
         Dim codes$() = njsproj.ItemGroups _
-                              .Select(Function(item)
-                                          Return item.TypeScriptCompiles.SafeQuery
-                                      End Function) _
-                              .IteratesALL _
-                              .Where(Function(tsc)
-                                         Return tsc.SubType = "Code"
-                                     End Function) _
-                              .Select(Function(tsc) tsc.Include) _
-                              .ToArray
+            .Select(Function(item)
+                        Return item.TypeScriptCompiles.SafeQuery
+                    End Function) _
+            .IteratesALL _
+            .Where(Function(tsc)
+                       Return tsc.SubType = "Code"
+                   End Function) _
+            .Select(Function(tsc) tsc.Include) _
+            .ToArray
+
         ' 接下来将会覆盖掉tsconfig之中的files数组
         Dim config$ = $"{[in].ParentPath}/tsconfig.json"
         Dim tsbuild$ = $"{[in].ParentPath}/tsbuild.json"
