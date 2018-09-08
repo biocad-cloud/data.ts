@@ -46,9 +46,11 @@ Module Program
             .ToArray
         tsconfig.SaveJson(tsbuild, indent:=True)
 
-        Dim cli$ = $"--project {tsbuild.GetFullPath.CLIPath}"
-        Dim proc = Process.Start($"tsc {cli}")
+        Using envir = App.TemporaryEnvironment([in].ParentPath)
+            Dim cli$ = $"--project {tsbuild.GetFullPath.CLIPath}"
+            Dim proc = Process.Start($"tsc {cli}")
 
-        Return proc.ExitCode
+            Return proc.ExitCode
+        End Using
     End Function
 End Module
