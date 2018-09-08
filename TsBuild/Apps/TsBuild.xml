@@ -1,0 +1,45 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+TsBuild
+</name>
+</assembly>
+<members>
+<member name="T:TsBuild.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:TsBuild.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:TsBuild.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="T:TsBuild.tsconfig">
+ <summary>
+ The presence of a tsconfig.json file in a directory indicates that the directory is the 
+ root of a TypeScript project. The tsconfig.json file specifies the root files and the 
+ compiler options required to compile the project. A project is compiled in one of the 
+ following ways:
+
+ #### Using tsconfig.json
+ 
+ 1. By invoking tsc With no input files, In which Case the compiler searches For the 
+    tsconfig.json file starting In the current directory And continuing up the parent 
+    directory chain.
+ 2. By invoking tsc With no input files And a --project (Or just -p) command line Option 
+    that specifies the path Of a directory containing a tsconfig.json file, Or a path To 
+    a valid .json file containing the configurations.
+    
+ When input files are specified on the command line, tsconfig.json files are ignored.
+ </summary>
+</member>
+</members>
+</doc>
