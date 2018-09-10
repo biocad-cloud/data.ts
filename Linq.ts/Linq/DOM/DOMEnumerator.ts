@@ -35,5 +35,33 @@
 
             return this.Select(element => element.nodeValue);
         }
+
+        public AddClass(className: string): DOMEnumerator<T> {
+            this.ForEach(x => {
+                if (!x.classList.contains(className)) {
+                    x.classList.add(className);
+                }
+            })
+            return this;
+        }
+
+        public RemoveClass(className: string): DOMEnumerator<T> {
+            this.ForEach(x => {
+                if (x.classList.contains(className)) {
+                    x.classList.remove(className);
+                }
+            })
+            return this;
+        }
+
+        public hide(): DOMEnumerator<T> {
+            this.ForEach(x => x.style.display = "none");
+            return this;
+        }
+
+        public show(): DOMEnumerator<T> {
+            this.ForEach(x => x.style.display = "block");
+            return this;
+        }
     }
 }
