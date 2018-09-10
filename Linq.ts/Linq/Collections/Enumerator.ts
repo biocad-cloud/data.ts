@@ -17,7 +17,7 @@ class IEnumerator<T> {
      * 获取序列的元素类型
     */
     public get ElementType(): TypeInfo {
-        return TypeInfo.typeof(this.First());
+        return TypeInfo.typeof(this.First);
     };
 
     /**
@@ -109,14 +109,14 @@ class IEnumerator<T> {
      * 求取这个序列集合的最小元素，使用这个函数要求序列之中的元素都必须能够被转换为数值
     */
     public Min(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
-        return Enumerable.OrderBy(this.sequence, project).First();
+        return Enumerable.OrderBy(this.sequence, project).First;
     }
 
     /**
      * 求取这个序列集合的最大元素，使用这个函数要求序列之中的元素都必须能够被转换为数值
     */
     public Max(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
-        return Enumerable.OrderByDescending(this.sequence, project).First();
+        return Enumerable.OrderByDescending(this.sequence, project).First;
     }
 
     /**
@@ -223,7 +223,7 @@ class IEnumerator<T> {
     public Distinct(key: (o: T) => string = o => o.toString()): IEnumerator<T> {
         return this
             .GroupBy(key, Strings.CompareTo)
-            .Select(group => group.First());
+            .Select(group => group.First);
     }
 
     /**

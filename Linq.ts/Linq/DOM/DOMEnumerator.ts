@@ -28,7 +28,7 @@
                     });
                 } else {
                     this.ForEach((element, i) => {
-                        element.nodeValue = value.Item(i);
+                        element.nodeValue = value.ElementAt(i);
                     });
                 }
             }

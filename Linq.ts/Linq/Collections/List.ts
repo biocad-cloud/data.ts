@@ -39,7 +39,7 @@ class List<T> extends IEnumerator<T> {
      * 返回列表之中的第一个元素，然后删除第一个元素，剩余元素整体向前平移一个单位
     */
     public Pop(): T {
-        var x1 = this.First();
+        var x1 = this.First;
         this.sequence = this.sequence.slice(1);
         return x1;
     }
