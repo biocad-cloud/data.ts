@@ -1,11 +1,16 @@
 ﻿/// <reference path="Linq/Collections/Enumerator.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 
-var $ts = function (any): any {
+function $ts<T>(any: T | T[]): IEnumerator<T> & any {
     var type = TypeInfo.typeof(any);
-    var eval: Linq.TsQuery.IEval = Linq.TsQuery.handler[type.typeOf];
+    var handle = Linq.TsQuery.handler;
+    var eval = handle[type.typeOf]();
 
-    return eval.doEval(any, type);
+    if (type.IsArray) {
+        return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type);
+    } else {
+        return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type);
+    }
 }
 
 /**
