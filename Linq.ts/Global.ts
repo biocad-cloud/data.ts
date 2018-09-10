@@ -2,9 +2,10 @@
 /// <reference path="Helpers/Extensions.ts" />
 
 var $ts = function (any) {
+
     var type = TypeInfo.typeof(any);
 
-    
+
 }
 
 /**
