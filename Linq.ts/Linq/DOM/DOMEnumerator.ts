@@ -63,5 +63,12 @@
             this.ForEach(x => x.style.display = "block");
             return this;
         }
+
+        /**
+         * 将所选定的节点批量删除
+        */
+        public Delete() {
+            this.ForEach(x => x.parentNode.removeChild(x));
+        }
     }
 }
