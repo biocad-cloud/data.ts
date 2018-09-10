@@ -1,10 +1,11 @@
 ﻿/// <reference path="Linq/Collections/Enumerator.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 
-var $ts = function (any) {
+var $ts = function (any): any {
+    var type: string = TypeInfo.typeof(any).typeOf;
+    var eval: Linq.TsQuery.IEval = Linq.TsQuery.handler[type];
 
-    var type = TypeInfo.typeof(any);
-    
+    return eval.doEval(any);
 }
 
 /**

@@ -1,10 +1,17 @@
 ﻿namespace Linq.TsQuery {
 
     export const handler = {
-        string: TsQuery.string
+        string: () => new stringEval()
     };
 
-    export function string(expr: string) {
+    export interface IEval {
+        doEval(expr: any): any;
+    }
 
+    export class stringEval implements IEval {
+
+        doEval(expr: any): any {
+
+        }
     }
 }
