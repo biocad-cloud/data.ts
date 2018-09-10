@@ -1,6 +1,12 @@
 ﻿/// <reference path="Linq/Enumerator.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 
+var $ts = function (any) {
+    var type = TypeInfo.typeof(any);
+
+    
+}
+
 /**
  * Linq数据流程管线的起始函数
  * 

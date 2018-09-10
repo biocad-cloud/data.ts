@@ -70,3 +70,6 @@ typings/
 *.dll
 *.cache
 /LINQ.ts/obj/Debug
+
+
+Apps/

@@ -76,7 +76,14 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
     */
     public constructor(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>>) {
         super(Dictionary.ObjectMaps<V>(maps));
-        this.maps = maps;
+
+        if (Array.isArray(maps)) {
+            this.maps = TypeInfo.CreateObject(maps);
+        } else if (TypeInfo.typeof(maps).class == "IEnumerator") {
+            this.maps = TypeInfo.CreateObject(<IEnumerator<Map<string, V>>>maps);
+        } else {
+            this.maps = maps;
+        }
     }
 
     public static FromMaps<V>(maps: Map<string, V>[] | IEnumerator<Map<string, V>>): Dictionary<V> {
