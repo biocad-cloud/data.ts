@@ -5,6 +5,9 @@ class TypeInfo {
 
     /**
      * 直接使用系统内置的``typeof``运算符得到的结果
+     * 
+     * This property have one of the values in these strings: 
+     * ``string object|string|number|boolean|symbol|undefined|function|array``
     */
     public typeOf: string;
 
@@ -32,7 +35,15 @@ class TypeInfo {
     }
 
     public get IsArray(): boolean {
-        return this.typeOf == "Array";
+        return this.typeOf == "array";
+    }
+
+    public get IsEnumerator(): boolean {
+        return this.typeOf == "object" && this.class == "IEnumerator";
+    }
+
+    public IsArrayOf(genericType: string): boolean {
+        return this.IsArray && this.class == genericType;
     }
 
     /**
@@ -60,7 +71,7 @@ class TypeInfo {
 
         var typeInfo: TypeInfo = new TypeInfo;
 
-        typeInfo.typeOf = isArray ? "Array" : typeof obj;
+        typeInfo.typeOf = isArray ? "array" : type;
         typeInfo.class = className;
         typeInfo.property = isObject ? Object.keys(obj) : [];
         typeInfo.methods = TypeInfo.GetObjectMethods(obj);

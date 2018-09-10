@@ -1,5 +1,17 @@
-﻿/// <reference path="Linq/Enumerator.ts" />
+﻿/// <reference path="Linq/Collections/Enumerator.ts" />
 /// <reference path="Helpers/Extensions.ts" />
+
+function $ts<T>(any: T | T[]): IEnumerator<T> & any {
+    var type = TypeInfo.typeof(any);
+    var handle = Linq.TsQuery.handler;
+    var eval = handle[type.typeOf]();
+
+    if (type.IsArray) {
+        return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type);
+    } else {
+        return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type);
+    }
+}
 
 /**
  * Linq数据流程管线的起始函数
