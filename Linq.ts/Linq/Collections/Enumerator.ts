@@ -27,6 +27,16 @@ class IEnumerator<T> {
         return this.sequence.length;
     };
 
+    public Item(index: string | number = null): T {
+        if (!index) {
+            index = 0;
+        } else if (typeof index == "string") {
+            throw `Item index='${index}' must be an integer!`;
+        }
+
+        return this.sequence[index];
+    }
+
     //#endregion
 
     /**

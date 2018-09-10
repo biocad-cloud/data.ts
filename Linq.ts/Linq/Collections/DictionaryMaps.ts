@@ -1,4 +1,6 @@
-﻿/**
+﻿/// <reference path="../../Data/StackTrace/StackTrace.ts" />
+
+/**
  * 描述了一个键值对集合
 */
 class Map<K, V> {
@@ -55,12 +57,16 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
      * 
      * https://stackoverflow.com/questions/280389/how-do-you-find-out-the-caller-function-in-javascript
     */
-    public Item(key: string = null): V {
+    public Item(key: string | number = null): V {
         if (!key) {
-            key = arguments.callee.caller.toString();
+            key = TsLinq.StackTrace.GetCallerMember().memberName;
         }
 
-        return <V>(this.maps[key]);
+        if (typeof key == "string") {
+            return <V>(this.maps[key]);
+        } else {
+            return this.sequence[key].value;
+        }
     }
 
     public get Keys(): IEnumerator<string> {
