@@ -12,7 +12,7 @@
     export class stringEval implements IEval<string> {
 
         doEval(expr: string, type: TypeInfo): any {
-
+            return document.createElement("div");
         }
     }
 
