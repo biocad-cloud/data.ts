@@ -5,8 +5,11 @@ class TypeInfo {
 
     /**
      * 直接使用系统内置的``typeof``运算符得到的结果
+     * 
+     * This property have one of the values in these strings: 
+     * ``string object|string|number|boolean|symbol|undefined|function|array``
     */
-    public typeOf: PrimitiveTypes;
+    public typeOf: string;
 
     /**
      * 类型class的名称，例如TypeInfo, IEnumerator等。
@@ -32,7 +35,7 @@ class TypeInfo {
     }
 
     public get IsArray(): boolean {
-        return this.typeOf == PrimitiveTypes.array;
+        return this.typeOf == "array";
     }
 
     /**
@@ -60,7 +63,7 @@ class TypeInfo {
 
         var typeInfo: TypeInfo = new TypeInfo;
 
-        typeInfo.typeOf = isArray ? PrimitiveTypes.array : PrimitiveTypes[type];
+        typeInfo.typeOf = isArray ? "array" : type;
         typeInfo.class = className;
         typeInfo.property = isObject ? Object.keys(obj) : [];
         typeInfo.methods = TypeInfo.GetObjectMethods(obj);
@@ -81,7 +84,7 @@ class TypeInfo {
     }
 
     public toString() {
-        if (this.typeOf == PrimitiveTypes.object) {
+        if (this.typeOf == "object") {
             return `<${this.typeOf}> ${this.class}`;
         } else {
             return this.typeOf;
@@ -134,19 +137,4 @@ class TypeInfo {
     public static CreateMetaReader<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): TsLinq.MetaReader {
         return new TsLinq.MetaReader(TypeInfo.CreateObject(nameValues));
     }
-}
-
-enum PrimitiveTypes {
-    /**
-     * Generic user type.
-    */
-    object,
-
-    string,
-    number,
-    boolean,
-    symbol,
-    undefined,
-    function,
-    array
 }

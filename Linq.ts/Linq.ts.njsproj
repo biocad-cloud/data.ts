@@ -92,6 +92,9 @@
     <TypeScriptCompile Include="Linq\Collections\List.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\TsQuery.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Type.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

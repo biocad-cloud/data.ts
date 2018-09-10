@@ -1,11 +1,10 @@
-﻿/// <reference path="Linq/Enumerator.ts" />
+﻿/// <reference path="Linq/Collections/Enumerator.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 
 var $ts = function (any) {
 
     var type = TypeInfo.typeof(any);
-
-
+    
 }
 
 /**
