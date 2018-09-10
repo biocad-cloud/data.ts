@@ -38,6 +38,14 @@ class TypeInfo {
         return this.typeOf == "array";
     }
 
+    public get IsEnumerator(): boolean {
+        return this.typeOf == "object" && this.class == "IEnumerator";
+    }
+
+    public IsArrayOf(genericType: string): boolean {
+        return this.IsArray && this.class == genericType;
+    }
+
     /**
      * 获取某一个对象的类型信息
     */

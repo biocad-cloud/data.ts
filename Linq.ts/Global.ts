@@ -2,10 +2,10 @@
 /// <reference path="Helpers/Extensions.ts" />
 
 var $ts = function (any): any {
-    var type: string = TypeInfo.typeof(any).typeOf;
-    var eval: Linq.TsQuery.IEval = Linq.TsQuery.handler[type];
+    var type = TypeInfo.typeof(any);
+    var eval: Linq.TsQuery.IEval = Linq.TsQuery.handler[type.typeOf];
 
-    return eval.doEval(any);
+    return eval.doEval(any, type);
 }
 
 /**
