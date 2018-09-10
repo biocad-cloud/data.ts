@@ -2,7 +2,7 @@
  * Provides a set of static (Shared in Visual Basic) methods for querying 
  * objects that implement ``System.Collections.Generic.IEnumerable<T>``.
  * 
- * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型)
+ * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型，这是一个静态的集合，不会发生元素的动态添加或者删除)
 */
 class IEnumerator<T> {
 
@@ -27,7 +27,7 @@ class IEnumerator<T> {
         return this.sequence.length;
     };
 
-    public Item(index: string | number = null): T {
+    public ElementAt(index: string | number = null): T {
         if (!index) {
             index = 0;
         } else if (typeof index == "string") {
@@ -57,14 +57,14 @@ class IEnumerator<T> {
     /**
      * Get the first element in this sequence 
     */
-    public First(): T {
+    public get First(): T {
         return this.sequence[0];
     }
 
     /**
      * Get the last element in this sequence 
     */
-    public Last(): T {
+    public get Last(): T {
         return this.sequence[this.Count - 1];
     }
 
