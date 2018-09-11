@@ -1,7 +1,10 @@
-﻿namespace Linq.DOM {
+﻿/**
+ * HTML文档操作帮助函数
+*/
+namespace Linq.DOM {
 
     /**
-     * 
+     * 向指定id编号的div添加select标签的组件
     */
     export function AddSelectOptions(
         items: Map<string, string>[],
