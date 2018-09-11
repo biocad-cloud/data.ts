@@ -72,6 +72,9 @@
     <TypeScriptCompile Include="Data\StringBuilder.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\Collections\Map.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\DOM\Document.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
