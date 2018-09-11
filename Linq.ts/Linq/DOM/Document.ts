@@ -3,8 +3,20 @@
     /**
      * 
     */
-    export function AddSelectOptions(items: Map<string, string>[], div: string) {
- 
+    export function AddSelectOptions(
+        items: Map<string, string>[],
+        div: string,
+        selectName: string) {
+
+        var options = From(items)
+            .Select(item => `<option value="${item.value}">${item.key}</option>`)
+            .JoinBy("\n");
+        var html: string = `
+            <select class="multipleSelect" multiple name="${selectName}">
+                ${options}
+            </select>`;
+
+        $ts(`#${div}`);
     }
 
     /**

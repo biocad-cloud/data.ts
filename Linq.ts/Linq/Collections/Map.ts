@@ -41,6 +41,11 @@ class NamedValue<T> {
     */
     public value: T;
 
+    public constructor(name: string = null, val: T = null) {
+        this.name = name;
+        this.value = val;
+    }
+
     /**
      * 获取得到变量值的类型定义信息
     */

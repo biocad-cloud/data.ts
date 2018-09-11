@@ -11,9 +11,29 @@
 
     export class stringEval implements IEval<string> {
 
-        doEval(expr: string, type: TypeInfo): any {
-            return document.createElement("div");
+        public static getQueryType(expr: string): NamedValue<DomQueryTypes> {
+            if (expr.charAt(0) == "#") {
+                return new NamedValue<DomQueryTypes>(expr.substr(1), DomQueryTypes.id);
+            } else if (expr.charAt(0) == ".") {
+                return new NamedValue<DomQueryTypes>(expr.substr(1), DomQueryTypes.class);
+            } else {
+                return new NamedValue<DomQueryTypes>(expr, DomQueryTypes.tagName);
+            }
         }
+
+        doEval(expr: string, type: TypeInfo): any {
+            var query = stringEval.getQueryType(expr);
+
+            if (query.value == DomQueryTypes.id) {
+                return document.getElementById(expr);
+            } else {
+                return new DOM.DOMEnumerator<HTMLElement>(document.querySelectorAll(expr));
+            }
+        }
+    }
+
+    export enum DomQueryTypes {
+        id, class, tagName
     }
 
     export class arrayEval<V> implements IEval<V[]> {
