@@ -1,5 +1,11 @@
-﻿class Group<TKey, T> extends IEnumerator<T> {
+﻿/**
+ * 按照某一个键值进行分组的集合对象
+*/
+class Group<TKey, T> extends IEnumerator<T> {
 
+    /**
+     * 当前的分组之中的值所都共有的键值对象
+    */
     public Key: TKey;
 
     /**
