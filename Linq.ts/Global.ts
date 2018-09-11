@@ -8,7 +8,7 @@ function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
     var type: TypeInfo = TypeInfo.typeof(any);
     var typeOf: string = type.typeOf;
     var handle = Linq.TsQuery.handler;
-    var eval: any = typeOf in handle ? handle[typeOf] : null;
+    var eval: any = typeOf in handle ? handle[typeOf]() : null;
 
     if (type.IsArray) {
         return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type);
