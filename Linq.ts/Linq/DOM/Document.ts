@@ -16,7 +16,27 @@
                 ${options}
             </select>`;
 
-        $ts(`#${div}`);
+        (<HTMLElement>$ts(`#${div}`)).innerHTML = html;
+    }
+
+    /**
+     * Execute a given function when the document is ready.
+     * 
+     * @param fn A function that without any parameters
+    */
+    export function ready(fn: () => void) {
+        if (typeof fn !== 'function') {
+            // Sanity check
+            return;
+        }
+
+        if (document.readyState === 'complete') {
+            // If document is already loaded, run method
+            return fn();
+        } else {
+            // Otherwise, wait until document is loaded
+            document.addEventListener('DOMContentLoaded', fn, false);
+        }
     }
 
     /**

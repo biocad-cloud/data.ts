@@ -1,13 +1,18 @@
 ﻿/// <reference path="Linq/Collections/Enumerator.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 
-function $ts<T>(any: T | T[]): IEnumerator<T> & any {
+/**
+ * 对于这个函数的返回值还需要做类型转换
+*/
+function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
     var type = TypeInfo.typeof(any);
     var handle = Linq.TsQuery.handler;
     var eval = handle[type.typeOf]();
 
     if (type.IsArray) {
         return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type);
+    } else if (type.typeOf == "function") {
+        Linq.DOM.ready(<() => void>any);
     } else {
         return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type);
     }
