@@ -24,8 +24,11 @@
         doEval(expr: string, type: TypeInfo): any {
             var query = stringEval.getQueryType(expr);
 
+            // console.log(query);
+            // console.log(query.value == DomQueryTypes.id);
+
             if (query.value == DomQueryTypes.id) {
-                return document.getElementById(expr);
+                return document.getElementById(query.name);
             } else {
                 return new DOM.DOMEnumerator<HTMLElement>(document.querySelectorAll(expr));
             }
@@ -33,7 +36,7 @@
     }
 
     export enum DomQueryTypes {
-        id, class, tagName
+        id = 1, class = 10, tagName = -100
     }
 
     export class arrayEval<V> implements IEval<V[]> {
