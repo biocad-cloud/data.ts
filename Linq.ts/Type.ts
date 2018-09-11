@@ -5,6 +5,9 @@ class TypeInfo {
 
     /**
      * 直接使用系统内置的``typeof``运算符得到的结果
+     * 
+     * This property have one of the values in these strings: 
+     * ``string object|string|number|boolean|symbol|undefined|function|array``
     */
     public typeOf: string;
 
@@ -32,7 +35,15 @@ class TypeInfo {
     }
 
     public get IsArray(): boolean {
-        return this.typeOf == "Array";
+        return this.typeOf == "array";
+    }
+
+    public get IsEnumerator(): boolean {
+        return this.typeOf == "object" && this.class == "IEnumerator";
+    }
+
+    public IsArrayOf(genericType: string): boolean {
+        return this.IsArray && this.class == genericType;
     }
 
     /**
@@ -60,7 +71,7 @@ class TypeInfo {
 
         var typeInfo: TypeInfo = new TypeInfo;
 
-        typeInfo.typeOf = isArray ? "Array" : typeof obj;
+        typeInfo.typeOf = isArray ? "array" : type;
         typeInfo.class = className;
         typeInfo.property = isObject ? Object.keys(obj) : [];
         typeInfo.methods = TypeInfo.GetObjectMethods(obj);
@@ -68,6 +79,9 @@ class TypeInfo {
         return typeInfo;
     }
 
+    /**
+     * 获取object对象上所定义的所有的函数
+    */
     public static GetObjectMethods<T>(obj: T): string[] {
         var res: string[] = [];
 
@@ -88,6 +102,12 @@ class TypeInfo {
         }
     }
 
+    /**
+     * 利用一个名称字符串集合创建一个js对象
+     * 
+     * @param names object的属性名称列表
+     * @param init 使用这个函数为该属性指定一个初始值
+    */
     public static EmptyObject<V>(names: string[] | IEnumerator<string>, init: () => V): object {
         var obj: object = {};
 
@@ -100,6 +120,9 @@ class TypeInfo {
         return obj;
     }
 
+    /**
+     * 从键值对集合创建object对象，键名或者名称属性会作为object对象的属性名称
+    */
     public static CreateObject<V>(nameValues: NamedValue<V>[] |
         IEnumerator<NamedValue<V>> |
         Map<string, V>[] |
@@ -131,6 +154,9 @@ class TypeInfo {
         return obj;
     }
 
+    /**
+     * MetaReader对象和字典相似，只不过是没有类型约束，并且为只读集合
+    */
     public static CreateMetaReader<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): TsLinq.MetaReader {
         return new TsLinq.MetaReader(TypeInfo.CreateObject(nameValues));
     }

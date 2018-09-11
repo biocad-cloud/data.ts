@@ -1,25 +1,46 @@
-﻿namespace Linq.DOM {
+﻿/**
+ * HTML文档操作帮助函数
+*/
+namespace Linq.DOM {
 
-    export function query(expr: string): IEnumerator<HTMLElement> {
-        var type: string = expr.charAt(0);
-        var nodes: any;
+    /**
+     * 向指定id编号的div添加select标签的组件
+    */
+    export function AddSelectOptions(
+        items: Map<string, string>[],
+        div: string,
+        selectName: string,
+        className: string = "") {
 
-        if (type == ".") {
-            nodes = document.getElementsByClassName(expr.substr(1));
-        } else if (type == "#") {
-            nodes = [document.getElementById(expr.substr(1))];
+        var options = From(items)
+            .Select(item => `<option value="${item.value}">${item.key}</option>`)
+            .JoinBy("\n");
+        var html: string = `
+            <select class="${className}" multiple name="${selectName}">
+                ${options}
+            </select>`;
+
+        (<HTMLElement>$ts(`#${div}`)).innerHTML = html;
+    }
+
+    /**
+     * Execute a given function when the document is ready.
+     * 
+     * @param fn A function that without any parameters
+    */
+    export function ready(fn: () => void) {
+        if (typeof fn !== 'function') {
+            // Sanity check
+            return;
+        }
+
+        if (document.readyState === 'complete') {
+            // If document is already loaded, run method
+            return fn();
         } else {
-            nodes = document.getElementsByTagName(expr);
+            // Otherwise, wait until document is loaded
+            document.addEventListener('DOMContentLoaded', fn, false);
         }
-
-        var list: HTMLElement[] = [];
-        var len: number = nodes.length;
-
-        for (var i: number = 0; i < len; i++) {
-            list.push(nodes[i]);
-        }
-
-        return new IEnumerator<HTMLElement>(list);
     }
 
     /**

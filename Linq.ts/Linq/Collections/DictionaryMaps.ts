@@ -1,47 +1,4 @@
-﻿/**
- * 描述了一个键值对集合
-*/
-class Map<K, V> {
-
-    /**
-     * 键名称，一般是字符串
-    */
-    public key: K;
-    /**
-     * 目标键名所映射的值
-    */
-    public value: V;
-
-    /**
-     * 创建一个新的键值对集合
-     * 
-    */
-    public constructor(key: K = null, value: V = null) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public toString(): string {
-        return `[${this.key.toString()}, ${this.value.toString()}]`;
-    }
-}
-
-class NamedValue<T> {
-
-    public name: string;
-    public value: T;
-
-    public get TypeOfValue(): TypeInfo {
-        return TypeInfo.typeof(this.value);
-    }
-    public get IsEmpty(): boolean {
-        return Strings.Empty(this.name) && (!this.value || this.value == undefined);
-    }
-
-    public toString(): string {
-        return this.name;
-    }
-}
+﻿/// <reference path="../../Data/StackTrace/StackTrace.ts" />
 
 /**
  * 键值对映射哈希表
@@ -54,19 +11,31 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
      * 如果键名称是空值的话，那么这个函数会自动使用caller的函数名称作为键名进行值的获取
      * 
      * https://stackoverflow.com/questions/280389/how-do-you-find-out-the-caller-function-in-javascript
+     * 
+     * @param key 键名或者序列的索引号
     */
-    public Item(key: string = null): V {
+    public Item(key: string | number = null): V {
         if (!key) {
-            key = arguments.callee.caller.toString();
+            key = TsLinq.StackTrace.GetCallerMember().memberName;
         }
 
-        return <V>(this.maps[key]);
+        if (typeof key == "string") {
+            return <V>(this.maps[key]);
+        } else {
+            return this.sequence[key].value;
+        }
     }
 
+    /**
+     * 获取这个字典对象之中的所有的键名
+    */
     public get Keys(): IEnumerator<string> {
         return From(Object.keys(this.maps));
     }
 
+    /**
+     * 获取这个字典对象之中的所有的键值
+    */
     public get Values(): IEnumerator<V> {
         return this.Keys.Select<V>(key => this.Item(key));
     }
@@ -107,16 +76,25 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
         }
     }
 
+    /**
+     * 查看这个字典集合之中是否存在所给定的键名
+    */
     public ContainsKey(key: string): boolean {
         return key in this.maps;
     }
 
+    /**
+     * 向这个字典对象之中添加一个键值对，请注意，如果key已经存在这个字典对象中了，这个函数会自动覆盖掉key所对应的原来的值
+    */
     public Add(key: string, value: V): Dictionary<V> {
         this.maps[key] = value;
         this.sequence = Dictionary.ObjectMaps<V>(this.maps);
         return this;
     }
 
+    /**
+     * 删除一个给定键名所指定的键值对
+    */
     public Delete(key: string): Dictionary<V> {
         if (key in this.maps) {
             delete this.maps[key];

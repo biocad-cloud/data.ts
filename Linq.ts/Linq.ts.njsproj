@@ -4,7 +4,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>Linq.ts</Name>
     <RootNamespace>LINQ.ts</RootNamespace>
-    <ToolsVersionPromptShown>2.9</ToolsVersionPromptShown>
+    <ToolsVersionPromptShown>2.8</ToolsVersionPromptShown>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -72,24 +72,33 @@
     <TypeScriptCompile Include="Data\StringBuilder.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\Collections\Map.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\DOM\Document.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Enumerable.ts" />
-    <TypeScriptCompile Include="Linq\Enumerator.ts" />
+    <TypeScriptCompile Include="Linq\Collections\Enumerable.ts" />
+    <TypeScriptCompile Include="Linq\Collections\Enumerator.ts" />
     <TypeScriptCompile Include="Helpers\Extensions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DictionaryMaps.ts">
+    <TypeScriptCompile Include="Linq\Collections\DictionaryMaps.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Group.ts">
+    <TypeScriptCompile Include="Linq\Collections\Group.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Pointer.ts">
+    <TypeScriptCompile Include="Linq\Collections\Pointer.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\List.ts">
+    <TypeScriptCompile Include="Linq\Collections\List.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\DOM\DOMEnumerator.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\TsQuery.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Type.ts">
@@ -116,6 +125,7 @@
     <Folder Include="Helpers\" />
     <Folder Include="Data\" />
     <Folder Include="Linq\DOM\" />
+    <Folder Include="Linq\Collections\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

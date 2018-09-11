@@ -2,7 +2,7 @@
  * Provides a set of static (Shared in Visual Basic) methods for querying 
  * objects that implement ``System.Collections.Generic.IEnumerable<T>``.
  * 
- * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型)
+ * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型，这是一个静态的集合，不会发生元素的动态添加或者删除)
 */
 class IEnumerator<T> {
 
@@ -17,7 +17,7 @@ class IEnumerator<T> {
      * 获取序列的元素类型
     */
     public get ElementType(): TypeInfo {
-        return TypeInfo.typeof(this.First());
+        return TypeInfo.typeof(this.First);
     };
 
     /**
@@ -26,6 +26,16 @@ class IEnumerator<T> {
     public get Count(): number {
         return this.sequence.length;
     };
+
+    public ElementAt(index: string | number = null): T {
+        if (!index) {
+            index = 0;
+        } else if (typeof index == "string") {
+            throw `Item index='${index}' must be an integer!`;
+        }
+
+        return this.sequence[index];
+    }
 
     //#endregion
 
@@ -47,14 +57,14 @@ class IEnumerator<T> {
     /**
      * Get the first element in this sequence 
     */
-    public First(): T {
+    public get First(): T {
         return this.sequence[0];
     }
 
     /**
      * Get the last element in this sequence 
     */
-    public Last(): T {
+    public get Last(): T {
         return this.sequence[this.Count - 1];
     }
 
@@ -105,7 +115,7 @@ class IEnumerator<T> {
      * (求取这个序列集合的最小元素，使用这个函数要求序列之中的元素都必须能够被转换为数值)
     */
     public Min(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
-        return Enumerable.OrderBy(this.sequence, project).First();
+        return Enumerable.OrderBy(this.sequence, project).First;
     }
 
     /**
@@ -113,7 +123,7 @@ class IEnumerator<T> {
      * (求取这个序列集合的最大元素，使用这个函数要求序列之中的元素都必须能够被转换为数值)
     */
     public Max(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
-        return Enumerable.OrderByDescending(this.sequence, project).First();
+        return Enumerable.OrderByDescending(this.sequence, project).First;
     }
 
     /**
@@ -220,7 +230,7 @@ class IEnumerator<T> {
     public Distinct(key: (o: T) => string = o => o.toString()): IEnumerator<T> {
         return this
             .GroupBy(key, Strings.CompareTo)
-            .Select(group => group.First());
+            .Select(group => group.First);
     }
 
     /**

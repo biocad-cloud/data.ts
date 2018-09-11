@@ -1,5 +1,23 @@
-﻿/// <reference path="Linq/Enumerator.ts" />
+﻿/// <reference path="Linq/Collections/Enumerator.ts" />
 /// <reference path="Helpers/Extensions.ts" />
+
+/**
+ * 对于这个函数的返回值还需要做类型转换
+*/
+function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
+    var type: TypeInfo = TypeInfo.typeof(any);
+    var typeOf: string = type.typeOf;
+    var handle = Linq.TsQuery.handler;
+    var eval: any = typeOf in handle ? handle[typeOf]() : null;
+
+    if (type.IsArray) {
+        return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type);
+    } else if (type.typeOf == "function") {
+        Linq.DOM.ready(<() => void>any);
+    } else {
+        return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type);
+    }
+}
 
 /**
  * Linq数据流程管线的起始函数
