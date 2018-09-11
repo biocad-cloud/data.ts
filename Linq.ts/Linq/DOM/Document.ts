@@ -22,6 +22,10 @@
         return new IEnumerator<HTMLElement>(list);
     }
 
+    export function AddSelectOptions(items: Map<string, string>[], div: string) {
+
+    }
+
     /**
      *
     */
