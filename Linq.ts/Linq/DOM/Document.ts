@@ -9,13 +9,14 @@ namespace Linq.DOM {
     export function AddSelectOptions(
         items: Map<string, string>[],
         div: string,
-        selectName: string) {
+        selectName: string,
+        className: string = "") {
 
         var options = From(items)
             .Select(item => `<option value="${item.value}">${item.key}</option>`)
             .JoinBy("\n");
         var html: string = `
-            <select class="multipleSelect" multiple name="${selectName}">
+            <select class="${className}" multiple name="${selectName}">
                 ${options}
             </select>`;
 
