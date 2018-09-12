@@ -100,20 +100,27 @@ class IEnumerator<T> {
 
     /**
      * Filters a sequence of values based on a predicate.
+     * 
+     * @param predicate A test condition function.
+     * 
+     * @returns Sub sequence of the current sequence with all 
+     *     element test pass by the ``predicate`` function.
     */
     public Where(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.Where(this.sequence, predicate);
     }
 
     /**
-     * 求取这个序列集合的最小元素，使用这个函数要求序列之中的元素都必须能够被转换为数值
+     * Get the min value in current sequence.
+     * (求取这个序列集合的最小元素，使用这个函数要求序列之中的元素都必须能够被转换为数值)
     */
     public Min(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
         return Enumerable.OrderBy(this.sequence, project).First;
     }
 
     /**
-     * 求取这个序列集合的最大元素，使用这个函数要求序列之中的元素都必须能够被转换为数值
+     * Get the max value in current sequence.
+     * (求取这个序列集合的最大元素，使用这个函数要求序列之中的元素都必须能够被转换为数值)
     */
     public Max(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
         return Enumerable.OrderByDescending(this.sequence, project).First;

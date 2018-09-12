@@ -59,6 +59,12 @@
             return x >= this.min && x <= this.max;
         }
 
+        /**
+         * Get a numeric sequence within current range with a given step
+         * 
+         * @param step The delta value of the step forward, 
+         *      by default is 10% of the range length.
+        */
         public PopulateNumbers(step: number = (this.Length / 10)): number[] {
             var data: number[] = [];
 
@@ -69,6 +75,9 @@
             return data;
         }
 
+        /**
+         * Display the range in format ``[min, max]``
+        */
         public toString(): string {
             return `[${this.min}, ${this.max}]`;
         }
