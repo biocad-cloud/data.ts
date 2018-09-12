@@ -186,6 +186,11 @@ class IEnumerator<T> {
         return Enumerable.Skip(this.sequence, n);
     }
 
+    public Reverse(): IEnumerator<T> {
+        var rseq = this.ToArray().reverse();
+        return new IEnumerator<T>(rseq);
+    }
+
     /**
      * Returns elements from a sequence as long as a specified condition is true.
      * (与Where类似，只不过这个函数只要遇到第一个不符合条件的，就会立刻终止迭代)
