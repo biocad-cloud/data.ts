@@ -1,7 +1,13 @@
 ﻿namespace Linq.TsQuery {
 
     export const handler = {
+        /**
+         * HTML document query handler
+        */
         string: () => new stringEval(),
+        /**
+         * Create a linq object
+        */
         array: () => new arrayEval()
     };
 
@@ -11,6 +17,9 @@
 
     export class stringEval implements IEval<string> {
 
+        /**
+         * name of the return value is the trimmed expression
+        */
         public static getQueryType(expr: string): NamedValue<DomQueryTypes> {
             if (expr.charAt(0) == "#") {
                 return new NamedValue<DomQueryTypes>(expr.substr(1), DomQueryTypes.id);
@@ -35,10 +44,36 @@
         }
     }
 
+    /**
+     * HTML文档节点的查询类型
+    */
     export enum DomQueryTypes {
-        id = 1, class = 10, tagName = -100
+        /**
+         * 表达式为 #xxx
+         * 按照节点的id编号进行查询
+         * 
+         * ``<tag id="xxx">``
+        */
+        id = 1,
+        /**
+         * 表达式为 .xxx
+         * 按照节点的class名称进行查询
+         * 
+         * ``<tag class="xxx">``
+        */
+        class = 10,
+        /**
+         * 表达式为 xxx
+         * 按照节点的名称进行查询
+         * 
+         * ``<xxx ...>``
+        */
+        tagName = -100
     }
 
+    /**
+     * Create a Linq Enumerator
+    */
     export class arrayEval<V> implements IEval<V[]> {
 
         doEval(expr: V[], type: TypeInfo): any {
