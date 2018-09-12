@@ -1,11 +1,17 @@
-﻿module Which {
+﻿namespace Which {
 
-    export function Max<T>(
-        x: IEnumerator<T>,
-        compare: (a: T, b: T) => number = (a, b) => {
-            return DataExtensions.as_numeric(a) - DataExtensions.as_numeric(b);
-        }): number {
+    export class DefaultCompares<T> {
 
+        public compares(a: T, b: T): number {
+
+        }
+
+        public static default<T>(): (a: T, b: T) => number {
+            return new DefaultCompares().compares;
+        }
+    }
+
+    export function Max<T>(x: IEnumerator<T>, compare: (a: T, b: T) => number = DefaultCompares.default<T>()): number {
         var xMax: T = null;
         var iMax: number = 0;
 
@@ -18,5 +24,9 @@
         }
 
         return iMax;
+    }
+
+    export function Min<T>(x: IEnumerator<T>, compare: (a: T, b: T) => number = DefaultCompares.default<T>()): number {
+        return Max<T>(x, (a, b) => - compare(a, b));
     }
 }
