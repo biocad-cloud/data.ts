@@ -96,7 +96,7 @@ module DataExtensions {
             return x => {
                 var str: string = <string><any>x;
 
-                if (str == '') {
+                if (str == null || str == '') {
                     // 将空字符串转换为零
                     return 0;
                 } else {
