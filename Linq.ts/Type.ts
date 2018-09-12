@@ -136,15 +136,17 @@ class TypeInfo {
         } else if (type.IsArray && type.class == "NamedValue") {
             (<NamedValue<V>[]>nameValues).forEach(nv => obj[nv.name] = nv.value);
         } else if (type.class == "IEnumerator") {
-
             var seq = <IEnumerator<any>>nameValues;
 
-            if (seq.ElementType.class == "Map") {
+            type = seq.ElementType;
+
+            if (type.class == "Map") {
                 (<IEnumerator<Map<string, V>>>nameValues).ForEach(map => obj[map.key] = map.value);
-            } else if (seq.ElementType.class == "NamedValue") {
+            } else if (type.class == "NamedValue") {
                 (<IEnumerator<NamedValue<V>>>nameValues).ForEach(nv => obj[nv.name] = nv.value);
             } else {
-                throw `Unsupport data type: ${JSON.stringify(type)}`;
+                console.error(type);
+                throw `Unsupport data type: ${type.class}`;
             }
 
         } else {

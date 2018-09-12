@@ -28,20 +28,12 @@
         var tagLen: number = Len(tag);
 
         if (i > -1) {
-
             var name: string = str.substr(0, i);
             var value: string = str.substr(i + tagLen);
 
-            return <NamedValue<string>>{
-                name: name,
-                value: value
-            };
-
+            return new NamedValue<string>(name, value);
         } else {
-            return <NamedValue<string>>{
-                name: "",
-                value: str
-            };
+            return new NamedValue<string>("", str);
         }
     }
 
