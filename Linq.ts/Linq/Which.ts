@@ -1,7 +1,13 @@
 ﻿namespace Which {
 
+    /**
+     * 默认的通用类型的比较器对象
+    */
     export class DefaultCompares<T> {
 
+        /**
+         * 一个用于比较通用类型的数值转换器对象
+        */
         private as_numeric: (x: T) => number = null;
 
         public compares(a: T, b: T): number {
@@ -28,6 +34,12 @@
         }
     }
 
+    /**
+     * 查找出序列之中最大的元素的序列下标编号
+     * 
+     * @param x 所给定的数据序列
+     * @param compare 默认是将x序列之中的元素转换为数值进行大小的比较的
+    */
     export function Max<T>(x: IEnumerator<T>, compare: (a: T, b: T) => number = DefaultCompares.default<T>()): number {
         var xMax: T = null;
         var iMax: number = 0;
@@ -43,6 +55,12 @@
         return iMax;
     }
 
+    /**
+     * 查找出序列之中最小的元素的序列下标编号
+     * 
+     * @param x 所给定的数据序列
+     * @param compare 默认是将x序列之中的元素转换为数值进行大小的比较的
+    */
     export function Min<T>(x: IEnumerator<T>, compare: (a: T, b: T) => number = DefaultCompares.default<T>()): number {
         return Max<T>(x, (a, b) => - compare(a, b));
     }
