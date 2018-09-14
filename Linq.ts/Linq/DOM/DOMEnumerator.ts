@@ -60,6 +60,10 @@
             return this;
         }
 
+        public AddEvent(eventName: string, handler: (event: Event) => void) {
+            Linq.DOM.addEvent(this.ToArray(), eventName, handler);
+        }
+
         public RemoveClass(className: string): DOMEnumerator<T> {
             this.ForEach(x => {
                 if (x.classList.contains(className)) {

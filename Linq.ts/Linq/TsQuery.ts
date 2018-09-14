@@ -1,4 +1,6 @@
-﻿namespace Linq.TsQuery {
+﻿
+
+namespace Linq.TsQuery {
 
     export const handler = {
         /**
