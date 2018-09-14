@@ -104,6 +104,12 @@
     <TypeScriptCompile Include="Linq\DOM\DOMEnumerator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\DOM\DOMQuery.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\DOM\NodeParser.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\TsQuery.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
