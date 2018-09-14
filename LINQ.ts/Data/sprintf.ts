@@ -18,7 +18,28 @@
     }
 
     /**
-     * 占位符
+     * 格式化占位符
+     * 
+     * Possible format values:
+     *
+     * + ``%%`` – Returns a percent sign
+     * + ``%b`` – Binary number
+     * + ``%c`` – The character according to the ASCII value
+     * + ``%d`` – Signed decimal number
+     * + ``%f`` – Floating-point number
+     * + ``%o`` – Octal number
+     * + ``%s`` – String
+     * + ``%x`` – Hexadecimal number (lowercase letters)
+     * + ``%X`` – Hexadecimal number (uppercase letters)
+     * 
+     * Additional format values. These are placed between the % and the letter (example %.2f):
+     *
+     * + ``+``      (Forces both + and – in front of numbers. By default, only negative numbers are marked)
+     * + ``–``      (Left-justifies the variable value)
+     * + ``0``      zero will be used for padding the results to the right string size
+     * + ``[0-9]``  (Specifies the minimum width held of to the variable value)
+     * + ``.[0-9]`` (Specifies the number of decimal digits or maximum string length)
+     *
     */
     export const placeholder: RegExp = new RegExp(/(%([%]|(\-)?(\+|\x20)?(0)?(\d+)?(\.(\d)?)?([bcdfosxX])))/g);
 
@@ -64,8 +85,17 @@
     }
 
     /**
-     *  Javascript sprintf
-     *  http://www.webtoolkit.info/javascript-sprintf.html#.W5sf9FozaM8
+     * ### Javascript sprintf
+     * 
+     * > http://www.webtoolkit.info/javascript-sprintf.html#.W5sf9FozaM8
+     *  
+     * Several programming languages implement a sprintf function, to output a 
+     * formatted string. It originated from the C programming language, printf 
+     * function. Its a string manipulation function.
+     *
+     * This is limited sprintf Javascript implementation. Function returns a 
+     * string formatted by the usual printf conventions. See below for more details. 
+     * You must specify the string and how to format the variables in it.
     */
     export function doFormat(): string {
 
@@ -78,10 +108,12 @@
         var convCount: number = parsed.convCount;
 
         if (parsed.matches.length == 0) {
+            // 没有格式化参数的占位符，则直接输出原本的字符串
             return <string>arguments[0];
         }
         if ((arguments.length - 1) < convCount) {
-            return "";
+            // 格式化参数的数量少于占位符的数量，则抛出错误
+            throw `Mismatch format argument numbers (${arguments.length - 1} !== ${convCount})!`;
         } else {
             return sprintf.doSubstitute(
                 parsed.matches,
@@ -90,6 +122,9 @@
         }
     }
 
+    /**
+     * 进行格式化占位符对格式化参数的字符串替换操作
+    */
     export function doSubstitute(matches: sprintf.match[], strings: string[]): string {
         var i: number = null;
         var substitution: string = null;
