@@ -3,7 +3,7 @@
     /**
      * HTML文档节点的查询类型
     */
-    export enum DomQueryTypes {
+    export enum QueryTypes {
         NoQuery = 0,
         /**
          * 表达式为 #xxx
@@ -28,9 +28,9 @@
         tagName = -100
     }
 
-    export class DOMQuery {
+    export class Query {
 
-        public type: DomQueryTypes;
+        public type: QueryTypes;
         public singleNode: boolean;
 
         /**
@@ -38,7 +38,7 @@
         */
         public expression: string;
 
-        public static parseQuery(expr: string): DOMQuery {
+        public static parseQuery(expr: string): Query {
             var isSingle: boolean = false;
 
             if (expr.charAt(0) == "&") {
@@ -48,15 +48,15 @@
                 isSingle = false;
             }
 
-            return DOMQuery.parseExpression(expr, isSingle);
+            return Query.parseExpression(expr, isSingle);
         }
 
         /**
          * by node id
         */
-        private static getById(id: string): DOMQuery {
-            return <DOMQuery>{
-                type: DomQueryTypes.id,
+        private static getById(id: string): Query {
+            return <Query>{
+                type: QueryTypes.id,
                 singleNode: true,
                 expression: id
             };
@@ -65,9 +65,9 @@
         /**
          * by class name
         */
-        private static getByClass(className: string, isSingle: boolean): DOMQuery {
-            return <DOMQuery>{
-                type: DomQueryTypes.class,
+        private static getByClass(className: string, isSingle: boolean): Query {
+            return <Query>{
+                type: QueryTypes.class,
                 singleNode: isSingle,
                 expression: className
             };
@@ -76,9 +76,9 @@
         /**
          * by tag name
         */
-        private static getByTag(tag: string, isSingle: boolean): DOMQuery {
-            return <DOMQuery>{
-                type: DomQueryTypes.tagName,
+        private static getByTag(tag: string, isSingle: boolean): Query {
+            return <Query>{
+                type: QueryTypes.tagName,
                 singleNode: isSingle,
                 expression: tag
             };
@@ -87,20 +87,20 @@
         /**
          * create new node
         */
-        private static createElement(expr: string): DOMQuery {
-            return <DOMQuery>{
-                type: DomQueryTypes.NoQuery,
+        private static createElement(expr: string): Query {
+            return <Query>{
+                type: QueryTypes.NoQuery,
                 singleNode: true,
                 expression: expr
             };
         }
 
-        private static parseExpression(expr: string, isSingle: boolean): DOMQuery {
+        private static parseExpression(expr: string, isSingle: boolean): Query {
             var prefix: string = expr.charAt(0);
 
             switch (prefix) {
                 case "#": return this.getById(expr.substr(1));
-                case ".": return this.getByClass(expr.substr(1), isSingle);
+                case ".": return this.getByClass(expr, isSingle);
                 case "<": return this.createElement(expr);
                 default: return this.getByTag(expr, isSingle);
             }

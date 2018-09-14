@@ -14,20 +14,30 @@
     export interface IEval<T> {
         doEval(expr: T, type: TypeInfo): any;
     }
-
-
-
+       
     export class stringEval implements IEval<string> {
 
         doEval(expr: string, type: TypeInfo): any {
-            var query: DOMQuery = DOMQuery.parseQuery(expr);
+            var query: DOM.Query = DOM.Query.parseQuery(expr);
 
-            if (query.type == DomQueryTypes.id) {
+            if (query.type == DOM.QueryTypes.id) {
                 return document.getElementById(query.expression);
-            } else if (query.type == DomQueryTypes.NoQuery) {
+            } else if (query.type == DOM.QueryTypes.NoQuery) {
+                var declare = DOM.ParseNodeDeclare(expr);
+                var node: HTMLElement = document
+                    .createElement(declare.tag);
 
+                declare.attrs.forEach(attr => {
+                    node.setAttribute(attr.name, attr.value);
+                });
 
-                return new DOM.DOMEnumerator<HTMLElement>(document.querySelectorAll(expr));
+                return node;
+            } else {
+                var nodes = <NodeListOf<HTMLElement>>document
+                    .querySelectorAll(query.expression);
+                var it = new DOM.DOMEnumerator(nodes);
+
+                return it;
             }
         }
     }
