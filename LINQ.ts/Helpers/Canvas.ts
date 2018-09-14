@@ -22,4 +22,16 @@
 
         return metrics.width;
     }
+       
+    export class fontSize {
+
+        public point: number;
+        public pixel: number;
+        public em: number;
+        public percent: number;
+
+        public readonly sizes: fontSize[] = [
+            
+        ];
+    }
 }
