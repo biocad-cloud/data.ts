@@ -12,6 +12,55 @@
         public negative: boolean;
         public argument: string;
 
+        public toString(): string {
+            return JSON.stringify(this);
+        }
+    }
+
+    /**
+     * 占位符
+    */
+    export const placeholder: RegExp = new RegExp(/(%([%]|(\-)?(\+|\x20)?(0)?(\d+)?(\.(\d)?)?([bcdfosxX])))/g);
+
+    export function parseFormat(string: string) {
+        var stringPosStart = 0;
+        var stringPosEnd = 0;
+        var matchPosEnd = 0;
+        var convCount = 0;
+        var match: RegExpExecArray = null;
+        var matches: sprintf.match[] = [];
+        var strings: string[] = [];
+
+        while (match = placeholder.exec(string)) {
+            if (match[9]) {
+                convCount += 1;
+            }
+
+            stringPosStart = matchPosEnd;
+            stringPosEnd = placeholder.lastIndex - match[0].length;
+            strings[strings.length] = string.substring(stringPosStart, stringPosEnd);
+
+            matchPosEnd = placeholder.lastIndex;
+            matches[matches.length] = <sprintf.match>{
+                match: match[0],
+                left: match[3] ? true : false,
+                sign: match[4] || '',
+                pad: match[5] || ' ',
+                min: match[6] || 0,
+                precision: match[8],
+                code: match[9] || '%',
+                negative: parseInt(arguments[convCount]) < 0 ? true : false,
+                argument: String(arguments[convCount])
+            };
+        }
+
+        strings[strings.length] = string.substring(matchPosEnd);
+
+        return {
+            matches: matches,
+            convCount: convCount,
+            strings: strings
+        }
     }
 
     /**
@@ -25,46 +74,27 @@
         if (typeof arguments[0] != "string") { return null; }
         if (typeof RegExp == "undefined") { return null; }
 
-        var string = arguments[0];
-        var exp = new RegExp(/(%([%]|(\-)?(\+|\x20)?(0)?(\d+)?(\.(\d)?)?([bcdfosxX])))/g);
-        var matches: sprintf.match[] = [];
-        var strings = new Array();
-        var convCount = 0;
-        var stringPosStart = 0;
-        var stringPosEnd = 0;
-        var matchPosEnd = 0;
-        var newString = '';
-        var match: RegExpExecArray = null;
+        var parsed = sprintf.parseFormat(<string>arguments[0]);
+        var convCount: number = parsed.convCount;
 
-        while (match = exp.exec(string)) {
-            if (match[9]) { convCount += 1; }
-
-            stringPosStart = matchPosEnd;
-            stringPosEnd = exp.lastIndex - match[0].length;
-            strings[strings.length] = string.substring(stringPosStart, stringPosEnd);
-
-            matchPosEnd = exp.lastIndex;
-            matches[matches.length] = <sprintf.match>{
-                match: match[0],
-                left: match[3] ? true : false,
-                sign: match[4] || '',
-                pad: match[5] || ' ',
-                min: match[6] || 0,
-                precision: match[8],
-                code: match[9] || '%',
-                negative: parseInt(arguments[convCount]) < 0 ? true : false,
-                argument: String(arguments[convCount])
-            };
+        if (parsed.matches.length == 0) {
+            return <string>arguments[0];
         }
-        strings[strings.length] = string.substring(matchPosEnd);
+        if ((arguments.length - 1) < convCount) {
+            return "";
+        } else {
+            return sprintf.doSubstitute(
+                parsed.matches,
+                parsed.strings
+            );
+        }
+    }
 
-        if (matches.length == 0) { return string; }
-        if ((arguments.length - 1) < convCount) { return null; }
-
-        var code = null;
-        var i = null;
+    export function doSubstitute(matches: sprintf.match[], strings: string[]): string {
+        var i: number = null;
         var substitution: string = null;
         var numVal: number = 0;
+        var newString = '';
 
         for (i = 0; i < matches.length; i++) {
 
