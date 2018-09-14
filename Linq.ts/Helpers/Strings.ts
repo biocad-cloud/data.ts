@@ -183,4 +183,6 @@ module Strings {
             return 0;
         }
     }
+
+    export const sprintf = data.sprintf.doFormat;
 }

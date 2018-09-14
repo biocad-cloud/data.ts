@@ -72,6 +72,9 @@
     <TypeScriptCompile Include="Data\StringBuilder.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\sprintf.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Benchmark.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
