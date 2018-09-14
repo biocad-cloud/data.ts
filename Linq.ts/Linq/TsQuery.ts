@@ -15,6 +15,9 @@
         doEval(expr: T, type: TypeInfo): any;
     }
 
+    /**
+     * 字符串格式的值意味着对html文档节点的查询
+    */
     export class stringEval implements IEval<string> {
 
         doEval(expr: string, type: TypeInfo): any {
@@ -43,9 +46,7 @@
             }
         }
     }
-
-
-
+       
     /**
      * Create a Linq Enumerator
     */
