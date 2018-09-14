@@ -78,6 +78,9 @@
     <TypeScriptCompile Include="Helpers\Benchmark.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Helpers\Canvas.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Collections\Map.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
