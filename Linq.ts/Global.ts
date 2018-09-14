@@ -19,6 +19,20 @@ function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
     }
 }
 
+
+/**
+ * ### Javascript sprintf
+ * 
+ * > http://www.webtoolkit.info/javascript-sprintf.html#.W5sf9FozaM8
+ *  
+ * Several programming languages implement a sprintf function, to output a 
+ * formatted string. It originated from the C programming language, printf 
+ * function. Its a string manipulation function.
+ *
+ * This is limited sprintf Javascript implementation. Function returns a 
+ * string formatted by the usual printf conventions. See below for more details. 
+ * You must specify the string and how to format the variables in it.
+*/
 const sprintf = data.sprintf.doFormat;
 
 /**
