@@ -19,6 +19,8 @@ function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
     }
 }
 
+const sprintf = data.sprintf.doFormat;
+
 /**
  * Linq数据流程管线的起始函数
  * 
