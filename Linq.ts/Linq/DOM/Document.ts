@@ -44,7 +44,11 @@ namespace Linq.DOM {
     }
 
     /**
-     *
+     * 向一个给定的HTML元素或者HTML元素的集合之中的对象添加给定的事件
+     * 
+     * @param el HTML节点元素或者节点元素的集合
+     * @param type 事件的名称字符串
+     * @param fn 对事件名称所指定的事件进行处理的工作函数，这个工作函数应该具备有一个事件对象作为函数参数
     */
     export function addEvent(el: any, type: string, fn: (event: Event) => void): void {
         if (document.addEventListener) {

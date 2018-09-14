@@ -27,6 +27,12 @@ class IEnumerator<T> {
         return this.sequence.length;
     };
 
+    /**
+     * Get the element value at a given index position 
+     * of this data sequence.
+     * 
+     * @param index index value should be an integer value.
+    */
     public ElementAt(index: string | number = null): T {
         if (!index) {
             index = 0;
@@ -41,6 +47,9 @@ class IEnumerator<T> {
 
     /**
      * 可以从一个数组或者枚举器构建出一个Linq序列
+     * 
+     * @param source The enumerator data source, this constructor will perform 
+     *       a sequence copy action on this given data source sequence at here.
     */
     constructor(source: T[] | IEnumerator<T>) {
         if (!source) {
@@ -178,14 +187,23 @@ class IEnumerator<T> {
         return Enumerable.OrderByDescending(this.sequence, key);
     }
 
+    /**
+     * 取出序列之中的前n个元素
+    */
     public Take(n: number): IEnumerator<T> {
         return Enumerable.Take(this.sequence, n);
     }
 
+    /**
+     * 跳过序列的前n个元素之后返回序列之中的所有剩余元素
+    */
     public Skip(n: number): IEnumerator<T> {
         return Enumerable.Skip(this.sequence, n);
     }
 
+    /**
+     * 序列元素的位置反转
+    */
     public Reverse(): IEnumerator<T> {
         var rseq = this.ToArray().reverse();
         return new IEnumerator<T>(rseq);
@@ -348,6 +366,9 @@ class IEnumerator<T> {
         return new Pointer<T>(this);
     }
 
+    /**
+     * 将当前的这个序列转换为一个滑窗数据的集合
+    */
     public SlideWindows(winSize: number, step: number = 1): IEnumerator<data.SlideWindow<T>> {
         return data.SlideWindow.Split(this, winSize, step);
     }

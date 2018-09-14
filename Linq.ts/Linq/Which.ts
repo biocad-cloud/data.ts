@@ -1,4 +1,25 @@
-﻿namespace Which {
+﻿/**
+ * 序列之中的元素下标的操作方法集合
+*/
+namespace Which {
+
+    /**
+     * 查找出所给定的逻辑值集合之中的所有true的下标值
+    */
+    export function Is(booleans: boolean[] | IEnumerator<boolean>): IEnumerator<number> {
+        if (Array.isArray(booleans)) {
+            booleans = new IEnumerator<boolean>(booleans)
+        }
+
+        return booleans
+            .Select((flag, i) => {
+                return {
+                    flag: flag, index: i
+                };
+            })
+            .Where(t => t.flag)
+            .Select(t => t.index);
+    }
 
     /**
      * 默认的通用类型的比较器对象
