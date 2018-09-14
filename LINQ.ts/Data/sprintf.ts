@@ -43,20 +43,16 @@
     */
     export const placeholder: RegExp = new RegExp(/(%([%]|(\-)?(\+|\x20)?(0)?(\d+)?(\.(\d)?)?([bcdfosxX])))/g);
 
-    export function parseFormat(string: string, arguments: IArguments) {
+    export function parseFormat(string: string, arguments: string[]) {
         var stringPosStart = 0;
         var stringPosEnd = 0;
         var matchPosEnd = 0;
-        var convCount = 0;
+        var convCount: number = 0;
         var match: RegExpExecArray = null;
         var matches: sprintf.match[] = [];
         var strings: string[] = [];
 
         while (match = placeholder.exec(string)) {
-            if (match[9]) {
-                convCount += 1;
-            }
-
             stringPosStart = matchPosEnd;
             stringPosEnd = placeholder.lastIndex - match[0].length;
             strings[strings.length] = string.substring(stringPosStart, stringPosEnd);
@@ -73,6 +69,10 @@
                 negative: parseInt(arguments[convCount]) < 0 ? true : false,
                 argument: String(arguments[convCount])
             };
+
+            if (match[9]) {
+                convCount += 1;
+            }
         }
 
         strings[strings.length] = string.substring(matchPosEnd);
@@ -97,26 +97,26 @@
      * string formatted by the usual printf conventions. See below for more details. 
      * You must specify the string and how to format the variables in it.
     */
-    export function doFormat(): string {
+    export function doFormat(format: string, ...argv: string[]): string {
 
         if (typeof arguments == "undefined") { return null; }
         if (arguments.length < 1) { return null; }
         if (typeof arguments[0] != "string") { return null; }
         if (typeof RegExp == "undefined") { return null; }
 
-        var parsed = sprintf.parseFormat(<string>arguments[0], arguments);
+        var parsed = sprintf.parseFormat(format, argv);
         var convCount: number = parsed.convCount;
 
         if (parsed.matches.length == 0) {
             // 没有格式化参数的占位符，则直接输出原本的字符串
-            return <string>arguments[0];
+            return format;
         } else {
             console.log(parsed);
         }
 
-        if ((arguments.length - 1) < convCount) {
+        if (argv.length < convCount) {
             // 格式化参数的数量少于占位符的数量，则抛出错误
-            throw `Mismatch format argument numbers (${arguments.length - 1} !== ${convCount})!`;
+            throw `Mismatch format argument numbers (${argv.length} !== ${convCount})!`;
         } else {
             return sprintf.doSubstitute(
                 parsed.matches,
