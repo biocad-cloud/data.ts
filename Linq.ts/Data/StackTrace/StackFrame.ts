@@ -14,9 +14,9 @@
 
         public static Parse(line: string): StackFrame {
             var frame: StackFrame = new StackFrame();
-            var file = line.match(/\(.+\)/)[0];
+            var file: string = StackFrame.getFileName(line);
             var caller = line.replace(file, "").trim().substr(3);
-
+            console.log(file);
             file = file.substr(1, file.length - 2);
 
             var position: string = file.match(/([:]\d+){2}$/m)[0];
@@ -47,6 +47,17 @@
             frame.column = location[1];
 
             return frame;
+        }
+
+        private static getFileName(line: string): string {
+            var matches = line.match(/\(.+\)/);
+
+            if (!matches || matches.length == 0) {
+                // 2018-09-14 可能是html文件之中
+                return `(${line.substr(6).trim()})`;
+            } else {
+                return matches[0];
+            }
         }
     }
 }
