@@ -14,7 +14,7 @@
     export interface IEval<T> {
         doEval(expr: T, type: TypeInfo): any;
     }
-       
+
     export class stringEval implements IEval<string> {
 
         doEval(expr: string, type: TypeInfo): any {
@@ -32,12 +32,14 @@
                 });
 
                 return node;
-            } else {
+            } else if (!query.singleNode) {
                 var nodes = <NodeListOf<HTMLElement>>document
                     .querySelectorAll(query.expression);
                 var it = new DOM.DOMEnumerator(nodes);
 
                 return it;
+            } else {
+                return document.querySelector(query.expression);
             }
         }
     }
