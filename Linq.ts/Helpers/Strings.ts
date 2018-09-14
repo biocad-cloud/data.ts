@@ -15,6 +15,24 @@ module Strings {
     }
 
     /**
+     * 将字符串转换为一个实数
+    */
+    export function Val(str: string): number {
+        if (str == null || str == '' || str == undefined || str == "undefined") {
+            // 将空字符串转换为零
+            return 0;
+        } else if (str == "NA" || str == "NaN") {
+            return Number.NaN;
+        } else if (str == "Inf") {
+            return Number.POSITIVE_INFINITY;
+        } else if (str == "-Inf") {
+            return Number.NEGATIVE_INFINITY;
+        } else {
+            return parseFloat(str);
+        }
+    }
+
+    /**
      * 将文本字符串按照newline进行分割
     */
     export function lineTokens(text: string): string[] {
