@@ -40,8 +40,11 @@
         /**
          * 从一个数值序列之中创建改数值序列的值范围
         */
-        public static Create(numbers: number[]): NumericRange {
-            var seq = From(numbers);
+        public static Create(numbers: number[] | IEnumerator<number>): NumericRange {
+            var seq: IEnumerator<number> =
+                Array.isArray(numbers) ?
+                    <IEnumerator<number>>$ts(numbers) :
+                    <IEnumerator<number>>numbers;
             var min: number = seq.Min();
             var max: number = seq.Max();
 
