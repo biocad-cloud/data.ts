@@ -1,5 +1,9 @@
-﻿/// <reference path="Linq/Collections/Enumerator.ts" />
+﻿/// <reference path="Data/sprintf.ts" />
+/// <reference path="Linq/Collections/Enumerator.ts" />
+/// <reference path="Linq/TsQuery.ts" />
 /// <reference path="Helpers/Extensions.ts" />
+/// <reference path="Helpers/Strings.ts" />
+/// <reference path="Type.ts" />
 
 /**
  * 对于这个函数的返回值还需要做类型转换
@@ -18,7 +22,6 @@ function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
         return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type);
     }
 }
-
 
 /**
  * ### Javascript sprintf
