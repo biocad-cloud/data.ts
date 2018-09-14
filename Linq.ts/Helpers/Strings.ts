@@ -39,6 +39,11 @@ module Strings {
         return (!text) ? <string[]>[] : text.trim().split("\n");
     }
 
+    /**
+     * 如果不存在``tag``分隔符，则返回来的``tuple``里面，``name``是输入的字符串，``value``则是空字符串
+     * 
+     * @param tag 分割name和value的分隔符，默认是一个空白符号
+    */
     export function GetTagValue(str: string, tag: string = " "): NamedValue<string> {
         if (!str) {
             return new NamedValue<string>();
@@ -57,7 +62,7 @@ module Strings {
 
             return new NamedValue<string>(name, value);
         } else {
-            return new NamedValue<string>("", str);
+            return new NamedValue<string>(str, "");
         }
     }
 
