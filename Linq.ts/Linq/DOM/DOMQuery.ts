@@ -98,6 +98,15 @@
         private static parseExpression(expr: string, isSingle: boolean): Query {
             var prefix: string = expr.charAt(0);
 
+            if (expr.indexOf(" ") > -1) {
+                // 可能是复杂查询表达式
+                return <Query>{
+                    type: QueryTypes.tagName,
+                    singleNode: isSingle,
+                    expression: expr
+                };
+            }
+
             switch (prefix) {
                 case "#": return this.getById(expr.substr(1));
                 case ".": return this.getByClass(expr, isSingle);
