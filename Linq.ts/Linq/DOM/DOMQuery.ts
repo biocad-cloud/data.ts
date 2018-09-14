@@ -95,10 +95,17 @@
             };
         }
 
+        private static isSelectorQuery(expr: string): boolean {
+            var hasMultiple: boolean = expr.indexOf(" ") > -1;
+            var isNodeCreate: boolean = expr.charAt(0) == "<" && expr.charAt(expr.length - 1) == ">";
+
+            return hasMultiple && !isNodeCreate;
+        }
+
         private static parseExpression(expr: string, isSingle: boolean): Query {
             var prefix: string = expr.charAt(0);
 
-            if (expr.indexOf(" ") > -1) {
+            if (Query.isSelectorQuery(expr)) {
                 // 可能是复杂查询表达式
                 return <Query>{
                     type: QueryTypes.tagName,
