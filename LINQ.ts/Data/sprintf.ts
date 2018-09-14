@@ -43,7 +43,7 @@
     */
     export const placeholder: RegExp = new RegExp(/(%([%]|(\-)?(\+|\x20)?(0)?(\d+)?(\.(\d)?)?([bcdfosxX])))/g);
 
-    export function parseFormat(string: string) {
+    export function parseFormat(string: string, arguments: IArguments) {
         var stringPosStart = 0;
         var stringPosEnd = 0;
         var matchPosEnd = 0;
@@ -104,13 +104,16 @@
         if (typeof arguments[0] != "string") { return null; }
         if (typeof RegExp == "undefined") { return null; }
 
-        var parsed = sprintf.parseFormat(<string>arguments[0]);
+        var parsed = sprintf.parseFormat(<string>arguments[0], arguments);
         var convCount: number = parsed.convCount;
 
         if (parsed.matches.length == 0) {
             // 没有格式化参数的占位符，则直接输出原本的字符串
             return <string>arguments[0];
+        } else {
+            console.log(parsed);
         }
+
         if ((arguments.length - 1) < convCount) {
             // 格式化参数的数量少于占位符的数量，则抛出错误
             throw `Mismatch format argument numbers (${arguments.length - 1} !== ${convCount})!`;
