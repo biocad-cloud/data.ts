@@ -8,8 +8,23 @@
 
     export class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
 
-        public constructor(elements: T[] | IEnumerator<T>) {
-            super(elements);
+        public constructor(elements: T[] | IEnumerator<T> | NodeListOf<T>) {
+            super(DOMEnumerator.ensureElements(elements));
+        }
+
+        private static ensureElements<T extends HTMLElement>(elements: T[] | IEnumerator<T> | NodeListOf<T>): T[] {
+            var type = TypeInfo.typeof(elements);
+
+            if (type.typeOf == "array") {
+                return <T[]>elements;
+            } else if (type.IsEnumerator) {
+                return (<IEnumerator<T>>elements).ToArray();
+            } else {
+                var list: T[] = [];
+
+                (<NodeListOf<T>>elements).forEach(x => list.push(x));
+                return list;
+            }
         }
 
         /**
@@ -43,6 +58,14 @@
                 }
             })
             return this;
+        }
+
+        public AddEvent(eventName: string, handler: (event: Event) => void) {
+            Linq.DOM.addEvent(this.ToArray(), eventName, handler);
+        }
+
+        public onChange(handler: (event: Event) => void) {
+            this.AddEvent("onchange", handler);
         }
 
         public RemoveClass(className: string): DOMEnumerator<T> {

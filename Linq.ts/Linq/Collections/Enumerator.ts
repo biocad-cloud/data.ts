@@ -27,6 +27,12 @@ class IEnumerator<T> {
         return this.sequence.length;
     };
 
+    /**
+     * Get the element value at a given index position 
+     * of this data sequence.
+     * 
+     * @param index index value should be an integer value.
+    */
     public ElementAt(index: string | number = null): T {
         if (!index) {
             index = 0;
@@ -41,6 +47,9 @@ class IEnumerator<T> {
 
     /**
      * 可以从一个数组或者枚举器构建出一个Linq序列
+     * 
+     * @param source The enumerator data source, this constructor will perform 
+     *       a sequence copy action on this given data source sequence at here.
     */
     constructor(source: T[] | IEnumerator<T>) {
         if (!source) {
@@ -100,20 +109,27 @@ class IEnumerator<T> {
 
     /**
      * Filters a sequence of values based on a predicate.
+     * 
+     * @param predicate A test condition function.
+     * 
+     * @returns Sub sequence of the current sequence with all 
+     *     element test pass by the ``predicate`` function.
     */
     public Where(predicate: (e: T) => boolean): IEnumerator<T> {
         return Enumerable.Where(this.sequence, predicate);
     }
 
     /**
-     * 求取这个序列集合的最小元素，使用这个函数要求序列之中的元素都必须能够被转换为数值
+     * Get the min value in current sequence.
+     * (求取这个序列集合的最小元素，使用这个函数要求序列之中的元素都必须能够被转换为数值)
     */
     public Min(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
         return Enumerable.OrderBy(this.sequence, project).First;
     }
 
     /**
-     * 求取这个序列集合的最大元素，使用这个函数要求序列之中的元素都必须能够被转换为数值
+     * Get the max value in current sequence.
+     * (求取这个序列集合的最大元素，使用这个函数要求序列之中的元素都必须能够被转换为数值)
     */
     public Max(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
         return Enumerable.OrderByDescending(this.sequence, project).First;
@@ -171,12 +187,26 @@ class IEnumerator<T> {
         return Enumerable.OrderByDescending(this.sequence, key);
     }
 
+    /**
+     * 取出序列之中的前n个元素
+    */
     public Take(n: number): IEnumerator<T> {
         return Enumerable.Take(this.sequence, n);
     }
 
+    /**
+     * 跳过序列的前n个元素之后返回序列之中的所有剩余元素
+    */
     public Skip(n: number): IEnumerator<T> {
         return Enumerable.Skip(this.sequence, n);
+    }
+
+    /**
+     * 序列元素的位置反转
+    */
+    public Reverse(): IEnumerator<T> {
+        var rseq = this.ToArray().reverse();
+        return new IEnumerator<T>(rseq);
     }
 
     /**
@@ -273,6 +303,8 @@ class IEnumerator<T> {
      * 
      * @param deli Delimiter string that using for the string.join function
      * @param toString A lambda that describ how to convert the generic type object to string token 
+     * 
+     * @returns A contract string.
     */
     public JoinBy(
         deli: string,
@@ -289,12 +321,18 @@ class IEnumerator<T> {
             .join(deli);
     }
 
-    public Unlist<U>(): IEnumerator<U> {
+    /**
+     * 如果当前的这个数据序列之中的元素的类型是某一种元素类型的集合，或者该元素
+     * 可以描述为另一种类型的元素的集合，则可以通过这个函数来进行降维操作处理。
+     * 
+     * @param project 这个投影函数描述了如何将某一种类型的元素降维至另外一种元素类型的集合。
+     * 如果这个函数被忽略掉的话，会尝试强制将当前集合的元素类型转换为目标元素类型的数组集合。
+    */
+    public Unlist<U>(project: (obj: T) => U[] = (obj: T) => <U[]><any>obj): IEnumerator<U> {
         var list: U[] = [];
 
         this.ForEach(a => {
-            var array: U[] = (<any>a);
-            array.forEach(x => list.push(x));
+            project(a).forEach(x => list.push(x));
         })
 
         return new IEnumerator<U>(list);
@@ -309,10 +347,16 @@ class IEnumerator<T> {
         return [...this.sequence];
     }
 
+    /**
+     * 将当前的这个不可变的只读序列对象转换为可动态增添删除元素的列表对象
+    */
     public ToList(): List<T> {
         return new List<T>(this.sequence);
     }
 
+    /**
+     * 将当前的这个数据序列对象转换为键值对字典对象，方便用于数据的查找操作
+    */
     public ToDictionary<K, V>(
         keySelector: (x: T) => string,
         elementSelector: (x: T) => V = (X: T) => {
@@ -332,10 +376,16 @@ class IEnumerator<T> {
         return new Dictionary<V>(maps);
     }
 
+    /**
+     * 将当前的这个数据序列转换为包含有内部位置指针数据的指针对象
+    */
     public ToPointer(): Pointer<T> {
         return new Pointer<T>(this);
     }
 
+    /**
+     * 将当前的这个序列转换为一个滑窗数据的集合
+    */
     public SlideWindows(winSize: number, step: number = 1): IEnumerator<data.SlideWindow<T>> {
         return data.SlideWindow.Split(this, winSize, step);
     }

@@ -1,17 +1,42 @@
-﻿/// <reference path="Linq/Collections/Enumerator.ts" />
+﻿/// <reference path="Data/sprintf.ts" />
+/// <reference path="Linq/Collections/Enumerator.ts" />
+/// <reference path="Linq/TsQuery.ts" />
 /// <reference path="Helpers/Extensions.ts" />
+/// <reference path="Helpers/Strings.ts" />
+/// <reference path="Type.ts" />
 
-function $ts<T>(any: T | T[]): IEnumerator<T> & any {
-    var type = TypeInfo.typeof(any);
+/**
+ * 对于这个函数的返回值还需要做类型转换
+*/
+function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
+    var type: TypeInfo = TypeInfo.typeof(any);
+    var typeOf: string = type.typeOf;
     var handle = Linq.TsQuery.handler;
-    var eval = handle[type.typeOf]();
+    var eval: any = typeOf in handle ? handle[typeOf]() : null;
 
     if (type.IsArray) {
         return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type);
+    } else if (type.typeOf == "function") {
+        Linq.DOM.ready(<() => void>any);
     } else {
         return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type);
     }
 }
+
+/**
+ * ### Javascript sprintf
+ * 
+ * > http://www.webtoolkit.info/javascript-sprintf.html#.W5sf9FozaM8
+ *  
+ * Several programming languages implement a sprintf function, to output a 
+ * formatted string. It originated from the C programming language, printf 
+ * function. Its a string manipulation function.
+ *
+ * This is limited sprintf Javascript implementation. Function returns a 
+ * string formatted by the usual printf conventions. See below for more details. 
+ * You must specify the string and how to format the variables in it.
+*/
+const sprintf = data.sprintf.doFormat;
 
 /**
  * Linq数据流程管线的起始函数
@@ -37,6 +62,14 @@ function IsNullOrEmpty<T>(array: T[] | IEnumerator<T>): boolean {
     } else if (Array.isArray(array) && array.length == 0) {
         return true;
     } else if ((<IEnumerator<T>>(<any>array)).Count == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isNullOrUndefined(obj: any): boolean {
+    if (obj == null || obj == undefined) {
         return true;
     } else {
         return false;

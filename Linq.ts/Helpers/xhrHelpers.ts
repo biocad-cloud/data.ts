@@ -2,6 +2,7 @@
 
     /**
      * 这个函数只会返回200成功代码的响应内容，对于其他的状态代码都会返回null
+     * (这个函数是同步方式的)
     */
     export function GET(url: string): string {
         var request = new XMLHttpRequest();
@@ -17,6 +18,9 @@
         }
     }
 
+    /**
+     * 使用异步调用的方式进行数据的下载操作
+    */
     export function GetAsyn(url: string, callback: (response: string, code: number) => void) {
         var http = new XMLHttpRequest();
 
@@ -49,6 +53,12 @@
         http.send(data);
     }
 
+    /**
+     * 使用multipart form类型的数据进行文件数据的上传操作
+     * 
+     * @param url 函数会通过POST方式将文件数据上传到这个url所指定的服务器资源位置
+     * 
+    */
     export function UploadFile(
         url: string,
         postData: PostData,
@@ -69,6 +79,9 @@
          * content type
         */
         public type: string;
+        /**
+         * 将要进行POST上传的数据包
+        */
         public data: any;
 
         public toString(): string {

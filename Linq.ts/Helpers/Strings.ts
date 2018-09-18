@@ -1,5 +1,49 @@
-﻿module Strings {
+﻿/**
+ * TypeScript string helpers
+*/
+module Strings {
 
+    export const x0: number = "0".charCodeAt(0);
+    export const x9: number = "9".charCodeAt(0);
+
+    /**
+     * @param text A single character
+    */
+    export function isNumber(text: string): boolean {
+        var code = text.charCodeAt(0);
+        return code >= x0 && code <= x9;
+    }
+
+    /**
+     * 将字符串转换为一个实数
+    */
+    export function Val(str: string): number {
+        if (str == null || str == '' || str == undefined || str == "undefined") {
+            // 将空字符串转换为零
+            return 0;
+        } else if (str == "NA" || str == "NaN") {
+            return Number.NaN;
+        } else if (str == "Inf") {
+            return Number.POSITIVE_INFINITY;
+        } else if (str == "-Inf") {
+            return Number.NEGATIVE_INFINITY;
+        } else {
+            return parseFloat(str);
+        }
+    }
+
+    /**
+     * 将文本字符串按照newline进行分割
+    */
+    export function lineTokens(text: string): string[] {
+        return (!text) ? <string[]>[] : text.trim().split("\n");
+    }
+
+    /**
+     * 如果不存在``tag``分隔符，则返回来的``tuple``里面，``name``是输入的字符串，``value``则是空字符串
+     * 
+     * @param tag 分割name和value的分隔符，默认是一个空白符号
+    */
     export function GetTagValue(str: string, tag: string = " "): NamedValue<string> {
         if (!str) {
             return new NamedValue<string>();
@@ -13,25 +57,41 @@
         var tagLen: number = Len(tag);
 
         if (i > -1) {
-
             var name: string = str.substr(0, i);
             var value: string = str.substr(i + tagLen);
 
-            return <NamedValue<string>>{
-                name: name,
-                value: value
-            };
-
+            return new NamedValue<string>(name, value);
         } else {
-            return <NamedValue<string>>{
-                name: "",
-                value: str
-            };
+            return new NamedValue<string>(str, "");
         }
     }
 
     /**
-     * 判断给定的字符串是否是空值？
+     * Removes the given chars from the begining of the given 
+     * string and the end of the given string.
+     * 
+     * @param chars A collection of characters that will be trimmed.
+    */
+    export function Trim(str: string, chars: string | number[]): string {
+        if (typeof chars == "string") {
+            chars = From(Strings.ToCharArray(chars))
+                .Select(c => c.charCodeAt(0))
+                .ToArray();
+        }
+
+        return function (chars: number[]) {
+            return From(Strings.ToCharArray(str))
+                .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
+                .Reverse()
+                .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
+                .Reverse()
+                .JoinBy("");
+        }(<number[]>chars);
+    }
+
+    /**
+     * Determine that the given string is empty string or not?
+     * (判断给定的字符串是否是空值？)
      * 
      * @param stringAsFactor 假若这个参数为真的话，那么字符串``undefined``也将会被当作为空值处理
     */
@@ -49,6 +109,9 @@
         }
     }
 
+    /**
+     * Determine that the whole given string is match a given regex pattern. 
+    */
     export function IsPattern(str: string, pattern: RegExp): boolean {
         var match: string = str.match(pattern)[0];
         var test: boolean = match == str;
@@ -72,8 +135,11 @@
     /**
      * 将字符串转换为字符数组
      * 
-     * > https://jsperf.com/convert-string-to-char-code-array/9
-     * 经过测试，使用数组push的效率最高
+     * @description > https://jsperf.com/convert-string-to-char-code-array/9
+     *    经过测试，使用数组push的效率最高
+     *    
+     * @returns A character array, all of the string element in the array 
+     *      is one character length.
     */
     export function ToCharArray(str: string): string[] {
         var cc: string[] = [];
@@ -86,6 +152,10 @@
         return cc;
     }
 
+    /**
+     * Measure the string length, a null string value or ``undefined`` 
+     * variable will be measured as ZERO length.
+    */
     export function Len(s: string): number {
         if (!s || s == undefined) {
             return 0;
@@ -118,4 +188,6 @@
             return 0;
         }
     }
+
+    export const sprintf = data.sprintf.doFormat;
 }

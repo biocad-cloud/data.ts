@@ -3,6 +3,23 @@
 */
 module DataExtensions {
 
+    export function getCook(cookiename: string): string {
+        // Get name followed by anything except a semicolon
+        var cookie: string = document.cookie;
+        var cookiestring = RegExp("" + cookiename + "[^;]+").exec(cookie);
+        var value: string;
+
+        // Return everything after the equal sign, 
+        // or an empty string if the cookie name not found
+        if (!!cookiestring) {
+            value = cookiestring.toString().replace(/^[^=]+./, "");
+        } else {
+            value = "";
+        }
+
+        return decodeURIComponent(value);
+    }
+
     /**
      * 将URL查询字符串解析为字典对象
      * 
@@ -68,29 +85,37 @@ module DataExtensions {
      * @returns 一个数值
     */
     export function as_numeric(obj: any): number {
+        return AsNumeric(obj)(obj);
+    }
+
+    /**
+     * 因为在js之中没有类型信息，所以如果要取得类型信息必须要有一个目标对象实例
+     * 所以在这里，函数会需要一个实例对象来取得类型值
+    */
+    export function AsNumeric<T>(obj: T): (x: T) => number {
         if (obj == null || obj == undefined) {
-            return 0;
+            return null;
         }
 
         if (typeof obj === 'number') {
-            return <number>obj;
+            return x => <number><any>x;
         } else if (typeof obj === 'boolean') {
-            if (obj == true) {
-                return 1;
-            } else {
-                return -1;
+            return x => {
+                if (<boolean><any>x == true) {
+                    return 1;
+                } else {
+                    return -1;
+                }
             }
         } else if (typeof obj == 'undefined') {
-            return 0;
+            return x => 0;
         } else if (typeof obj == 'string') {
-            if (<string>obj == '') {
-                // 将空字符串转换为零
-                return 0;
-            } else {
-                return parseFloat(<string>obj);
+            return x => {
+                return Strings.Val(<string><any>x);
             }
         } else {
-            return 0;
+            // 其他的所有情况都转换为零
+            return x => 0;
         }
     }
 }
