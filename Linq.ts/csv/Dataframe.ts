@@ -20,6 +20,13 @@ namespace csv {
             return new IEnumerator<string>(this.sequence[0]);
         }
 
+        /**
+         * 获取除了第一行作为``header``数据的剩余的所有的行数据
+        */
+        public get contents(): IEnumerator<row> {
+            return this.Skip(1);
+        }
+
         public constructor(rows: row[] | IEnumerator<row>) {
             super(rows);
         }
