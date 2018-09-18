@@ -56,7 +56,23 @@ namespace Linq.DOM {
             }
         }
 
-        headers = headerMaps(headers);
+        var fields = headerMaps(headers);
+
+        rows.forEach(r => {
+            var tr: HTMLElement = $ts("<tr>");
+
+            fields.forEach(m => {
+                var td: HTMLElement = $ts("<td>");
+                td.innerHTML = r[m.key];
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });
+        fields.forEach(r => {
+            var th: HTMLElement = $ts("th");
+            th.innerHTML = r.value;
+            thead.appendChild(th);
+        })
 
         table.appendChild(thead);
         table.appendChild(tbody);
