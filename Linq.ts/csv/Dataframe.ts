@@ -11,7 +11,7 @@ namespace csv {
     /**
      * ``csv``文件模型
     */
-    export class dataframe extends IEnumerator<csv.row> {
+    export class dataframe extends List<csv.row> {
 
         /**
          * Csv文件的第一行作为header

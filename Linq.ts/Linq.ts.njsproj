@@ -39,6 +39,12 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="csv\HTML.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="csv\doc.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Data\BinaryTree\node.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -113,7 +119,7 @@
     <TypeScriptCompile Include="Data\Range.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Helpers\Helpers.ts">
+    <TypeScriptCompile Include="Helpers\xhrHelpers.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Strings.ts">
