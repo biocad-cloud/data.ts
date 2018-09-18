@@ -28,6 +28,21 @@
             super(cells);
         }
 
+        /**
+         * Returns the index of the first occurrence of a value in an array.
+         * 
+         * 函数得到指定的值在本行对象之中的列的编号
+         * 
+         * @param value The value to locate in the array.
+         * @param fromIndex The array index at which to begin the search. If ``fromIndex`` is omitted, 
+         *      the search starts at index 0.
+         * 
+         * @returns 如果这个函数返回-1则表示找不到
+        */
+        public indexOf(value: string, fromIndex: number = 0): number {
+            return this.sequence.indexOf(value);
+        }
+
         public ProjectObject(headers: string[] | IEnumerator<string>): object {
             var obj: object = {};
             var data: string[] = this.columns;
@@ -55,6 +70,10 @@
 
         public static Parse(line: string): row {
             return new row(csv.CharsParser(line));
+        }
+
+        public static ParseTsv(line: string): row {
+            return new row(csv.CharsParser(line, "\t"));
         }
     }
 }

@@ -319,12 +319,18 @@ class IEnumerator<T> {
             .join(deli);
     }
 
-    public Unlist<U>(): IEnumerator<U> {
+    /**
+     * 如果当前的这个数据序列之中的元素的类型是某一种元素类型的集合，或者该元素
+     * 可以描述为另一种类型的元素的集合，则可以通过这个函数来进行降维操作处理。
+     * 
+     * @param project 这个投影函数描述了如何将某一种类型的元素降维至另外一种元素类型的集合。
+     * 如果这个函数被忽略掉的话，会尝试强制将当前集合的元素类型转换为目标元素类型的数组集合。
+    */
+    public Unlist<U>(project: (obj: T) => U[] = (obj: T) => <U[]><any>obj): IEnumerator<U> {
         var list: U[] = [];
 
         this.ForEach(a => {
-            var array: U[] = (<any>a);
-            array.forEach(x => list.push(x));
+            project(a).forEach(x => list.push(x));
         })
 
         return new IEnumerator<U>(list);
@@ -339,10 +345,16 @@ class IEnumerator<T> {
         return [...this.sequence];
     }
 
+    /**
+     * 将当前的这个不可变的只读序列对象转换为可动态增添删除元素的列表对象
+    */
     public ToList(): List<T> {
         return new List<T>(this.sequence);
     }
 
+    /**
+     * 将当前的这个数据序列对象转换为键值对字典对象，方便用于数据的查找操作
+    */
     public ToDictionary<K, V>(
         keySelector: (x: T) => string,
         elementSelector: (x: T) => V = (X: T) => {
@@ -362,6 +374,9 @@ class IEnumerator<T> {
         return new Dictionary<V>(maps);
     }
 
+    /**
+     * 将当前的这个数据序列转换为包含有内部位置指针数据的指针对象
+    */
     public ToPointer(): Pointer<T> {
         return new Pointer<T>(this);
     }
