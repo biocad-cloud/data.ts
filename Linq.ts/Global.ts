@@ -1,5 +1,9 @@
-﻿/// <reference path="Linq/Collections/Enumerator.ts" />
+﻿/// <reference path="Data/sprintf.ts" />
+/// <reference path="Linq/Collections/Enumerator.ts" />
+/// <reference path="Linq/TsQuery.ts" />
 /// <reference path="Helpers/Extensions.ts" />
+/// <reference path="Helpers/Strings.ts" />
+/// <reference path="Type.ts" />
 
 /**
  * 对于这个函数的返回值还需要做类型转换
@@ -18,6 +22,21 @@ function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
         return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type);
     }
 }
+
+/**
+ * ### Javascript sprintf
+ * 
+ * > http://www.webtoolkit.info/javascript-sprintf.html#.W5sf9FozaM8
+ *  
+ * Several programming languages implement a sprintf function, to output a 
+ * formatted string. It originated from the C programming language, printf 
+ * function. Its a string manipulation function.
+ *
+ * This is limited sprintf Javascript implementation. Function returns a 
+ * string formatted by the usual printf conventions. See below for more details. 
+ * You must specify the string and how to format the variables in it.
+*/
+const sprintf = data.sprintf.doFormat;
 
 /**
  * Linq数据流程管线的起始函数

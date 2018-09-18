@@ -1,4 +1,6 @@
-﻿namespace Linq.TsQuery {
+﻿
+
+namespace Linq.TsQuery {
 
     export const handler = {
         /**
@@ -15,62 +17,38 @@
         doEval(expr: T, type: TypeInfo): any;
     }
 
+    /**
+     * 字符串格式的值意味着对html文档节点的查询
+    */
     export class stringEval implements IEval<string> {
 
-        /**
-         * name of the return value is the trimmed expression
-        */
-        public static getQueryType(expr: string): NamedValue<DomQueryTypes> {
-            if (expr.charAt(0) == "#") {
-                return new NamedValue<DomQueryTypes>(expr.substr(1), DomQueryTypes.id);
-            } else if (expr.charAt(0) == ".") {
-                return new NamedValue<DomQueryTypes>(expr.substr(1), DomQueryTypes.class);
-            } else {
-                return new NamedValue<DomQueryTypes>(expr, DomQueryTypes.tagName);
-            }
-        }
-
         doEval(expr: string, type: TypeInfo): any {
-            var query = stringEval.getQueryType(expr);
+            var query: DOM.Query = DOM.Query.parseQuery(expr);
 
-            // console.log(query);
-            // console.log(query.value == DomQueryTypes.id);
+            if (query.type == DOM.QueryTypes.id) {
+                return document.getElementById(query.expression);
+            } else if (query.type == DOM.QueryTypes.NoQuery) {
+                var declare = DOM.ParseNodeDeclare(expr);
+                var node: HTMLElement = document
+                    .createElement(declare.tag);
 
-            if (query.value == DomQueryTypes.id) {
-                return document.getElementById(query.name);
+                declare.attrs.forEach(attr => {
+                    node.setAttribute(attr.name, attr.value);
+                });
+
+                return node;
+            } else if (!query.singleNode) {
+                var nodes = <NodeListOf<HTMLElement>>document
+                    .querySelectorAll(query.expression);
+                var it = new DOM.DOMEnumerator(nodes);
+
+                return it;
             } else {
-                return new DOM.DOMEnumerator<HTMLElement>(document.querySelectorAll(expr));
+                return document.querySelector(query.expression);
             }
         }
     }
-
-    /**
-     * HTML文档节点的查询类型
-    */
-    export enum DomQueryTypes {
-        /**
-         * 表达式为 #xxx
-         * 按照节点的id编号进行查询
-         * 
-         * ``<tag id="xxx">``
-        */
-        id = 1,
-        /**
-         * 表达式为 .xxx
-         * 按照节点的class名称进行查询
-         * 
-         * ``<tag class="xxx">``
-        */
-        class = 10,
-        /**
-         * 表达式为 xxx
-         * 按照节点的名称进行查询
-         * 
-         * ``<xxx ...>``
-        */
-        tagName = -100
-    }
-
+       
     /**
      * Create a Linq Enumerator
     */

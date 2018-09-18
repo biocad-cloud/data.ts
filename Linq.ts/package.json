@@ -1,10 +1,10 @@
 {
   "name": "linq.ts",
   "version": "0.0.0",
-  "description": "LINQ.ts",
-  "main": "app.js",
+  "description": "Data sequence Linq extension for TypeScript.",
+  "main": "linq.js",
   "author": {
-    "name": "Administrator"
+    "name": "xieguigang"
   },
   "devDependencies": {
     "@types/node": "^6.0.87"

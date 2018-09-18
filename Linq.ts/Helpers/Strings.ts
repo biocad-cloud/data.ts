@@ -15,12 +15,35 @@ module Strings {
     }
 
     /**
+     * 将字符串转换为一个实数
+    */
+    export function Val(str: string): number {
+        if (str == null || str == '' || str == undefined || str == "undefined") {
+            // 将空字符串转换为零
+            return 0;
+        } else if (str == "NA" || str == "NaN") {
+            return Number.NaN;
+        } else if (str == "Inf") {
+            return Number.POSITIVE_INFINITY;
+        } else if (str == "-Inf") {
+            return Number.NEGATIVE_INFINITY;
+        } else {
+            return parseFloat(str);
+        }
+    }
+
+    /**
      * 将文本字符串按照newline进行分割
     */
     export function lineTokens(text: string): string[] {
         return (!text) ? <string[]>[] : text.trim().split("\n");
     }
 
+    /**
+     * 如果不存在``tag``分隔符，则返回来的``tuple``里面，``name``是输入的字符串，``value``则是空字符串
+     * 
+     * @param tag 分割name和value的分隔符，默认是一个空白符号
+    */
     export function GetTagValue(str: string, tag: string = " "): NamedValue<string> {
         if (!str) {
             return new NamedValue<string>();
@@ -39,7 +62,7 @@ module Strings {
 
             return new NamedValue<string>(name, value);
         } else {
-            return new NamedValue<string>("", str);
+            return new NamedValue<string>(str, "");
         }
     }
 
@@ -165,4 +188,6 @@ module Strings {
             return 0;
         }
     }
+
+    export const sprintf = data.sprintf.doFormat;
 }

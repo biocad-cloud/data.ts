@@ -111,14 +111,7 @@ module DataExtensions {
             return x => 0;
         } else if (typeof obj == 'string') {
             return x => {
-                var str: string = <string><any>x;
-
-                if (str == null || str == '') {
-                    // 将空字符串转换为零
-                    return 0;
-                } else {
-                    return parseFloat(str);
-                }
+                return Strings.Val(<string><any>x);
             }
         } else {
             // 其他的所有情况都转换为零

@@ -1,5 +1,9 @@
 <script type="text/javascript" src="./linq.js"></script>
+<script type="text/javascript" src="./javascriptStackTraceTest.js"></script>
 <script type="text/javascript">
+
+	console.log(sprintf("%s-%s-%s", 55, 9, 6));
+
 	var r = new data.NumericRange(-100, 5000);
 	var type = TypeInfo.typeof(r);
 	
@@ -35,6 +39,8 @@
 	}
 	
 	function Hello() {
-		console.log(arguments);
+		console.log(TsLinq.StackTrace.Dump());
 	}
+	
+	callsTop2();
 </script>
