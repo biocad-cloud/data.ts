@@ -11,7 +11,7 @@ namespace csv {
     /**
      * ``csv``文件模型
     */
-    export class dataframe extends List<csv.row> {
+    export class dataframe extends IEnumerator<csv.row> {
 
         /**
          * Csv文件的第一行作为header
@@ -39,6 +39,27 @@ namespace csv {
             } else {
                 return this.Select(r => r.ElementAt(index));
             }
+        }
+
+        /**
+         * 向当前的数据框对象之中添加一行数据
+        */
+        public AppendLine(line: row): dataframe {
+            this.sequence.push(line);
+            return this;
+        }
+
+        /**
+         * 向当前的数据框对象之中添加多行数据
+        */
+        public AppendRows(data: IEnumerator<row> | row[]): dataframe {
+            if (Array.isArray(data)) {
+                data.forEach(r => this.sequence.push(r));
+            } else {
+                data.ForEach(r => this.sequence.push(r));
+            }
+
+            return this;
         }
 
         /**

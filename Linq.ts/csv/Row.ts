@@ -24,7 +24,7 @@
                 .JoinBy(",");
         }
 
-        public constructor(cells: string[]) {
+        public constructor(cells: string[] | IEnumerator<string>) {
             super(cells);
         }
 

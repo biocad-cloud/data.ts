@@ -10,14 +10,25 @@
     */
     export function toDataFrame<T>(data: IEnumerator<T>): dataframe {
         var header: IEnumerator<string> = $ts(Object.keys(data.First));
-        var rows = data.Select(obj => {
-            return header.Select((ref, i) => {
-                return toString(obj[ref]);
+        var rows: IEnumerator<row> = data
+            .Select(obj => {
+                var columns: IEnumerator<string> = header
+                    .Select((ref, i) => {
+                        return toString(obj[ref]);
+                    });
+
+                return new row(columns);
             });
-        });
+
+        return new dataframe([new row(header)]).AppendRows(rows);
     }
 
     function toString(obj: any): string {
-        if (isN)
+        if (isNullOrUndefined(obj)) {
+            // 这个对象值是空的，所以在csv文件之中是空字符串
+            return "";
+        } else {
+            return "" + obj;
+        }
     }
 }

@@ -49,6 +49,14 @@ function IsNullOrEmpty<T>(array: T[] | IEnumerator<T>): boolean {
     }
 }
 
+function isNullOrUndefined(obj: any): boolean {
+    if (obj == null || obj == undefined) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /**
  * HTML/Javascript: how to access JSON data loaded in a script tag.
 */
