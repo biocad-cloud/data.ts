@@ -23,6 +23,10 @@ namespace Linq.DOM {
         (<HTMLElement>$ts(`#${div}`)).innerHTML = html;
     }
 
+    export function AddHTMLTable(rows: object[], headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[], div: string) {
+
+    }
+
     /**
      * Execute a given function when the document is ready.
      * 
