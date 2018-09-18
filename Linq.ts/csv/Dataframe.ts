@@ -41,6 +41,9 @@ namespace csv {
             }
         }
 
+        /**
+         * 将当前的这个数据框对象转换为csv文本内容
+        */
         public buildDoc(): string {
             return this.Select(r => r.rowLine).JoinBy("\n");
         }
@@ -123,15 +126,15 @@ namespace csv {
          * @param callback 当这个异步回调为空值的时候，函数使用同步的方式工作，返回csv对象
          *                 如果这个参数不是空值，则以异步的方式工作，此时函数会返回空值
         */
-        public static Load(url: string, callback: (csv: dataframe) => void = null): dataframe {
+        public static Load(url: string, tsv: boolean = false, callback: (csv: dataframe) => void = null): dataframe {
             if (callback == null || callback == undefined) {
                 // 同步
-                return dataframe.Parse(HttpHelpers.GET(url));
+                return dataframe.Parse(HttpHelpers.GET(url), tsv);
             } else {
                 // 异步
                 HttpHelpers.GetAsyn(url, (text, code) => {
                     if (code == 200) {
-                        callback(dataframe.Parse(text));
+                        callback(dataframe.Parse(text, tsv));
                     } else {
                         throw `Error while load csv data source, http ${code}: ${text}`;
                     }
@@ -143,9 +146,15 @@ namespace csv {
 
         /**
          * 将所给定的文本文档内容解析为数据框对象
+         * 
+         * @param tsv 所需要进行解析的文本内容是否为使用``<TAB>``作为分割符的tsv文本文件？
+         *   默认不是，即默认使用逗号``,``作为分隔符的csv文本文件。
         */
-        public static Parse(text: string): dataframe {
-            return new dataframe(From(text.split(/\n/)).Select(csv.row.Parse));
+        public static Parse(text: string, tsv: boolean = false): dataframe {
+            var parse: (line: string) => row = tsv ? row.ParseTsv : row.Parse;
+            var rows: IEnumerator<row> = From(text.split(/\n/)).Select(parse);
+
+            return new dataframe(rows);
         }
     }
 }

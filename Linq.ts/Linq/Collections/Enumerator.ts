@@ -303,6 +303,8 @@ class IEnumerator<T> {
      * 
      * @param deli Delimiter string that using for the string.join function
      * @param toString A lambda that describ how to convert the generic type object to string token 
+     * 
+     * @returns A contract string.
     */
     public JoinBy(
         deli: string,
