@@ -23,8 +23,67 @@ namespace Linq.DOM {
         (<HTMLElement>$ts(`#${div}`)).innerHTML = html;
     }
 
-    export function AddHTMLTable(rows: object[], headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[], div: string) {
+    /**
+     * 向给定编号的div对象之中添加一个表格对象
+     * 
+     * @param headers 表头
+     * @param div 新生成的table将会被添加在这个div之中
+     * @param attrs ``<table>``的属性值，包括id，class等
+    */
+    export function AddHTMLTable(
+        rows: object[],
+        headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[],
+        div: string,
+        attrs: node = null) {
 
+        var thead: HTMLElement = $ts("<thead>");
+        var tbody: HTMLElement = $ts("<tbody>");
+        var table: HTMLElement = $ts("<table>");
+
+        if (attrs) {
+            if (attrs.id) {
+                table.id = attrs.id;
+            }
+            if (!IsNullOrEmpty(attrs.classList)) {
+                attrs.classList.forEach(c => table.classList.add(c));
+            }
+            if (!IsNullOrEmpty(attrs.attrs)) {
+                From(attrs.attrs)
+                    .Where(a => a.name != "id" && a.name != "class")
+                    .ForEach(a => {
+                        table.setAttribute(a.name, a.value);
+                    });
+            }
+        }
+
+        headers = headerMaps(headers);
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        (<HTMLDivElement>$ts(div)).appendChild(table);
+    }
+
+    function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[]): Map<string, string>[] {
+        var type = TypeInfo.typeof(headers);
+
+        if (type.IsArrayOf("string")) {
+            return From(<string[]>headers)
+                .Select(h => new Map<string, string>(h, h))
+                .ToArray();
+        } else if (type.IsArrayOf("Map")) {
+            return <Map<string, string>[]>headers;
+        } else if (type.IsEnumerator && typeof headers[0] == "string") {
+            return (<IEnumerator<string>>headers)
+                .Select(h => new Map<string, string>(h, h))
+                .ToArray();
+        } else if (type.IsEnumerator && TypeInfo.typeof(headers[0]).class == "Map") {
+            // return (IEnumerator<Map<string, string>>headers).ToArray();
+            var maps: IEnumerator<Map<string, string>> = <any>headers;
+            return maps.ToArray();
+        } else {
+            throw `Invalid sequence type: ${type.class}`;
+        }
     }
 
     /**
