@@ -63,6 +63,10 @@ class IEnumerator<T> {
         }
     }
 
+    public indexOf(x: T): number {
+        return this.sequence.indexOf(x);
+    }
+
     /**
      * Get the first element in this sequence 
     */
