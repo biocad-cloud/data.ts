@@ -94,9 +94,7 @@ namespace Linq.DOM {
                 .Select(h => new Map<string, string>(h, h))
                 .ToArray();
         } else if (type.IsEnumerator && TypeInfo.typeof(headers[0]).class == "Map") {
-            // return (IEnumerator<Map<string, string>>headers).ToArray();
-            var maps: IEnumerator<Map<string, string>> = <any>headers;
-            return maps.ToArray();
+            return (<IEnumerator<Map<string, string>>>headers).ToArray();
         } else {
             throw `Invalid sequence type: ${type.class}`;
         }
