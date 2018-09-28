@@ -28,7 +28,7 @@
             this.protocol = token.name; token = Strings.GetTagValue(token.value, "/");
             this.origin = token.name; token = Strings.GetTagValue(token.value, "?");
             this.path = token.name;
-            this.fileName = URL.basename(this.path);
+            this.fileName = Strings.Empty(this.path) ? "" : URL.basename(this.path);
             this.hash = From(url.split("#")).Last;
 
             if (url.indexOf("#") < 0) {
