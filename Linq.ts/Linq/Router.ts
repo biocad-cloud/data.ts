@@ -1,4 +1,6 @@
-﻿/**
+﻿import { link } from "fs";
+
+/**
  * 路由器模块
 */
 module Router {
@@ -12,11 +14,19 @@ module Router {
 
     const routerLink: string = "router-link";
 
+    export function queryKey(argName: string): (link: string) => string {
+        return link => getAllUrlParams(link).Item(argName);
+    }
+
     /**
      * 父容器页面注册视图容器对象
     */
-    export function register(appId: string = "app", frameRegister: boolean = true) {
+    export function register(appId: string = "app",
+        hashKey: string | ((link: string) => string) = null,
+        frameRegister: boolean = true) {
+
         var aLink: Linq.DOM.DOMEnumerator<HTMLAnchorElement>;
+        var gethashKey: (link: string) => string;
 
         if (frameRegister && (!frames || !frames.ContainsKey(appId))) {
             registerFrame(appId);
@@ -25,29 +35,49 @@ module Router {
             window.onhashchange = function () {
                 hashChanged(appId);
             }
+            // 自动调整iframe的大小
+            window.onresize = function () {
+                clientResize(appId);
+            }
         }
         if (!hashLinks) {
             hashLinks = new Dictionary<string>({
                 "/": "/"
             });
         }
+        if (!hashKey) {
+            gethashKey = link => (new TsLinq.URL(link)).fileName;
+        } else if (typeof hashKey == "string") {
+            gethashKey = Router.queryKey(hashKey);
+        } else {
+            gethashKey = <(link: string) => string>hashKey;
+        }
 
         aLink = $ts(".router");
         aLink.attr("router-link", link => link.href);
         aLink.attr("href", "javascript:void(0);");
         aLink.onClick((link, click) => {
-            Router.goto(link.getAttribute("router-link"), appId);
+            Router.goto(link.getAttribute("router-link"), appId, gethashKey);
         });
         aLink.attr(routerLink)
             .ForEach(link => {
-                var parseURL = new TsLinq.URL(link);
-                var key: string = parseURL.fileName;
-
-                hashLinks.Add(key, link);
+                hashLinks.Add(gethashKey(link), link);
             });
 
         // 假设当前的url之中有hash的话，还需要根据注册的路由配置进行跳转显示
         hashChanged(appId);
+        clientResize(appId);
+    }
+
+    function clientResize(appId: string) {
+        var app: HTMLDivElement = $ts("#" + appId);
+        var frame: HTMLIFrameElement = $ts(`#${appId}-frame`);
+        var size: number[] = Linq.DOM.clientSize();
+
+        app.style.width = size[0].toString();
+        app.style.height = size[1].toString();
+        frame.width = size[0].toString();
+        frame.height = size[1].toString();
     }
 
     /**
@@ -89,7 +119,11 @@ module Router {
         frames.Add(appId, frame);
     }
 
-    function navigate(link: string, stack: Window, appId: string) {
+    function navigate(link: string,
+        stack: Window,
+        appId: string,
+        hashKey: (link: string) => string) {
+
         var frame: HTMLIFrameElement = (<any>stack).Router.iFrame(appId);
 
         frame.src = link;
@@ -97,7 +131,7 @@ module Router {
             var win = (<any>frame.contentWindow);
             var router = win.Router;
 
-            router.register(appId, false);
+            router.register(appId, hashKey, false);
         }
         window.location.hash = new TsLinq.URL(link).fileName;
     }
@@ -112,14 +146,14 @@ module Router {
     /**
      * 因为link之中可能存在查询参数，所以必须要在web服务器上面测试
     */
-    export function goto(link: string, appId: string, stack: Window = null) {
+    export function goto(link: string, appId: string, hashKey: (link: string) => string, stack: Window = null) {
         if (!Router.IsTopWindowStack()) {
-            (<any>parent).Router.goto(link, appId, parent);
+            (<any>parent).Router.goto(link, appId, hashKey, parent);
         } else if (stack) {
             // 没有parent了，已经到达最顶端了
-            navigate(link, stack, appId);
+            navigate(link, stack, appId, hashKey);
         } else {
-            navigate(link, window, appId);
+            navigate(link, window, appId, hashKey);
         }
     }
 }
