@@ -4,6 +4,7 @@
 module Router {
 
     var frames: Dictionary<HTMLIFrameElement>;
+    var hashLinks: Dictionary<string>;
 
     export function iFrame(app: string): HTMLIFrameElement {
         return frames.Item(app);
@@ -17,15 +18,41 @@ module Router {
     export function register(appId: string = "app", frameRegister: boolean = true) {
         var aLink: Linq.DOM.DOMEnumerator<HTMLAnchorElement>;
 
+        if (frameRegister && (!frames || !frames.ContainsKey(appId))) {
+            registerFrame(appId);
+        }
+        if (!hashLinks) {
+            hashLinks = new Dictionary<string>({
+                "/": "/"
+            });
+        }
+
         aLink = $ts(".router");
         aLink.attr("router-link", link => link.href);
         aLink.attr("href", "javascript:void(0);");
         aLink.onClick((link, click) => {
             Router.goto(link.getAttribute("router-link"), appId);
         });
+        aLink.attr(routerLink)
+            .ForEach(link => {
+                var parseURL = new TsLinq.URL(link);
+                var key: string = parseURL.hash;
 
-        if (frameRegister && (!frames || !frames.ContainsKey(appId))) {
-            registerFrame(appId);
+                hashLinks.Add(key, link);
+            });
+
+        // 假设当前的url之中有hash的话，还需要根据注册的路由配置进行跳转显示
+        var hash: string = TsLinq.URL.WindowLocation().hash;
+        var url: string = hashLinks.Item(hash);
+
+        if (url) {
+            if (url == "/") {
+                // 跳转到主页，重新刷新页面？
+                window.location.hash = "";
+                window.location.reload(true);
+            } else {
+                iFrame(appId).src = url;
+            }
         }
     }
 
