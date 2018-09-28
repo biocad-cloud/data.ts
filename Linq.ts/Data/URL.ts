@@ -35,11 +35,19 @@
                 this.hash = "";
             }
 
-            var args: object = DataExtensions.parseQueryString(token.value, false);
+            var args: object = URL.UrlQuery(token.value);
 
             this.query = new Dictionary<string>(args)
                 .Select(m => new NamedValue<string>(m.key, m.value))
                 .ToArray();
+        }
+
+        public static UrlQuery(args: string): object {
+            if (args) {
+                return DataExtensions.parseQueryString(args, false);
+            } else {
+                return {};
+            }
         }
 
         public static basename(fileName: string): string {
