@@ -1,4 +1,6 @@
-﻿/**
+﻿/// <reference path="Collections/DictionaryMaps.ts" />
+
+/**
  * 路由器模块
 */
 module Router {
