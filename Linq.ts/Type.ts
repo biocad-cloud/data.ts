@@ -38,6 +38,9 @@ class TypeInfo {
         return this.typeOf == "array";
     }
 
+    /**
+     * 是否是一个枚举器
+    */
     public get IsEnumerator(): boolean {
         return this.typeOf == "object" && this.class == "IEnumerator";
     }

@@ -26,8 +26,10 @@ namespace Linq.TsQuery {
             var query: DOM.Query = DOM.Query.parseQuery(expr);
 
             if (query.type == DOM.QueryTypes.id) {
+                // 按照id查询
                 return document.getElementById(query.expression);
             } else if (query.type == DOM.QueryTypes.NoQuery) {
+                // 创建新的节点元素
                 var declare = DOM.ParseNodeDeclare(expr);
                 var node: HTMLElement = document
                     .createElement(declare.tag);
@@ -38,12 +40,14 @@ namespace Linq.TsQuery {
 
                 return node;
             } else if (!query.singleNode) {
+                // 返回节点集合
                 var nodes = <NodeListOf<HTMLElement>>document
                     .querySelectorAll(query.expression);
                 var it = new DOM.DOMEnumerator(nodes);
 
                 return it;
             } else {
+                // 只返回第一个满足条件的节点
                 return document.querySelector(query.expression);
             }
         }

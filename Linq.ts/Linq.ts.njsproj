@@ -126,6 +126,12 @@
     <TypeScriptCompile Include="Linq\TsQuery.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\Router.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\Extensions.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

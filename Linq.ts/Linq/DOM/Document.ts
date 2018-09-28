@@ -130,7 +130,7 @@ namespace Linq.DOM {
     export function addEvent(el: any, type: string, fn: (event: Event) => void): void {
         if (document.addEventListener) {
             if (el && (el.nodeName) || el === window) {
-                el.addEventListener(type, fn, false);
+                (<HTMLElement>el).addEventListener(type, fn, false);
             } else if (el && el.length) {
                 for (var i = 0; i < el.length; i++) {
                     addEvent(el[i], type, fn);

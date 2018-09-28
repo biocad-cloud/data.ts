@@ -51,6 +51,14 @@
             return this.Select(element => element.nodeValue);
         }
 
+        public attr(attrName: string, val: string | IEnumerator<string> | string[] | ((x: T) => void) = null): IEnumerator<string> {
+            if (val) {
+
+            } else {
+                return this.Select(x => x.getAttribute(attrName));
+            }
+        }
+
         public AddClass(className: string): DOMEnumerator<T> {
             this.ForEach(x => {
                 if (!x.classList.contains(className)) {
@@ -60,11 +68,16 @@
             return this;
         }
 
-        public AddEvent(eventName: string, handler: (event: Event) => void) {
-            Linq.DOM.addEvent(this.ToArray(), eventName, handler);
+        public AddEvent(eventName: string, handler: (sender: T, event: Event) => void) {
+            this.ForEach(element => {
+                var event = function (Event: Event) {
+                    handler(element, Event);
+                }
+                Linq.DOM.addEvent(element, eventName, event);
+            })
         }
 
-        public onChange(handler: (event: Event) => void) {
+        public onChange(handler: (sender: T, event: Event) => void) {
             this.AddEvent("onchange", handler);
         }
 
