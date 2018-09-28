@@ -137,6 +137,8 @@ module Router {
             } else {
                 console.log(`Page [${link}] haven't reference to the TypeScript Linq library...`);
             }
+
+            document.title = frame.contentDocument.title;
         }
 
         window.location.hash = hashKey(link);
