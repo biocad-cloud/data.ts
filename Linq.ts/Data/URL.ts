@@ -31,6 +31,10 @@
             this.fileName = URL.basename(this.path);
             this.hash = From(url.split("#")).Last;
 
+            if (url.indexOf("#") < 0) {
+                this.hash = "";
+            }
+
             var args: object = DataExtensions.parseQueryString(token.value, false);
 
             this.query = new Dictionary<string>(args)

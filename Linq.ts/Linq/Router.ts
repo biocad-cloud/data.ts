@@ -36,7 +36,7 @@ module Router {
         aLink.attr(routerLink)
             .ForEach(link => {
                 var parseURL = new TsLinq.URL(link);
-                var key: string = parseURL.hash;
+                var key: string = parseURL.fileName;
 
                 hashLinks.Add(key, link);
             });
