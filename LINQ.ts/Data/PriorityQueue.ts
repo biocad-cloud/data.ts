@@ -1,4 +1,4 @@
-﻿namespace TsLinq {
+namespace TsLinq {
 
     export class PriorityQueue<T> extends IEnumerator<QueueItem<T>> {
 

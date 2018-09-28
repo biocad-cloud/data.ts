@@ -1,4 +1,4 @@
-﻿namespace Linq.DOM {
+namespace Linq.DOM {
 
     export const attrs: RegExp = /\S+\s*[=]\s*((["].*["])|(['].*[']))/g;
 

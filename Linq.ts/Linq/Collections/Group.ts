@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 按照某一个键值进行分组的集合对象
 */
 class Group<TKey, T> extends IEnumerator<T> {

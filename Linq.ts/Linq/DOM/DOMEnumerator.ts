@@ -1,4 +1,4 @@
-﻿namespace Linq.DOM {
+namespace Linq.DOM {
 
     // /**
     //  * Creates an instance of the element for the specified tag.

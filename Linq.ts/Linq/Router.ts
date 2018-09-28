@@ -1,4 +1,4 @@
-﻿import { link } from "fs";
+import { link } from "fs";
 
 /**
  * 路由器模块

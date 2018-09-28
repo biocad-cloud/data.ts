@@ -1,4 +1,4 @@
-﻿namespace Linq {
+namespace Linq {
 
     export function EnsureCollection<T>(data: T | T[] | IEnumerator<T>, n = -1): IEnumerator<T> {
         return new IEnumerator<T>(Linq.EnsureArray(data, n));

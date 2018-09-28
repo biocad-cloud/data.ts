@@ -1,4 +1,4 @@
-﻿/**
+/**
  * HTML文档操作帮助函数
 */
 namespace Linq.DOM {

@@ -1,4 +1,4 @@
-﻿/// <reference path="Data/sprintf.ts" />
+/// <reference path="Data/sprintf.ts" />
 /// <reference path="Linq/Collections/Enumerator.ts" />
 /// <reference path="Linq/TsQuery.ts" />
 /// <reference path="Helpers/Extensions.ts" />

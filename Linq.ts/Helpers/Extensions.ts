@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 通用数据拓展函数集合
 */
 module DataExtensions {

@@ -1,4 +1,4 @@
-﻿namespace TsLinq {
+namespace TsLinq {
 
     export class MetaReader {
 

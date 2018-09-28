@@ -1,4 +1,4 @@
-﻿namespace algorithm.BTree {
+namespace algorithm.BTree {
 
     /**
      * data extension module for binary tree nodes data sequence
