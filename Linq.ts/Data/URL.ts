@@ -25,16 +25,26 @@
             // http://localhost/router.html#http://localhost/b.html
             var token = Strings.GetTagValue(url, "://");
 
-            this.protocol = token.name;
-            token = Strings.GetTagValue(token.value, "/");
-            this.origin = token.name;
-            token = Strings.GetTagValue(token.value, "?");
+            this.protocol = token.name; token = Strings.GetTagValue(token.value, "/");
+            this.origin = token.name; token = Strings.GetTagValue(token.value, "?");
             this.path = token.name;
-            this.fileName = From(this.path.split("/")).Last;
+            this.fileName = URL.basename(this.path);
             this.hash = From(url.split("#")).Last;
-            this.query = new Dictionary<string>(DataExtensions.parseQueryString(token.value, false))
+
+            var args: object = DataExtensions.parseQueryString(token.value, false);
+
+            this.query = new Dictionary<string>(args)
                 .Select(m => new NamedValue<string>(m.key, m.value))
                 .ToArray();
+        }
+
+        public static basename(fileName: string): string {
+            var nameTokens: string[] = From(fileName.split("/")).Last.split(".");
+            var name: string = From(nameTokens)
+                .Take(nameTokens.length - 1)
+                .JoinBy(".");
+
+            return name;
         }
 
         public static WindowLocation(): URL {
