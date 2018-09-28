@@ -139,7 +139,7 @@ module Router {
             if (!isNullOrUndefined(router)) {
                 router.register(appId, hashKey, false);
             } else {
-                console.log(`Page [${link}] haven't reference to the TypeScript Linq library...`);
+                console.log(`[${link}] isn't refer to TypeScript Linq.`);
             }
 
             document.title = frame.contentDocument.title;
