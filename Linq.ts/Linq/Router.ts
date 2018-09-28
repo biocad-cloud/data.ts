@@ -16,6 +16,10 @@ module Router {
         return link => getAllUrlParams(link).Item(argName);
     }
 
+    export function moduleName(): (link: string) => string {
+        return link => (new TsLinq.URL(link)).fileName;
+    }
+
     /**
      * 父容器页面注册视图容器对象
     */
