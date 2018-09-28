@@ -19,7 +19,18 @@
             var type = TypeInfo.typeof(elements);
             var list: T[];
 
-            if (type.typeOf == "NodeListOf") {
+            /**
+             * TypeInfo {typeOf: "object", class: "NodeList", property: Array(2), methods: Array(5)}
+             * IsArray: false
+             * IsEnumerator: false
+             * IsPrimitive: false
+             * class: "NodeList"
+             * methods: (5) ["item", "entries", "forEach", "keys", "values"]
+             * property: (2) ["0", "1"]
+             * typeOf: "object"
+            */
+
+            if (type.typeOf == "NodeList") {
                 list = [];
                 (<NodeListOf<T>>elements).forEach(x => list.push(x));
             } else {
