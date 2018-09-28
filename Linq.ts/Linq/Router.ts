@@ -56,7 +56,7 @@ module Router {
 
             router.register(appId, false);
         }
-        window.location.hash = link;
+        window.location.hash = new TsLinq.URL(link).fileName;
     }
 
     /**
