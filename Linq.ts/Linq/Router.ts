@@ -20,6 +20,11 @@ module Router {
 
         if (frameRegister && (!frames || !frames.ContainsKey(appId))) {
             registerFrame(appId);
+
+            // 注册hash更新的事件
+            window.onhashchange = function () {
+                hashChanged(appId);
+            }
         }
         if (!hashLinks) {
             hashLinks = new Dictionary<string>({
@@ -42,6 +47,13 @@ module Router {
             });
 
         // 假设当前的url之中有hash的话，还需要根据注册的路由配置进行跳转显示
+        hashChanged(appId);
+    }
+
+    /**
+     * 根据当前url之中的hash进行相应的页面的显示操作
+    */
+    function hashChanged(appId: string) {
         var hash: string = TsLinq.URL.WindowLocation().hash;
         var url: string = hashLinks.Item(hash);
 
