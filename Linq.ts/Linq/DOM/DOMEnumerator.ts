@@ -51,6 +51,9 @@
             return this.Select(element => element.nodeValue);
         }
 
+        /**
+         * 使用这个函数设置或者获取属性值
+        */
         public attr(attrName: string, val: string | IEnumerator<string> | string[] | ((x: T) => string) = null): IEnumerator<string> {
             if (val) {
                 if (typeof val == "function") {
@@ -61,6 +64,12 @@
                     });
                 } else {
                     var array: string[] = Linq.EnsureArray(val, this.Count);
+
+                    return this.Select((x, i) => {
+                        var value: string = array[i];
+                        x.setAttribute(attrName, value);
+                        return value;
+                    });
                 }
             } else {
                 return this.Select(x => x.getAttribute(attrName));
