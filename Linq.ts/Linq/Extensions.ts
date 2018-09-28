@@ -18,7 +18,17 @@
         } else if (type.IsArray) {
             array = [...<T[]>data];
         } else {
-            array = [<T>data];
+            var x = <T>data;
+
+            if (n <= 0) {
+                array = [x];
+            } else {
+                array = [];
+
+                for (var i: number = 0; i < n; i++) {
+                    array.push(x);
+                }
+            }
         }
 
         if (1 <= n) {
