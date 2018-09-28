@@ -59,7 +59,10 @@ module Router {
         window.location.hash = link;
     }
 
-    export function IsCurrentWindowStack(): boolean {
+    /**
+     * 当前的堆栈环境是否是最顶层的堆栈？
+    */
+    export function IsTopWindowStack(): boolean {
         return parent && (parent.location.pathname == window.location.pathname);
     }
 
@@ -67,7 +70,7 @@ module Router {
      * 因为link之中可能存在查询参数，所以必须要在web服务器上面测试
     */
     export function goto(link: string, appId: string, stack: Window = null) {
-        if (!Router.IsCurrentWindowStack()) {
+        if (!Router.IsTopWindowStack()) {
             (<any>parent).Router.goto(link, appId, parent);
         } else if (stack) {
             // 没有parent了，已经到达最顶端了
