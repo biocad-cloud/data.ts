@@ -51,9 +51,17 @@
             return this.Select(element => element.nodeValue);
         }
 
-        public attr(attrName: string, val: string | IEnumerator<string> | string[] | ((x: T) => void) = null): IEnumerator<string> {
+        public attr(attrName: string, val: string | IEnumerator<string> | string[] | ((x: T) => string) = null): IEnumerator<string> {
             if (val) {
-
+                if (typeof val == "function") {
+                    return this.Select(x => {
+                        var value: string = val(x);
+                        x.setAttribute(attrName, value);
+                        return value;
+                    });
+                } else {
+                    var array: string[] = Linq.EnsureArray(val, this.Count);
+                }
             } else {
                 return this.Select(x => x.getAttribute(attrName));
             }
