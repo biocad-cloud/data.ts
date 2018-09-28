@@ -95,11 +95,11 @@ function LoadText(id: string): string {
  * @param url get query string from url (optional) or window
 */
 function getAllUrlParams(url: string = window.location.href): Dictionary<string> {
-    var queryString: string = url.split('?')[1];
-
-    if (queryString) {
+    if (url.indexOf("?") > -1) {
         // if query string exists
-        return new Dictionary<string>(DataExtensions.parseQueryString(queryString));
+        var queryString: string = Strings.GetTagValue(url, '?').value;
+        var args = DataExtensions.parseQueryString(queryString)
+        return new Dictionary<string>(args);
     } else {
         return new Dictionary<string>({});
     }
