@@ -30,7 +30,7 @@
              * typeOf: "object"
             */
 
-            if (type.typeOf == "NodeList") {
+            if (type.class == "NodeList") {
                 list = [];
                 (<NodeListOf<T>>elements).forEach(x => list.push(x));
             } else {
