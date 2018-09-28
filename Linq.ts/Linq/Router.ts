@@ -17,7 +17,7 @@
         (<HTMLElement>$ts(`#${appId}`)).appendChild(frame);
 
         aLinks.attr("router-link", link => link.href);
-        aLinks.attr("href", "#");
+        aLinks.attr("href", "javascript:void(0);");
         aLinks.onClick((link, click) => {
             Router.goto(link.getAttribute("router-link"));
         });
@@ -33,9 +33,9 @@
             // 没有parent了，已经到达最顶端了
             var frame: HTMLIFrameElement;
             frame = (<any>stack).Router.iFrame();
-            frame.src = `${link}&refresh=${Math.random()}`;
+            frame.src = link;
         } else {
-            Router.iFrame().src = `${link}&refresh=${Math.random()}`;
+            Router.iFrame().src = link;
         }
     }
 }
