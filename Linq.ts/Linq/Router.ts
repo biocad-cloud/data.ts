@@ -12,7 +12,7 @@ module Router {
     const routerLink: string = "router-link";
 
     /**
-     * 父容器页面注释视图容器对象
+     * 父容器页面注册视图容器对象
     */
     export function register(appId: string = "app", frameRegister: boolean = true) {
         var aLink: Linq.DOM.DOMEnumerator<HTMLAnchorElement>;
@@ -29,6 +29,9 @@ module Router {
         }
     }
 
+    /**
+     * 在当前的栈空间环境之中注册视图层环境
+    */
     function registerFrame(appId: string) {
         var frame: HTMLIFrameElement = $ts(`<iframe id="${appId}-frame">`, {
             frameborder: "no",
@@ -49,6 +52,7 @@ module Router {
 
     function navigate(link: string, stack: Window, appId: string) {
         var frame: HTMLIFrameElement = (<any>stack).Router.iFrame(appId);
+
         frame.src = link;
         frame.onload = function () {
             var win = (<any>frame.contentWindow);
