@@ -1,11 +1,9 @@
-﻿/// <reference path="Collections/DictionaryMaps.ts" />
-
-/**
+﻿/**
  * 路由器模块
 */
 module Router {
 
-    var frames: Dictionary<HTMLIFrameElement> = new Dictionary<HTMLIFrameElement>({});
+    var frames: Dictionary<HTMLIFrameElement>;
 
     export function iFrame(app: string): HTMLIFrameElement {
         return frames.Item(app);
@@ -38,6 +36,9 @@ module Router {
             Router.goto(link.getAttribute("router-link"), appId);
         });
 
+        if (!frames) {
+            frames = new Dictionary<HTMLIFrameElement>({});
+        }
         frames.Add(appId, frame);
     }
 
