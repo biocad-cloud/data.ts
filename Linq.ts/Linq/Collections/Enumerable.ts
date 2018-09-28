@@ -45,9 +45,10 @@ module Enumerable {
 
     export function Take<T>(source: T[], n: number): IEnumerator<T> {
         var takes: T[] = [];
+        var len: number = source.length;
 
-        for (var i = 0; i < n - 1; i++) {
-            if (i == source.length) {
+        for (var i = 0; i < n; i++) {
+            if (i > len) {
                 break;
             } else {
                 takes.push(source[i]);
