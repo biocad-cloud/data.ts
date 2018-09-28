@@ -129,9 +129,17 @@ module Router {
             var win = (<any>frame.contentWindow);
             var router = win.Router;
 
-            router.register(appId, hashKey, false);
+            // 如果iframe页面没有引用linq.js
+            // 那么router将会是空值
+            // 在这里判断一下再调用
+            if (!isNullOrUndefined(router)) {
+                router.register(appId, hashKey, false);
+            } else {
+                console.log(`Page [${link}] haven't reference to the TypeScript Linq library...`);
+            }
         }
-        window.location.hash = new TsLinq.URL(link).fileName;
+
+        window.location.hash = hashKey(link);
     }
 
     /**
