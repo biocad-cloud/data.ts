@@ -8,18 +8,18 @@
 /**
  * 对于这个函数的返回值还需要做类型转换
 */
-function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
+function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T> & any {
     var type: TypeInfo = TypeInfo.typeof(any);
     var typeOf: string = type.typeOf;
     var handle = Linq.TsQuery.handler;
     var eval: any = typeOf in handle ? handle[typeOf]() : null;
 
     if (type.IsArray) {
-        return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type);
+        return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type, args);
     } else if (type.typeOf == "function") {
         Linq.DOM.ready(<() => void>any);
     } else {
-        return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type);
+        return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
     }
 }
 

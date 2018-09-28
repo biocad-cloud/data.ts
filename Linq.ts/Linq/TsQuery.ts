@@ -14,7 +14,7 @@ namespace Linq.TsQuery {
     };
 
     export interface IEval<T> {
-        doEval(expr: T, type: TypeInfo): any;
+        doEval(expr: T, type: TypeInfo, args: object): any;
     }
 
     /**
@@ -22,7 +22,7 @@ namespace Linq.TsQuery {
     */
     export class stringEval implements IEval<string> {
 
-        doEval(expr: string, type: TypeInfo): any {
+        doEval(expr: string, type: TypeInfo, args: object): any {
             var query: DOM.Query = DOM.Query.parseQuery(expr);
 
             if (query.type == DOM.QueryTypes.id) {
@@ -38,6 +38,12 @@ namespace Linq.TsQuery {
                     node.setAttribute(attr.name, attr.value);
                 });
 
+                if (args) {
+                    Object.keys(args).forEach(name => {
+                        node.setAttribute(name, <string>args[name]);
+                    });
+                }
+
                 return node;
             } else if (!query.singleNode) {
                 // 返回节点集合
@@ -52,13 +58,13 @@ namespace Linq.TsQuery {
             }
         }
     }
-       
+
     /**
      * Create a Linq Enumerator
     */
     export class arrayEval<V> implements IEval<V[]> {
 
-        doEval(expr: V[], type: TypeInfo): any {
+        doEval(expr: V[], type: TypeInfo, args: object): any {
             return From(expr);
         }
     }
