@@ -21,7 +21,7 @@ module DataExtensions {
     }
 
     /**
-     * 将URL查询字符串解析为字典对象
+     * 将URL查询字符串解析为字典对象，所传递的查询字符串应该是查询参数部分，即问号之后的部分，而非完整的url
      * 
      * @param queryString URL查询参数
      * @param lowerName 是否将所有的参数名称转换为小写形式？

@@ -84,6 +84,9 @@
     <TypeScriptCompile Include="Data\PriorityQueue.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\URL.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Benchmark.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
