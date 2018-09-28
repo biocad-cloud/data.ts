@@ -17,20 +17,25 @@
         (<HTMLElement>$ts(`#${appId}`)).appendChild(frame);
 
         aLinks.attr("router-link", link => link.href);
-        aLinks.attr("href", "javascript:void(0)");
-        aLinks.AddEvent("onclick", (link, click) => {
+        aLinks.attr("href", "#");
+        aLinks.onClick((link, click) => {
             Router.goto(link.getAttribute("router-link"));
         });
     }
 
+    /**
+     * 因为link之中可能存在查询参数，所以必须要在web服务器上面测试
+    */
     export function goto(link: string, stack: Window = null) {
-        if (parent) {
+        if (parent && parent != window) {
             Router.goto(link, parent);
-        } else {
+        } else if (stack) {
             // 没有parent了，已经到达最顶端了
             var frame: HTMLIFrameElement;
             frame = (<any>stack).Router.iFrame();
             frame.src = `${link}&refresh=${Math.random()}`;
+        } else {
+            Router.iFrame().src = `${link}&refresh=${Math.random()}`;
         }
     }
 }

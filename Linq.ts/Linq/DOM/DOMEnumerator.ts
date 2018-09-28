@@ -98,6 +98,15 @@
             this.AddEvent("onchange", handler);
         }
 
+        public onClick(handler: (sender: T, event: MouseEvent) => void) {
+            this.ForEach(element => {
+                element.onclick = function (this: HTMLElement, ev: MouseEvent) {
+                    handler(<T>this, ev);
+                    return <any>false;
+                }
+            });
+        }
+
         public RemoveClass(className: string): DOMEnumerator<T> {
             this.ForEach(x => {
                 if (x.classList.contains(className)) {
