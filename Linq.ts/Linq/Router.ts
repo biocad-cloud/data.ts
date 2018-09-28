@@ -14,12 +14,23 @@ module Router {
     /**
      * 父容器页面注释视图容器对象
     */
-    export function register(appId: string = "app") {
+    export function register(appId: string = "app", frameRegister: boolean = true) {
         var aLink: Linq.DOM.DOMEnumerator<HTMLAnchorElement>;
-        var frame: HTMLIFrameElement;
 
         aLink = $ts(".router");
-        frame = $ts(`<iframe id="${appId}-frame">`, {
+        aLink.attr("router-link", link => link.href);
+        aLink.attr("href", "javascript:void(0);");
+        aLink.onClick((link, click) => {
+            Router.goto(link.getAttribute("router-link"), appId);
+        });
+
+        if (frameRegister && (!frames || !frames.ContainsKey(appId))) {
+            registerFrame(appId);
+        }
+    }
+
+    function registerFrame(appId: string) {
+        var frame: HTMLIFrameElement = $ts(`<iframe id="${appId}-frame">`, {
             frameborder: "no",
             border: 0,
             marginwidth: 0,
@@ -30,31 +41,39 @@ module Router {
 
         (<HTMLElement>$ts(`#${appId}`)).appendChild(frame);
 
-        aLink.attr("router-link", link => link.href);
-        aLink.attr("href", "javascript:void(0);");
-        aLink.onClick((link, click) => {
-            Router.goto(link.getAttribute("router-link"), appId);
-        });
-
         if (!frames) {
             frames = new Dictionary<HTMLIFrameElement>({});
         }
         frames.Add(appId, frame);
     }
 
+    function navigate(link: string, stack: Window, appId: string) {
+        var frame: HTMLIFrameElement = (<any>stack).Router.iFrame(appId);
+        frame.src = link;
+        frame.onload = function () {
+            var win = (<any>frame.contentWindow);
+            var router = win.Router;
+
+            router.register(appId, false);
+        }
+        window.location.hash = link;
+    }
+
+    export function IsCurrentWindowStack(): boolean {
+        return parent && (parent.location.pathname == window.location.pathname);
+    }
+
     /**
      * 因为link之中可能存在查询参数，所以必须要在web服务器上面测试
     */
     export function goto(link: string, appId: string, stack: Window = null) {
-        if (parent && parent != window) {
-            Router.goto(link, appId, parent);
+        if (!Router.IsCurrentWindowStack()) {
+            (<any>parent).Router.goto(link, appId, parent);
         } else if (stack) {
             // 没有parent了，已经到达最顶端了
-            var frame: HTMLIFrameElement;
-            frame = (<any>stack).Router.iFrame(appId);
-            frame.src = link;
+            navigate(link, stack, appId);
         } else {
-            Router.iFrame(appId).src = link;
+            navigate(link, window, appId);
         }
     }
 }
