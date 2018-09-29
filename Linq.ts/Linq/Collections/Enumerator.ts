@@ -82,6 +82,64 @@ class IEnumerator<T> {
     }
 
     /**
+     * @param project 如果这个参数被忽略掉了的话，将会直接进行属性的合并
+    */
+    public Join<U, K, V>(another: IEnumerator<U> | U[],
+        tKey: (x: T) => K,
+        uKey: (x: U) => K,
+        compare: (a: K, b: K) => number,
+        project: (x: T, y: U) => V = null): IEnumerator<V> {
+
+        if (Array.isArray(another)) {
+            another = new IEnumerator(another);
+        }
+
+        var keysT = Object.keys(this.First);
+        var keysU = Object.keys(another.First);
+
+        if (!project) {
+            project = function (x, y) {
+                var out: object = {};
+
+                keysT.forEach(k => out[k] = x[k]);
+                keysU.forEach(k => out[k] = y[k]);
+
+                return <V><any>out;
+            }
+        }
+
+        var tree = new algorithm.BTree.binaryTree<K, U[]>(compare);
+
+        another.ForEach(obj => {
+            var key: K = uKey(obj);
+            var list: U[] = tree.find(key);
+
+            if (list) {
+                list.push(obj);
+            } else {
+                tree.add(key, [obj]);
+            }
+        });
+
+        var output: V[] = [];
+
+        this.ForEach(x => {
+            var key: K = tKey(x);
+            var list: U[] = tree.find(key);
+
+            if (list) {
+                // 有交集，则进行叠加投影
+                list.forEach(y => output.push(project(x, y)));
+            } else {
+                // 没有交集，则投影空对象
+                output.push(project(x, <U>{}));
+            }
+        });
+
+        return new IEnumerator<V>(output);
+    }
+
+    /**
      * Projects each element of a sequence into a new form.
      * 
      * @typedef TOut The type of the value returned by selector.
