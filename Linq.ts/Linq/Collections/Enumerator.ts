@@ -82,6 +82,33 @@ class IEnumerator<T> {
     }
 
     /**
+     * 两个序列求总和
+    */
+    public Union<U, K, V>(another: IEnumerator<U> | U[],
+        tKey: (x: T) => K,
+        uKey: (x: U) => K,
+        compare: (a: K, b: K) => number,
+        project: (x: T, y: U) => V = null): IEnumerator<V> {
+
+        if (!Array.isArray(another)) {
+            another = another.ToArray();
+        }
+
+        var join = new Enumerable.JoinHelper<T, U>(
+            this.sequence, another
+        );
+
+        return join.Union(
+            tKey, uKey,
+            compare,
+            project
+        );
+    }
+
+    /**
+     * 如果在another序列之中找不到对应的对象，则当前序列会和一个空对象合并
+     * 如果another序列之中有多余的元素，即该元素在当前序列之中找不到的元素，会被扔弃
+     * 
      * @param project 如果这个参数被忽略掉了的话，将会直接进行属性的合并
     */
     public Join<U, K, V>(another: IEnumerator<U> | U[],
@@ -90,53 +117,19 @@ class IEnumerator<T> {
         compare: (a: K, b: K) => number,
         project: (x: T, y: U) => V = null): IEnumerator<V> {
 
-        if (Array.isArray(another)) {
-            another = new IEnumerator(another);
+        if (!Array.isArray(another)) {
+            another = another.ToArray();
         }
 
-        var keysT = Object.keys(this.First);
-        var keysU = Object.keys(another.First);
+        var join = new Enumerable.JoinHelper<T, U>(
+            this.sequence, another
+        );
 
-        if (!project) {
-            project = function (x, y) {
-                var out: object = {};
-
-                keysT.forEach(k => out[k] = x[k]);
-                keysU.forEach(k => out[k] = y[k]);
-
-                return <V><any>out;
-            }
-        }
-
-        var tree = new algorithm.BTree.binaryTree<K, U[]>(compare);
-
-        another.ForEach(obj => {
-            var key: K = uKey(obj);
-            var list: U[] = tree.find(key);
-
-            if (list) {
-                list.push(obj);
-            } else {
-                tree.add(key, [obj]);
-            }
-        });
-
-        var output: V[] = [];
-
-        this.ForEach(x => {
-            var key: K = tKey(x);
-            var list: U[] = tree.find(key);
-
-            if (list) {
-                // 有交集，则进行叠加投影
-                list.forEach(y => output.push(project(x, y)));
-            } else {
-                // 没有交集，则投影空对象
-                output.push(project(x, <U>{}));
-            }
-        });
-
-        return new IEnumerator<V>(output);
+        return join.LeftJoin(
+            tKey, uKey,
+            compare,
+            project
+        );
     }
 
     /**
