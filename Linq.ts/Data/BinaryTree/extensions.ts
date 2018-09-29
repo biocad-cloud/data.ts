@@ -15,7 +15,13 @@ namespace algorithm.BTree {
         }
 
         function visitInternal<T, V>(tree: node<T, V>, out: node<T, V>[]): void {
-            out.push(tree);
+            // 20180929 为什么会存在undefined的节点呢？
+            if (isNullOrUndefined(tree)) {
+                console.warn(tree);
+                return;
+            } else {
+                out.push(tree);
+            }            
 
             if (tree.left) {
                 visitInternal(tree.left, out);
