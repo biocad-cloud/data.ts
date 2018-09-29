@@ -49,7 +49,7 @@ namespace Linq.DOM {
 
         var thead: HTMLElement = $ts("<thead>");
         var tbody: HTMLElement = $ts("<tbody>");
-        var table: HTMLElement = $ts("<table>");
+        var table: HTMLElement = $ts(`<table id="${div}-table">`);
 
         if (attrs) {
             if (attrs.id) {
