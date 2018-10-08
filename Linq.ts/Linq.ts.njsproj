@@ -45,6 +45,7 @@
     <TypeScriptCompile Include="csv\doc.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\Base64.ts" />
     <TypeScriptCompile Include="Data\BinaryTree\node.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
