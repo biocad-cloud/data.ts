@@ -107,3 +107,7 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
         return new Dictionary<string>({});
     }
 }
+
+function Goto(url: string): void {
+    window.location.href = url;
+}
