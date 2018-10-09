@@ -73,7 +73,11 @@ class TypeInfo {
                 // do nothing
             }
         } else if (isObject) {
-            className = (<any>obj.constructor).name;
+            if (isNullOrUndefined(obj)) {
+                console.warn("Object is nothing! [https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/nothing]");
+            } else {
+                className = (<any>obj.constructor).name;
+            }            
         } else {
             className = "";
         }
