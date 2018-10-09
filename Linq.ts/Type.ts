@@ -63,6 +63,7 @@ class TypeInfo {
         var isObject: boolean = type == "object";
         var isArray: boolean = Array.isArray(obj);
         var className: string = "";
+        var isNull: boolean = isNullOrUndefined(obj);
 
         if (isArray) {
             var x = (<any>obj)[0];
@@ -73,11 +74,12 @@ class TypeInfo {
                 // do nothing
             }
         } else if (isObject) {
-            if (isNullOrUndefined(obj)) {
+            if (isNull) {
                 console.warn("Object is nothing! [https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/nothing]");
+                className = "null";
             } else {
                 className = (<any>obj.constructor).name;
-            }            
+            }
         } else {
             className = "";
         }
@@ -86,8 +88,14 @@ class TypeInfo {
 
         typeInfo.typeOf = isArray ? "array" : type;
         typeInfo.class = className;
-        typeInfo.property = isObject ? Object.keys(obj) : [];
-        typeInfo.methods = TypeInfo.GetObjectMethods(obj);
+
+        if (isNull) {
+            typeInfo.property = [];
+            typeInfo.methods = [];
+        } else {
+            typeInfo.property = isObject ? Object.keys(obj) : [];
+            typeInfo.methods = TypeInfo.GetObjectMethods(obj);
+        }
 
         return typeInfo;
     }
