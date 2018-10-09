@@ -76,10 +76,14 @@ module Router {
         var frame: HTMLIFrameElement = $ts(`#${appId}-frame`);
         var size: number[] = Linq.DOM.clientSize();
 
-        app.style.width = size[0].toString();
-        app.style.height = size[1].toString();
-        frame.width = size[0].toString();
-        frame.height = size[1].toString();
+        if (!app) {
+            console.warn(`[#${appId}] not found!`);
+        } else {
+            app.style.width = size[0].toString();
+            app.style.height = size[1].toString();
+            frame.width = size[0].toString();
+            frame.height = size[1].toString();
+        }
     }
 
     /**
@@ -139,7 +143,7 @@ module Router {
             if (!isNullOrUndefined(router)) {
                 router.register(appId, hashKey, false);
             } else {
-                console.log(`[${link}] isn't refer to TypeScript Linq.`);
+                console.info(`[${link}] isn't refer to TypeScript Linq.`);
             }
 
             document.title = frame.contentDocument.title;
