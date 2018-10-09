@@ -27,24 +27,9 @@ namespace Linq.TsQuery {
 
             if (query.type == DOM.QueryTypes.id) {
                 // 按照id查询
-                return document.getElementById(query.expression);
+                return stringEval.extends(document.getElementById(query.expression));
             } else if (query.type == DOM.QueryTypes.NoQuery) {
-                // 创建新的节点元素
-                var declare = DOM.ParseNodeDeclare(expr);
-                var node: HTMLElement = document
-                    .createElement(declare.tag);
-
-                declare.attrs.forEach(attr => {
-                    node.setAttribute(attr.name, attr.value);
-                });
-
-                if (args) {
-                    Object.keys(args).forEach(name => {
-                        node.setAttribute(name, <string>args[name]);
-                    });
-                }
-
-                return node;
+                return stringEval.createNew(expr, args);
             } else if (!query.singleNode) {
                 // 返回节点集合
                 var nodes = <NodeListOf<HTMLElement>>document
@@ -56,6 +41,34 @@ namespace Linq.TsQuery {
                 // 只返回第一个满足条件的节点
                 return document.querySelector(query.expression);
             }
+        }
+
+        private static extends(node: HTMLElement): HTMLElement {
+            var obj: any = node;
+
+            obj.display = function (html: string) {
+                node.innerHTML = html;
+            }
+
+            return node;
+        }
+
+        public static createNew(expr: string, args: object): HTMLElement {
+            // 创建新的节点元素
+            var declare = DOM.ParseNodeDeclare(expr);
+            var node: HTMLElement = document.createElement(declare.tag);
+
+            declare.attrs.forEach(attr => {
+                node.setAttribute(attr.name, attr.value);
+            });
+
+            if (args) {
+                Object.keys(args).forEach(name => {
+                    node.setAttribute(name, <string>args[name]);
+                });
+            }
+
+            return node;
         }
     }
 
