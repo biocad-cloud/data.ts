@@ -68,6 +68,9 @@ function IsNullOrEmpty<T>(array: T[] | IEnumerator<T>): boolean {
     }
 }
 
+/**
+ * 查看目标变量的对象值是否是空值或者未定义
+*/
 function isNullOrUndefined(obj: any): boolean {
     if (obj == null || obj == undefined) {
         return true;
