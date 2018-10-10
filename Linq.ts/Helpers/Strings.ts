@@ -7,9 +7,11 @@ module Strings {
     export const x9: number = "9".charCodeAt(0);
     export const numericPattern: RegExp = /[-]?\d+(\.\d+)?/g;
 
+    /**
+     * 判断所给定的字符串文本是否是任意实数的正则表达式模式
+    */
     export function isNumericPattern(text: string): boolean {
-        var match = Strings.numericPattern.exec(text)[0];
-        return match == text;
+        return IsPattern(text, Strings.numericPattern);
     }
 
     /**
@@ -119,10 +121,16 @@ module Strings {
      * Determine that the whole given string is match a given regex pattern. 
     */
     export function IsPattern(str: string, pattern: RegExp | string): boolean {
-        var match: string = str.match(ensureRegexp(pattern))[0];
-        var test: boolean = match == str;
+        var matches = str.match(ensureRegexp(pattern));
 
-        return test;
+        if (isNullOrUndefined(matches)) {
+            return false;
+        } else {
+            var match: string = matches[0];
+            var test: boolean = match == str;
+
+            return test;
+        }
     }
 
     function ensureRegexp(pattern: RegExp | string): RegExp {
