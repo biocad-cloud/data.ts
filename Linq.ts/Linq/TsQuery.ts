@@ -1,5 +1,4 @@
 ﻿
-
 namespace Linq.TsQuery {
 
     export const handler = {
@@ -46,8 +45,19 @@ namespace Linq.TsQuery {
         private static extends(node: HTMLElement): HTMLElement {
             var obj: any = node;
 
-            obj.display = function (html: string) {
-                node.innerHTML = html;
+            /**
+             * 这个拓展函数总是会将节点中的原来的内容清空，然后显示html函数参数
+             * 所给定的内容
+            */
+            obj.display = function (html: string | HTMLElement) {
+                if (typeof html == "string") {
+                    node.innerHTML = html;
+                } else {
+                    node.innerHTML = "";
+                    node.appendChild(html);
+                }
+
+                return node;
             }
 
             return node;
@@ -68,7 +78,7 @@ namespace Linq.TsQuery {
                 });
             }
 
-            return node;
+            return stringEval.extends(node);
         }
     }
 
