@@ -118,11 +118,19 @@ module Strings {
     /**
      * Determine that the whole given string is match a given regex pattern. 
     */
-    export function IsPattern(str: string, pattern: RegExp): boolean {
-        var match: string = str.match(pattern)[0];
+    export function IsPattern(str: string, pattern: RegExp | string): boolean {
+        var match: string = str.match(ensureRegexp(pattern))[0];
         var test: boolean = match == str;
 
         return test;
+    }
+
+    function ensureRegexp(pattern: RegExp | string): RegExp {
+        if (typeof pattern == "string") {
+            return new RegExp(pattern);
+        } else {
+            return pattern;
+        }
     }
 
     /**
