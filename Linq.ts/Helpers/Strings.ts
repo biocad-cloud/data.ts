@@ -121,6 +121,11 @@ module Strings {
      * Determine that the whole given string is match a given regex pattern. 
     */
     export function IsPattern(str: string, pattern: RegExp | string): boolean {
+        if (!str) {
+            // 字符串是空的，则肯定不满足
+            return false;
+        }
+
         var matches = str.match(ensureRegexp(pattern));
 
         if (isNullOrUndefined(matches)) {
