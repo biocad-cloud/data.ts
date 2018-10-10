@@ -45,6 +45,10 @@ namespace Linq.TsQuery {
         private static extends(node: HTMLElement): HTMLElement {
             var obj: any = node;
 
+            if (isNullOrUndefined(node)) {
+                return null;
+            }
+
             /**
              * 这个拓展函数总是会将节点中的原来的内容清空，然后显示html函数参数
              * 所给定的内容
