@@ -54,7 +54,9 @@ namespace Linq.TsQuery {
              * 所给定的内容
             */
             obj.display = function (html: string | HTMLElement) {
-                if (typeof html == "string") {
+                if (!html) {
+                    node.innerHTML = "";
+                } else if (typeof html == "string") {
                     node.innerHTML = html;
                 } else {
                     node.innerHTML = "";
