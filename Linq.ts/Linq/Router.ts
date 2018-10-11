@@ -93,25 +93,10 @@ module Router {
         appId: string,
         hashKey: (link: string) => string) {
 
-        var frame: HTMLIFrameElement = (<any>stack).Router.iFrame(appId);
+        var frame: HTMLDivElement = $ts("#" + appId);
 
-        frame.src = link;
-        frame.onload = function () {
-            var win = (<any>frame.contentWindow);
-            var router = win.Router;
-
-            // 如果iframe页面没有引用linq.js
-            // 那么router将会是空值
-            // 在这里判断一下再调用
-            if (!isNullOrUndefined(router)) {
-                router.register(appId, hashKey, false);
-            } else {
-                console.info(`[${link}] isn't refer to TypeScript Linq.`);
-            }
-
-            document.title = frame.contentDocument.title;
-        }
-
+        frame.innerHTML = HttpHelpers.GET(link);
+        Router.register(appId, hashKey, false);
         window.location.hash = hashKey(link);
     }
 
