@@ -1,5 +1,8 @@
 ﻿namespace data.sprintf {
 
+    /**
+     * 对占位符的匹配结果
+    */
     export class match {
 
         public match: string;
@@ -111,7 +114,7 @@
             // 没有格式化参数的占位符，则直接输出原本的字符串
             return format;
         } else {
-            console.log(parsed);
+            // console.log(parsed);
         }
 
         if (argv.length < convCount) {
@@ -185,7 +188,9 @@
             match.sign = match.negative ? '-' : match.sign;
         }
 
-        var l: number = parseFloat(match.min) - match.argument.length + 1 - match.sign.length;
+        var l: number = parseFloat(match.min) -
+            match.argument.length + 1 -
+            match.sign.length;
         var pad = new Array(l < 0 ? 0 : l).join(match.pad);
 
         if (!match.left) {
