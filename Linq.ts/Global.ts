@@ -1,4 +1,4 @@
-﻿/// <reference path="Data/sprintf.ts" />
+/// <reference path="Data/sprintf.ts" />
 /// <reference path="Linq/Collections/Enumerator.ts" />
 /// <reference path="Linq/TsQuery.ts" />
 /// <reference path="Helpers/Extensions.ts" />
@@ -8,18 +8,18 @@
 /**
  * 对于这个函数的返回值还需要做类型转换
 */
-function $ts<T>(any: (() => void) | T | T[]): IEnumerator<T> & any {
+function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T> & any {
     var type: TypeInfo = TypeInfo.typeof(any);
     var typeOf: string = type.typeOf;
     var handle = Linq.TsQuery.handler;
     var eval: any = typeOf in handle ? handle[typeOf]() : null;
 
     if (type.IsArray) {
-        return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type);
+        return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type, args);
     } else if (type.typeOf == "function") {
         Linq.DOM.ready(<() => void>any);
     } else {
-        return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type);
+        return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
     }
 }
 
@@ -95,11 +95,11 @@ function LoadText(id: string): string {
  * @param url get query string from url (optional) or window
 */
 function getAllUrlParams(url: string = window.location.href): Dictionary<string> {
-    var queryString: string = url.split('?')[1];
-
-    if (queryString) {
+    if (url.indexOf("?") > -1) {
         // if query string exists
-        return new Dictionary<string>(DataExtensions.parseQueryString(queryString));
+        var queryString: string = Strings.GetTagValue(url, '?').value;
+        var args = DataExtensions.parseQueryString(queryString)
+        return new Dictionary<string>(args);
     } else {
         return new Dictionary<string>({});
     }

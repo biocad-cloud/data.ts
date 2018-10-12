@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Provides a set of static (Shared in Visual Basic) methods for querying 
  * objects that implement ``System.Collections.Generic.IEnumerable<T>``.
  * 
@@ -63,6 +63,10 @@ class IEnumerator<T> {
         }
     }
 
+    public indexOf(x: T): number {
+        return this.sequence.indexOf(x);
+    }
+
     /**
      * Get the first element in this sequence 
     */
@@ -75,6 +79,57 @@ class IEnumerator<T> {
     */
     public get Last(): T {
         return this.sequence[this.Count - 1];
+    }
+
+    /**
+     * 两个序列求总和
+    */
+    public Union<U, K, V>(another: IEnumerator<U> | U[],
+        tKey: (x: T) => K,
+        uKey: (x: U) => K,
+        compare: (a: K, b: K) => number,
+        project: (x: T, y: U) => V = null): IEnumerator<V> {
+
+        if (!Array.isArray(another)) {
+            another = another.ToArray();
+        }
+
+        var join = new Enumerable.JoinHelper<T, U>(
+            this.sequence, another
+        );
+
+        return join.Union(
+            tKey, uKey,
+            compare,
+            project
+        );
+    }
+
+    /**
+     * 如果在another序列之中找不到对应的对象，则当前序列会和一个空对象合并
+     * 如果another序列之中有多余的元素，即该元素在当前序列之中找不到的元素，会被扔弃
+     * 
+     * @param project 如果这个参数被忽略掉了的话，将会直接进行属性的合并
+    */
+    public Join<U, K, V>(another: IEnumerator<U> | U[],
+        tKey: (x: T) => K,
+        uKey: (x: U) => K,
+        compare: (a: K, b: K) => number,
+        project: (x: T, y: U) => V = null): IEnumerator<V> {
+
+        if (!Array.isArray(another)) {
+            another = another.ToArray();
+        }
+
+        var join = new Enumerable.JoinHelper<T, U>(
+            this.sequence, another
+        );
+
+        return join.LeftJoin(
+            tKey, uKey,
+            compare,
+            project
+        );
     }
 
     /**

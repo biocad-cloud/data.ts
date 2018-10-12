@@ -1,4 +1,4 @@
-﻿/**
+/**
  * http://www.rfc-editor.org/rfc/rfc4180.txt
 */
 namespace csv {

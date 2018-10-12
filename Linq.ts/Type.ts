@@ -34,14 +34,23 @@ class TypeInfo {
         return !this.class;
     }
 
+    /**
+     * 是否是一个数组集合对象？
+    */
     public get IsArray(): boolean {
         return this.typeOf == "array";
     }
 
+    /**
+     * 是否是一个枚举器集合对象？
+    */
     public get IsEnumerator(): boolean {
         return this.typeOf == "object" && this.class == "IEnumerator";
     }
 
+    /**
+     * 当前的对象是某种类型的数组集合对象
+    */
     public IsArrayOf(genericType: string): boolean {
         return this.IsArray && this.class == genericType;
     }
@@ -141,9 +150,15 @@ class TypeInfo {
             type = seq.ElementType;
 
             if (type.class == "Map") {
-                (<IEnumerator<Map<string, V>>>nameValues).ForEach(map => obj[map.key] = map.value);
+                (<IEnumerator<Map<string, V>>>nameValues)
+                    .ForEach(map => {
+                        obj[map.key] = map.value;
+                    });
             } else if (type.class == "NamedValue") {
-                (<IEnumerator<NamedValue<V>>>nameValues).ForEach(nv => obj[nv.name] = nv.value);
+                (<IEnumerator<NamedValue<V>>>nameValues)
+                    .ForEach(nv => {
+                        obj[nv.name] = nv.value;
+                    });
             } else {
                 console.error(type);
                 throw `Unsupport data type: ${type.class}`;

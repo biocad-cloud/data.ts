@@ -1,4 +1,4 @@
-﻿namespace Linq.DOM {
+namespace Linq.DOM {
 
     export class node {
 

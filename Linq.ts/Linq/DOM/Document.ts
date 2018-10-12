@@ -1,7 +1,18 @@
-﻿/**
+/**
  * HTML文档操作帮助函数
 */
 namespace Linq.DOM {
+
+    export function clientSize(): number[] {
+        var w = window,
+            d = document,
+            e = d.documentElement,
+            g = d.getElementsByTagName('body')[0],
+            x = w.innerWidth || e.clientWidth || g.clientWidth,
+            y = w.innerHeight || e.clientHeight || g.clientHeight;
+
+        return [x, y];
+    }
 
     /**
      * 向指定id编号的div添加select标签的组件
@@ -38,7 +49,7 @@ namespace Linq.DOM {
 
         var thead: HTMLElement = $ts("<thead>");
         var tbody: HTMLElement = $ts("<tbody>");
-        var table: HTMLElement = $ts("<table>");
+        var table: HTMLElement = $ts(`<table id="${div}-table">`);
 
         if (attrs) {
             if (attrs.id) {
@@ -94,9 +105,7 @@ namespace Linq.DOM {
                 .Select(h => new Map<string, string>(h, h))
                 .ToArray();
         } else if (type.IsEnumerator && TypeInfo.typeof(headers[0]).class == "Map") {
-            // return (IEnumerator<Map<string, string>>headers).ToArray();
-            var maps: IEnumerator<Map<string, string>> = <any>headers;
-            return maps.ToArray();
+            return (<IEnumerator<Map<string, string>>>headers).ToArray();
         } else {
             throw `Invalid sequence type: ${type.class}`;
         }
@@ -132,7 +141,7 @@ namespace Linq.DOM {
     export function addEvent(el: any, type: string, fn: (event: Event) => void): void {
         if (document.addEventListener) {
             if (el && (el.nodeName) || el === window) {
-                el.addEventListener(type, fn, false);
+                (<HTMLElement>el).addEventListener(type, fn, false);
             } else if (el && el.length) {
                 for (var i = 0; i < el.length; i++) {
                     addEvent(el[i], type, fn);

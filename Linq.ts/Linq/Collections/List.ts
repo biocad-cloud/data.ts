@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 表示一个动态列表对象
 */
 class List<T> extends IEnumerator<T> {

@@ -1,4 +1,4 @@
-﻿namespace algorithm.BTree {
+namespace algorithm.BTree {
 
     /**
      * A binary tree node.
