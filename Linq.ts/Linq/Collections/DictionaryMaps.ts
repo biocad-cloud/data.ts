@@ -1,4 +1,4 @@
-﻿/// <reference path="../../Data/StackTrace/StackTrace.ts" />
+/// <reference path="../../Data/StackTrace/StackTrace.ts" />
 
 /**
  * 键值对映射哈希表
@@ -43,10 +43,12 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
-    public constructor(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>>) {
+    public constructor(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>> = null) {
         super(Dictionary.ObjectMaps<V>(maps));
 
-        if (Array.isArray(maps)) {
+        if (isNullOrUndefined(maps)) {
+            this.maps = {};
+        } else if (Array.isArray(maps)) {
             this.maps = TypeInfo.CreateObject(maps);
         } else if (TypeInfo.typeof(maps).class == "IEnumerator") {
             this.maps = TypeInfo.CreateObject(<IEnumerator<Map<string, V>>>maps);
@@ -64,6 +66,10 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
     */
     public static ObjectMaps<V>(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>>): Map<string, V>[] {
         var type = TypeInfo.typeof(maps);
+
+        if (isNullOrUndefined(maps)) {
+            return [];
+        }
 
         if (Array.isArray(maps)) {
             return maps;

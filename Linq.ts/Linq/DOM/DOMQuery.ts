@@ -1,4 +1,4 @@
-﻿namespace Linq.DOM {
+namespace Linq.DOM {
 
     /**
      * HTML文档节点的查询类型

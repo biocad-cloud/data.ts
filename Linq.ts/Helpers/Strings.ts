@@ -5,6 +5,14 @@ module Strings {
 
     export const x0: number = "0".charCodeAt(0);
     export const x9: number = "9".charCodeAt(0);
+    export const numericPattern: RegExp = /[-]?\d+(\.\d+)?/g;
+
+    /**
+     * 判断所给定的字符串文本是否是任意实数的正则表达式模式
+    */
+    export function isNumericPattern(text: string): boolean {
+        return IsPattern(text, Strings.numericPattern);
+    }
 
     /**
      * @param text A single character
@@ -112,11 +120,30 @@ module Strings {
     /**
      * Determine that the whole given string is match a given regex pattern. 
     */
-    export function IsPattern(str: string, pattern: RegExp): boolean {
-        var match: string = str.match(pattern)[0];
-        var test: boolean = match == str;
+    export function IsPattern(str: string, pattern: RegExp | string): boolean {
+        if (!str) {
+            // 字符串是空的，则肯定不满足
+            return false;
+        }
 
-        return test;
+        var matches = str.match(ensureRegexp(pattern));
+
+        if (isNullOrUndefined(matches)) {
+            return false;
+        } else {
+            var match: string = matches[0];
+            var test: boolean = match == str;
+
+            return test;
+        }
+    }
+
+    function ensureRegexp(pattern: RegExp | string): RegExp {
+        if (typeof pattern == "string") {
+            return new RegExp(pattern);
+        } else {
+            return pattern;
+        }
     }
 
     /**

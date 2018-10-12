@@ -1,5 +1,8 @@
 ﻿namespace data.sprintf {
 
+    /**
+     * 对占位符的匹配结果
+    */
     export class match {
 
         public match: string;
@@ -43,7 +46,7 @@
     */
     export const placeholder: RegExp = new RegExp(/(%([%]|(\-)?(\+|\x20)?(0)?(\d+)?(\.(\d)?)?([bcdfosxX])))/g);
 
-    export function parseFormat(string: string, arguments: string[]) {
+    export function parseFormat(string: string, arguments: any[]) {
         var stringPosStart = 0;
         var stringPosEnd = 0;
         var matchPosEnd = 0;
@@ -97,7 +100,7 @@
      * string formatted by the usual printf conventions. See below for more details. 
      * You must specify the string and how to format the variables in it.
     */
-    export function doFormat(format: string, ...argv: string[]): string {
+    export function doFormat(format: string, ...argv: any[]): string {
 
         if (typeof arguments == "undefined") { return null; }
         if (arguments.length < 1) { return null; }
@@ -111,7 +114,7 @@
             // 没有格式化参数的占位符，则直接输出原本的字符串
             return format;
         } else {
-            console.log(parsed);
+            // console.log(parsed);
         }
 
         if (argv.length < convCount) {
@@ -185,7 +188,9 @@
             match.sign = match.negative ? '-' : match.sign;
         }
 
-        var l: number = parseFloat(match.min) - match.argument.length + 1 - match.sign.length;
+        var l: number = parseFloat(match.min) -
+            match.argument.length + 1 -
+            match.sign.length;
         var pad = new Array(l < 0 ? 0 : l).join(match.pad);
 
         if (!match.left) {

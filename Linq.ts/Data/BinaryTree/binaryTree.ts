@@ -5,6 +5,8 @@ namespace algorithm.BTree {
 
     /**
      * 用于进行数据分组所需要的最基础的二叉树数据结构
+     * 
+     * ``{key => value}``
     */
     export class binaryTree<T, V> {
 

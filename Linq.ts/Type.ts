@@ -34,14 +34,23 @@ class TypeInfo {
         return !this.class;
     }
 
+    /**
+     * 是否是一个数组集合对象？
+    */
     public get IsArray(): boolean {
         return this.typeOf == "array";
     }
 
+    /**
+     * 是否是一个枚举器集合对象？
+    */
     public get IsEnumerator(): boolean {
         return this.typeOf == "object" && this.class == "IEnumerator";
     }
 
+    /**
+     * 当前的对象是某种类型的数组集合对象
+    */
     public IsArrayOf(genericType: string): boolean {
         return this.IsArray && this.class == genericType;
     }
@@ -54,6 +63,7 @@ class TypeInfo {
         var isObject: boolean = type == "object";
         var isArray: boolean = Array.isArray(obj);
         var className: string = "";
+        var isNull: boolean = isNullOrUndefined(obj);
 
         if (isArray) {
             var x = (<any>obj)[0];
@@ -64,7 +74,12 @@ class TypeInfo {
                 // do nothing
             }
         } else if (isObject) {
-            className = (<any>obj.constructor).name;
+            if (isNull) {
+                console.warn("Object is nothing! [https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/nothing]");
+                className = "null";
+            } else {
+                className = (<any>obj.constructor).name;
+            }
         } else {
             className = "";
         }
@@ -73,8 +88,14 @@ class TypeInfo {
 
         typeInfo.typeOf = isArray ? "array" : type;
         typeInfo.class = className;
-        typeInfo.property = isObject ? Object.keys(obj) : [];
-        typeInfo.methods = TypeInfo.GetObjectMethods(obj);
+
+        if (isNull) {
+            typeInfo.property = [];
+            typeInfo.methods = [];
+        } else {
+            typeInfo.property = isObject ? Object.keys(obj) : [];
+            typeInfo.methods = TypeInfo.GetObjectMethods(obj);
+        }
 
         return typeInfo;
     }
@@ -141,9 +162,15 @@ class TypeInfo {
             type = seq.ElementType;
 
             if (type.class == "Map") {
-                (<IEnumerator<Map<string, V>>>nameValues).ForEach(map => obj[map.key] = map.value);
+                (<IEnumerator<Map<string, V>>>nameValues)
+                    .ForEach(map => {
+                        obj[map.key] = map.value;
+                    });
             } else if (type.class == "NamedValue") {
-                (<IEnumerator<NamedValue<V>>>nameValues).ForEach(nv => obj[nv.name] = nv.value);
+                (<IEnumerator<NamedValue<V>>>nameValues)
+                    .ForEach(nv => {
+                        obj[nv.name] = nv.value;
+                    });
             } else {
                 console.error(type);
                 throw `Unsupport data type: ${type.class}`;

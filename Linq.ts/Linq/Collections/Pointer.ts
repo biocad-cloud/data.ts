@@ -1,4 +1,4 @@
-﻿/// <reference path="Enumerator.ts" />
+/// <reference path="Enumerator.ts" />
 
 /**
  * A data sequence object with a internal index pointer.

@@ -1,4 +1,4 @@
-﻿namespace data {
+namespace data {
 
     /**
      * 一个数值范围

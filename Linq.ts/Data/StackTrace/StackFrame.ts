@@ -1,5 +1,8 @@
 ﻿namespace TsLinq {
 
+    /**
+     * 调用堆栈之中的某一个栈片段信息
+    */
     export class StackFrame {
 
         public caller: string;

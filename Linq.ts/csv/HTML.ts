@@ -1,4 +1,4 @@
-﻿namespace csv.HTML {
+namespace csv.HTML {
 
     const bootstrap: string[] = ["table", "table-hover"];
 
