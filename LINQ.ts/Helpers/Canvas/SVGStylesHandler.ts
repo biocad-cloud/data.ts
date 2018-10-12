@@ -96,6 +96,7 @@
 
                     var externalFontUrl = (fontUrlMatch && fontUrlMatch[1]) || '';
                     var fontUrlIsDataURI = externalFontUrl.match(/^data:/);
+
                     if (fontUrlIsDataURI) {
                         // We should ignore data uri - they are already embedded
                         externalFontUrl = '';

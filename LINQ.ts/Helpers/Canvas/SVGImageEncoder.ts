@@ -1,6 +1,9 @@
 ﻿namespace CanvasHelper.saveSvgAsPng {
 
     export const xmlns: string = "http://www.w3.org/2000/xmlns/";
+    export const doctype: string = `
+        <?xml version="1.0" standalone="no"?>
+            <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [<!ENTITY nbsp "&#160;">]>`;
 
     export class Encoder {
 
@@ -127,7 +130,10 @@
                 try {
                     png = canvas.toDataURL(options.encoderType, options.encoderOptions);
                 } catch (e) {
-                    if ((typeof SecurityError !== 'undefined' && e instanceof SecurityError) || e.name == "SecurityError") {
+                    // 20181013 在typescript之中还不支持SecurityError??
+                    // (typeof SecurityError !== 'undefined' && e instanceof SecurityError) || 
+
+                    if (e.name == "SecurityError") {
                         console.error("Rendered SVG images cannot be downloaded in this browser.");
                         return;
                     } else {

@@ -1,11 +1,5 @@
 ﻿namespace CanvasHelper.saveSvgAsPng {
 
-    // var out$ = typeof exports != 'undefined' && exports || typeof define != 'undefined' && {} || this;
-
-    export const doctype: string = `
-        <?xml version="1.0" standalone="no"?>
-            <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [<!ENTITY nbsp "&#160;">]>`;
-
     export const xlink: string = "http://www.w3.org/1999/xlink";
 
     export function isElement(obj: any): boolean {
