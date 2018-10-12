@@ -15,6 +15,16 @@
         public left: number;
         public top: number;
 
+        public static Default(): Options {
+            return <Options>{
+                encoderType: "image/png",
+                encoderOptions: 0.8,
+                scale: 1,
+                responsive: false,
+                left: 0,
+                top: 0
+            };
+        }
     }
 
     export class styles {
