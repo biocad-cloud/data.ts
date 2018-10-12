@@ -5,6 +5,12 @@
 /// <reference path="Helpers/Strings.ts" />
 /// <reference path="Type.ts" />
 
+if (typeof String.prototype['startsWith'] != 'function') {
+    String.prototype['startsWith'] = function (str) {
+        return this.slice(0, str.length) == str;
+    };
+}
+
 /**
  * 对于这个函数的返回值还需要做类型转换
 */

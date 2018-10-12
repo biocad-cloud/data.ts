@@ -111,9 +111,9 @@
                         // okay, we are lucky. We can fetch this font later
 
                         //handle url if relative
-                        if (externalFontUrl.startsWith('../')) {
+                        if (externalFontUrl["startsWith"]('../')) {
                             externalFontUrl = sheetHref + '/../' + externalFontUrl
-                        } else if (externalFontUrl.startsWith('./')) {
+                        } else if (externalFontUrl["startsWith"]('./')) {
                             externalFontUrl = sheetHref + '/.' + externalFontUrl
                         }
 
