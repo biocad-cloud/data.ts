@@ -5,6 +5,9 @@
         <?xml version="1.0" standalone="no"?>
             <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [<!ENTITY nbsp "&#160;">]>`;
 
+    /**
+     * https://github.com/exupero/saveSvgAsPng
+    */
     export class Encoder {
 
         prepareSvg(el: SVGSVGElement, options: Options = new Options(), cb: (html: string | HTMLImageElement, width: number, height: number) => void = null) {
