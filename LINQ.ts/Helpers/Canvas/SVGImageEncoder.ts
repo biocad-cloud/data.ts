@@ -10,7 +10,7 @@
     */
     export class Encoder {
 
-        prepareSvg(el: SVGSVGElement, options: Options = new Options(), cb: (html: string | HTMLImageElement, width: number, height: number) => void = null) {
+        public static prepareSvg(el: SVGSVGElement, options: Options = new Options(), cb: (html: string | HTMLImageElement, width: number, height: number) => void = null) {
             requireDomNode(el);
 
             options.scale = options.scale || 1;
@@ -94,7 +94,7 @@
             });
         }
 
-        svgAsDataUri(el, options, cb: (uri: string) => void = null) {
+        public static svgAsDataUri(el, options, cb: (uri: string) => void = null) {
             this.prepareSvg(el, options, function (svg) {
                 var uri = 'data:image/svg+xml;base64,' + window.btoa(reEncode(doctype + svg));
 
@@ -104,7 +104,7 @@
             });
         }
 
-        svgAsPngUri(el, options: Options = new Options(), cb: (uri: string) => void) {
+        public static svgAsPngUri(el, options: Options = new Options(), cb: (uri: string) => void) {
             requireDomNode(el);
 
             options.encoderType = options.encoderType || 'image/png';
@@ -170,7 +170,7 @@
             }
         }
 
-        saveSvg(el, name, options) {
+        public static saveSvg(el, name, options) {
             requireDomNode(el);
 
             options = options || {};
@@ -179,7 +179,7 @@
             });
         }
 
-        saveSvgAsPng(el, name, options) {
+        public static saveSvgAsPng(el, name, options) {
             requireDomNode(el);
 
             options = options || {};
