@@ -97,6 +97,12 @@
     <TypeScriptCompile Include="Helpers\Canvas\SVGAsPng.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Helpers\Canvas\SVGStylesHandler.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Helpers\Canvas\SVGImageEncoder.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Collections\Map.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

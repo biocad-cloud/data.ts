@@ -1,0 +1,182 @@
+﻿namespace CanvasHelper.saveSvgAsPng {
+
+    export const xmlns: string = "http://www.w3.org/2000/xmlns/";
+
+    export class Encoder {
+
+        prepareSvg(el: SVGSVGElement, options: Options = new Options(), cb: (html: string | HTMLImageElement, width: number, height: number) => void = null) {
+            requireDomNode(el);
+
+            options.scale = options.scale || 1;
+            options.responsive = options.responsive || false;
+
+            inlineImages(el, function () {
+                var outer = document.createElement("div");
+                var clone: SVGSVGElement = <any>el.cloneNode(true);
+                var width: number, height: number;
+                if (el.tagName == 'svg') {
+                    width = options.width || getDimension(el, clone, 'width');
+                    height = options.height || getDimension(el, clone, 'height');
+                } else if (el.getBBox) {
+                    var box = el.getBBox();
+                    width = box.x + box.width;
+                    height = box.y + box.height;
+                    clone.setAttribute('transform', clone.getAttribute('transform').replace(/translate\(.*?\)/, ''));
+
+                    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+                    svg.appendChild(clone)
+                    clone = svg;
+                } else {
+                    console.error('Attempted to render non-SVG element', el);
+                    return;
+                }
+
+                clone.setAttribute("version", "1.1");
+                if (!clone.getAttribute('xmlns')) {
+                    clone.setAttributeNS(xmlns, "xmlns", "http://www.w3.org/2000/svg");
+                }
+                if (!clone.getAttribute('xmlns:xlink')) {
+                    clone.setAttributeNS(xmlns, "xmlns:xlink", "http://www.w3.org/1999/xlink");
+                }
+
+                if (options.responsive) {
+                    clone.removeAttribute('width');
+                    clone.removeAttribute('height');
+                    clone.setAttribute('preserveAspectRatio', 'xMinYMin meet');
+                } else {
+                    clone.setAttribute("width", (width * options.scale).toString());
+                    clone.setAttribute("height", (height * options.scale).toString());
+                }
+
+                clone.setAttribute("viewBox", [
+                    options.left || 0,
+                    options.top || 0,
+                    width,
+                    height
+                ].join(" "));
+
+                var fos = clone.querySelectorAll('foreignObject > *');
+                for (var i = 0; i < fos.length; i++) {
+                    if (!fos[i].getAttribute('xmlns')) {
+                        fos[i].setAttributeNS(xmlns, "xmlns", "http://www.w3.org/1999/xhtml");
+                    }
+                }
+
+                outer.appendChild(clone);
+
+                // In case of custom fonts we need to fetch font first, and then inline
+                // its url into data-uri format (encode as base64). That's why style
+                // processing is done asynchonously. Once all inlining is finshed
+                // cssLoadedCallback() is called.
+                styles.doStyles(el, options, cssLoadedCallback);
+
+                function cssLoadedCallback(css) {
+                    // here all fonts are inlined, so that we can render them properly.
+                    var s = document.createElement('style');
+                    s.setAttribute('type', 'text/css');
+                    s.innerHTML = "<![CDATA[\n" + css + "\n]]>";
+                    var defs = document.createElement('defs');
+                    defs.appendChild(s);
+                    clone.insertBefore(defs, clone.firstChild);
+
+                    if (cb) {
+                        var outHtml = outer.innerHTML;
+                        outHtml = outHtml.replace(/NS\d+:href/gi, 'xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href');
+                        cb(outHtml, width, height);
+                    }
+                }
+            });
+        }
+
+        svgAsDataUri(el, options, cb: (uri: string) => void = null) {
+            this.prepareSvg(el, options, function (svg) {
+                var uri = 'data:image/svg+xml;base64,' + window.btoa(reEncode(doctype + svg));
+
+                if (cb) {
+                    cb(uri);
+                }
+            });
+        }
+
+        svgAsPngUri(el, options: Options = new Options(), cb: (uri: string) => void) {
+            requireDomNode(el);
+
+            options.encoderType = options.encoderType || 'image/png';
+            options.encoderOptions = options.encoderOptions || 0.8;
+
+            var convertToPng = function (src: HTMLImageElement, w: number, h: number) {
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                canvas.width = w;
+                canvas.height = h;
+
+                if (options.canvg) {
+                    options.canvg(canvas, src);
+                } else {
+                    context.drawImage(src, 0, 0);
+                }
+
+                if (options.backgroundColor) {
+                    context.globalCompositeOperation = 'destination-over';
+                    context.fillStyle = options.backgroundColor;
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                var png: string;
+
+                try {
+                    png = canvas.toDataURL(options.encoderType, options.encoderOptions);
+                } catch (e) {
+                    if ((typeof SecurityError !== 'undefined' && e instanceof SecurityError) || e.name == "SecurityError") {
+                        console.error("Rendered SVG images cannot be downloaded in this browser.");
+                        return;
+                    } else {
+                        throw e;
+                    }
+                }
+
+                cb(png);
+            }
+
+            if (options.canvg) {
+                this.prepareSvg(el, options, convertToPng);
+            } else {
+                this.svgAsDataUri(el, options, function (uri) {
+                    var image = new Image();
+
+                    image.onload = function () {
+                        convertToPng(image, image.width, image.height);
+                    }
+
+                    image.onerror = function () {
+                        console.error(
+                            'There was an error loading the data URI as an image on the following SVG\n',
+                            window.atob(uri.slice(26)), '\n',
+                            "Open the following link to see browser's diagnosis\n",
+                            uri);
+                    }
+
+                    image.src = uri;
+                });
+            }
+        }
+
+        saveSvg(el, name, options) {
+            requireDomNode(el);
+
+            options = options || {};
+            this.svgAsDataUri(el, options, function (uri) {
+                Linq.DOM.download(name, uri);
+            });
+        }
+
+        saveSvgAsPng(el, name, options) {
+            requireDomNode(el);
+
+            options = options || {};
+            this.svgAsPngUri(el, options, function (uri) {
+                Linq.DOM.download(name, uri);
+            });
+        }
+    }
+}

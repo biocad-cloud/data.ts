@@ -3,6 +3,29 @@
 */
 module DataExtensions {
 
+    export function arrayBufferToBase64(buffer: Array<number>): string {
+        var binary: string = '';
+        var bytes = new Uint8Array(buffer);
+        var len = bytes.byteLength;
+
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+
+        return window.btoa(binary);
+    }
+
+    export function uriToBlob(uri: string): Blob {
+        var byteString = window.atob(uri.split(',')[1]);
+        var mimeString = uri.split(',')[0].split(':')[1].split(';')[0]
+        var buffer = new ArrayBuffer(byteString.length);
+        var intArray = new Uint8Array(buffer);
+        for (var i = 0; i < byteString.length; i++) {
+            intArray[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([buffer], { type: mimeString });
+    }
+
     export function getCook(cookiename: string): string {
         // Get name followed by anything except a semicolon
         var cookie: string = document.cookie;
