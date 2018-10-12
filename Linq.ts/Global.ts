@@ -47,6 +47,9 @@ function From<T>(source: T[] | IEnumerator<T>): IEnumerator<T> {
     return new IEnumerator<T>(source);
 }
 
+/**
+ * 将一个给定的字符串转换为组成该字符串的所有字符的枚举器
+*/
 function CharEnumerator(str: string): IEnumerator<string> {
     return new IEnumerator<string>(Strings.ToCharArray(str));
 }
@@ -108,6 +111,9 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
     }
 }
 
+/**
+ * 调用这个函数会从当前的页面跳转到指定URL的页面
+*/
 function Goto(url: string): void {
     window.location.href = url;
 }

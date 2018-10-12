@@ -7,6 +7,9 @@ class Base64 {
 
     private static readonly keyStr: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
+    /**
+     * 将任意文本编码为base64字符串
+    */
     public static encode(text: string): string {
         var base64: string[] = [];
         var n, r, i, s, o, u, a;
@@ -38,6 +41,9 @@ class Base64 {
         return base64.join("");
     }
 
+    /**
+     * 将base64字符串解码为普通的文本字符串
+    */
     public static decode(base64: string): string {
         var text = "";
         var n, r, i;
@@ -68,6 +74,9 @@ class Base64 {
         return text
     }
 
+    /**
+     * 将文本转换为utf8编码的文本字符串
+    */
     public static utf8_encode(text: string): string {
         var chars: string[] = [];
 
@@ -91,6 +100,9 @@ class Base64 {
         return chars.join("");
     }
 
+    /**
+     * 将utf8编码的文本转换为原来的文本
+    */
     public static utf8_decode(text: string): string {
         var t: string[] = [];
         var n = 0;

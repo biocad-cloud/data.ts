@@ -42,6 +42,11 @@ namespace Linq.TsQuery {
             }
         }
 
+        /**
+         * 向HTML节点对象的原型定义之中拓展新的方法和成员属性
+         * 这个函数的输出在ts之中可能用不到，主要是应用于js脚本
+         * 编程之中
+        */
         private static extends(node: HTMLElement): HTMLElement {
             var obj: any = node;
 
@@ -69,8 +74,10 @@ namespace Linq.TsQuery {
             return node;
         }
 
-        public static createNew(expr: string, args: object): HTMLElement {
-            // 创建新的节点元素
+        /**
+         * 创建新的HTML节点元素
+        */
+        public static createNew(expr: string, args: object): HTMLElement {            
             var declare = DOM.ParseNodeDeclare(expr);
             var node: HTMLElement = document.createElement(declare.tag);
 

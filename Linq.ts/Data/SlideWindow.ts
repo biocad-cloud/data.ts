@@ -1,5 +1,8 @@
 ﻿namespace data {
 
+    /**
+     * 序列之中的对某一个区域的滑窗操作结果对象
+    */
     export class SlideWindow<T> extends IEnumerator<T> {
 
         /**
