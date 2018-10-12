@@ -1,4 +1,5 @@
 ﻿
+
 namespace Linq.TsQuery {
 
     export const handler = {
@@ -26,9 +27,24 @@ namespace Linq.TsQuery {
 
             if (query.type == DOM.QueryTypes.id) {
                 // 按照id查询
-                return stringEval.extends(document.getElementById(query.expression));
+                return document.getElementById(query.expression);
             } else if (query.type == DOM.QueryTypes.NoQuery) {
-                return stringEval.createNew(expr, args);
+                // 创建新的节点元素
+                var declare = DOM.ParseNodeDeclare(expr);
+                var node: HTMLElement = document
+                    .createElement(declare.tag);
+
+                declare.attrs.forEach(attr => {
+                    node.setAttribute(attr.name, attr.value);
+                });
+
+                if (args) {
+                    Object.keys(args).forEach(name => {
+                        node.setAttribute(name, <string>args[name]);
+                    });
+                }
+
+                return node;
             } else if (!query.singleNode) {
                 // 返回节点集合
                 var nodes = <NodeListOf<HTMLElement>>document
@@ -40,58 +56,6 @@ namespace Linq.TsQuery {
                 // 只返回第一个满足条件的节点
                 return document.querySelector(query.expression);
             }
-        }
-
-        /**
-         * 向HTML节点对象的原型定义之中拓展新的方法和成员属性
-         * 这个函数的输出在ts之中可能用不到，主要是应用于js脚本
-         * 编程之中
-        */
-        private static extends(node: HTMLElement): HTMLElement {
-            var obj: any = node;
-
-            if (isNullOrUndefined(node)) {
-                return null;
-            }
-
-            /**
-             * 这个拓展函数总是会将节点中的原来的内容清空，然后显示html函数参数
-             * 所给定的内容
-            */
-            obj.display = function (html: string | HTMLElement) {
-                if (!html) {
-                    node.innerHTML = "";
-                } else if (typeof html == "string") {
-                    node.innerHTML = html;
-                } else {
-                    node.innerHTML = "";
-                    node.appendChild(html);
-                }
-
-                return node;
-            }
-
-            return node;
-        }
-
-        /**
-         * 创建新的HTML节点元素
-        */
-        public static createNew(expr: string, args: object): HTMLElement {            
-            var declare = DOM.ParseNodeDeclare(expr);
-            var node: HTMLElement = document.createElement(declare.tag);
-
-            declare.attrs.forEach(attr => {
-                node.setAttribute(attr.name, attr.value);
-            });
-
-            if (args) {
-                Object.keys(args).forEach(name => {
-                    node.setAttribute(name, <string>args[name]);
-                });
-            }
-
-            return stringEval.extends(node);
         }
     }
 

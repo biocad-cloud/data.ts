@@ -3,7 +3,12 @@
 */
 module Router {
 
+    var frames: Dictionary<HTMLIFrameElement>;
     var hashLinks: Dictionary<string>;
+
+    export function iFrame(app: string): HTMLIFrameElement {
+        return frames.Item(app);
+    }
 
     const routerLink: string = "router-link";
 
@@ -25,6 +30,18 @@ module Router {
         var aLink: Linq.DOM.DOMEnumerator<HTMLAnchorElement>;
         var gethashKey: (link: string) => string;
 
+        if (frameRegister && (!frames || !frames.ContainsKey(appId))) {
+            registerFrame(appId);
+
+            // 注册hash更新的事件
+            window.onhashchange = function () {
+                hashChanged(appId);
+            }
+            // 自动调整iframe的大小
+            window.onresize = function () {
+                clientResize(appId);
+            }
+        }
         if (!hashLinks) {
             hashLinks = new Dictionary<string>({
                 "/": "/"
@@ -51,7 +68,7 @@ module Router {
 
         // 假设当前的url之中有hash的话，还需要根据注册的路由配置进行跳转显示
         hashChanged(appId);
-        // clientResize(appId);
+        clientResize(appId);
     }
 
     function clientResize(appId: string) {
@@ -59,14 +76,10 @@ module Router {
         var frame: HTMLIFrameElement = $ts(`#${appId}-frame`);
         var size: number[] = Linq.DOM.clientSize();
 
-        if (!app) {
-            console.warn(`[#${appId}] not found!`);
-        } else {
-            app.style.width = size[0].toString();
-            app.style.height = size[1].toString();
-            frame.width = size[0].toString();
-            frame.height = size[1].toString();
-        }
+        app.style.width = size[0].toString();
+        app.style.height = size[1].toString();
+        frame.width = size[0].toString();
+        frame.height = size[1].toString();
     }
 
     /**
@@ -82,10 +95,30 @@ module Router {
                 window.location.hash = "";
                 window.location.reload(true);
             } else {
-                (<HTMLDivElement>$ts("#" + appId)).innerHTML =
-                    HttpHelpers.GET(url);
+                iFrame(appId).src = url;
             }
         }
+    }
+
+    /**
+     * 在当前的栈空间环境之中注册视图层环境
+    */
+    function registerFrame(appId: string) {
+        var frame: HTMLIFrameElement = $ts(`<iframe id="${appId}-frame">`, {
+            frameborder: "no",
+            border: 0,
+            marginwidth: 0,
+            marginheight: 0,
+            scrolling: "no",
+            allowtransparency: "yes"
+        });
+
+        (<HTMLElement>$ts(`#${appId}`)).appendChild(frame);
+
+        if (!frames) {
+            frames = new Dictionary<HTMLIFrameElement>({});
+        }
+        frames.Add(appId, frame);
     }
 
     function navigate(link: string,
@@ -93,10 +126,25 @@ module Router {
         appId: string,
         hashKey: (link: string) => string) {
 
-        var frame: HTMLDivElement = $ts("#" + appId);
+        var frame: HTMLIFrameElement = (<any>stack).Router.iFrame(appId);
 
-        frame.innerHTML = HttpHelpers.GET(link);
-        Router.register(appId, hashKey, false);
+        frame.src = link;
+        frame.onload = function () {
+            var win = (<any>frame.contentWindow);
+            var router = win.Router;
+
+            // 如果iframe页面没有引用linq.js
+            // 那么router将会是空值
+            // 在这里判断一下再调用
+            if (!isNullOrUndefined(router)) {
+                router.register(appId, hashKey, false);
+            } else {
+                console.log(`[${link}] isn't refer to TypeScript Linq.`);
+            }
+
+            document.title = frame.contentDocument.title;
+        }
+
         window.location.hash = hashKey(link);
     }
 

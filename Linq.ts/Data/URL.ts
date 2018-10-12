@@ -2,9 +2,6 @@
 
 namespace TsLinq {
 
-    /**
-     * URL组成字符串解析模块
-    */
     export class URL {
 
         /**
@@ -23,13 +20,7 @@ namespace TsLinq {
          * 不带拓展名的文件名称
         */
         public fileName: string;
-        /**
-         * 在URL字符串之中``#``符号后面的所有字符串都是hash值
-        */
         public hash: string;
-        /**
-         * 网络协议名称
-        */
         public protocol: string;
 
         public constructor(url: string) {
@@ -53,9 +44,6 @@ namespace TsLinq {
                 .ToArray();
         }
 
-        /**
-         * 将URL之中的query部分解析为字典对象
-        */
         public static UrlQuery(args: string): object {
             if (args) {
                 return DataExtensions.parseQueryString(args, false);
@@ -64,9 +52,6 @@ namespace TsLinq {
             }
         }
 
-        /**
-         * 只保留文件名（已经去除了文件夹路径以及文件名最后的拓展名部分）
-        */
         public static basename(fileName: string): string {
             var nameTokens: string[] = From(fileName.split("/")).Last.split(".");
             var name: string = From(nameTokens)
@@ -76,9 +61,6 @@ namespace TsLinq {
             return name;
         }
 
-        /**
-         * 获取得到当前的url
-        */
         public static WindowLocation(): URL {
             return new URL(window.location.href);
         }

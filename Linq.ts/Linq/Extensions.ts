@@ -1,15 +1,10 @@
 namespace Linq {
 
-    /**
-     * 确保所传递进来的参数输出的是一个序列集合对象
-    */
     export function EnsureCollection<T>(data: T | T[] | IEnumerator<T>, n = -1): IEnumerator<T> {
         return new IEnumerator<T>(Linq.EnsureArray(data, n));
     }
 
     /**
-     * 确保随传递进来的参数所输出的是一个数组对象
-     * 
      * @param data 如果这个参数是一个数组，则在这个函数之中会执行复制操作
      * @param n 如果data数据序列长度不足，则会使用null进行补充，n为任何小于data长度的正实数都不会进行补充操作，
      *     相反只会返回前n个元素，如果n是负数，则不进行任何操作

@@ -15,7 +15,7 @@ namespace algorithm.BTree {
         }
 
         function visitInternal<T, V>(tree: node<T, V>, out: node<T, V>[]): void {
-            // 20180929 ä¸ºä»€ä¹ˆä¼šå­˜åœ¨undefinedçš„èŠ‚ç‚¹å‘¢ï¼Ÿ
+            // 20180929 ÎªÊ²Ã´»á´æÔÚundefinedµÄ½ÚµãÄØ£¿
             if (isNullOrUndefined(tree)) {
                 console.warn(tree);
                 return;
