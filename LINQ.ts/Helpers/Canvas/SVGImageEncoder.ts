@@ -1,8 +1,12 @@
 ﻿namespace CanvasHelper.saveSvgAsPng {
 
     export const xmlns: string = "http://www.w3.org/2000/xmlns/";
-    export const doctype: string = `
-        <?xml version="1.0" standalone="no"?>
+    /**
+     * ##### 2018-10-12 XMl标签必须要一开始就出现，否则会出现错误
+     * 
+     * error on line 2 at column 14: XML declaration allowed only at the start of the document
+    */
+    export const doctype: string = `<?xml version="1.0" standalone="no"?>
             <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [<!ENTITY nbsp "&#160;">]>`;
 
     /**
