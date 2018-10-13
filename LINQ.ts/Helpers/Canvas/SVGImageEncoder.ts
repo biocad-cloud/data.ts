@@ -24,6 +24,7 @@
                 var outer = document.createElement("div");
                 var clone: SVGSVGElement = <any>el.cloneNode(true);
                 var width: number, height: number;
+
                 if (el.tagName == 'svg') {
                     width = options.width || getDimension(el, clone, 'width');
                     height = options.height || getDimension(el, clone, 'height');
@@ -42,6 +43,7 @@
                 }
 
                 clone.setAttribute("version", "1.1");
+
                 if (!clone.getAttribute('xmlns')) {
                     clone.setAttributeNS(xmlns, "xmlns", "http://www.w3.org/2000/svg");
                 }
@@ -66,6 +68,7 @@
                 ].join(" "));
 
                 var fos = clone.querySelectorAll('foreignObject > *');
+
                 for (var i = 0; i < fos.length; i++) {
                     if (!fos[i].getAttribute('xmlns')) {
                         fos[i].setAttributeNS(xmlns, "xmlns", "http://www.w3.org/1999/xhtml");
@@ -90,7 +93,7 @@
                     clone.insertBefore(defs, clone.firstChild);
 
                     if (cb) {
-                        var outHtml = outer.innerHTML;
+                        var outHtml: string = outer.innerHTML;
                         outHtml = outHtml.replace(/NS\d+:href/gi, 'xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href');
                         cb(outHtml, width, height);
                     }
@@ -115,10 +118,13 @@
             options.encoderOptions = options.encoderOptions || 0.8;
 
             var convertToPng = function (src: HTMLImageElement, w: number, h: number) {
-                var canvas = document.createElement('canvas');
+                var canvas: HTMLCanvasElement = $ts('<canvas>', {
+                    width: w,
+                    height: h
+                });
                 var context = canvas.getContext('2d');
-                canvas.width = w;
-                canvas.height = h;
+                //canvas.width = w;
+                //canvas.height = h;
 
                 if (options.canvg) {
                     options.canvg(canvas, src);

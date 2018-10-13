@@ -12,7 +12,10 @@
         }
     }
 
-    export function isExternal(url): boolean {
+    /**
+     * 判断所给定的url指向的资源是否是来自于外部域的资源？
+    */
+    export function isExternal(url: string): boolean {
         return url && url.lastIndexOf('http', 0) == 0 && url.lastIndexOf(window.location.host) == -1;
     }
 
@@ -78,7 +81,10 @@
         return left;
     }
 
-    export function getDimension(el: SVGSVGElement, clone: SVGSVGElement, dim): number {
+    /**
+     * 获取得到width或者height的值
+    */
+    export function getDimension(el: SVGSVGElement, clone: SVGSVGElement, dim: string): number {
         var v: string = (el.viewBox && el.viewBox.baseVal && el.viewBox.baseVal[dim]) ||
             (clone.getAttribute(dim) !== null && !clone.getAttribute(dim).match(/%$/) && parseInt(clone.getAttribute(dim))) ||
             el.getBoundingClientRect()[dim] ||
