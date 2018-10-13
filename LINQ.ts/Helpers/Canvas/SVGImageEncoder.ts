@@ -123,8 +123,6 @@
                     height: h
                 });
                 var context = canvas.getContext('2d');
-                //canvas.width = w;
-                //canvas.height = h;
 
                 if (options.canvg) {
                     options.canvg(canvas, src);
