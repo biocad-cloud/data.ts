@@ -163,6 +163,9 @@
     <TypeScriptCompile Include="Global.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="TypeExtensions.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\StackTrace\" />
