@@ -114,5 +114,9 @@ namespace TsLinq {
 
             return url;
         }
+
+        public static Refresh(url: string): string {
+            return `${url}&refresh=${Math.random() * 10000}`;
+        }
     }
 }
