@@ -7,6 +7,10 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
 
     private maps: object;
 
+    public get Object(): object {
+        return Linq.extend(this.maps);
+    }
+
     /**
      * 如果键名称是空值的话，那么这个函数会自动使用caller的函数名称作为键名进行值的获取
      * 
