@@ -61,6 +61,21 @@ function CharEnumerator(str: string): IEnumerator<string> {
 }
 
 /**
+ * Query meta tag content value by name
+*/
+function metaValue(name: string, Default: string = null): string {
+    var meta = document.querySelector(`meta[name~="${name}"]`);
+    var content: string;
+
+    if (meta) {
+        content = meta.getAttribute("content");
+        return content ? content : Default;
+    } else {
+        return Default;
+    }
+}
+
+/**
  * 判断目标对象集合是否是空的？
  * 
  * @param array 如果这个数组对象是空值或者未定义，都会被判定为空，如果长度为零，则同样也会被判定为空值

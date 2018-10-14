@@ -36,6 +36,8 @@ namespace Linq.TsQuery {
                 var it = new DOM.DOMEnumerator(nodes);
 
                 return it;
+            } else if (query.type == DOM.QueryTypes.QueryMeta) {
+                return metaValue(query.expression, args["default"]);
             } else {
                 // 只返回第一个满足条件的节点
                 return document.querySelector(query.expression);
@@ -77,7 +79,7 @@ namespace Linq.TsQuery {
         /**
          * 创建新的HTML节点元素
         */
-        public static createNew(expr: string, args: object): HTMLElement {            
+        public static createNew(expr: string, args: object): HTMLElement {
             var declare = DOM.ParseNodeDeclare(expr);
             var node: HTMLElement = document.createElement(declare.tag);
 
