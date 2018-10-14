@@ -153,16 +153,21 @@ namespace csv {
          * 
          * @param callback 当这个异步回调为空值的时候，函数使用同步的方式工作，返回csv对象
          *                 如果这个参数不是空值，则以异步的方式工作，此时函数会返回空值
+         * @param parseText 如果url返回来的数据之中还包含有其他的信息，则会需要这个参数来进行csv文本数据的解析
         */
-        public static Load(url: string, tsv: boolean = false, callback: (csv: dataframe) => void = null): dataframe {
+        public static Load(url: string,
+            tsv: boolean = false,
+            callback: (csv: dataframe) => void = null,
+            parseText: (response: string) => string = str => str): dataframe {
+
             if (callback == null || callback == undefined) {
                 // 同步
-                return dataframe.Parse(HttpHelpers.GET(url), tsv);
+                return dataframe.Parse(parseText(HttpHelpers.GET(url)), tsv);
             } else {
                 // 异步
                 HttpHelpers.GetAsyn(url, (text, code) => {
                     if (code == 200) {
-                        callback(dataframe.Parse(text, tsv));
+                        callback(dataframe.Parse(parseText(text), tsv));
                     } else {
                         throw `Error while load csv data source, http ${code}: ${text}`;
                     }

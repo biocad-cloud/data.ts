@@ -61,6 +61,10 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
         return new Dictionary<V>(maps);
     }
 
+    public static FromNamedValues<V>(values: NamedValue<V>[] | IEnumerator<NamedValue<V>>): Dictionary<V> {
+        return new Dictionary<V>(TypeInfo.CreateObject(values));
+    }
+
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
