@@ -37,7 +37,7 @@ namespace Linq.TsQuery {
 
                 return it;
             } else if (query.type == DOM.QueryTypes.QueryMeta) {
-                return metaValue(query.expression, args["default"]);
+                return metaValue(query.expression, (args || {})["default"]);
             } else {
                 // 只返回第一个满足条件的节点
                 return document.querySelector(query.expression);
