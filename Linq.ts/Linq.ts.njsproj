@@ -136,7 +136,13 @@
     <TypeScriptCompile Include="Linq\DOM\NodeParser.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DOM\HTMLElement.ts">
+    <TypeScriptCompile Include="Linq\DOM\HTMLTsElement.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\DOM\ModelExtends.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\TsQueryArguments.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\TsQuery.ts">
