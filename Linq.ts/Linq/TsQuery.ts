@@ -49,37 +49,18 @@ namespace Linq.TsQuery {
          * 这个函数的输出在ts之中可能用不到，主要是应用于js脚本
          * 编程之中
         */
-        private static extends(node: HTMLElement): HTMLElement {
-            var obj: any = node;
-
+        private static extends(node: HTMLElement): HTMLTsElement {
             if (isNullOrUndefined(node)) {
                 return null;
+            } else {
+                return new HTMLTsElement(node);
             }
-
-            /**
-             * 这个拓展函数总是会将节点中的原来的内容清空，然后显示html函数参数
-             * 所给定的内容
-            */
-            obj.display = function (html: string | HTMLElement) {
-                if (!html) {
-                    node.innerHTML = "";
-                } else if (typeof html == "string") {
-                    node.innerHTML = html;
-                } else {
-                    node.innerHTML = "";
-                    node.appendChild(html);
-                }
-
-                return node;
-            }
-
-            return node;
         }
 
         /**
          * 创建新的HTML节点元素
         */
-        public static createNew(expr: string, args: object): HTMLElement {
+        public static createNew(expr: string, args: object): HTMLTsElement {
             var declare = DOM.ParseNodeDeclare(expr);
             var node: HTMLElement = document.createElement(declare.tag);
 
