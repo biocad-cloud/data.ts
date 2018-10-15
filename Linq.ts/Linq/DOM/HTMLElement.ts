@@ -7,6 +7,9 @@ class HTMLTsElement {
 
     private node: any;
 
+    /**
+     * 可以从这里获取得到原生的``HTMLElement``对象用于操作
+    */
     public get HTMLElement(): HTMLElement {
         return <HTMLElement>this.node;
     }
@@ -55,5 +58,13 @@ class HTMLTsElement {
             node.classList.remove(className);
         }
         return this;
+    }
+
+    public show() {
+        this.HTMLElement.style.display = "block";
+    }
+
+    public hide() {
+        this.HTMLElement.style.display = "none";
     }
 }
