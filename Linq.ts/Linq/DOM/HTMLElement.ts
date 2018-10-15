@@ -51,7 +51,7 @@ class HTMLTsElement {
         return this;
     }
 
-    public removeClass(className: string) {
+    public removeClass(className: string): HTMLTsElement {
         var node = this.HTMLElement;
 
         if (node.classList.contains(className)) {
@@ -60,11 +60,13 @@ class HTMLTsElement {
         return this;
     }
 
-    public show() {
+    public show(): HTMLTsElement {
         this.HTMLElement.style.display = "block";
+        return this;
     }
 
-    public hide() {
+    public hide(): HTMLTsElement {
         this.HTMLElement.style.display = "none";
+        return this;
     }
 }
