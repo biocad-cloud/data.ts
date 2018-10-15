@@ -3,13 +3,15 @@
     export class Arguments {
 
         //#region "meta tag value query"
+
         public caseInSensitive: boolean;
         /**
          * 进行meta节点查询失败时候所返回来的默认值
         */
         public defaultValue: string;
-        //#endregion
 
+        //#endregion
+        
         //#region "node query && create"
 
         /**
@@ -22,10 +24,24 @@
 
         //#endregion
 
+        private static readonly ArgumentNames: string[] = Object.keys(new Arguments());
+
+        /**
+         * 在创建新的节点的时候，会有一个属性值的赋值过程，
+         * 该赋值过程会需要使用这个函数来过滤Arguments的属性值，否则该赋值过程会将Arguments
+         * 里面的属性名也进行赋值，可能会造成bug
+        */
+        public static nameFilter(args: object): string[] {
+            return From(Object.keys(args))
+                .Where(name => this.ArgumentNames.indexOf(name) == -1)
+                .ToArray();
+        }
+
         public static Default(): Arguments {
             return <Arguments>{
                 caseInSensitive: false,
-                nativeModel: true
+                nativeModel: true,
+                defaultValue: ""
             }
         }
     }

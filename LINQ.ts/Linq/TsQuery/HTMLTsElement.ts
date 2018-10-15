@@ -60,11 +60,17 @@ class HTMLTsElement {
         return this;
     }
 
+    /**
+     * 将css的display属性值设置为block用来显示当前的节点
+    */
     public show(): HTMLTsElement {
         this.HTMLElement.style.display = "block";
         return this;
     }
 
+    /**
+     * 将css的display属性值设置为none来隐藏当前的节点
+    */
     public hide(): HTMLTsElement {
         this.HTMLElement.style.display = "none";
         return this;

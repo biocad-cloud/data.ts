@@ -1,6 +1,6 @@
 /// <reference path="Data/sprintf.ts" />
 /// <reference path="Linq/Collections/Enumerator.ts" />
-/// <reference path="Linq/TsQuery.ts" />
+/// <reference path="Linq/TsQuery/TsQuery.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 /// <reference path="Helpers/Strings.ts" />
 /// <reference path="Type.ts" />

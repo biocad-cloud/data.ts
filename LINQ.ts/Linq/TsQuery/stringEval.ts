@@ -97,9 +97,11 @@
             });
 
             if (args) {
-                Object.keys(args).forEach(name => {
-                    node.setAttribute(name, <string>args[name]);
-                });
+                Arguments
+                    .nameFilter(args)
+                    .forEach(name => {
+                        node.setAttribute(name, <string>args[name]);
+                    });
             }
 
             if (args.nativeModel) {
