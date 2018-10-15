@@ -138,3 +138,14 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
 function Goto(url: string): void {
     window.location.href = url;
 }
+
+/**
+ * 这个函数会自动处理多行的情况
+*/
+function base64_decode(stream: string): string {
+    var data: string[] = Strings.lineTokens(stream);
+    var base64Str: string = data.join("");
+    var text: string = Base64.decode(base64Str);
+
+    return text;
+}
