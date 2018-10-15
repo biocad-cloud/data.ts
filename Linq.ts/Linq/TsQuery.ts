@@ -57,9 +57,29 @@ namespace Linq.TsQuery {
          * 向HTML节点对象的原型定义之中拓展新的方法和成员属性
          * 这个函数的输出在ts之中可能用不到，主要是应用于js脚本
          * 编程之中
+         * 
+         * @param node 当查询失败的时候是空值
         */
         private static extends(node: HTMLElement): HTMLElement {
+            var obj: any = node;
 
+            if (isNullOrUndefined(node)) {
+                return null;
+            }
+
+            var extendsNode: HTMLTsElement = new HTMLTsElement(node);
+
+            /**
+             * 这个拓展函数总是会将节点中的原来的内容清空，然后显示html函数参数
+             * 所给定的内容
+            */
+            obj.display = extendsNode.display;
+            obj.show = extendsNode.show;
+            obj.hide = extendsNode.hide;
+            obj.addClass = extendsNode.addClass;
+            obj.removeClass = extendsNode.removeClass;
+            
+            return node;            
         }
 
         /**
