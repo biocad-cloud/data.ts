@@ -1,20 +1,4 @@
-﻿
-namespace Linq.TsQuery {
-
-    export const handler = {
-        /**
-         * HTML document query handler
-        */
-        string: () => new stringEval(),
-        /**
-         * Create a linq object
-        */
-        array: () => new arrayEval()
-    };
-
-    export interface IEval<T> {
-        doEval(expr: T, type: TypeInfo, args: object): any;
-    }
+﻿namespace Linq.TsQuery {
 
     /**
      * 字符串格式的值意味着对html文档节点的查询
@@ -73,15 +57,30 @@ namespace Linq.TsQuery {
              * 这个拓展函数总是会将节点中的原来的内容清空，然后显示html函数参数
              * 所给定的内容
             */
-            obj.display = extendsNode.display;
-            obj.show = extendsNode.show;
-            obj.hide = extendsNode.hide;
-            obj.addClass = extendsNode.addClass;
-            obj.removeClass = extendsNode.removeClass;
+            obj.display = function (html: string | HTMLElement) {
+                extendsNode.display(html);
+                return node;
+            };
+            obj.show = function () {
+                extendsNode.show();
+                return node;
+            };
+            obj.hide = function () {
+                extendsNode.hide();
+                return node;
+            }
+            obj.addClass = function (name: string) {
+                extendsNode.addClass(name);
+                return node;
+            }
+            obj.removeClass = function (name: string) {
+                extendsNode.removeClass(name);
+                return node;
+            }
 
             // 用这个方法可以很方便的从现有的节点进行转换
             // 也可以直接使用new进行构造
-            obj.TypeScriptNode = () => extendsNode;
+            obj.asExtends = extendsNode;
 
             return node;
         }
@@ -89,7 +88,7 @@ namespace Linq.TsQuery {
         /**
          * 创建新的HTML节点元素
         */
-        public static createNew(expr: string, args: Arguments): HTMLElement {
+        public static createNew(expr: string, args: Arguments): HTMLElement | HTMLTsElement {
             var declare = DOM.ParseNodeDeclare(expr);
             var node: HTMLElement = document.createElement(declare.tag);
 
@@ -103,17 +102,11 @@ namespace Linq.TsQuery {
                 });
             }
 
-            return stringEval.extends(node);
-        }
-    }
-
-    /**
-     * Create a Linq Enumerator
-    */
-    export class arrayEval<V> implements IEval<V[]> {
-
-        doEval(expr: V[], type: TypeInfo, args: object): any {
-            return From(expr);
+            if (args.nativeModel) {
+                return stringEval.extends(node);
+            } else {
+                return new HTMLTsElement(node);
+            }
         }
     }
 }
