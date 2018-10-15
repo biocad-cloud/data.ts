@@ -5,6 +5,12 @@
 /// <reference path="Helpers/Strings.ts" />
 /// <reference path="Type.ts" />
 
+if (typeof String.prototype['startsWith'] != 'function') {
+    String.prototype['startsWith'] = function (str) {
+        return this.slice(0, str.length) == str;
+    };
+}
+
 /**
  * 对于这个函数的返回值还需要做类型转换
 */
@@ -52,6 +58,21 @@ function From<T>(source: T[] | IEnumerator<T>): IEnumerator<T> {
 */
 function CharEnumerator(str: string): IEnumerator<string> {
     return new IEnumerator<string>(Strings.ToCharArray(str));
+}
+
+/**
+ * Query meta tag content value by name
+*/
+function metaValue(name: string, Default: string = null): string {
+    var meta = document.querySelector(`meta[name~="${name}"]`);
+    var content: string;
+
+    if (meta) {
+        content = meta.getAttribute("content");
+        return content ? content : Default;
+    } else {
+        return Default;
+    }
 }
 
 /**
