@@ -144,7 +144,10 @@ function Goto(url: string): void {
 */
 function base64_decode(stream: string): string {
     var data: string[] = Strings.lineTokens(stream);
-    var base64Str: string = data.join("");
+    var base64Str: string = From(data)
+        .Where(s => s && s.length > 0)
+        .Select(s => s.trim())
+        .JoinBy("");
     var text: string = Base64.decode(base64Str);
 
     return text;
