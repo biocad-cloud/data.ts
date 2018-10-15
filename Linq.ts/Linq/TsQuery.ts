@@ -78,8 +78,12 @@ namespace Linq.TsQuery {
             obj.hide = extendsNode.hide;
             obj.addClass = extendsNode.addClass;
             obj.removeClass = extendsNode.removeClass;
-            
-            return node;            
+
+            // 用这个方法可以很方便的从现有的节点进行转换
+            // 也可以直接使用new进行构造
+            obj.TypeScriptNode = () => extendsNode;
+
+            return node;
         }
 
         /**
