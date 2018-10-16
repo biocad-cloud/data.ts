@@ -39,6 +39,24 @@ namespace Canvas {
         public toString(): string {
             return `[${this.x}, ${this.y}]`;
         }
+
+        /**
+         * Calculate the 2d distance to other point from this point.
+        */
+        public dist(p2: Point): number {
+            var dx: number = p2.x - this.x;
+            var dy: number = p2.y - this.y;
+
+            return dx * dx + dy * dy;
+        }
+
+        /**
+         * Is this point equals to a given point by numeric value equals 
+         * of the ``x`` and ``y``?
+        */
+        public Equals(p2: Point): boolean {
+            return this.x == p2.x && this.y == p2.y;
+        }
     }
 
     export class Size {
