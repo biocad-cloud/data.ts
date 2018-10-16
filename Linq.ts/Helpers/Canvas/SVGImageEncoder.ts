@@ -187,11 +187,25 @@
             });
         }
 
-        public static saveSvgAsPng(el, name, options) {
-            requireDomNode(el);
+        /**
+         * 将指定的SVG节点保存为png图片
+         * 
+         * @param svg 需要进行保存为图片的svg节点的对象实例或者对象的节点id值
+         * @param name 所保存的文件名
+         * @param options 配置参数，直接留空使用默认值就好了
+        */
+        public static saveSvgAsPng(
+            svg: string | SVGElement,
+            name: string,
+            options: Options = Options.Default()) {
 
-            options = options || {};
-            this.svgAsPngUri(el, options, function (uri) {
+            if (typeof svg == "string") {
+                requireDomNode(<SVGElement>$ts(svg));
+            } else {
+                requireDomNode(<SVGElement>svg);
+            }
+
+            this.svgAsPngUri(svg, options, function (uri) {
                 Linq.DOM.download(name, uri);
             });
         }
