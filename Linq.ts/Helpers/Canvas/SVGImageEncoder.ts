@@ -200,7 +200,8 @@
             options: Options = Options.Default()) {
 
             if (typeof svg == "string") {
-                requireDomNode(<SVGElement>$ts(svg));
+                svg = <SVGElement>$ts(svg)
+                requireDomNode(svg);
             } else {
                 requireDomNode(<SVGElement>svg);
             }
