@@ -103,4 +103,11 @@ namespace Canvas {
             return `Size: ${this.Size().toString()} @ ${this.Location().toString()}`;
         }
     }
+
+    export class Margin {
+        public top: number;
+        public right: number;
+        public bottom: number;
+        public left: number;
+    }
 }
