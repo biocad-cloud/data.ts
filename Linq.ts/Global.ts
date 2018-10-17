@@ -25,8 +25,12 @@ function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T
         var creator = <Linq.TsQuery.arrayEval<T>>eval;
         return <IEnumerator<T>>creator.doEval(<T[]>any, type, args);
     } else if (type.typeOf == "function") {
+        // 当html文档加载完毕之后就会执行传递进来的这个
+        // 函数进行初始化
         Linq.DOM.ready(<() => void>any);
     } else {
+        // 对html文档之中的节点元素进行查询操作
+        // 或者创建新的节点
         return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
     }
 }
