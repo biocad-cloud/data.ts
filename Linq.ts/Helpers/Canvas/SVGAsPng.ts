@@ -6,9 +6,11 @@
         return obj instanceof HTMLElement || obj instanceof SVGElement;
     }
 
-    export function requireDomNode(el: any): void {
+    export function requireDomNode(el: any): any {
         if (!isElement(el)) {
             throw new Error('an HTMLElement or SVGElement is required; got ' + el);
+        } else {
+            return el;
         }
     }
 

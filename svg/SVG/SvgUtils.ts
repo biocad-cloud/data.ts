@@ -10,6 +10,15 @@ module SvgUtils {
         return hex.length == 1 ? "0" + hex : hex;
     }
 
+    export const HTML5svgFeature: string = "http://www.w3.org/TR/SVG2/feature#GraphicsAttribute";
+
+    /**
+     * 测试当前的浏览器是否支持HTML5的高级特性
+    */
+    export function hasSVG2Feature(): boolean {
+        return document.implementation.hasFeature(HTML5svgFeature, "2.0");
+    }
+
     /**
      * https://stackoverflow.com/questions/20539196/creating-svg-elements-dynamically-with-javascript-inside-html
      * 

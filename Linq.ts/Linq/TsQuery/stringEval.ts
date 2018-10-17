@@ -5,9 +5,27 @@
     */
     export class stringEval implements IEval<string> {
 
+        private static ensureArguments(args: object): Arguments {
+            if (isNullOrUndefined(args)) {
+                return Arguments.Default();
+            } else {
+                var opts = <Arguments>args;
+
+                // 2018-10-16
+                // 如果不在这里进行判断赋值，则nativeModel属性的值为undefined
+                // 会导致总会判断为true的bug出现
+                if (isNullOrUndefined(opts.nativeModel)) {
+                    // 为了兼容以前的代码，在这里总是默认为TRUE
+                    opts.nativeModel = true;
+                }
+
+                return opts;
+            }
+        }
+
         doEval(expr: string, type: TypeInfo, args: object): any {
             var query: DOM.Query = DOM.Query.parseQuery(expr);
-            var argument: Arguments = args ? <Arguments>args : Arguments.Default();
+            var argument: Arguments = stringEval.ensureArguments(args);
 
             if (query.type == DOM.QueryTypes.id) {
                 // 按照id查询
