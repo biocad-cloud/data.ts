@@ -158,3 +158,10 @@ function base64_decode(stream: string): string {
 
     return text;
 }
+
+/**
+ * 这个函数什么也不做，主要是用于默认的参数值
+*/
+function DoNothing(): any {
+    return null;
+}
