@@ -13,6 +13,8 @@ if (typeof String.prototype['startsWith'] != 'function') {
 
 /**
  * 对于这个函数的返回值还需要做类型转换
+ * 
+ * 如果是节点查询或者创建的话，可以使用``asExtends``属性来获取``HTMLTsElememnt``拓展对象
 */
 function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T> | void | any {
     var type: TypeInfo = TypeInfo.typeof(any);
