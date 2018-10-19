@@ -112,9 +112,14 @@ namespace Canvas {
     }
 
     export class Margin {
+
         public top: number;
         public right: number;
         public bottom: number;
         public left: number;
+
+        public toString(): string {
+            return `[${this.top}, ${this.right}, ${this.bottom}, ${this.left}]`;
+        }
     }
 }
