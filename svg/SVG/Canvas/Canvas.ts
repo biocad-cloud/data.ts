@@ -118,11 +118,19 @@ namespace Canvas {
         public bottom: number;
         public left: number;
 
-        public constructor(top: number , right: number , bottom: number , left: number ) {
+        public constructor(top: number, right: number, bottom: number, left: number) {
             this.top = top;
             this.right = right;
             this.bottom = bottom;
             this.left = left;
+        }
+
+        public static Object(obj: { top: number, right: number, bottom: number, left: number } | number[]): Margin {
+            if (Array.isArray(obj)) {
+                return new Margin(obj[0], obj[1], obj[2], obj[3]);
+            } else {
+                return new Margin(obj.top, obj.right, obj.bottom, obj.left);
+            }
         }
 
         public toString(): string {
