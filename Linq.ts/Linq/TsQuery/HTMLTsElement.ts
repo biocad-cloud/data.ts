@@ -60,6 +60,16 @@ class HTMLTsElement {
         return this;
     }
 
+    public append(node: HTMLElement | HTMLTsElement): HTMLTsElement {
+        if (node instanceof HTMLTsElement) {
+            this.HTMLElement.appendChild(node.HTMLElement);
+        } else {
+            this.HTMLElement.appendChild(node);
+        }
+
+        return this;
+    }
+
     /**
      * 将css的display属性值设置为block用来显示当前的节点
     */

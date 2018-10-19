@@ -13,18 +13,26 @@ if (typeof String.prototype['startsWith'] != 'function') {
 
 /**
  * 对于这个函数的返回值还需要做类型转换
+ * 
+ * 如果是节点查询或者创建的话，可以使用``asExtends``属性来获取``HTMLTsElememnt``拓展对象
 */
-function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T> & any {
+function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T> | void | any {
     var type: TypeInfo = TypeInfo.typeof(any);
     var typeOf: string = type.typeOf;
     var handle = Linq.TsQuery.handler;
     var eval: any = typeOf in handle ? handle[typeOf]() : null;
 
     if (type.IsArray) {
-        return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type, args);
+        // 转化为序列集合对象，相当于from函数
+        var creator = <Linq.TsQuery.arrayEval<T>>eval;
+        return <IEnumerator<T>>creator.doEval(<T[]>any, type, args);
     } else if (type.typeOf == "function") {
+        // 当html文档加载完毕之后就会执行传递进来的这个
+        // 函数进行初始化
         Linq.DOM.ready(<() => void>any);
     } else {
+        // 对html文档之中的节点元素进行查询操作
+        // 或者创建新的节点
         return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
     }
 }
@@ -151,4 +159,11 @@ function base64_decode(stream: string): string {
     var text: string = Base64.decode(base64Str);
 
     return text;
+}
+
+/**
+ * 这个函数什么也不做，主要是用于默认的参数值
+*/
+function DoNothing(): any {
+    return null;
 }
