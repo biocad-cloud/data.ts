@@ -44,10 +44,15 @@
                 // 按照id查询
                 var node: HTMLElement = document.getElementById(query.expression);
 
-                if (argument.nativeModel) {
-                    return stringEval.extends(node);
+                if (isNullOrUndefined(node)) {
+                    console.log(`Unable to found a node which its ID='${expr}'!`);
+                    return null;
                 } else {
-                    return new HTMLTsElement(node);
+                    if (argument.nativeModel) {
+                        return stringEval.extends(node);
+                    } else {
+                        return new HTMLTsElement(node);
+                    }
                 }
             } else if (query.type == DOM.QueryTypes.NoQuery) {
                 return stringEval.createNew(expr, argument);
