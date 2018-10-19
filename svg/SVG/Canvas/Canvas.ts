@@ -59,9 +59,18 @@ namespace Canvas {
         }
     }
 
+    /**
+     * 表示一个矩形区域的大小
+    */
     export class Size {
 
+        /**
+         * 宽度
+        */
         public width: number;
+        /**
+         * 高度
+        */
         public height: number;
 
         public constructor(width: number, height: number) {
@@ -77,12 +86,10 @@ namespace Canvas {
     /**
      * 表示一个二维平面上的矩形区域
     */
-    export class Rectangle {
+    export class Rectangle extends Size {
 
         public left: number;
         public top: number;
-        public width: number;
-        public height: number;
 
         public constructor(x: number, y: number, width: number, height: number) {
             this.left = x;
