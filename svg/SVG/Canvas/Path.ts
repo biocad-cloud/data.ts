@@ -8,10 +8,21 @@ namespace Canvas {
 
         private pathStack: string[];
 
+        /**
+         * 获取SVG的path字符串结果
+        */
+        public get d(): string {
+            return this.pathStack.join(" ");
+        }
+        
         public constructor() {
             this.pathStack = [];
         }
 
+        public toString(): string {
+            return this.d;
+        }
+        
         /**
          * 从给定的（x,y）坐标开启一个新的子路径或路径。M表示后面跟随的是绝对坐标值。
          * m表示后面跟随的是一个相对坐标值。如果"moveto"指令后面跟随着多个坐标值，那么
@@ -152,10 +163,6 @@ namespace Canvas {
         public ClosePath(): Path {
             this.pathStack.push("Z");
             return this;
-        }
-
-        public d(): string {
-            return this.pathStack.join(" ");
         }
     }
 }
