@@ -92,10 +92,10 @@ namespace Canvas {
         public top: number;
 
         public constructor(x: number, y: number, width: number, height: number) {
+            super(width, height);
+
             this.left = x;
             this.top = y;
-            this.width = width;
-            this.height = height;
         }
 
         public Location(): Point {
