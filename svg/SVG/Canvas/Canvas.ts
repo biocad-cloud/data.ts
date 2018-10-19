@@ -118,6 +118,13 @@ namespace Canvas {
         public bottom: number;
         public left: number;
 
+        public constructor(top: number , right: number , bottom: number , left: number ) {
+            this.top = top;
+            this.right = right;
+            this.bottom = bottom;
+            this.left = left;
+        }
+
         public toString(): string {
             return `[${this.top}, ${this.right}, ${this.bottom}, ${this.left}]`;
         }
