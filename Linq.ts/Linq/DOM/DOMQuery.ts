@@ -50,11 +50,11 @@ namespace Linq.DOM {
         public expression: string;
 
         /**
-         * # by id
-         * . by claSS
-         * & SINGLE NODE
-         * @ read meta tag
-         * <> create new tag
+         * + ``#`` by id
+         * + ``.`` by claSS
+         * + ``&`` SINGLE NODE
+         * + ``@`` read meta tag
+         * + ``&lt;>`` create new tag
         */
         public static parseQuery(expr: string): Query {
             var isSingle: boolean = false;
