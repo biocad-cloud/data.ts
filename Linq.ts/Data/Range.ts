@@ -16,6 +16,13 @@ namespace data {
         */
         public min: number;
 
+        /**
+         * ``[min, max]``
+        */
+        public get range(): number[] {
+            return [this.min, this.max];
+        }
+
         // #endregion
 
         // #region Constructors (1)
