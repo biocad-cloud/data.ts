@@ -45,7 +45,7 @@
                 var node: HTMLElement = document.getElementById(query.expression);
 
                 if (isNullOrUndefined(node)) {
-                    console.log(`Unable to found a node which its ID='${expr}'!`);
+                    console.warn(`Unable to found a node which its ID='${expr}'!`);
                     return null;
                 } else {
                     if (argument.nativeModel) {
