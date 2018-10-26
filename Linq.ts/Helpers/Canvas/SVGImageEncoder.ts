@@ -111,6 +111,48 @@
             });
         }
 
+        /**
+         * 将svg转换为base64 data uri
+        */
+        private static convertToPng(src: HTMLImageElement, w: number, h: number, options: Options): string {
+            var canvas: HTMLCanvasElement = $ts('<canvas>', {
+                width: w,
+                height: h
+            });
+            var context = canvas.getContext('2d');
+
+            if (options.canvg) {
+                options.canvg(canvas, src);
+            } else {
+                context.drawImage(src, 0, 0);
+            }
+
+            if (options.backgroundColor) {
+                context.globalCompositeOperation = 'destination-over';
+                context.fillStyle = options.backgroundColor;
+                context.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // base64 uri
+            var png: string;
+
+            try {
+                png = canvas.toDataURL(options.encoderType, options.encoderOptions);
+            } catch (e) {
+                // 20181013 在typescript之中还不支持SecurityError??
+                // (typeof SecurityError !== 'undefined' && e instanceof SecurityError) || 
+
+                if (e.name == "SecurityError") {
+                    console.error("Rendered SVG images cannot be downloaded in this browser.");
+                    return;
+                } else {
+                    throw e;
+                }
+            }
+
+            return png;
+        }
+
         public static svgAsPngUri(el, options: Options = new Options(), cb: (uri: string) => void) {
             requireDomNode(el);
 
@@ -118,41 +160,7 @@
             options.encoderOptions = options.encoderOptions || 0.8;
 
             var convertToPng = function (src: HTMLImageElement, w: number, h: number) {
-                var canvas: HTMLCanvasElement = $ts('<canvas>', {
-                    width: w,
-                    height: h
-                });
-                var context = canvas.getContext('2d');
-
-                if (options.canvg) {
-                    options.canvg(canvas, src);
-                } else {
-                    context.drawImage(src, 0, 0);
-                }
-
-                if (options.backgroundColor) {
-                    context.globalCompositeOperation = 'destination-over';
-                    context.fillStyle = options.backgroundColor;
-                    context.fillRect(0, 0, canvas.width, canvas.height);
-                }
-
-                var png: string;
-
-                try {
-                    png = canvas.toDataURL(options.encoderType, options.encoderOptions);
-                } catch (e) {
-                    // 20181013 在typescript之中还不支持SecurityError??
-                    // (typeof SecurityError !== 'undefined' && e instanceof SecurityError) || 
-
-                    if (e.name == "SecurityError") {
-                        console.error("Rendered SVG images cannot be downloaded in this browser.");
-                        return;
-                    } else {
-                        throw e;
-                    }
-                }
-
-                cb(png);
+                cb(Encoder.convertToPng(src, w, h, options));
             }
 
             if (options.canvg) {
