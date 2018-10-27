@@ -47,6 +47,46 @@ namespace CanvasHelper {
         return true;
     }
 
+    /**
+     * @param size [width, height]
+    */
+    export function createCanvas(size: [number, number], id: string, title: string, display: string = "block") {
+        "use strict";
+
+        var canvas = document.createElement("canvas");
+
+        //check for canvas support before attempting anything
+        if (!canvas.getContext) {
+            return null;
+        }
+
+        var ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+
+        //check for html5 text drawing support
+        if (!supportsText(ctx)) {
+            return null;
+        }
+
+        //size the canvas
+        canvas.width = size[0];
+        canvas.height = size[1];
+        canvas.id = id;
+        canvas.title = title;
+        canvas.style.display = display;
+
+        return canvas;
+    }
+
+    export function supportsText(ctx: CanvasRenderingContext2D): boolean {
+        if (!ctx.fillText) {
+            return false;
+        }
+        if (!ctx.measureText) {
+            return false;
+        }
+
+        return true;
+    }
 
     export class fontSize {
 
