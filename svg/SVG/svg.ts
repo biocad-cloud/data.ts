@@ -172,7 +172,7 @@ class Graphics {
         className: string = null): Graphics {
 
         var attrs = {
-            "d": path.d(),
+            "d": path.d,
             "z-index": ++this.z
         };
 

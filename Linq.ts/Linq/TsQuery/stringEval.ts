@@ -1,6 +1,19 @@
 ﻿namespace Linq.TsQuery {
 
     /**
+     * 这个函数确保给定的id字符串总是以符号``#``开始的
+    */
+    export function EnsureNodeId(str: string): string {
+        if (!str) {
+            throw "The given node id value is nothing!";
+        } else if (str[0] == "#") {
+            return str;
+        } else {
+            return "#" + str;
+        }
+    }
+
+    /**
      * 字符串格式的值意味着对html文档节点的查询
     */
     export class stringEval implements IEval<string> {
@@ -31,10 +44,15 @@
                 // 按照id查询
                 var node: HTMLElement = document.getElementById(query.expression);
 
-                if (argument.nativeModel) {
-                    return stringEval.extends(node);
+                if (isNullOrUndefined(node)) {
+                    console.warn(`Unable to found a node which its ID='${expr}'!`);
+                    return null;
                 } else {
-                    return new HTMLTsElement(node);
+                    if (argument.nativeModel) {
+                        return stringEval.extends(node);
+                    } else {
+                        return new HTMLTsElement(node);
+                    }
                 }
             } else if (query.type == DOM.QueryTypes.NoQuery) {
                 return stringEval.createNew(expr, argument);

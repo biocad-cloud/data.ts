@@ -59,9 +59,18 @@ namespace Canvas {
         }
     }
 
+    /**
+     * 表示一个矩形区域的大小
+    */
     export class Size {
 
+        /**
+         * 宽度
+        */
         public width: number;
+        /**
+         * 高度
+        */
         public height: number;
 
         public constructor(width: number, height: number) {
@@ -77,18 +86,16 @@ namespace Canvas {
     /**
      * 表示一个二维平面上的矩形区域
     */
-    export class Rectangle {
+    export class Rectangle extends Size {
 
         public left: number;
         public top: number;
-        public width: number;
-        public height: number;
 
         public constructor(x: number, y: number, width: number, height: number) {
+            super(width, height);
+
             this.left = x;
             this.top = y;
-            this.width = width;
-            this.height = height;
         }
 
         public Location(): Point {
@@ -105,9 +112,37 @@ namespace Canvas {
     }
 
     export class Margin {
+
         public top: number;
         public right: number;
         public bottom: number;
         public left: number;
+
+        public get horizontal(): number {
+            return this.left + this.right;
+        }
+
+        public get vertical(): number {
+            return this.top + this.bottom;
+        }
+
+        public constructor(top: number, right: number, bottom: number, left: number) {
+            this.top = top;
+            this.right = right;
+            this.bottom = bottom;
+            this.left = left;
+        }
+
+        public static Object(obj: { top: number, right: number, bottom: number, left: number } | number[]): Margin {
+            if (Array.isArray(obj)) {
+                return new Margin(obj[0], obj[1], obj[2], obj[3]);
+            } else {
+                return new Margin(obj.top, obj.right, obj.bottom, obj.left);
+            }
+        }
+
+        public toString(): string {
+            return `[${this.top}, ${this.right}, ${this.bottom}, ${this.left}]`;
+        }
     }
 }
