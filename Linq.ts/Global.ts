@@ -71,16 +71,25 @@ function CharEnumerator(str: string): IEnumerator<string> {
 /**
  * Query meta tag content value by name
 */
-function metaValue(name: string, Default: string = null): string {
-    var meta = document.querySelector(`meta[name~="${name}"]`);
-    var content: string;
+function metaValue(name: string, Default: string = null, allowQueryParent: boolean = false): string {
+    var selector: string = `meta[name~="${name}"]`;
+    var meta: Element = document.querySelector(selector);
+    var getContent = function () {
+        if (meta) {
+            var content: string = meta.getAttribute("content");
+            return content ? content : Default;
+        } else {
+            return Default;
+        }
+    };
 
-    if (meta) {
-        content = meta.getAttribute("content");
-        return content ? content : Default;
-    } else {
-        return Default;
+    if (!meta && allowQueryParent) {
+        meta = parent.window
+            .document
+            .querySelector(selector);     
     }
+
+    return getContent();
 }
 
 /**
