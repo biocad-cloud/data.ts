@@ -4,6 +4,7 @@
 /// <reference path="Helpers/Extensions.ts" />
 /// <reference path="Helpers/Strings.ts" />
 /// <reference path="Type.ts" />
+/// <reference path="Data/Encoder/MD5.ts" />
 
 if (typeof String.prototype['startsWith'] != 'function') {
     String.prototype['startsWith'] = function (str) {
@@ -35,6 +36,13 @@ function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T
         // 或者创建新的节点
         return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
     }
+}
+
+/**
+ * 计算字符串的MD5值字符串
+*/
+function md5(string: string, key: string = null, raw: string = null): string {
+    return MD5.calculate(string, key, raw);
 }
 
 /**
@@ -71,16 +79,25 @@ function CharEnumerator(str: string): IEnumerator<string> {
 /**
  * Query meta tag content value by name
 */
-function metaValue(name: string, Default: string = null): string {
-    var meta = document.querySelector(`meta[name~="${name}"]`);
-    var content: string;
+function metaValue(name: string, Default: string = null, allowQueryParent: boolean = false): string {
+    var selector: string = `meta[name~="${name}"]`;
+    var meta: Element = document.querySelector(selector);
+    var getContent = function () {
+        if (meta) {
+            var content: string = meta.getAttribute("content");
+            return content ? content : Default;
+        } else {
+            return Default;
+        }
+    };
 
-    if (meta) {
-        content = meta.getAttribute("content");
-        return content ? content : Default;
-    } else {
-        return Default;
+    if (!meta && allowQueryParent) {
+        meta = parent.window
+            .document
+            .querySelector(selector);
     }
+
+    return getContent();
 }
 
 /**

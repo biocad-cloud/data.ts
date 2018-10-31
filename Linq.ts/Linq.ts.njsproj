@@ -45,7 +45,7 @@
     <TypeScriptCompile Include="csv\doc.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Data\Base64.ts" />
+    <TypeScriptCompile Include="Data\Encoder\Base64.ts" />
     <TypeScriptCompile Include="Data\BinaryTree\node.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -62,6 +62,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="csv\Tokenizer.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\Encoder\MD5.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Data\SlideWindow.ts">
@@ -101,6 +104,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Canvas\SVGImageEncoder.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Helpers\Cookie.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Collections\Map.ts">
@@ -180,6 +186,7 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StackTrace\" />
     <Folder Include="Helpers\Canvas\" />
     <Folder Include="Linq\" />
