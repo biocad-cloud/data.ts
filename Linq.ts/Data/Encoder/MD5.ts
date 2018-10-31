@@ -63,17 +63,17 @@ module MD5 {
      * Calculate the MD5 of an array of little-endian words, and a bit length.
     */
     export function binl_md5(x: number[], len: number): number[] {
-        // append padding
-        x[len >> 5] |= 0x80 << (len % 32);
-        x[(((len + 64) >>> 9) << 4) + 14] = len;
-
-        var i, olda, oldb, oldc, oldd,
+        var olda: number, oldb: number, oldc: number, oldd: number,
             a = 1732584193,
             b = -271733879,
             c = -1732584194,
             d = 271733878;
 
-        for (i = 0; i < x.length; i += 16) {
+        // append padding
+        x[len >> 5] |= 0x80 << (len % 32);
+        x[(((len + 64) >>> 9) << 4) + 14] = len;
+
+        for (var i: number = 0; i < x.length; i += 16) {
             olda = a;
             oldb = b;
             oldc = c;
@@ -152,7 +152,7 @@ module MD5 {
             c = MD5.safe_add(c, oldc);
             d = MD5.safe_add(d, oldd);
         }
-        
+
         return [a, b, c, d];
     }
 
@@ -199,9 +199,8 @@ module MD5 {
     */
     export function rstr_hmac_md5(key: string, data: string): string {
         var bkey = MD5.rstr2binl(key),
-            ipad = [],
-            opad = [],
-            hash;
+            ipad: number[] = [],
+            opad: number[] = [];
 
         ipad[15] = opad[15] = undefined;
 
@@ -212,25 +211,30 @@ module MD5 {
             ipad[i] = bkey[i] ^ 0x36363636;
             opad[i] = bkey[i] ^ 0x5C5C5C5C;
         }
+
+        var hash: number[];
         hash = ipad.concat(MD5.rstr2binl(data));
         hash = MD5.binl_md5(hash, 512 + data.length * 8);
+        hash = opad.concat(hash);
+        hash = MD5.binl_md5(hash, 512 + 128);
 
-        return MD5.binl2rstr(MD5.binl_md5(opad.concat(hash), 512 + 128));
+        return MD5.binl2rstr(hash);
     }
+
+    const hex_tab: string = '0123456789abcdef';
 
     /**
      * Convert a raw string to a hex string
     */
     export function rstr2hex(input: string): string {
-        var hex_tab = '0123456789abcdef',
-            output = '',
-            x,
-            i;
-        for (i = 0; i < input.length; i += 1) {
+        var output = '', x: number;
+
+        for (var i: number = 0; i < input.length; i += 1) {
             x = input.charCodeAt(i);
             output += hex_tab.charAt((x >>> 4) & 0x0F) +
                 hex_tab.charAt(x & 0x0F);
         }
+
         return output;
     }
 
