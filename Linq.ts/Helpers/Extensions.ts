@@ -26,23 +26,6 @@ module DataExtensions {
         return new Blob([buffer], { type: mimeString });
     }
 
-    export function getCook(cookiename: string): string {
-        // Get name followed by anything except a semicolon
-        var cookie: string = document.cookie;
-        var cookiestring = RegExp("" + cookiename + "[^;]+").exec(cookie);
-        var value: string;
-
-        // Return everything after the equal sign, 
-        // or an empty string if the cookie name not found
-        if (!!cookiestring) {
-            value = cookiestring.toString().replace(/^[^=]+./, "");
-        } else {
-            value = "";
-        }
-
-        return decodeURIComponent(value);
-    }
-
     /**
      * 将URL查询字符串解析为字典对象，所传递的查询字符串应该是查询参数部分，即问号之后的部分，而非完整的url
      * 
