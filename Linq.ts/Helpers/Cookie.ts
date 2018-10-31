@@ -1,5 +1,8 @@
 ﻿module Cookies {
 
+    /**
+     * Cookie 不存在，函数会返回空字符串
+    */
     export function getCookie(cookiename: string): string {
         // Get name followed by anything except a semicolon
         var cookie: string = document.cookie;
@@ -17,6 +20,9 @@
         return decodeURIComponent(value);
     }
 
+    /**
+     * 将cookie设置为过期，进行cookie的删除操作
+    */
     export function delCookie(name: string): void {
         var cval: string = getCookie(name);
         var exp: Date = new Date();
