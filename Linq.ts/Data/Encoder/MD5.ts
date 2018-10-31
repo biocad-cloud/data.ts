@@ -16,17 +16,16 @@
  * Distributed under the BSD License
  * See http://pajhome.org.uk/crypt/md5 for more info.
 */
+module MD5 {
 
-/*jslint bitwise: true */
-/*global unescape, define */
-
-class MD5 {
+    // jslint bitwise: true
+    // global unescape, define
 
     /**
      * Add integers, wrapping at 2^32. This uses 16-bit operations internally
      * to work around bugs in some JS interpreters.
     */
-    public static safe_add(x: number, y: number): number {
+    export function safe_add(x: number, y: number): number {
         var lsw = (x & 0xFFFF) + (y & 0xFFFF);
         var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
 
@@ -36,25 +35,25 @@ class MD5 {
     /**
      * Bitwise rotate a 32-bit number to the left.
     */
-    public static bit_rol(num: number, cnt: number): number {
+    export function bit_rol(num: number, cnt: number): number {
         return (num << cnt) | (num >>> (32 - cnt));
     }
 
     //#region "These functions implement the four basic operations the algorithm uses."
 
-    public static md5_cmn(q: number, a: number, b: number, x: number, s: number, t: number): number {
+    export function md5_cmn(q: number, a: number, b: number, x: number, s: number, t: number): number {
         return MD5.safe_add(MD5.bit_rol(MD5.safe_add(MD5.safe_add(a, q), MD5.safe_add(x, t)), s), b);
     }
-    public static md5_ff(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
+    export function md5_ff(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
         return MD5.md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
     }
-    public static md5_gg(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
+    export function md5_gg(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
         return MD5.md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
     }
-    public static md5_hh(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
+    export function md5_hh(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
         return MD5.md5_cmn(b ^ c ^ d, a, b, x, s, t);
     }
-    public static md5_ii(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
+    export function md5_ii(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
         return MD5.md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
     }
 
@@ -63,7 +62,7 @@ class MD5 {
     /**
      * Calculate the MD5 of an array of little-endian words, and a bit length.
     */
-    public static binl_md5(x: number[], len: number): number[] {
+    export function binl_md5(x: number[], len: number): number[] {
         // append padding
         x[len >> 5] |= 0x80 << (len % 32);
         x[(((len + 64) >>> 9) << 4) + 14] = len;
@@ -153,13 +152,14 @@ class MD5 {
             c = MD5.safe_add(c, oldc);
             d = MD5.safe_add(d, oldd);
         }
+        
         return [a, b, c, d];
     }
 
     /**
      * Convert an array of little-endian words to a string
     */
-    public static binl2rstr(input: number[]): string {
+    export function binl2rstr(input: number[]): string {
         var output = '';
 
         for (var i: number = 0; i < input.length * 32; i += 8) {
@@ -173,7 +173,7 @@ class MD5 {
      * Convert a raw string to an array of little-endian words
      * Characters >255 have their high-byte silently ignored.
     */
-    public static rstr2binl(input: string): number[] {
+    export function rstr2binl(input: string): number[] {
         var output: number[] = [];
 
         output[(input.length >> 2) - 1] = undefined;
@@ -190,14 +190,14 @@ class MD5 {
     /**
      * Calculate the MD5 of a raw string
     */
-    public static rstr_md5(s: string): string {
+    export function rstr_md5(s: string): string {
         return MD5.binl2rstr(MD5.binl_md5(MD5.rstr2binl(s), s.length * 8));
     }
 
     /**
      * Calculate the HMAC-MD5, of a key and some data (raw strings)
     */
-    public static rstr_hmac_md5(key: string, data: string): string {
+    export function rstr_hmac_md5(key: string, data: string): string {
         var bkey = MD5.rstr2binl(key),
             ipad = [],
             opad = [],
@@ -221,7 +221,7 @@ class MD5 {
     /**
      * Convert a raw string to a hex string
     */
-    public static rstr2hex(input) {
+    export function rstr2hex(input: string): string {
         var hex_tab = '0123456789abcdef',
             output = '',
             x,
@@ -237,27 +237,30 @@ class MD5 {
     /**
      * Encode a string as utf-8
     */
-    public static str2rstr_utf8(input: string): string {
+    export function str2rstr_utf8(input: string): string {
         return unescape(encodeURIComponent(input));
     }
 
     /**
      * Take string arguments and return either raw or hex encoded strings
     */
-    public static raw_md5(s: string): string {
+    export function raw_md5(s: string): string {
         return MD5.rstr_md5(MD5.str2rstr_utf8(s));
     }
-    public static hex_md5(s: string): string {
+    export function hex_md5(s: string): string {
         return MD5.rstr2hex(MD5.raw_md5(s));
     }
-    public static raw_hmac_md5(k, d) {
+    export function raw_hmac_md5(k: string, d: string): string {
         return MD5.rstr_hmac_md5(MD5.str2rstr_utf8(k), MD5.str2rstr_utf8(d));
     }
-    public static hex_hmac_md5(k, d) {
+    export function hex_hmac_md5(k: string, d: string): string {
         return MD5.rstr2hex(MD5.raw_hmac_md5(k, d));
     }
 
-    public static md5(string: string, key: string = null, raw: string = null): string {
+    /**
+     * 利用这个函数来进行字符串的MD5值的计算操作
+    */
+    export function calculate(string: string, key: string = null, raw: string = null): string {
         if (!key) {
             if (!raw) {
                 return MD5.hex_md5(string);
