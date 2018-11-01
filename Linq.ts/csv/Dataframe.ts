@@ -172,6 +172,8 @@ namespace csv {
                         var tsv: boolean = load.type == "tsv";
                         var data: dataframe = dataframe.Parse(load.content, tsv);
 
+                        console.log(data.headers);
+
                         callback(data);
                     } else {
                         throw `Error while load csv data source, http ${code}: ${text}`;
