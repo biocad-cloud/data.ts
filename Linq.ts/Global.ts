@@ -159,9 +159,22 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
 
 /**
  * 调用这个函数会从当前的页面跳转到指定URL的页面
+ * 
+ * 如果当前的这个页面是一个iframe页面，则会通过父页面进行跳转
+ * 
+ * @param currentFrame 如果这个参数为true，则不会进行父页面的跳转操作
 */
-function Goto(url: string): void {
-    window.location.href = url;
+function Goto(url: string, currentFrame: boolean = false): void {
+    var win: Window = window;
+
+    if (!currentFrame) {
+        // 一直递归到最顶层的文档页面
+        while (win.parent) {
+            win = win.parent;
+        }
+    }
+
+    win.location.href = url;
 }
 
 /**
