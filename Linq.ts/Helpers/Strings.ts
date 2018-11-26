@@ -101,16 +101,16 @@ module Strings {
      * Determine that the given string is empty string or not?
      * (判断给定的字符串是否是空值？)
      * 
-     * @param stringAsFactor 假若这个参数为真的话，那么字符串``undefined``也将会被当作为空值处理
+     * @param stringAsFactor 假若这个参数为真的话，那么字符串``undefined``或者``NULL``以及``null``也将会被当作为空值处理
     */
     export function Empty(str: string, stringAsFactor = false): boolean {
         if (!str) {
             return true;
-        } else if (str == undefined) {
+        } else if (str == undefined || typeof str == "undefined") {
             return true;
         } else if (str.length == 0) {
             return true;
-        } else if (stringAsFactor && str.toString() == "undefined") {
+        } else if (stringAsFactor && (str == "undefined" || str == "null" || str == "NULL")) {
             return true;
         } else {
             return false;
