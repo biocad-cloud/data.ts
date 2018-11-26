@@ -151,7 +151,7 @@ module Strings {
      * 
      * https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
     */
-    export function uniq(a: string[]): string[] {
+    export function Unique(a: string[]): string[] {
         var seen = {};
 
         return a.filter(function (item) {
