@@ -13,6 +13,11 @@
         private i: number = 0;
 
         /**
+         * 当脚本执行的时候抛出异常的时候是否继续执行下去？
+        */
+        private onErrorResumeNext: boolean = false;
+
+        /**
          * @param modules javascript脚本文件的路径集合
         */
         public constructor(modules: string | string[]) {
@@ -47,8 +52,20 @@
                     // 加载代码文本
                     switch (code) {
                         case 200:
-                            eval.apply(window, [script]);
-                            console.log("script loaded: ", url);
+                            try {
+                                eval.apply(window, [script]);
+                            } catch (ex) {
+                                if (imports.onErrorResumeNext) {
+                                    console.warn(url);
+                                    console.warn(ex);
+                                    imports.errors.push(url);
+                                } else {
+                                    throw ex;
+                                }
+                            } finally {
+                                console.log("script loaded: ", url);
+                            }
+
                             break;
                         default:
                             imports.errors.push(url);
