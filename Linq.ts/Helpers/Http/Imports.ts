@@ -28,6 +28,7 @@
                 this.jsURL = modules;
             }
 
+            this.errors = [];
             this.onErrorResumeNext = onErrorResumeNext;
         }
 
