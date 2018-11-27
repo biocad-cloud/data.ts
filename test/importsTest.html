@@ -2,7 +2,13 @@
 <script type="text/javascript">
 
 $imports(["modules/m1.js", "modules/m2.js"], () => {
+	$ts(() => alert($ts("#text").innerText));
+
 	console.log("test success");
 });
 
+sleep(10000);
+
 </script>
+
+<div id="text"></div>
