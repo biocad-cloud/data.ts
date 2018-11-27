@@ -1,4 +1,4 @@
-﻿module HttpHelpers {
+﻿namespace HttpHelpers {
 
     /**
      * 这个函数只会返回200成功代码的响应内容，对于其他的状态代码都会返回null

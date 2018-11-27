@@ -4,11 +4,18 @@
 $imports(["modules/m1.js", "modules/m2.js"], () => {
 	$ts(() => alert($ts("#text").innerText));
 
+	console.log("Sleep function comes from the dynamics loaded script:");
+	sleep(1000);
+
 	console.log("test success");
 });
 
-sleep(10000);
+</script>
+
+<script type="text/javascript">
+
+ for(var t = Date.now();Date.now() - t <= 200;);
 
 </script>
 
-<div id="text"></div>
+<div id="text">22222222222</div>

@@ -172,7 +172,7 @@
     <TypeScriptCompile Include="Data\Range.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Helpers\xhrHelpers.ts">
+    <TypeScriptCompile Include="Helpers\Http\xhrHelpers.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Strings.ts">
@@ -189,6 +189,7 @@
     <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StackTrace\" />
     <Folder Include="Helpers\Canvas\" />
+    <Folder Include="Helpers\Http\" />
     <Folder Include="Linq\" />
     <Folder Include="Data\BinaryTree\" />
     <Folder Include="csv\" />
@@ -197,6 +198,11 @@
     <Folder Include="Linq\DOM\" />
     <Folder Include="Linq\Collections\" />
     <Folder Include="Linq\TsQuery\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helpers\Http\Imports.ts">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

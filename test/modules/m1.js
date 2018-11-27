@@ -5,6 +5,6 @@ function sleep(d){
 console.log("running script 1");
 
 // 等待5秒钟才会加载下一个脚本
-sleep(5000);
+sleep(1000);
 
 console.log("job complete, load next script");
