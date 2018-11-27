@@ -39,6 +39,48 @@ function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T
 }
 
 /**
+ * 动态加载脚本文件，然后在完成脚本文件的加载操作之后，执行一个指定的函数操作
+ * 
+ * @param callback 如果这个函数之中存在有HTML文档的操作，则可能会需要将代码放在``$ts(() => {...})``之中，
+ *     等待整个html文档加载完毕之后再做程序的执行，才可能会得到正确的执行结果
+*/
+function $imports(jsURL: string | string[], callback: () => void = DoNothing): void {
+    var i: number = 0;
+
+    if (typeof jsURL == "string") {
+        jsURL = [jsURL];
+    }
+
+    function doLoad() {
+        var url: string = jsURL[i++];
+
+        HttpHelpers.GetAsyn(url, (script, code) => {
+            // 完成向服务器的数据请求操作之后
+            // 加载代码文本
+            switch (code) {
+                case 200:
+                    eval.apply(window, [script]);
+                    console.log("script loaded: ", url);
+                    break;
+                default:
+                    console.error("ERROR: script not loaded: ", url);
+            }
+
+            if (i = jsURL.length) {
+                // 已经加载完所有的脚本了
+                // 执行callback
+                callback();
+            } else {
+                // 继续加载下一个脚本文件
+                doLoad();
+            }
+        });
+    }
+
+    doLoad();
+}
+
+/**
  * 计算字符串的MD5值字符串
 */
 function md5(string: string, key: string = null, raw: string = null): string {
