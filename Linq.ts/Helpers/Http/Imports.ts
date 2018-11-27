@@ -1,11 +1,20 @@
 ﻿namespace HttpHelpers {
 
+    /**
+     * Javascript动态加载帮助函数
+    */
     export class Imports {
 
+        /**
+         * 发生加载错误的脚本，例如404，脚本文件不存在等错误
+        */
         private errors: string[];
         private jsURL: string[];
         private i: number = 0;
 
+        /**
+         * @param modules javascript脚本文件的路径集合
+        */
         public constructor(modules: string | string[]) {
             if (typeof modules == "string") {
                 this.jsURL = [modules];
@@ -19,6 +28,11 @@
             return url;
         }
 
+        /**
+         * 开始进行异步的脚本文件加载操作
+         * 
+         * @param callback 在所有指定的脚本文件都完成了加载操作之后所调用的异步回调函数
+        */
         doLoad(callback: () => void): void {
             var url: string = this.nextScript();
             var imports = this;
