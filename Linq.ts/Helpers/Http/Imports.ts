@@ -19,13 +19,16 @@
 
         /**
          * @param modules javascript脚本文件的路径集合
+         * @param onErrorResumeNext On Error Resume Next Or Just Break
         */
-        public constructor(modules: string | string[]) {
+        public constructor(modules: string | string[], onErrorResumeNext: boolean = false) {
             if (typeof modules == "string") {
                 this.jsURL = [modules];
             } else {
                 this.jsURL = modules;
             }
+
+            this.onErrorResumeNext = onErrorResumeNext;
         }
 
         private nextScript(): string {
@@ -40,41 +43,44 @@
         */
         doLoad(callback: () => void): void {
             var url: string = this.nextScript();
-            var imports = this;
 
             if (Strings.Empty(url, true)) {
                 // 已经加载完所有的脚本了
                 // 执行callback
                 callback();
             } else {
-                HttpHelpers.GetAsyn(url, (script, code) => {
-                    // 完成向服务器的数据请求操作之后
-                    // 加载代码文本
-                    switch (code) {
-                        case 200:
-                            try {
-                                eval.apply(window, [script]);
-                            } catch (ex) {
-                                if (imports.onErrorResumeNext) {
-                                    console.warn(url);
-                                    console.warn(ex);
-                                    imports.errors.push(url);
-                                } else {
-                                    throw ex;
-                                }
-                            } finally {
-                                console.log("script loaded: ", url);
-                            }
+                HttpHelpers.GetAsyn(url, (script, code) => this.doExec(url, script, code, callback));
+            }
+        }
 
-                            break;
-                        default:
-                            imports.errors.push(url);
-                            console.error("ERROR: script not loaded: ", url);
+        /**
+         * 完成向服务器的数据请求操作之后
+         * 加载代码文本
+        */
+        private doExec(url: string, script: string, code: number, callback: () => void): void {
+            switch (code) {
+                case 200:
+                    try {
+                        eval.apply(window, [script]);
+                    } catch (ex) {
+                        if (this.onErrorResumeNext) {
+                            console.warn(url);
+                            console.warn(ex);
+                            this.errors.push(url);
+                        } else {
+                            throw ex;
+                        }
+                    } finally {
+                        console.log("script loaded: ", url);
                     }
 
-                    imports.doLoad(callback);
-                });
+                    break;
+                default:
+                    this.errors.push(url);
+                    console.error("ERROR: script not loaded: ", url);
             }
+
+            this.doLoad(callback);
         }
     }
 }

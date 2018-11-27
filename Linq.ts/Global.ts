@@ -44,8 +44,13 @@ function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T
  * @param callback 如果这个函数之中存在有HTML文档的操作，则可能会需要将代码放在``$ts(() => {...})``之中，
  *     等待整个html文档加载完毕之后再做程序的执行，才可能会得到正确的执行结果
 */
-function $imports(jsURL: string | string[], callback: () => void = DoNothing): void {
-    new HttpHelpers.Imports(jsURL).doLoad(callback);
+function $imports(jsURL: string | string[],
+    callback: () => void = DoNothing,
+    onErrorResumeNext: boolean = false): void {
+
+    return new HttpHelpers
+        .Imports(jsURL, onErrorResumeNext)
+        .doLoad(callback);
 }
 
 /**
