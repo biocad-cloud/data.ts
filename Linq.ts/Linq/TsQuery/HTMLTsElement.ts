@@ -3,6 +3,9 @@
 // 2018-10-15
 // 为了方便书写代码，在其他脚本之中添加变量类型申明，在这里就不进行命名空间的包裹了
 
+/**
+ * TypeScript脚本之中的HTML节点元素的类型代理接口
+*/
 class HTMLTsElement {
 
     private node: any;
