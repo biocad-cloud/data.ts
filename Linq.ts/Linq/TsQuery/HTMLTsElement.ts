@@ -26,17 +26,25 @@ class HTMLTsElement {
     /**
      * 这个拓展函数总是会将节点中的原来的内容清空，然后显示html函数参数
      * 所给定的内容
+     * 
+     * @param html 当这个参数为一个无参数的函数的时候，主要是用于生成一个比较复杂的文档节点而使用的
     */
-    public display(html: string | HTMLElement | HTMLTsElement): HTMLTsElement {
+    public display(html: string | HTMLElement | HTMLTsElement | (() => HTMLElement)): HTMLTsElement {
         if (!html) {
             this.HTMLElement.innerHTML = "";
         } else if (typeof html == "string") {
             this.HTMLElement.innerHTML = html;
         } else {
-            var node: HTMLElement = html instanceof HTMLTsElement ?
-                (<HTMLTsElement>html).HTMLElement :
-                (<HTMLElement>html);
+            var node: HTMLElement;
             var parent: HTMLElement = this.HTMLElement;
+
+            if (typeof html == "function") {
+                node = html();
+            } else {
+                node = html instanceof HTMLTsElement ?
+                    (<HTMLTsElement>html).HTMLElement :
+                    (<HTMLElement>html);
+            }
 
             parent.innerHTML = "";
             parent.appendChild(node);
@@ -63,11 +71,16 @@ class HTMLTsElement {
         return this;
     }
 
-    public append(node: HTMLElement | HTMLTsElement): HTMLTsElement {
+    /**
+     * 在当前的HTML文档节点之中添加一个新的文档节点
+    */
+    public append(node: HTMLElement | HTMLTsElement | (() => HTMLElement)): HTMLTsElement {
         if (node instanceof HTMLTsElement) {
             this.HTMLElement.appendChild(node.HTMLElement);
-        } else {
+        } else if (node instanceof HTMLElement) {
             this.HTMLElement.appendChild(node);
+        } else {
+            this.HTMLElement.appendChild(node());
         }
 
         return this;
