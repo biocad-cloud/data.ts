@@ -39,7 +39,7 @@ function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T
         eval = handle[type.class];
 
         if (!isNullOrUndefined(eval)) {
-            return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
+            return (<Linq.TsQuery.IEval<T>>eval()).doEval(<T>any, type, args);
         } else {
             throw `Unsupported data type: ${type.toString()}`;
         }
