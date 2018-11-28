@@ -2,6 +2,11 @@
 
     export class Arguments {
 
+        /**
+         * 发生查询的上下文，默认是当前文档
+        */
+        public context: Window;
+
         //#region "meta tag value query"
 
         public caseInSensitive: boolean;
@@ -11,7 +16,7 @@
         public defaultValue: string;
 
         //#endregion
-        
+
         //#region "node query && create"
 
         /**
@@ -41,7 +46,8 @@
             return <Arguments>{
                 caseInSensitive: false,
                 nativeModel: true,
-                defaultValue: ""
+                defaultValue: "",
+                context: window
             }
         }
     }
