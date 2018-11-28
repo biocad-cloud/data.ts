@@ -16,7 +16,8 @@ namespace Linq.TsQuery {
          * Create a linq object
         */
         array: () => new arrayEval(),
-        NodeListOf: () => new DOMEnumerator()
+        NodeListOf: () => new DOMEnumerator(),
+        HTMLCollection: () => new DOMEnumerator()
     };
 
     export interface IEval<T> {

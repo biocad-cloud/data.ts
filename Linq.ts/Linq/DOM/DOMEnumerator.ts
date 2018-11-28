@@ -8,14 +8,14 @@ namespace Linq.DOM {
 
     export class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
 
-        public constructor(elements: T[] | IEnumerator<T> | NodeListOf<T>) {
+        public constructor(elements: T[] | IEnumerator<T> | NodeListOf<T> | HTMLCollection) {
             super(DOMEnumerator.ensureElements(elements));
         }
 
         /**
          * 这个函数确保所传递进来的集合总是输出一个数组，方便当前的集合对象向其基类型传递数据源
         */
-        private static ensureElements<T extends HTMLElement>(elements: T[] | IEnumerator<T> | NodeListOf<T>): T[] {
+        private static ensureElements<T extends HTMLElement>(elements: T[] | IEnumerator<T> | NodeListOf<T> | HTMLCollection): T[] {
             var type = TypeInfo.typeof(elements);
             var list: T[];
 
@@ -33,6 +33,12 @@ namespace Linq.DOM {
             if (type.class == "NodeList") {
                 list = [];
                 (<NodeListOf<T>>elements).forEach(x => list.push(x));
+            } else if (type.class == "HTMLCollection") {
+                var collection: HTMLCollection = <any>elements;
+                list = [];
+                for (var i: number = 0; i < collection.length; i++) {
+                    list.push(<any>collection.item(i));
+                }
             } else {
                 list = Linq.EnsureArray(<T[]>elements);
             }
