@@ -27,7 +27,8 @@ class HTMLTsElement {
      * 这个拓展函数总是会将节点中的原来的内容清空，然后显示html函数参数
      * 所给定的内容
      * 
-     * @param html 当这个参数为一个无参数的函数的时候，主要是用于生成一个比较复杂的文档节点而使用的
+     * @param html 当这个参数为一个无参数的函数的时候，主要是用于生成一个比较复杂的文档节点而使用的;
+     *    如果为字符串文本类型，则是直接将文本当作为HTML代码赋值给当前的这个节点对象的innerHTML属性;
     */
     public display(html: string | HTMLElement | HTMLTsElement | (() => HTMLElement)): HTMLTsElement {
         if (!html) {
