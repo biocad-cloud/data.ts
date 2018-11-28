@@ -31,10 +31,18 @@ function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T
         // 当html文档加载完毕之后就会执行传递进来的这个
         // 函数进行初始化
         Linq.DOM.ready(<() => void>any);
-    } else {
+    } else if (!isNullOrUndefined(eval)) {
         // 对html文档之中的节点元素进行查询操作
         // 或者创建新的节点
         return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
+    } else {
+        eval = handle[type.class];
+
+        if (!isNullOrUndefined(eval)) {
+            return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
+        } else {
+            throw `Unsupported data type: ${type.toString()}`;
+        }
     }
 }
 
