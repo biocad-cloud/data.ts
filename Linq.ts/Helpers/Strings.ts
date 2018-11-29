@@ -79,8 +79,17 @@ module Strings {
      * string and the end of the given string.
      * 
      * @param chars A collection of characters that will be trimmed.
+     *    (如果这个参数为空值，则会直接使用字符串对象自带的trim函数来完成工作)
+     *    
+     * @returns 这个函数总是会确保返回来的值不是空值，如果输入的字符串参数为空值，则会直接返回零长度的空字符串
     */
-    export function Trim(str: string, chars: string | number[]): string {
+    export function Trim(str: string, chars: string | number[] = null): string {
+        if (Strings.Empty(str, false)) {
+            return "";
+        } else if (isNullOrUndefined(chars)) {
+            return str.trim();
+        }
+
         if (typeof chars == "string") {
             chars = From(Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
@@ -227,7 +236,7 @@ module Strings {
         var p: number;
 
         for (var i: number = 0; i < lines.length; i++) {
-            var line: string = lines[i];
+            var line: string = Strings.Trim(lines[i]);
 
             if (line.length < charsPerLine) {
                 sb = sb + line + "\n";
