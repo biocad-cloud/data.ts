@@ -217,4 +217,37 @@ module Strings {
     }
 
     export const sprintf = data.sprintf.doFormat;
+
+    /**
+     * @param charsPerLine 每一行文本之中的字符数量的最大值
+    */
+    export function WrappingLines(text: string, charsPerLine: number = 200): string {
+        var sb: string = "";
+        var lines: string[] = Strings.lineTokens(text);
+        var p: number;
+
+        for (var i: number = 0; i < lines.length; i++) {
+            var line: string = lines[i];
+
+            if (line.length < charsPerLine) {
+                sb = sb + line + "\n";
+            } else {
+                p = 0;
+
+                while (true) {
+                    sb = sb + line.substr(p, charsPerLine) + "\n";
+                    p += charsPerLine;
+
+                    if ((p + charsPerLine) > line.length) {
+                        // 下一个起始的位置已经超过文本行的长度了
+                        // 则是终止的时候了
+                        sb = sb + line.substr(p) + "\n";
+                        break;
+                    }
+                }
+            }
+        }
+
+        return sb;
+    }
 }
