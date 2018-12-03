@@ -196,10 +196,9 @@ function Goto(url: string, currentFrame: boolean = false): void {
     var win: Window = window;
 
     if (!currentFrame) {
-        // 一直递归到最顶层的文档页面
-        while (win.parent) {
-            win = win.parent;
-        }
+        // 从最顶层的文档页面进行跳转
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/top
+        win = window.top;
     }
 
     win.location.href = url;
