@@ -1,5 +1,15 @@
 ﻿namespace Linq.TsQuery {
 
+    const events = {
+        onclick: "onclick"
+    }
+    const eventFuncNames: string[] = Object.keys(events);
+
+    export function hasKey(object: object, key: string): boolean {
+        // hasOwnProperty = Object.prototype.hasOwnProperty
+        return object ? window.hasOwnProperty.call(object, key) : false;
+    }
+
     /**
      * 这个函数确保给定的id字符串总是以符号``#``开始的
     */
@@ -139,16 +149,28 @@
                 .document
                 .createElement(declare.tag);
 
-            declare.attrs.forEach(attr => {
-                node.setAttribute(attr.name, attr.value);
-            });
+            // 赋值节点申明的字符串表达式之中所定义的属性
+            declare.attrs
+                .forEach(attr => {
+                    if (eventFuncNames.indexOf(attr.name) < 0) {
+                        node.setAttribute(attr.name, attr.value);
+                    }
+                });
 
+            // 赋值额外的属性参数
             if (args) {
                 Arguments
                     .nameFilter(args)
                     .forEach(name => {
-                        node.setAttribute(name, <string>args[name]);
+                        if (eventFuncNames.indexOf(name) < 0) {
+                            node.setAttribute(name, <string>args[name]);
+                        }
                     });
+
+                // 添加事件
+                if (hasKey(args, events.onclick)) {
+                    node.onclick = args[events.onclick];
+                }
             }
 
             if (args.nativeModel) {

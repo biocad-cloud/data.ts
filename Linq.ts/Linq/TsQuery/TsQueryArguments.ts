@@ -29,7 +29,7 @@
 
         //#endregion
 
-        private static readonly ArgumentNames: string[] = Object.keys(new Arguments());
+        private static readonly ArgumentNames: string[] = Object.keys(Arguments.Default());
 
         /**
          * 在创建新的节点的时候，会有一个属性值的赋值过程，
