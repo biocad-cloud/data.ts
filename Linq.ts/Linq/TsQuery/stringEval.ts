@@ -75,7 +75,7 @@
                 var nodes = <NodeListOf<HTMLElement>>context
                     .document
                     .querySelectorAll(query.expression);
-                var it = new DOM.DOMEnumerator(nodes);
+                var it = new DOMEnumerator(nodes);
 
                 return it;
             } else if (query.type == DOM.QueryTypes.QueryMeta) {

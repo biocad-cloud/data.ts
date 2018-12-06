@@ -1,4 +1,5 @@
-﻿
+﻿import { DOMEnumerator } from "../DOM/DOMEnumerator";
+
 namespace Linq.TsQuery {
 
     /**
@@ -16,8 +17,8 @@ namespace Linq.TsQuery {
          * Create a linq object
         */
         array: () => new arrayEval(),
-        NodeListOf: () => new DOMEnumerator(),
-        HTMLCollection: () => new DOMEnumerator()
+        NodeListOf: () => new DOMEnumeratorIEval(),
+        HTMLCollection: () => new DOMEnumeratorIEval()
     };
 
     export interface IEval<T> {
@@ -34,10 +35,10 @@ namespace Linq.TsQuery {
         }
     }
 
-    export class DOMEnumerator<V extends HTMLElement> implements IEval<NodeListOf<V>> {
+    export class DOMEnumeratorIEval<V extends HTMLElement> implements IEval<NodeListOf<V>> {
 
         doEval(expr: NodeListOf<V>, type: TypeInfo, args: object): any {
-            return new Linq.DOM.DOMEnumerator<V>(expr);
+            return new DOMEnumerator<V>(expr);
         }
     }
 }
