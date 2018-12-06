@@ -63,6 +63,25 @@ function $imports(jsURL: string | string[],
 }
 
 /**
+ * 使用script标签进行脚本文件的加载
+ * 因为需要向body添加script标签，所以这个函数会需要等到文档加载完成之后才会被执行
+*/
+function $include(jsURL: string | string[]) {
+    if (typeof jsURL == "string") {
+        jsURL = [jsURL];
+    }
+
+    $ts(() => (<string[]>jsURL).forEach(js => {
+        var script: HTMLElement = $ts("<script>", {
+            type: "text/javascript",
+            src: js
+        });
+
+        document.body.appendChild(script);
+    }));
+}
+
+/**
  * 计算字符串的MD5值字符串
 */
 function md5(string: string, key: string = null, raw: string = null): string {
