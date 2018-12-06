@@ -16,12 +16,13 @@
          * 当脚本执行的时候抛出异常的时候是否继续执行下去？
         */
         private onErrorResumeNext: boolean = false;
+        private echo: boolean = false;
 
         /**
          * @param modules javascript脚本文件的路径集合
          * @param onErrorResumeNext On Error Resume Next Or Just Break
         */
-        public constructor(modules: string | string[], onErrorResumeNext: boolean = false) {
+        public constructor(modules: string | string[], onErrorResumeNext: boolean = false, echo: boolean = true) {
             if (typeof modules == "string") {
                 this.jsURL = [modules];
             } else {
@@ -30,6 +31,7 @@
 
             this.errors = [];
             this.onErrorResumeNext = onErrorResumeNext;
+            this.echo = echo;
         }
 
         private nextScript(): string {
@@ -72,13 +74,17 @@
                             throw ex;
                         }
                     } finally {
-                        console.log("script loaded: ", url);
+                        if (this.echo) {
+                            console.log("script loaded: ", url);
+                        }
                     }
 
                     break;
                 default:
+                    if (this.echo) {
+                        console.error("ERROR: script not loaded: ", url);
+                    }
                     this.errors.push(url);
-                    console.error("ERROR: script not loaded: ", url);
             }
 
             this.doLoad(callback);

@@ -54,10 +54,11 @@ function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T
 */
 function $imports(jsURL: string | string[],
     callback: () => void = DoNothing,
-    onErrorResumeNext: boolean = false): void {
+    onErrorResumeNext: boolean = false,
+    echo: boolean = false): void {
 
     return new HttpHelpers
-        .Imports(jsURL, onErrorResumeNext)
+        .Imports(jsURL, onErrorResumeNext, echo)
         .doLoad(callback);
 }
 
