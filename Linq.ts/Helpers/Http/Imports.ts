@@ -44,7 +44,7 @@
          * 
          * @param callback 在所有指定的脚本文件都完成了加载操作之后所调用的异步回调函数
         */
-        doLoad(callback: () => void): void {
+        doLoad(callback: () => void = DoNothing): void {
             var url: string = this.nextScript();
 
             if (Strings.Empty(url, true)) {
