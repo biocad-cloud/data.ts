@@ -1,4 +1,4 @@
-﻿module HttpHelpers {
+﻿namespace HttpHelpers {
 
     /**
      * 这个函数只会返回200成功代码的响应内容，对于其他的状态代码都会返回null
@@ -20,6 +20,8 @@
 
     /**
      * 使用异步调用的方式进行数据的下载操作
+     * 
+     * @param callback ``callback(http.responseText, http.status)``
     */
     export function GetAsyn(url: string, callback: (response: string, code: number) => void) {
         var http = new XMLHttpRequest();
@@ -27,7 +29,7 @@
         http.open("GET", url, true);
         http.onreadystatechange = function () {
             if (http.readyState == 4) {
-                callback(http.responseText, http.status);
+                callback(http.response || http.responseText, http.status);
             }
         }
         http.send(null);

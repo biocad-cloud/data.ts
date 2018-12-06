@@ -7,6 +7,10 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
 
     private maps: object;
 
+    public get Object(): object {
+        return Linq.extend(this.maps);
+    }
+
     /**
      * 如果键名称是空值的话，那么这个函数会自动使用caller的函数名称作为键名进行值的获取
      * 
@@ -43,10 +47,12 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
-    public constructor(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>>) {
+    public constructor(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>> = null) {
         super(Dictionary.ObjectMaps<V>(maps));
 
-        if (Array.isArray(maps)) {
+        if (isNullOrUndefined(maps)) {
+            this.maps = {};
+        } else if (Array.isArray(maps)) {
             this.maps = TypeInfo.CreateObject(maps);
         } else if (TypeInfo.typeof(maps).class == "IEnumerator") {
             this.maps = TypeInfo.CreateObject(<IEnumerator<Map<string, V>>>maps);
@@ -59,11 +65,19 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
         return new Dictionary<V>(maps);
     }
 
+    public static FromNamedValues<V>(values: NamedValue<V>[] | IEnumerator<NamedValue<V>>): Dictionary<V> {
+        return new Dictionary<V>(TypeInfo.CreateObject(values));
+    }
+
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
     public static ObjectMaps<V>(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>>): Map<string, V>[] {
         var type = TypeInfo.typeof(maps);
+
+        if (isNullOrUndefined(maps)) {
+            return [];
+        }
 
         if (Array.isArray(maps)) {
             return maps;

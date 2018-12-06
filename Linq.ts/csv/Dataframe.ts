@@ -153,16 +153,28 @@ namespace csv {
          * 
          * @param callback 当这个异步回调为空值的时候，函数使用同步的方式工作，返回csv对象
          *                 如果这个参数不是空值，则以异步的方式工作，此时函数会返回空值
+         * @param parseText 如果url返回来的数据之中还包含有其他的信息，则会需要这个参数来进行csv文本数据的解析
         */
-        public static Load(url: string, tsv: boolean = false, callback: (csv: dataframe) => void = null): dataframe {
+        public static Load(url: string,
+            callback: (csv: dataframe) => void = null,
+            parseText: (response: string) => content = this.defaultContent): dataframe {
+
             if (callback == null || callback == undefined) {
                 // 同步
-                return dataframe.Parse(HttpHelpers.GET(url), tsv);
+                var load: content = parseText(HttpHelpers.GET(url));
+                var tsv: boolean = load.type == "tsv";
+                return dataframe.Parse(load.content, tsv);
             } else {
                 // 异步
                 HttpHelpers.GetAsyn(url, (text, code) => {
                     if (code == 200) {
-                        callback(dataframe.Parse(text, tsv));
+                        var load: content = parseText(text);
+                        var tsv: boolean = load.type == "tsv";
+                        var data: dataframe = dataframe.Parse(load.content, tsv);
+
+                        console.log(data.headers);
+
+                        callback(data);
                     } else {
                         throw `Error while load csv data source, http ${code}: ${text}`;
                     }
@@ -170,6 +182,10 @@ namespace csv {
             }
 
             return null;
+        }
+
+        private static defaultContent(content: string): content {
+            return { type: "csv", content: content };
         }
 
         /**
@@ -184,5 +200,13 @@ namespace csv {
 
             return new dataframe(rows);
         }
+    }
+
+    export interface content {
+        /**
+         * 文档的类型为``csv``还是``tsv``
+        */
+        type: string;
+        content: string;
     }
 }

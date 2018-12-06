@@ -25,7 +25,18 @@ namespace Linq.DOM {
          * 
          * ``<xxx ...>``
         */
-        tagName = -100
+        tagName = -100,
+
+        /**
+         * query meta tag content value by name
+         * 
+         * ``@xxxx``
+         * 
+         * ```html
+         * <meta name="user-login" content="xieguigang" />
+         * ```
+        */
+        QueryMeta = 200
     }
 
     export class Query {
@@ -38,6 +49,13 @@ namespace Linq.DOM {
         */
         public expression: string;
 
+        /**
+         * + ``#`` by id
+         * + ``.`` by claSS
+         * + ``&`` SINGLE NODE
+         * + ``@`` read meta tag
+         * + ``&lt;>`` create new tag
+        */
         public static parseQuery(expr: string): Query {
             var isSingle: boolean = false;
 
@@ -95,6 +113,14 @@ namespace Linq.DOM {
             };
         }
 
+        private static queryMeta(expr: string): Query {
+            return <Query>{
+                type: QueryTypes.QueryMeta,
+                singleNode: true,
+                expression: expr
+            }
+        }
+
         private static isSelectorQuery(expr: string): boolean {
             var hasMultiple: boolean = expr.indexOf(" ") > -1;
             var isNodeCreate: boolean = expr.charAt(0) == "<" && expr.charAt(expr.length - 1) == ">";
@@ -118,6 +144,7 @@ namespace Linq.DOM {
                 case "#": return this.getById(expr.substr(1));
                 case ".": return this.getByClass(expr, isSingle);
                 case "<": return this.createElement(expr);
+                case "@": return this.queryMeta(expr.substr(1));
                 default: return this.getByTag(expr, isSingle);
             }
         }

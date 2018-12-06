@@ -1,11 +1,19 @@
 ﻿namespace TsLinq {
 
+    /**
+     * 程序的堆栈追踪信息
+     * 
+     * 这个对象是调用堆栈``StackFrame``片段对象的序列集合
+    */
     export class StackTrace extends IEnumerator<StackFrame> {
 
         public constructor(frames: IEnumerator<StackFrame> | StackFrame[]) {
             super(frames);
         }
 
+        /**
+         * 导出当前的程序运行位置的调用堆栈信息
+        */
         public static Dump(): StackTrace {
             var err = new Error().stack.split("\n");
             var trace = From(err)
@@ -17,6 +25,9 @@
             return new StackTrace(trace);
         }
 
+        /**
+         * 获取函数调用者的名称的帮助函数
+        */
         public static GetCallerMember(): StackFrame {
             var trace = StackTrace.Dump().ToArray();
             // index = 1 是GetCallerMemberName这个函数的caller的栈片段

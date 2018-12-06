@@ -5,6 +5,29 @@ module Strings {
 
     export const x0: number = "0".charCodeAt(0);
     export const x9: number = "9".charCodeAt(0);
+    export const numericPattern: RegExp = /[-]?\d+(\.\d+)?/g;
+
+    /**
+     * 判断所给定的字符串文本是否是任意实数的正则表达式模式
+    */
+    export function isNumericPattern(text: string): boolean {
+        return IsPattern(text, Strings.numericPattern);
+    }
+
+    /**
+     * 默认是保留3位有效数字的
+    */
+    export function round(x: number | string, decimals: number = 3) {
+        var floatX = typeof x == "number" ? x : parseFloat(x);
+        var n = Math.pow(10, decimals);
+
+        if (isNaN(floatX)) {
+            console.warn(`Invalid number value: '${x}'`);
+            return false;
+        } else {
+            return Math.round(floatX * n) / n;
+        }
+    }
 
     /**
      * @param text A single character
@@ -71,8 +94,17 @@ module Strings {
      * string and the end of the given string.
      * 
      * @param chars A collection of characters that will be trimmed.
+     *    (如果这个参数为空值，则会直接使用字符串对象自带的trim函数来完成工作)
+     *    
+     * @returns 这个函数总是会确保返回来的值不是空值，如果输入的字符串参数为空值，则会直接返回零长度的空字符串
     */
-    export function Trim(str: string, chars: string | number[]): string {
+    export function Trim(str: string, chars: string | number[] = null): string {
+        if (Strings.Empty(str, false)) {
+            return "";
+        } else if (isNullOrUndefined(chars)) {
+            return str.trim();
+        }
+
         if (typeof chars == "string") {
             chars = From(Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
@@ -93,16 +125,16 @@ module Strings {
      * Determine that the given string is empty string or not?
      * (判断给定的字符串是否是空值？)
      * 
-     * @param stringAsFactor 假若这个参数为真的话，那么字符串``undefined``也将会被当作为空值处理
+     * @param stringAsFactor 假若这个参数为真的话，那么字符串``undefined``或者``NULL``以及``null``也将会被当作为空值处理
     */
     export function Empty(str: string, stringAsFactor = false): boolean {
         if (!str) {
             return true;
-        } else if (str == undefined) {
+        } else if (str == undefined || typeof str == "undefined") {
             return true;
         } else if (str.length == 0) {
             return true;
-        } else if (stringAsFactor && str.toString() == "undefined") {
+        } else if (stringAsFactor && (str == "undefined" || str == "null" || str == "NULL")) {
             return true;
         } else {
             return false;
@@ -112,11 +144,30 @@ module Strings {
     /**
      * Determine that the whole given string is match a given regex pattern. 
     */
-    export function IsPattern(str: string, pattern: RegExp): boolean {
-        var match: string = str.match(pattern)[0];
-        var test: boolean = match == str;
+    export function IsPattern(str: string, pattern: RegExp | string): boolean {
+        if (!str) {
+            // 字符串是空的，则肯定不满足
+            return false;
+        }
 
-        return test;
+        var matches = str.match(ensureRegexp(pattern));
+
+        if (isNullOrUndefined(matches)) {
+            return false;
+        } else {
+            var match: string = matches[0];
+            var test: boolean = match == str;
+
+            return test;
+        }
+    }
+
+    function ensureRegexp(pattern: RegExp | string): RegExp {
+        if (typeof pattern == "string") {
+            return new RegExp(pattern);
+        } else {
+            return pattern;
+        }
     }
 
     /**
@@ -124,7 +175,7 @@ module Strings {
      * 
      * https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
     */
-    export function uniq(a: string[]): string[] {
+    export function Unique(a: string[]): string[] {
         var seen = {};
 
         return a.filter(function (item) {
@@ -190,4 +241,37 @@ module Strings {
     }
 
     export const sprintf = data.sprintf.doFormat;
+
+    /**
+     * @param charsPerLine 每一行文本之中的字符数量的最大值
+    */
+    export function WrappingLines(text: string, charsPerLine: number = 200): string {
+        var sb: string = "";
+        var lines: string[] = Strings.lineTokens(text);
+        var p: number;
+
+        for (var i: number = 0; i < lines.length; i++) {
+            var line: string = Strings.Trim(lines[i]);
+
+            if (line.length < charsPerLine) {
+                sb = sb + line + "\n";
+            } else {
+                p = 0;
+
+                while (true) {
+                    sb = sb + line.substr(p, charsPerLine) + "\n";
+                    p += charsPerLine;
+
+                    if ((p + charsPerLine) > line.length) {
+                        // 下一个起始的位置已经超过文本行的长度了
+                        // 则是终止的时候了
+                        sb = sb + line.substr(p) + "\n";
+                        break;
+                    }
+                }
+            }
+        }
+
+        return sb;
+    }
 }
