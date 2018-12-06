@@ -1,4 +1,6 @@
-﻿namespace Linq.TsQuery {
+﻿/// <reference path="../DOM/DOMEnumerator.ts" />
+
+namespace Linq.TsQuery {
 
     const events = {
         onclick: "onclick"

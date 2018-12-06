@@ -7,7 +7,7 @@
 // */
 // createElement<K extends keyof HTMLElementTagNameMap>(tagName: K, options ?: ElementCreationOptions): HTMLElementTagNameMap[K];
 
-export class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
+class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
 
     public constructor(elements: T[] | IEnumerator<T> | NodeListOf<T> | HTMLCollection) {
         super(DOMEnumerator.ensureElements(elements));

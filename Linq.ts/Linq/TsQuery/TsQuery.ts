@@ -1,6 +1,4 @@
-﻿import { DOMEnumerator } from "../DOM/DOMEnumerator";
-
-namespace Linq.TsQuery {
+﻿namespace Linq.TsQuery {
 
     /**
      * 在这个字典之中的键名称主要有两大类型:
@@ -16,9 +14,7 @@ namespace Linq.TsQuery {
         /**
          * Create a linq object
         */
-        array: () => new arrayEval(),
-        NodeListOf: () => new DOMEnumeratorIEval(),
-        HTMLCollection: () => new DOMEnumeratorIEval()
+        array: () => new arrayEval()
     };
 
     export interface IEval<T> {
@@ -32,13 +28,6 @@ namespace Linq.TsQuery {
 
         doEval(expr: V[], type: TypeInfo, args: object): any {
             return From(expr);
-        }
-    }
-
-    export class DOMEnumeratorIEval<V extends HTMLElement> implements IEval<NodeListOf<V>> {
-
-        doEval(expr: NodeListOf<V>, type: TypeInfo, args: object): any {
-            return new DOMEnumerator<V>(expr);
         }
     }
 }

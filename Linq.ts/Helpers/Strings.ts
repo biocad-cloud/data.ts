@@ -18,14 +18,14 @@ module Strings {
      * 默认是保留3位有效数字的
     */
     export function round(x: number | string, decimals: number = 3) {
-        var f_x = typeof x == "number" ? x : parseFloat(x);
+        var floatX = typeof x == "number" ? x : parseFloat(x);
         var n = Math.pow(10, decimals);
 
-        if (isNaN(f_x)) {
+        if (isNaN(floatX)) {
             console.warn(`Invalid number value: '${x}'`);
             return false;
         } else {
-            return Math.round(x * n) / n;
+            return Math.round(floatX * n) / n;
         }
     }
 

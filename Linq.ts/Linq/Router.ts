@@ -1,3 +1,5 @@
+/// <reference path="./DOM/DOMEnumerator.ts" />
+
 /**
  * 路由器模块
 */
@@ -22,7 +24,7 @@ module Router {
         hashKey: string | ((link: string) => string) = null,
         frameRegister: boolean = true) {
 
-        var aLink: Linq.DOM.DOMEnumerator<HTMLAnchorElement>;
+        var aLink: DOMEnumerator<HTMLAnchorElement>;
         var gethashKey: (link: string) => string;
 
         if (!hashLinks) {
