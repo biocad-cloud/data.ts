@@ -77,6 +77,9 @@ function $include(jsURL: string | string[]) {
             src: js
         });
 
+        script.onload = function () {
+            document.body.removeChild(script);
+        }
         document.body.appendChild(script);
     }));
 }
