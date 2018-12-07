@@ -14,7 +14,9 @@
         /**
          * Create a linq object
         */
-        array: () => new arrayEval()
+        array: () => new arrayEval(),
+        NodeListOf: () => new DOMCollection(),
+        HTMLCollection: () => new DOMCollection()
     };
 
     export interface IEval<T> {
@@ -28,6 +30,13 @@
 
         doEval(expr: V[], type: TypeInfo, args: object): any {
             return From(expr);
+        }
+    }
+
+    export class DOMCollection<V extends HTMLElement> implements IEval<V[]> {
+
+        doEval(expr: V[], type: TypeInfo, args: object) {
+            return new DOMEnumerator(expr);
         }
     }
 }

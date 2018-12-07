@@ -9,6 +9,11 @@
 
 class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
 
+    /**
+     * 1. IEnumerator
+     * 2. NodeListOf
+     * 3. HTMLCollection
+    */
     public constructor(elements: T[] | IEnumerator<T> | NodeListOf<T> | HTMLCollection) {
         super(DOMEnumerator.ensureElements(elements));
     }
