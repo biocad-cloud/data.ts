@@ -229,7 +229,7 @@ function DoNothing(): any {
 function saveSvgAsPng(
     svg: string | SVGElement,
     name: string,
-    options: CanvasHelper.saveSvgAsPng.Options = null) {
+    options: CanvasHelper.saveSvgAsPng.Options = CanvasHelper.saveSvgAsPng.Options.Default()) {
 
     return CanvasHelper.saveSvgAsPng.Encoder.saveSvgAsPng(svg, name, options);
 }
