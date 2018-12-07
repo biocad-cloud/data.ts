@@ -1,5 +1,6 @@
 ﻿/**
- * TypeScript string helpers
+ * TypeScript string helpers.
+ * (这个模块之中的大部分的字符串处理函数的行为是和VisualBasic之中的字符串函数的行为是相似的)
 */
 module Strings {
 
@@ -12,6 +13,44 @@ module Strings {
     */
     export function isNumericPattern(text: string): boolean {
         return IsPattern(text, Strings.numericPattern);
+    }
+
+    /**
+     * 这个函数会将字符串起始的数字给匹配出来
+     * 如果匹配失败会返回零
+     * 
+     * 与VB之中的val函数的行为相似，但是这个函数返回整形数
+     * 
+     * @param text 这个函数并没有执行trim操作，所以如果字符串的起始为空白符的话
+     *     会导致解析结果为零
+    */
+    export function parseInt(text: string): number {
+        var number: string[];
+        var c: string;
+        var ascii: number;
+
+        if (Strings.Empty(text, true)) {
+            return 0;
+        } else {
+            number = [];
+        }
+
+        for (var i: number = 0; i < text.length; i++) {
+            c = text.charAt(i);
+            ascii = c.charCodeAt(0);
+
+            if (ascii >= x0 && ascii <= x9) {
+                number.push(c);
+            } else {
+                break;
+            }
+        }
+
+        if (number.length == 0) {
+            return 0;
+        } else {
+            return Number(number.join(""));
+        }
     }
 
     /**
@@ -39,6 +78,7 @@ module Strings {
 
     /**
      * 将字符串转换为一个实数
+     * 这个函数是直接使用parseFloat函数来工作的，如果不是符合格式的字符串，则可能会返回NaN
     */
     export function Val(str: string): number {
         if (str == null || str == '' || str == undefined || str == "undefined") {

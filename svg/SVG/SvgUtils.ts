@@ -1,4 +1,33 @@
+/// <reference path="../../../build/linq.d.ts"/>
+
 module SvgUtils {
+
+    /**
+     * 这个函数会直接从目标的width和height属性来获取值
+    */
+    export function getSize(container: HTMLElement, defaultSize: number[] | Canvas.Size = size(960, 600)): Canvas.Size {
+        var w = container.getAttribute("width");
+        var h = container.getAttribute("height");
+
+
+
+        if (Array.isArray(defaultSize)) {
+            defaultSize = size(defaultSize[0], defaultSize[1]);
+        }
+
+        if (isNullOrUndefined(w) || Strings.Empty(w, true)) {
+            w = defaultSize.width.toString();
+        }
+        if (isNullOrUndefined(h) || Strings.Empty(h, true)) {
+            h = defaultSize.height.toString();
+        }
+
+        return size(parseInt(w), parseInt(h));
+    }
+
+    export function size(width: number, height: number): Canvas.Size {
+        return new Canvas.Size(width, height);
+    }
 
     /**
      * https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
