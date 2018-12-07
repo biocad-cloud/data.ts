@@ -9,8 +9,6 @@ module SvgUtils {
         var w = container.getAttribute("width");
         var h = container.getAttribute("height");
 
-
-
         if (Array.isArray(defaultSize)) {
             defaultSize = size(defaultSize[0], defaultSize[1]);
         }
@@ -22,7 +20,7 @@ module SvgUtils {
             h = defaultSize.height.toString();
         }
 
-        return size(parseInt(w), parseInt(h));
+        return size(Strings.parseInt(w), Strings.parseInt(h));
     }
 
     export function size(width: number, height: number): Canvas.Size {
