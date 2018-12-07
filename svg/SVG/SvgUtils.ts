@@ -3,7 +3,7 @@
 module SvgUtils {
 
     /**
-     * Õâ¸öº¯Êı»áÖ±½Ó´ÓÄ¿±êµÄwidthºÍheightÊôĞÔÀ´»ñÈ¡Öµ
+     * è¿™ä¸ªå‡½æ•°ä¼šç›´æ¥ä»ç›®æ ‡çš„widthå’Œheightå±æ€§æ¥è·å–å€¼
     */
     export function getSize(container: HTMLElement, defaultSize: number[] | Canvas.Size = size(960, 600)): Canvas.Size {
         var w = container.getAttribute("width");
@@ -40,7 +40,7 @@ module SvgUtils {
     export const HTML5svgFeature: string = "http://www.w3.org/TR/SVG2/feature#GraphicsAttribute";
 
     /**
-     * ²âÊÔµ±Ç°µÄä¯ÀÀÆ÷ÊÇ·ñÖ§³ÖHTML5µÄ¸ß¼¶ÌØĞÔ
+     * æµ‹è¯•å½“å‰çš„æµè§ˆå™¨æ˜¯å¦æ”¯æŒHTML5çš„é«˜çº§ç‰¹æ€§
     */
     export function hasSVG2Feature(): boolean {
         return document.implementation.hasFeature(HTML5svgFeature, "2.0");
