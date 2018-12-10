@@ -32,38 +32,53 @@ namespace DOM {
         return getContent();
     }
 
+    /**
+     * File download helper
+     * 
+     * @param name The file save name for download operation
+     * @param uri The file object to download
+    */
     export function download(name: string, uri: string): void {
         if (navigator.msSaveOrOpenBlob) {
             navigator.msSaveOrOpenBlob(DataExtensions.uriToBlob(uri), name);
         } else {
-            var saveLink = document.createElement('a');
-            var downloadSupported = 'download' in saveLink;
-            if (downloadSupported) {
-                saveLink.download = name;
-                saveLink.style.display = 'none';
-                document.body.appendChild(saveLink);
-                try {
-                    var blob = DataExtensions.uriToBlob(uri);
-                    var url = URL.createObjectURL(blob);
-                    saveLink.href = url;
-                    saveLink.onclick = function () {
-                        requestAnimationFrame(function () {
-                            URL.revokeObjectURL(url);
-                        })
-                    };
-                } catch (e) {
-                    console.warn('This browser does not support object URLs. Falling back to string URL.');
-                    saveLink.href = uri;
-                }
-                saveLink.click();
-                document.body.removeChild(saveLink);
-            }
-            else {
-                window.open(uri, '_temp', 'menubar=no,toolbar=no,status=no');
-            }
+            downloadImpl(name, uri);
         }
     }
 
+    function downloadImpl(name: string, uri: string): void {
+        var saveLink: HTMLAnchorElement = $ts('<a>');
+        var downloadSupported = 'download' in saveLink;
+
+        if (downloadSupported) {
+            saveLink.download = name;
+            saveLink.style.display = 'none';
+            document.body.appendChild(saveLink);
+
+            try {
+                var blob = DataExtensions.uriToBlob(uri);
+                var url = URL.createObjectURL(blob);
+                saveLink.href = url;
+                saveLink.onclick = function () {
+                    requestAnimationFrame(function () {
+                        URL.revokeObjectURL(url);
+                    })
+                };
+            } catch (e) {
+                console.warn('This browser does not support object URLs. Falling back to string URL.');
+                saveLink.href = uri;
+            }
+
+            saveLink.click();
+            document.body.removeChild(saveLink);
+        } else {
+            window.open(uri, '_temp', 'menubar=no,toolbar=no,status=no');
+        }
+    }
+
+    /**
+     * 尝试获取当前的浏览器的大小
+    */
     export function clientSize(): number[] {
         var w = window,
             d = document,

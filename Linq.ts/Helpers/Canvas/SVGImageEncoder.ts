@@ -191,7 +191,7 @@
 
             options = options || {};
             this.svgAsDataUri(el, options, function (uri) {
-                Linq.DOM.download(name, uri);
+                DOM.download(name, uri);
             });
         }
 
