@@ -85,11 +85,9 @@
 
                 function cssLoadedCallback(css) {
                     // here all fonts are inlined, so that we can render them properly.
-                    var s = document.createElement('style');
-                    s.setAttribute('type', 'text/css');
-                    s.innerHTML = "<![CDATA[\n" + css + "\n]]>";
-                    var defs = document.createElement('defs');
-                    defs.appendChild(s);
+                    var s: HTMLStyleElement = $ts('<style>', { type: 'text/css' }).display(`<![CDATA[\n${css}\n]]>`);
+                    var defs: HTMLElement = $ts('<defs>').display(s);
+
                     clone.insertBefore(defs, clone.firstChild);
 
                     if (cb) {
@@ -190,9 +188,7 @@
             requireDomNode(el);
 
             options = options || {};
-            this.svgAsDataUri(el, options, function (uri) {
-                DOM.download(name, uri);
-            });
+            this.svgAsDataUri(el, options, uri => DOM.download(name, uri));
         }
 
         /**
@@ -214,9 +210,7 @@
                 requireDomNode(<SVGElement>svg);
             }
 
-            this.svgAsPngUri(svg, options, function (uri) {
-                Linq.DOM.download(name, uri);
-            });
+            this.svgAsPngUri(svg, options, uri => DOM.download(name, uri));
         }
     }
 }
