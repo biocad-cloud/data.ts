@@ -1,7 +1,7 @@
 /**
  * HTML文档操作帮助函数
 */
-namespace Linq.DOM {
+namespace DOM {
 
     /**
      * Query meta tag content value by name

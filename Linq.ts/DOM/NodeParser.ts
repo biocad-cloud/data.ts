@@ -1,4 +1,4 @@
-namespace Linq.DOM {
+namespace DOM {
 
     /**
      * 用于解析XML节点之中的属性值的正则表达式
