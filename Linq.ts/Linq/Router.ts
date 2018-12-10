@@ -1,4 +1,4 @@
-/// <reference path="./DOM/DOMEnumerator.ts" />
+/// <reference path="../DOM/DOMEnumerator.ts" />
 
 /**
  * 路由器模块
@@ -59,7 +59,7 @@ module Router {
     function clientResize(appId: string) {
         var app: HTMLDivElement = $ts("#" + appId);
         var frame: HTMLIFrameElement = $ts(`#${appId}-frame`);
-        var size: number[] = Linq.DOM.clientSize();
+        var size: number[] = DOM.clientSize();
 
         if (!app) {
             console.warn(`[#${appId}] not found!`);

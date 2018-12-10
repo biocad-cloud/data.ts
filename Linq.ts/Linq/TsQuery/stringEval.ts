@@ -1,4 +1,4 @@
-﻿/// <reference path="../DOM/DOMEnumerator.ts" />
+﻿/// <reference path="../../DOM/DOMEnumerator.ts" />
 
 namespace Linq.TsQuery {
 
