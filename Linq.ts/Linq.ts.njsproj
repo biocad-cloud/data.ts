@@ -112,7 +112,7 @@
     <TypeScriptCompile Include="Linq\Collections\Map.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DOM\Document.ts">
+    <TypeScriptCompile Include="DOM\Document.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Collections\Enumerable.ts" />
@@ -132,17 +132,17 @@
     <TypeScriptCompile Include="Linq\Collections\List.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DOM\DOMEnumerator.ts">
+    <TypeScriptCompile Include="DOM\DOMEnumerator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DOM\DOMQuery.ts">
+    <TypeScriptCompile Include="DOM\DOMQuery.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DOM\Node.ts" />
-    <TypeScriptCompile Include="Linq\DOM\NodeParser.ts">
+    <TypeScriptCompile Include="DOM\Node.ts" />
+    <TypeScriptCompile Include="DOM\NodeParser.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\TsQuery\HTMLTsElement.ts">
+    <TypeScriptCompile Include="DOM\HTMLTsElement.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\TsQuery\TsQueryArguments.ts">
@@ -195,7 +195,7 @@
     <Folder Include="csv\" />
     <Folder Include="Helpers\" />
     <Folder Include="Data\" />
-    <Folder Include="Linq\DOM\" />
+    <Folder Include="DOM\" />
     <Folder Include="Linq\Collections\" />
     <Folder Include="Linq\TsQuery\" />
   </ItemGroup>
