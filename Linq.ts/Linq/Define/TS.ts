@@ -15,6 +15,8 @@
          * @param ready The handler of the target event.
         */
         (ready: () => void): void;
+
+        imports(jsURL: string | string[], callback?: () => void, onErrorResumeNext?: boolean, echo?: boolean): void;
     }
 
     /**

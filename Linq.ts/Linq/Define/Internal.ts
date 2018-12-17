@@ -30,6 +30,10 @@
             }
         };
 
+        ins.imports = function (jsURL: string | string[], callback: () => void = DoNothing, onErrorResumeNext: boolean = false, echo: boolean = false) {
+            return new HttpHelpers.Imports(jsURL, onErrorResumeNext, echo).doLoad(callback);
+        };
+
         return <TypeScript>ins;
     }
 }
