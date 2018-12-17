@@ -54,6 +54,11 @@ class HTMLTsElement {
         return this;
     }
 
+    public text(innerText: string): HTMLTsElement {
+        this.HTMLElement.innerText = innerText;
+        return this;
+    }
+
     public addClass(className: string): HTMLTsElement {
         var node = this.HTMLElement
 
