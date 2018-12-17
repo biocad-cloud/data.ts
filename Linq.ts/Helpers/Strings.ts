@@ -1,10 +1,15 @@
 ﻿/**
- * TypeScript string helpers
+ * TypeScript string helpers.
+ * (这个模块之中的大部分的字符串处理函数的行为是和VisualBasic之中的字符串函数的行为是相似的)
 */
 module Strings {
 
     export const x0: number = "0".charCodeAt(0);
     export const x9: number = "9".charCodeAt(0);
+    export const asterisk: number = "*".charCodeAt(0);
+    export const cr: number = "\c".charCodeAt(0);
+    export const lf: number = "\r".charCodeAt(0);
+
     export const numericPattern: RegExp = /[-]?\d+(\.\d+)?/g;
 
     /**
@@ -12,6 +17,79 @@ module Strings {
     */
     export function isNumericPattern(text: string): boolean {
         return IsPattern(text, Strings.numericPattern);
+    }
+
+    /**
+     * 这个函数会将字符串起始的数字给匹配出来
+     * 如果匹配失败会返回零
+     * 
+     * 与VB之中的val函数的行为相似，但是这个函数返回整形数
+     * 
+     * @param text 这个函数并没有执行trim操作，所以如果字符串的起始为空白符的话
+     *     会导致解析结果为零
+    */
+    export function parseInt(text: string): number {
+        var number: string[];
+        var c: string;
+        var ascii: number;
+
+        if (Strings.Empty(text, true)) {
+            return 0;
+        } else {
+            number = [];
+        }
+
+        for (var i: number = 0; i < text.length; i++) {
+            c = text.charAt(i);
+            ascii = c.charCodeAt(0);
+
+            if (ascii >= x0 && ascii <= x9) {
+                number.push(c);
+            } else {
+                break;
+            }
+        }
+
+        if (number.length == 0) {
+            return 0;
+        } else {
+            return Number(number.join(""));
+        }
+    }
+
+    /**
+     * @param c A single char
+     * @param n n chars
+    */
+    export function New(c: string, n: number): string {
+        if (n == 0) {
+            return "";
+        } else if (n == 1) {
+            return c;
+        } else {
+            var s: string = "";
+
+            for (var i: number = 1; i < n; ++i) {
+                s = s + c;
+            }
+
+            return s;
+        }
+    }
+
+    /**
+     * 默认是保留3位有效数字的
+    */
+    export function round(x: number | string, decimals: number = 3) {
+        var floatX = typeof x == "number" ? x : parseFloat(x);
+        var n = Math.pow(10, decimals);
+
+        if (isNaN(floatX)) {
+            console.warn(`Invalid number value: '${x}'`);
+            return false;
+        } else {
+            return Math.round(floatX * n) / n;
+        }
     }
 
     /**
@@ -24,6 +102,7 @@ module Strings {
 
     /**
      * 将字符串转换为一个实数
+     * 这个函数是直接使用parseFloat函数来工作的，如果不是符合格式的字符串，则可能会返回NaN
     */
     export function Val(str: string): number {
         if (str == null || str == '' || str == undefined || str == "undefined") {
@@ -79,8 +158,17 @@ module Strings {
      * string and the end of the given string.
      * 
      * @param chars A collection of characters that will be trimmed.
+     *    (如果这个参数为空值，则会直接使用字符串对象自带的trim函数来完成工作)
+     *    
+     * @returns 这个函数总是会确保返回来的值不是空值，如果输入的字符串参数为空值，则会直接返回零长度的空字符串
     */
-    export function Trim(str: string, chars: string | number[]): string {
+    export function Trim(str: string, chars: string | number[] = null): string {
+        if (Strings.Empty(str, false)) {
+            return "";
+        } else if (isNullOrUndefined(chars)) {
+            return str.trim();
+        }
+
         if (typeof chars == "string") {
             chars = From(Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
@@ -101,16 +189,35 @@ module Strings {
      * Determine that the given string is empty string or not?
      * (判断给定的字符串是否是空值？)
      * 
-     * @param stringAsFactor 假若这个参数为真的话，那么字符串``undefined``也将会被当作为空值处理
+     * @param stringAsFactor 假若这个参数为真的话，那么字符串``undefined``或者``NULL``以及``null``也将会被当作为空值处理
     */
     export function Empty(str: string, stringAsFactor = false): boolean {
         if (!str) {
             return true;
-        } else if (str == undefined) {
+        } else if (str == undefined || typeof str == "undefined") {
             return true;
         } else if (str.length == 0) {
             return true;
-        } else if (stringAsFactor && str.toString() == "undefined") {
+        } else if (stringAsFactor && (str == "undefined" || str == "null" || str == "NULL")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 测试字符串是否是空白集合
+     * 
+     * @param stringAsFactor 如果这个参数为真，则``\t``和``\s``等也会被当作为空白
+    */
+    export function Blank(str: string, stringAsFactor = false): boolean {
+        if (!str) {
+            return true;
+        } else if (str == undefined || typeof str == "undefined") {
+            return true;
+        } else if (str.length == 0) {
+            return true;
+        } else if (stringAsFactor && (str == "\\s" || str == "\\t")) {
             return true;
         } else {
             return false;
@@ -151,7 +258,7 @@ module Strings {
      * 
      * https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
     */
-    export function uniq(a: string[]): string[] {
+    export function Unique(a: string[]): string[] {
         var seen = {};
 
         return a.filter(function (item) {
@@ -217,4 +324,37 @@ module Strings {
     }
 
     export const sprintf = data.sprintf.doFormat;
+
+    /**
+     * @param charsPerLine 每一行文本之中的字符数量的最大值
+    */
+    export function WrappingLines(text: string, charsPerLine: number = 200): string {
+        var sb: string = "";
+        var lines: string[] = Strings.lineTokens(text);
+        var p: number;
+
+        for (var i: number = 0; i < lines.length; i++) {
+            var line: string = Strings.Trim(lines[i]);
+
+            if (line.length < charsPerLine) {
+                sb = sb + line + "\n";
+            } else {
+                p = 0;
+
+                while (true) {
+                    sb = sb + line.substr(p, charsPerLine) + "\n";
+                    p += charsPerLine;
+
+                    if ((p + charsPerLine) > line.length) {
+                        // 下一个起始的位置已经超过文本行的长度了
+                        // 则是终止的时候了
+                        sb = sb + line.substr(p) + "\n";
+                        break;
+                    }
+                }
+            }
+        }
+
+        return sb;
+    }
 }

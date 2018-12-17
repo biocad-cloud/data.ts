@@ -4,6 +4,7 @@
 /// <reference path="Helpers/Extensions.ts" />
 /// <reference path="Helpers/Strings.ts" />
 /// <reference path="Type.ts" />
+/// <reference path="Data/Encoder/MD5.ts" />
 
 if (typeof String.prototype['startsWith'] != 'function') {
     String.prototype['startsWith'] = function (str) {
@@ -29,12 +30,65 @@ function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T
     } else if (type.typeOf == "function") {
         // 当html文档加载完毕之后就会执行传递进来的这个
         // 函数进行初始化
-        Linq.DOM.ready(<() => void>any);
-    } else {
+        DOM.ready(<() => void>any);
+    } else if (!isNullOrUndefined(eval)) {
         // 对html文档之中的节点元素进行查询操作
         // 或者创建新的节点
         return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
+    } else {
+        eval = handle[type.class];
+
+        if (!isNullOrUndefined(eval)) {
+            return (<Linq.TsQuery.IEval<T>>eval()).doEval(<T>any, type, args);
+        } else {
+            throw `Unsupported data type: ${type.toString()}`;
+        }
     }
+}
+
+/**
+ * 动态加载脚本文件，然后在完成脚本文件的加载操作之后，执行一个指定的函数操作
+ * 
+ * @param callback 如果这个函数之中存在有HTML文档的操作，则可能会需要将代码放在``$ts(() => {...})``之中，
+ *     等待整个html文档加载完毕之后再做程序的执行，才可能会得到正确的执行结果
+*/
+function $imports(jsURL: string | string[],
+    callback: () => void = DoNothing,
+    onErrorResumeNext: boolean = false,
+    echo: boolean = false): void {
+
+    return new HttpHelpers
+        .Imports(jsURL, onErrorResumeNext, echo)
+        .doLoad(callback);
+}
+
+/**
+ * 使用script标签进行脚本文件的加载
+ * 因为需要向body添加script标签，所以这个函数会需要等到文档加载完成之后才会被执行
+*/
+function $include(jsURL: string | string[]) {
+    if (typeof jsURL == "string") {
+        jsURL = [jsURL];
+    }
+
+    $ts(() => (<string[]>jsURL).forEach(js => {
+        var script: HTMLElement = $ts("<script>", {
+            type: "text/javascript",
+            src: js
+        });
+
+        script.onload = function () {
+            document.body.removeChild(script);
+        }
+        document.body.appendChild(script);
+    }));
+}
+
+/**
+ * 计算字符串的MD5值字符串
+*/
+function md5(string: string, key: string = null, raw: string = null): string {
+    return MD5.calculate(string, key, raw);
 }
 
 /**
@@ -66,21 +120,6 @@ function From<T>(source: T[] | IEnumerator<T>): IEnumerator<T> {
 */
 function CharEnumerator(str: string): IEnumerator<string> {
     return new IEnumerator<string>(Strings.ToCharArray(str));
-}
-
-/**
- * Query meta tag content value by name
-*/
-function metaValue(name: string, Default: string = null): string {
-    var meta = document.querySelector(`meta[name~="${name}"]`);
-    var content: string;
-
-    if (meta) {
-        content = meta.getAttribute("content");
-        return content ? content : Default;
-    } else {
-        return Default;
-    }
 }
 
 /**
@@ -142,9 +181,21 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
 
 /**
  * 调用这个函数会从当前的页面跳转到指定URL的页面
+ * 
+ * 如果当前的这个页面是一个iframe页面，则会通过父页面进行跳转
+ * 
+ * @param currentFrame 如果这个参数为true，则不会进行父页面的跳转操作
 */
-function Goto(url: string): void {
-    window.location.href = url;
+function Goto(url: string, currentFrame: boolean = false): void {
+    var win: Window = window;
+
+    if (!currentFrame) {
+        // 从最顶层的文档页面进行跳转
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/top
+        win = window.top;
+    }
+
+    win.location.href = url;
 }
 
 /**
@@ -166,4 +217,19 @@ function base64_decode(stream: string): string {
 */
 function DoNothing(): any {
     return null;
+}
+
+/**
+ * 将指定的SVG节点保存为png图片
+ * 
+ * @param svg 需要进行保存为图片的svg节点的对象实例或者对象的节点id值
+ * @param name 所保存的文件名
+ * @param options 配置参数，直接留空使用默认值就好了
+*/
+function saveSvgAsPng(
+    svg: string | SVGElement,
+    name: string,
+    options: CanvasHelper.saveSvgAsPng.Options = CanvasHelper.saveSvgAsPng.Options.Default()) {
+
+    return CanvasHelper.saveSvgAsPng.Encoder.saveSvgAsPng(svg, name, options);
 }

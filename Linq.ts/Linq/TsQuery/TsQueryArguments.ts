@@ -2,6 +2,11 @@
 
     export class Arguments {
 
+        /**
+         * 发生查询的上下文，默认是当前文档
+        */
+        public context: Window;
+
         //#region "meta tag value query"
 
         public caseInSensitive: boolean;
@@ -11,7 +16,7 @@
         public defaultValue: string;
 
         //#endregion
-        
+
         //#region "node query && create"
 
         /**
@@ -24,7 +29,7 @@
 
         //#endregion
 
-        private static readonly ArgumentNames: string[] = Object.keys(new Arguments());
+        private static readonly ArgumentNames: string[] = Object.keys(Arguments.Default());
 
         /**
          * 在创建新的节点的时候，会有一个属性值的赋值过程，
@@ -41,7 +46,8 @@
             return <Arguments>{
                 caseInSensitive: false,
                 nativeModel: true,
-                defaultValue: ""
+                defaultValue: "",
+                context: window
             }
         }
     }

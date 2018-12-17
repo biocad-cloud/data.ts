@@ -1,3 +1,5 @@
+/// <reference path="../DOM/DOMEnumerator.ts" />
+
 /**
  * 路由器模块
 */
@@ -22,7 +24,7 @@ module Router {
         hashKey: string | ((link: string) => string) = null,
         frameRegister: boolean = true) {
 
-        var aLink: Linq.DOM.DOMEnumerator<HTMLAnchorElement>;
+        var aLink: DOMEnumerator<HTMLAnchorElement>;
         var gethashKey: (link: string) => string;
 
         if (!hashLinks) {
@@ -57,7 +59,7 @@ module Router {
     function clientResize(appId: string) {
         var app: HTMLDivElement = $ts("#" + appId);
         var frame: HTMLIFrameElement = $ts(`#${appId}-frame`);
-        var size: number[] = Linq.DOM.clientSize();
+        var size: number[] = DOM.clientSize();
 
         if (!app) {
             console.warn(`[#${appId}] not found!`);

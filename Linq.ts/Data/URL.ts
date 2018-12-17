@@ -118,5 +118,20 @@ namespace TsLinq {
         public static Refresh(url: string): string {
             return `${url}&refresh=${Math.random() * 10000}`;
         }
+
+        public static readonly hostNamePattern: RegExp = /:\/\/(www[0-9]?\.)?(.[^/:]+)/i;
+
+        /**
+         * 获取所给定的URL之中的host名称字符串，如果解析失败会返回空值
+        */
+        public static getHostName(url: string): string {
+            var match: RegExpMatchArray = url.match(this.hostNamePattern);
+
+            if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
+                return match[2];
+            } else {
+                return null;
+            }
+        }
     }
 }

@@ -1,40 +1,84 @@
 /**
  * HTML文档操作帮助函数
 */
-namespace Linq.DOM {
+namespace DOM {
 
+    /**
+     * Query meta tag content value by name
+     * 
+     * @param allowQueryParent 当当前的文档之中不存在目标meta标签的时候，
+     *    如果当前文档为iframe文档，则是否允许继续往父节点的文档做查询？
+     *    默认为False，即只在当前文档环境之中进行查询操作
+     * @param Default 查询失败的时候所返回来的默认值
+    */
+    export function metaValue(name: string, Default: string = null, allowQueryParent: boolean = false): string {
+        var selector: string = `meta[name~="${name}"]`;
+        var meta: Element = document.querySelector(selector);
+        var getContent = function () {
+            if (meta) {
+                var content: string = meta.getAttribute("content");
+                return content ? content : Default;
+            } else {
+                return Default;
+            }
+        };
+
+        if (!meta && allowQueryParent) {
+            meta = parent.window
+                .document
+                .querySelector(selector);
+        }
+
+        return getContent();
+    }
+
+    /**
+     * File download helper
+     * 
+     * @param name The file save name for download operation
+     * @param uri The file object to download
+    */
     export function download(name: string, uri: string): void {
         if (navigator.msSaveOrOpenBlob) {
             navigator.msSaveOrOpenBlob(DataExtensions.uriToBlob(uri), name);
         } else {
-            var saveLink = document.createElement('a');
-            var downloadSupported = 'download' in saveLink;
-            if (downloadSupported) {
-                saveLink.download = name;
-                saveLink.style.display = 'none';
-                document.body.appendChild(saveLink);
-                try {
-                    var blob = DataExtensions.uriToBlob(uri);
-                    var url = URL.createObjectURL(blob);
-                    saveLink.href = url;
-                    saveLink.onclick = function () {
-                        requestAnimationFrame(function () {
-                            URL.revokeObjectURL(url);
-                        })
-                    };
-                } catch (e) {
-                    console.warn('This browser does not support object URLs. Falling back to string URL.');
-                    saveLink.href = uri;
-                }
-                saveLink.click();
-                document.body.removeChild(saveLink);
-            }
-            else {
-                window.open(uri, '_temp', 'menubar=no,toolbar=no,status=no');
-            }
+            downloadImpl(name, uri);
         }
     }
 
+    function downloadImpl(name: string, uri: string): void {
+        var saveLink: HTMLAnchorElement = $ts('<a>');
+        var downloadSupported = 'download' in saveLink;
+
+        if (downloadSupported) {
+            saveLink.download = name;
+            saveLink.style.display = 'none';
+            document.body.appendChild(saveLink);
+
+            try {
+                var blob = DataExtensions.uriToBlob(uri);
+                var url = URL.createObjectURL(blob);
+                saveLink.href = url;
+                saveLink.onclick = function () {
+                    requestAnimationFrame(function () {
+                        URL.revokeObjectURL(url);
+                    })
+                };
+            } catch (e) {
+                console.warn('This browser does not support object URLs. Falling back to string URL.');
+                saveLink.href = uri;
+            }
+
+            saveLink.click();
+            document.body.removeChild(saveLink);
+        } else {
+            window.open(uri, '_temp', 'menubar=no,toolbar=no,status=no');
+        }
+    }
+
+    /**
+     * 尝试获取当前的浏览器的大小
+    */
     export function clientSize(): number[] {
         var w = window,
             d = document,

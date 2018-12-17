@@ -1,6 +1,11 @@
-﻿
-namespace Linq.TsQuery {
+﻿namespace Linq.TsQuery {
 
+    /**
+     * 在这个字典之中的键名称主要有两大类型:
+     * 
+     * + typeof 类型判断结果
+     * + TypeInfo.class 类型名称
+    */
     export const handler = {
         /**
          * HTML document query handler
@@ -9,7 +14,9 @@ namespace Linq.TsQuery {
         /**
          * Create a linq object
         */
-        array: () => new arrayEval()
+        array: () => new arrayEval(),
+        NodeListOf: () => new DOMCollection(),
+        HTMLCollection: () => new DOMCollection()
     };
 
     export interface IEval<T> {
@@ -23,6 +30,13 @@ namespace Linq.TsQuery {
 
         doEval(expr: V[], type: TypeInfo, args: object): any {
             return From(expr);
+        }
+    }
+
+    export class DOMCollection<V extends HTMLElement> implements IEval<V[]> {
+
+        doEval(expr: V[], type: TypeInfo, args: object) {
+            return new DOMEnumerator(expr);
         }
     }
 }

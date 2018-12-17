@@ -45,7 +45,7 @@
     <TypeScriptCompile Include="csv\doc.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Data\Base64.ts" />
+    <TypeScriptCompile Include="Data\Encoder\Base64.ts" />
     <TypeScriptCompile Include="Data\BinaryTree\node.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -62,6 +62,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="csv\Tokenizer.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\Encoder\MD5.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Data\SlideWindow.ts">
@@ -103,10 +106,13 @@
     <TypeScriptCompile Include="Helpers\Canvas\SVGImageEncoder.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Helpers\Cookie.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Collections\Map.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DOM\Document.ts">
+    <TypeScriptCompile Include="DOM\Document.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Collections\Enumerable.ts" />
@@ -126,17 +132,17 @@
     <TypeScriptCompile Include="Linq\Collections\List.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DOM\DOMEnumerator.ts">
+    <TypeScriptCompile Include="DOM\DOMEnumerator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DOM\DOMQuery.ts">
+    <TypeScriptCompile Include="DOM\DOMQuery.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\DOM\Node.ts" />
-    <TypeScriptCompile Include="Linq\DOM\NodeParser.ts">
+    <TypeScriptCompile Include="DOM\Node.ts" />
+    <TypeScriptCompile Include="DOM\NodeParser.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\TsQuery\HTMLTsElement.ts">
+    <TypeScriptCompile Include="DOM\HTMLTsElement.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\TsQuery\TsQueryArguments.ts">
@@ -166,7 +172,7 @@
     <TypeScriptCompile Include="Data\Range.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Helpers\xhrHelpers.ts">
+    <TypeScriptCompile Include="Helpers\Http\xhrHelpers.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Strings.ts">
@@ -180,16 +186,23 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StackTrace\" />
     <Folder Include="Helpers\Canvas\" />
+    <Folder Include="Helpers\Http\" />
     <Folder Include="Linq\" />
     <Folder Include="Data\BinaryTree\" />
     <Folder Include="csv\" />
     <Folder Include="Helpers\" />
     <Folder Include="Data\" />
-    <Folder Include="Linq\DOM\" />
+    <Folder Include="DOM\" />
     <Folder Include="Linq\Collections\" />
     <Folder Include="Linq\TsQuery\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helpers\Http\Imports.ts">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
