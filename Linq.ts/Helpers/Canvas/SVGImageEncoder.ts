@@ -85,7 +85,10 @@
 
                 function cssLoadedCallback(css) {
                     // here all fonts are inlined, so that we can render them properly.
-                    var s: HTMLStyleElement = $ts('<style>', { type: 'text/css' }).display(`<![CDATA[\n${css}\n]]>`);
+                    var s: HTMLStyleElement = <any>$ts('<style>',
+                        {
+                            type: 'text/css'
+                        }).display(`<![CDATA[\n${css}\n]]>`);
                     var defs: HTMLElement = $ts('<defs>').display(s);
 
                     clone.insertBefore(defs, clone.firstChild);
@@ -113,7 +116,7 @@
          * 将svg转换为base64 data uri
         */
         private static convertToPng(src: HTMLImageElement, w: number, h: number, options: Options): string {
-            var canvas: HTMLCanvasElement = $ts('<canvas>', {
+            var canvas: HTMLCanvasElement = <any>$ts('<canvas>', {
                 width: w,
                 height: h
             });
@@ -204,7 +207,7 @@
             options: Options = Options.Default()) {
 
             if (typeof svg == "string") {
-                svg = <SVGElement>$ts(svg)
+                svg = <SVGElement><any>$ts(svg)
                 requireDomNode(svg);
             } else {
                 requireDomNode(<SVGElement>svg);
