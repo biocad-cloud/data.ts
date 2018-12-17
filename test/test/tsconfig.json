@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "lib": [ "es6" ],
+    "module": "amd",
+    "target": "es5",
+    "lib": [ "dom", "es5", "dom.iterable", "scripthost" ],
     "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
     "outFile": "../test.js"
   },
   "exclude": [
