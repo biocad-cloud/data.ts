@@ -124,7 +124,7 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
             var event = function (Event: Event) {
                 handler(element, Event);
             }
-            Linq.DOM.addEvent(element, eventName, event);
+            DOM.addEvent(element, eventName, event);
         })
     }
 
