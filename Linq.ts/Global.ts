@@ -12,8 +12,6 @@ if (typeof String.prototype['startsWith'] != 'function') {
     };
 }
 
-const $ttt = Internal.Static();
-
 /**
  * 对于这个函数的返回值还需要做类型转换
  * 
