@@ -6,6 +6,10 @@ module Strings {
 
     export const x0: number = "0".charCodeAt(0);
     export const x9: number = "9".charCodeAt(0);
+    export const asterisk: number = "*".charCodeAt(0);
+    export const cr: number = "\c".charCodeAt(0);
+    export const lf: number = "\r".charCodeAt(0);
+
     export const numericPattern: RegExp = /[-]?\d+(\.\d+)?/g;
 
     /**
@@ -50,6 +54,26 @@ module Strings {
             return 0;
         } else {
             return Number(number.join(""));
+        }
+    }
+
+    /**
+     * @param c A single char
+     * @param n n chars
+    */
+    export function New(c: string, n: number): string {
+        if (n == 0) {
+            return "";
+        } else if (n == 1) {
+            return c;
+        } else {
+            var s: string = "";
+
+            for (var i: number = 1; i < n; ++i) {
+                s = s + c;
+            }
+
+            return s;
         }
     }
 
@@ -175,6 +199,25 @@ module Strings {
         } else if (str.length == 0) {
             return true;
         } else if (stringAsFactor && (str == "undefined" || str == "null" || str == "NULL")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 测试字符串是否是空白集合
+     * 
+     * @param stringAsFactor 如果这个参数为真，则``\t``和``\s``等也会被当作为空白
+    */
+    export function Blank(str: string, stringAsFactor = false): boolean {
+        if (!str) {
+            return true;
+        } else if (str == undefined || typeof str == "undefined") {
+            return true;
+        } else if (str.length == 0) {
+            return true;
+        } else if (stringAsFactor && (str == "\\s" || str == "\\t")) {
             return true;
         } else {
             return false;
