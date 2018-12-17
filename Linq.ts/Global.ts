@@ -13,13 +13,6 @@ if (typeof String.prototype['startsWith'] != 'function') {
 }
 
 /**
- * 对于这个函数的返回值还需要做类型转换
- * 
- * 如果是节点查询或者创建的话，可以使用``asExtends``属性来获取``HTMLTsElememnt``拓展对象
-*/
-const $ts: Internal.TypeScript = Internal.Static();
-
-/**
  * 动态加载脚本文件，然后在完成脚本文件的加载操作之后，执行一个指定的函数操作
  * 
  * @param callback 如果这个函数之中存在有HTML文档的操作，则可能会需要将代码放在``$ts(() => {...})``之中，
@@ -206,3 +199,10 @@ function saveSvgAsPng(
 
     return CanvasHelper.saveSvgAsPng.Encoder.saveSvgAsPng(svg, name, options);
 }
+
+/**
+ * 对于这个函数的返回值还需要做类型转换
+ * 
+ * 如果是节点查询或者创建的话，可以使用``asExtends``属性来获取``HTMLTsElememnt``拓展对象
+*/
+const $ts: Internal.TypeScript = Internal.Static();
