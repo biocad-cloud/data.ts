@@ -145,6 +145,12 @@
     <TypeScriptCompile Include="DOM\HTMLTsElement.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\Define\TS.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\Define\Internal.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\TsQuery\TsQueryArguments.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -197,6 +203,7 @@
     <Folder Include="Data\" />
     <Folder Include="DOM\" />
     <Folder Include="Linq\Collections\" />
+    <Folder Include="Linq\Define\" />
     <Folder Include="Linq\TsQuery\" />
   </ItemGroup>
   <ItemGroup>
