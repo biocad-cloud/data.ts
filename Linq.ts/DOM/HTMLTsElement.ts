@@ -108,3 +108,15 @@ class HTMLTsElement {
         return this;
     }
 }
+
+interface IHTMLElement extends HTMLElement {
+
+    asExtends: HTMLTsElement;
+
+    display(html: string | HTMLElement): IHTMLElement;
+    show(): IHTMLElement;
+    hide(): IHTMLElement;
+    addClass(name: string): IHTMLElement;
+    removeClass(name: string): IHTMLElement;
+
+}

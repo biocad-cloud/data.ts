@@ -13,7 +13,7 @@ namespace CanvasHelper {
      */
     export function getTextWidth(text: string, font: string): number {
         // re-use canvas object for better performance
-        var canvas: HTMLCanvasElement = innerCanvas || (innerCanvas = $ts("<canvas>"));
+        var canvas: HTMLCanvasElement = innerCanvas || (innerCanvas = <any>$ts("<canvas>"));
         var context = canvas.getContext("2d");
         var metrics: TextMetrics;
 

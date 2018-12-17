@@ -17,34 +17,7 @@ if (typeof String.prototype['startsWith'] != 'function') {
  * 
  * 如果是节点查询或者创建的话，可以使用``asExtends``属性来获取``HTMLTsElememnt``拓展对象
 */
-function $ts<T>(any: (() => void) | T | T[], args: object = null): IEnumerator<T> | void | any {
-    var type: TypeInfo = TypeInfo.typeof(any);
-    var typeOf: string = type.typeOf;
-    var handle = Linq.TsQuery.handler;
-    var eval: any = typeOf in handle ? handle[typeOf]() : null;
-
-    if (type.IsArray) {
-        // 转化为序列集合对象，相当于from函数
-        var creator = <Linq.TsQuery.arrayEval<T>>eval;
-        return <IEnumerator<T>>creator.doEval(<T[]>any, type, args);
-    } else if (type.typeOf == "function") {
-        // 当html文档加载完毕之后就会执行传递进来的这个
-        // 函数进行初始化
-        DOM.ready(<() => void>any);
-    } else if (!isNullOrUndefined(eval)) {
-        // 对html文档之中的节点元素进行查询操作
-        // 或者创建新的节点
-        return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
-    } else {
-        eval = handle[type.class];
-
-        if (!isNullOrUndefined(eval)) {
-            return (<Linq.TsQuery.IEval<T>>eval()).doEval(<T>any, type, args);
-        } else {
-            throw `Unsupported data type: ${type.toString()}`;
-        }
-    }
-}
+const $ts: Internal.TypeScript = Internal.Static();
 
 /**
  * 动态加载脚本文件，然后在完成脚本文件的加载操作之后，执行一个指定的函数操作
@@ -72,7 +45,7 @@ function $include(jsURL: string | string[]) {
     }
 
     $ts(() => (<string[]>jsURL).forEach(js => {
-        var script: HTMLElement = $ts("<script>", {
+        var script: HTMLElement = <HTMLElement>$ts("<script>", {
             type: "text/javascript",
             src: js
         });

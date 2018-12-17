@@ -84,8 +84,7 @@ module Router {
                 window.location.hash = "";
                 window.location.reload(true);
             } else {
-                (<HTMLDivElement>$ts("#" + appId)).innerHTML =
-                    HttpHelpers.GET(url);
+                $ts("#" + appId).innerHTML = HttpHelpers.GET(url);
             }
         }
     }
@@ -95,7 +94,7 @@ module Router {
         appId: string,
         hashKey: (link: string) => string) {
 
-        var frame: HTMLDivElement = $ts("#" + appId);
+        var frame: IHTMLElement = $ts("#" + appId);
 
         frame.innerHTML = HttpHelpers.GET(link);
         Router.register(appId, hashKey, false);
