@@ -1,4 +1,6 @@
-﻿namespace Internal {
+﻿/// <reference path="TS.ts" />
+
+namespace Internal {
 
     export function Static<T>(): TypeScript {
         var ins: any = function (any: ((() => void) | T | T[]), args: object) {

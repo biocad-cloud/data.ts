@@ -5,6 +5,7 @@
 /// <reference path="Helpers/Strings.ts" />
 /// <reference path="Type.ts" />
 /// <reference path="Data/Encoder/MD5.ts" />
+/// <reference path="Linq/Define/Internal.ts" />
 
 if (typeof String.prototype['startsWith'] != 'function') {
     String.prototype['startsWith'] = function (str) {
