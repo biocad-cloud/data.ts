@@ -22,6 +22,11 @@
         (ready: () => void): void;
 
         imports(jsURL: string | string[], callback?: () => void, onErrorResumeNext?: boolean, echo?: boolean): void;
+
+        /**
+         *
+        */
+        loadJSON(id: string): any;
     }
 
     /**
