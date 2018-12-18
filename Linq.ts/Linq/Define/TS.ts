@@ -2,12 +2,14 @@
 
     export interface TypeScript {
 
+        <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
+
         /**
          * 创建或者查询节点
         */
         <T extends HTMLElement>(query: string, args?: TypeScriptArgument): IHTMLElement;
         <T extends HTMLElement>(collectionQuery: string): DOMEnumerator<T>;
-        <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
+
         <T>(array: T[]): IEnumerator<T>;
 
         (meta: string): string;
@@ -40,6 +42,7 @@
         class?: string;
         type?: string;
         href?: string;
+        target?: string;
         src?: string;
         width?: string | number;
         height?: string | number;
@@ -54,5 +57,13 @@
         */
         value?: string | number | boolean;
         for?: string;
+
+        /**
+         * 处理HTML节点对象的点击事件，这个属性值应该是一个无参数的函数来的
+        */
+        onclick?: () => void;
+
+        "data-toggle"?: string;
+        "data-target"?: string;
     }
 }
