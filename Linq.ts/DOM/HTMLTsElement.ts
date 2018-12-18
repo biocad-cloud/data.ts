@@ -113,10 +113,14 @@ interface IHTMLElement extends HTMLElement {
 
     asExtends: HTMLTsElement;
 
-    display(html: string | HTMLElement): IHTMLElement;
+    display(html: string | HTMLElement | HTMLTsElement | (() => HTMLElement)): IHTMLElement;
     show(): IHTMLElement;
     hide(): IHTMLElement;
     addClass(name: string): IHTMLElement;
     removeClass(name: string): IHTMLElement;
 
+    /**
+     * type casting from this base type
+    */
+    CType<T extends HTMLElement>(): T;
 }
