@@ -40,7 +40,7 @@ module Router {
             gethashKey = <(link: string) => string>hashKey;
         }
 
-        aLink = $ts(".router");
+        aLink = <any>$ts(".router");
         aLink.attr("router-link", link => link.href);
         aLink.attr("href", "javascript:void(0);");
         aLink.onClick((link, click) => {
@@ -57,8 +57,8 @@ module Router {
     }
 
     function clientResize(appId: string) {
-        var app: HTMLDivElement = $ts("#" + appId);
-        var frame: HTMLIFrameElement = $ts(`#${appId}-frame`);
+        var app: HTMLDivElement = <any>$ts("#" + appId);
+        var frame: HTMLIFrameElement = <any>$ts(`#${appId}-frame`);
         var size: number[] = DOM.clientSize();
 
         if (!app) {
@@ -84,8 +84,7 @@ module Router {
                 window.location.hash = "";
                 window.location.reload(true);
             } else {
-                (<HTMLDivElement>$ts("#" + appId)).innerHTML =
-                    HttpHelpers.GET(url);
+                $ts("#" + appId).innerHTML = HttpHelpers.GET(url);
             }
         }
     }
@@ -95,7 +94,7 @@ module Router {
         appId: string,
         hashKey: (link: string) => string) {
 
-        var frame: HTMLDivElement = $ts("#" + appId);
+        var frame: IHTMLElement = $ts("#" + appId);
 
         frame.innerHTML = HttpHelpers.GET(link);
         Router.register(appId, hashKey, false);

@@ -47,7 +47,7 @@ namespace DOM {
     }
 
     function downloadImpl(name: string, uri: string): void {
-        var saveLink: HTMLAnchorElement = $ts('<a>');
+        var saveLink: HTMLAnchorElement = <any>$ts('<a>');
         var downloadSupported = 'download' in saveLink;
 
         if (downloadSupported) {
@@ -58,6 +58,7 @@ namespace DOM {
             try {
                 var blob = DataExtensions.uriToBlob(uri);
                 var url = URL.createObjectURL(blob);
+
                 saveLink.href = url;
                 saveLink.onclick = function () {
                     requestAnimationFrame(function () {
@@ -164,7 +165,7 @@ namespace DOM {
         table.appendChild(thead);
         table.appendChild(tbody);
 
-        (<HTMLDivElement>$ts(div)).appendChild(table);
+        $ts(div).appendChild(table);
     }
 
     function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[]): Map<string, string>[] {
