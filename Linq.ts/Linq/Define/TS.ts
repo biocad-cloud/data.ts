@@ -7,6 +7,7 @@
         */
         <T extends HTMLElement>(query: string, args?: TypeScriptArgument): IHTMLElement;
         <T extends HTMLElement>(collectionQuery: string): DOMEnumerator<T>;
+        <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
         <T>(array: T[]): IEnumerator<T>;
 
         (meta: string): string;
