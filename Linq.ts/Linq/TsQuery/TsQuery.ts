@@ -1,4 +1,6 @@
-﻿namespace Linq.TsQuery {
+﻿/// <reference path="./stringEval.ts" />
+
+namespace Linq.TsQuery {
 
     /**
      * 在这个字典之中的键名称主要有两大类型:

@@ -3,10 +3,10 @@
 namespace Internal {
 
     export function Static<T>(): TypeScript {
+        var handle = Linq.TsQuery.handler;
         var ins: any = function (any: ((() => void) | T | T[]), args: object) {
             var type: TypeInfo = TypeInfo.typeof(any);
             var typeOf: string = type.typeOf;
-            var handle = Linq.TsQuery.handler;
             var eval: any = typeOf in handle ? handle[typeOf]() : null;
 
             if (type.IsArray) {
@@ -40,6 +40,15 @@ namespace Internal {
 
             return new HttpHelpers.Imports(jsURL, onErrorResumeNext, echo).doLoad(callback);
         };
+
+        const stringEval = handle.string();
+
+        ins.loadJSON = function (id: string) {
+            var nodeID: string = Linq.TsQuery.EnsureNodeId(id);
+            var jsonStr: string = (<HTMLElement>stringEval.doEval(nodeID, null, null)).innerText;
+
+            return JSON.parse(jsonStr);
+        }
 
         return <TypeScript>ins;
     }
