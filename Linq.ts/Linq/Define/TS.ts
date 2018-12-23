@@ -27,6 +27,15 @@
          *
         */
         loadJSON(id: string): any;
+
+        /**
+         * isNullOrUndefined
+        */
+        isNullOrEmpty(obj: any): boolean;
+        /**
+         * 判断目标集合是否为空
+        */
+        isNullOrEmpty<T>(list: T[] | IEnumerator<T>): boolean;
     }
 
     /**
