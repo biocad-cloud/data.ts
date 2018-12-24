@@ -1,17 +1,29 @@
 ﻿namespace Internal {
 
+    /**
+     * The internal typescript symbol
+    */
     export interface TypeScript {
 
         <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
 
         /**
-         * 创建或者查询节点
+         * Create a new node or query a node by its id.
+         * (创建或者查询节点)
         */
         <T extends HTMLElement>(query: string, args?: TypeScriptArgument): IHTMLElement;
+        /**
+         * Query by class name or tag name
+        */
         <T extends HTMLElement>(collectionQuery: string): DOMEnumerator<T>;
 
         <T>(array: T[]): IEnumerator<T>;
 
+        /**
+         * query meta tag by name attribute value for its content.
+         * 
+         * @param meta The meta tag name, it should be start with a ``@`` symbol.
+        */
         (meta: string): string;
 
         /**
@@ -27,6 +39,10 @@
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
         */
         loadJSON(id: string): any;
+        /**
+         * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
+        */
+        loadText(id: string): string;
 
         /**
          * isNullOrUndefined
@@ -36,10 +52,7 @@
          * 判断目标集合是否为空
         */
         isNullOrEmpty<T>(list: T[] | IEnumerator<T>): boolean;
-        /**
-         * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
-        */
-        loadText(id: string): string;
+
     }
 
     /**
