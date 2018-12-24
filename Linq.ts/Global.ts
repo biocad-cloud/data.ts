@@ -92,6 +92,8 @@ function CharEnumerator(str: string): IEnumerator<string> {
 /**
  * 判断目标对象集合是否是空的？
  * 
+ * 这个函数也包含有``isNullOrUndefined``函数的判断功能
+ * 
  * @param array 如果这个数组对象是空值或者未定义，都会被判定为空，如果长度为零，则同样也会被判定为空值
 */
 function IsNullOrEmpty<T>(array: T[] | IEnumerator<T>): boolean {

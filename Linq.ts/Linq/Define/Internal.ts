@@ -54,6 +54,10 @@ namespace Internal {
             return JSON.parse(this.loadText(id));
         }
 
+        ins.isNullOrEmpty = function (obj: any) {
+            return IsNullOrEmpty(obj);
+        }
+
         return <TypeScript>ins;
     }
 }

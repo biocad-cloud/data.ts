@@ -27,6 +27,15 @@
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
         */
         loadJSON(id: string): any;
+
+        /**
+         * isNullOrUndefined
+        */
+        isNullOrEmpty(obj: any): boolean;
+        /**
+         * 判断目标集合是否为空
+        */
+        isNullOrEmpty<T>(list: T[] | IEnumerator<T>): boolean;
         /**
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
         */
