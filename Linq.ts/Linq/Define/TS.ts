@@ -24,9 +24,13 @@
         imports(jsURL: string | string[], callback?: () => void, onErrorResumeNext?: boolean, echo?: boolean): void;
 
         /**
-         *
+         * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
         */
         loadJSON(id: string): any;
+        /**
+         * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
+        */
+        loadText(id: string): string;
     }
 
     /**

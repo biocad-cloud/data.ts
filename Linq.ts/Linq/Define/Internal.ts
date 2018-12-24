@@ -43,11 +43,15 @@ namespace Internal {
 
         const stringEval = handle.string();
 
-        ins.loadJSON = function (id: string) {
+        ins.loadText = function (id: string) {
             var nodeID: string = Linq.TsQuery.EnsureNodeId(id);
-            var jsonStr: string = (<HTMLElement>stringEval.doEval(nodeID, null, null)).innerText;
+            var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
 
-            return JSON.parse(jsonStr);
+            return (<HTMLElement>node).innerText;
+        }
+
+        ins.loadJSON = function (id: string) {           
+            return JSON.parse(this.loadText(id));
         }
 
         return <TypeScript>ins;
