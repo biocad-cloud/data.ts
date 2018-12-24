@@ -169,6 +169,9 @@
     <TypeScriptCompile Include="Linq\TsQuery\stringEval.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Linq\Bootstrap.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
