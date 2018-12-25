@@ -1,5 +1,26 @@
 ﻿namespace HttpHelpers {
 
+    export const contentTypes = {
+        form: "multipart/form-data",
+        json: "application/json",
+        text: "text/plain",
+        /**
+         * 传统的表单post格式
+        */
+        www: "application/x-www-form-urlencoded"
+    }
+
+    export function measureContentType(obj: any): string {
+        if (obj instanceof FormData) {
+            return contentTypes.form;
+        } else if (typeof obj == "string") {
+            return contentTypes.text;
+        } else {
+            // object类型都会被转换为json发送回服务器
+            return contentTypes.json;
+        }
+    }
+
     /**
      * 这个函数只会返回200成功代码的响应内容，对于其他的状态代码都会返回null
      * (这个函数是同步方式的)
@@ -41,7 +62,13 @@
         callback: (response: string, code: number) => void) {
 
         var http = new XMLHttpRequest();
-        var data: any = postData.data;
+        var data = postData.data;
+
+        if (postData.type == contentTypes.json) {
+            if (typeof data != "string") {
+                data = JSON.stringify(data);
+            }
+        }
 
         http.open('POST', url, true);
         // Send the proper header information along with the request

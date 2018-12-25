@@ -11,7 +11,7 @@ namespace Internal {
     export function Static<T>(): TypeScript {
         var handle = Linq.TsQuery.handler;
         var ins: any = (any: ((() => void) | T | T[]), args: object) => queryFunction(handle, any, args);
-        
+
         const stringEval = handle.string();
 
         ins.FrameworkDebug = false;
@@ -25,7 +25,7 @@ namespace Internal {
 
     function extendsHttpHelpers(ts: any): any {
         ts.post = function (url: string, data: object | FormData, callback?: ((response: IMsg<{}>) => void)) {
-            var contentType: string = data instanceof FormData ? "multipart/form-data" : "application/json";
+            var contentType: string = HttpHelpers.measureContentType(data);
             var post = <HttpHelpers.PostData>{
                 type: contentType,
                 data: data
