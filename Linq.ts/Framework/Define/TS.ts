@@ -5,6 +5,14 @@
     */
     export interface TypeScript {
 
+        /**
+         * 这个属性控制着这个框架的调试器的输出行为
+         * 
+         * + 如果这个参数为true，则会在浏览器的console上面输出各种和调试相关的信息
+         * + 如果这个参数为false，则不会再浏览器的console上面输出调试相关的信息，你会得到一个比较干净的console输出窗口
+        */
+        FrameworkDebug: boolean;
+
         <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
 
         /**
@@ -69,10 +77,10 @@
         /**
          * 针对csv数据序列的操作帮助对象
         */
-        csv: ICsv;
+        csv: IcsvHelperApi;
     }
 
-    export interface ICsv {
+    export interface IcsvHelperApi {
 
         /**
          * 将csv文档文本进行解析，然后反序列化为js对象的集合

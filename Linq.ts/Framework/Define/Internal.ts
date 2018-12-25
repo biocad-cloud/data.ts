@@ -14,6 +14,8 @@ namespace Internal {
 
         const stringEval = handle.string();
 
+        ins.FrameworkDebug = false;
+
         ins = extendsUtils(ins, stringEval);
         ins = extendsLINQ(ins);
         ins = extendsHttpHelpers(ins);
