@@ -52,6 +52,10 @@
          * 判断目标集合是否为空
         */
         isNullOrEmpty<T>(list: T[] | IEnumerator<T>): boolean;
+        /**
+         * Linq函数链的起始
+        */
+        From<T>(seq: T[]): IEnumerator<T>;
 
         /**
          * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
@@ -62,11 +66,22 @@
         */
         get<T>(url: string, callback?: ((response: IMsg<T>) => void)): void;
 
-        csv: csv;
+        /**
+         * 针对csv数据序列的操作帮助对象
+        */
+        csv: ICsv;
     }
 
-    export interface csv {
+    export interface ICsv {
+
+        /**
+         * 将csv文档文本进行解析，然后反序列化为js对象的集合
+        */
         toObjects<T>(data: string): IEnumerator<T>;
+        /**
+         * 将js的对象序列进行序列化，构建出csv格式的文本文档字符串数据
+        */
+        toText<T>(data: IEnumerator<T> | T[]): string;
     }
 
     /**

@@ -27,6 +27,9 @@ namespace csv {
             return this.Skip(1);
         }
 
+        /**
+         * 从行序列之中构建出一个csv对象模型
+        */
         public constructor(rows: row[] | IEnumerator<row>) {
             super(rows);
         }
