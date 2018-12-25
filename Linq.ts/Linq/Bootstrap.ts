@@ -3,6 +3,7 @@
  * 实现这个类需要重写下面的方法实现：
  * 
  * + ``protected abstract init(): void;``
+ * + ``public abstract get appName(): string``
  * 
  * 可以选择性的重写下面的事件处理器
  * 
@@ -16,25 +17,22 @@
 */
 abstract class Bootstrap {
 
-    protected appName: string;
     protected status: string;
 
-    public constructor(app: string, caseSensitive: boolean = false) {
-        this.status = "Sleep";
+    public abstract get appName(): string;
 
-        if (caseSensitive) {
-            if (this.getCurrentAppPage() == app) {
-                this.Init();
-            }
-        } else {
-            if (this.getCurrentAppPage().toLowerCase() == app.toLowerCase()) {
-                this.Init();
-            }
-        }
+    public constructor() {
+        this.status = "Sleep";
     }
 
-    private Init(): void {
+    public Init(): void {
         var vm = this;
+        var currentAppName: string = this.getCurrentAppPage();
+
+        // 必须要当前的App名称和当前的页面app一致的时候这个App的运行才会被触发
+        if (currentAppName != this.appName) {
+            return;
+        }
 
         // attach event handlers
         $ts(() => this.OnDocumentReady());

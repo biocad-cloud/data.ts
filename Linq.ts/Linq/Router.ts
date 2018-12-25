@@ -6,6 +6,19 @@
 module Router {
 
     var hashLinks: Dictionary<string>;
+    var webApp: Dictionary<Bootstrap>;
+
+    export function AddAppHandler(app: Bootstrap) {
+        if (isNullOrUndefined(webApp)) {
+            webApp = new Dictionary<Bootstrap>();
+        }
+
+        webApp.Add(app.appName, app);
+    }
+
+    export function RunApp() {
+        webApp.Values.Select(app => app.Init());
+    }
 
     const routerLink: string = "router-link";
 
