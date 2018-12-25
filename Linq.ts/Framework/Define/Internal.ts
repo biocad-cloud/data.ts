@@ -57,7 +57,10 @@ namespace Internal {
 
             return new HttpHelpers.Imports(jsURL, onErrorResumeNext, echo).doLoad(callback);
         };
-        ts.eval = function (script: string, callback: () => void) {
+        ts.eval = function (script: string, lzw: boolean = false, callback?: () => void) {
+            if (lzw) {
+                script = LZW.decode(script);
+            }
             HttpHelpers.Imports.doEval(script, callback);
         }
         ts.loadText = function (id: string) {
