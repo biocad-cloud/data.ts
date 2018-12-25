@@ -11,7 +11,7 @@ namespace Internal {
     export function Static<T>(): TypeScript {
         var handle = Linq.TsQuery.handler;
         var ins: any = (any: ((() => void) | T | T[]), args: object) => queryFunction(handle, any, args);
-
+        
         const stringEval = handle.string();
 
         ins.FrameworkDebug = false;
@@ -44,6 +44,8 @@ namespace Internal {
                 }
             });
         };
+
+        return ts;
     }
 
     function extendsUtils(ts: any, stringEval: Linq.TsQuery.stringEval): any {
