@@ -61,6 +61,12 @@
          * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
         */
         get<T>(url: string, callback?: ((response: IMsg<T>) => void)): void;
+
+        csv: csv;
+    }
+
+    export interface csv {
+        toObjects<T>(data: string): IEnumerator<T>;
     }
 
     /**
