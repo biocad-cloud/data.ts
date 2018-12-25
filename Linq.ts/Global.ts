@@ -7,6 +7,11 @@
 /// <reference path="Data/Encoder/MD5.ts" />
 /// <reference path="Linq/Define/Internal.ts" />
 
+// note: 2018-12-25
+// this module just working on browser, some of the DOM api
+// related function may not works as expected on server side 
+// ``nodejs`` Environment.
+
 if (typeof String.prototype['startsWith'] != 'function') {
     String.prototype['startsWith'] = function (str) {
         return this.slice(0, str.length) == str;
