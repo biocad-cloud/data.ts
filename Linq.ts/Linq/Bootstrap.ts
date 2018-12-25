@@ -1,4 +1,20 @@
-﻿abstract class Bootstrap {
+﻿
+/**
+ * 实现这个类需要重写下面的方法实现：
+ * 
+ * + ``protected abstract init(): void;``
+ * 
+ * 可以选择性的重写下面的事件处理器
+ * 
+ * + ``protected OnDocumentReady(): void``
+ * + ``protected OnWindowLoad(): void``
+ * + ``protected OnHashChanged(hash: string): void``
+ * 
+ * 也可以重写下面的事件来获取当前的app的名称
+ * 
+ * + ``protected getCurrentAppPage(): string``
+*/
+abstract class Bootstrap {
 
     protected appName: string;
     protected status: string;
@@ -35,6 +51,9 @@
         this.status = "Running";
     }
 
+    /**
+     * 初始化代码
+    */
     protected abstract init(): void;
 
     /**
