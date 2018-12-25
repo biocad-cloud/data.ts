@@ -2,6 +2,12 @@
  * How to Encode and Decode Strings with Base64 in JavaScript
  * 
  * https://gist.github.com/ncerminara/11257943
+ * 
+ * In base64 encoding, the character set is ``[A-Z, a-z, 0-9, and + /]``. 
+ * If the rest length is less than 4, the string is padded with ``=`` 
+ * characters.
+ * 
+ * (符号``=``只是用来进行字符串的长度填充使用的，因为base64字符串的长度应该总是4的倍数)
 */
 class Base64 {
 
