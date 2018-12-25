@@ -3,12 +3,25 @@
 /**
  * 键值对映射哈希表
 */
-class Dictionary<V> extends IEnumerator<Map<string, V>>  {
+class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
 
     private maps: object;
 
     public get Object(): object {
         return Framework.Extensions.extend(this.maps);
+    }
+
+    /**
+     * 可以使用``for (var [key, value] of Maps) {}``的语法来进行迭代
+    */
+    public get Maps(): Map {
+        var maps: Map = (<any>window).Map();
+
+        // 将内部的object转换为可以被迭代的ES6的Map对象
+        Object.keys(this.maps)
+            .forEach(key => maps.set(key, this.maps[key]));
+
+        return maps;
     }
 
     /**
@@ -47,7 +60,7 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
-    public constructor(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>> = null) {
+    public constructor(maps: object | MapTuple<string, V>[] | IEnumerator<MapTuple<string, V>> = null) {
         super(Dictionary.ObjectMaps<V>(maps));
 
         if (isNullOrUndefined(maps)) {
@@ -55,13 +68,13 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
         } else if (Array.isArray(maps)) {
             this.maps = TypeInfo.CreateObject(maps);
         } else if (TypeInfo.typeof(maps).class == "IEnumerator") {
-            this.maps = TypeInfo.CreateObject(<IEnumerator<Map<string, V>>>maps);
+            this.maps = TypeInfo.CreateObject(<IEnumerator<MapTuple<string, V>>>maps);
         } else {
             this.maps = maps;
         }
     }
 
-    public static FromMaps<V>(maps: Map<string, V>[] | IEnumerator<Map<string, V>>): Dictionary<V> {
+    public static FromMaps<V>(maps: MapTuple<string, V>[] | IEnumerator<MapTuple<string, V>>): Dictionary<V> {
         return new Dictionary<V>(maps);
     }
 
@@ -72,7 +85,7 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
-    public static ObjectMaps<V>(maps: object | Map<string, V>[] | IEnumerator<Map<string, V>>): Map<string, V>[] {
+    public static ObjectMaps<V>(maps: object | MapTuple<string, V>[] | IEnumerator<MapTuple<string, V>>): MapTuple<string, V>[] {
         var type = TypeInfo.typeof(maps);
 
         if (isNullOrUndefined(maps)) {
@@ -82,10 +95,10 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
         if (Array.isArray(maps)) {
             return maps;
         } else if (type.class == "IEnumerator") {
-            return (<IEnumerator<Map<string, V>>>maps).ToArray();
+            return (<IEnumerator<MapTuple<string, V>>>maps).ToArray();
         } else {
             return From(Object.keys(maps))
-                .Select(key => new Map<string, V>(key, maps[key]))
+                .Select(key => new MapTuple<string, V>(key, maps[key]))
                 .ToArray();
         }
     }

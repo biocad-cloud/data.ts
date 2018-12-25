@@ -91,6 +91,9 @@
     <TypeScriptCompile Include="Data\URL.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Framework\ES6\Map.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Benchmark.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -200,6 +203,7 @@
   <ItemGroup>
     <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StackTrace\" />
+    <Folder Include="Framework\ES6\" />
     <Folder Include="Helpers\Canvas\" />
     <Folder Include="Helpers\Http\" />
     <Folder Include="Framework\" />

@@ -95,7 +95,7 @@ namespace DOM {
      * 向指定id编号的div添加select标签的组件
     */
     export function AddSelectOptions(
-        items: Map<string, string>[],
+        items: MapTuple<string, string>[],
         div: string,
         selectName: string,
         className: string = "") {
@@ -120,7 +120,7 @@ namespace DOM {
     */
     export function AddHTMLTable(
         rows: object[],
-        headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[],
+        headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[],
         div: string,
         attrs: node = null) {
 
@@ -168,21 +168,21 @@ namespace DOM {
         $ts(div).appendChild(table);
     }
 
-    function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[]): Map<string, string>[] {
+    function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[]): MapTuple<string, string>[] {
         var type = TypeInfo.typeof(headers);
 
         if (type.IsArrayOf("string")) {
             return From(<string[]>headers)
-                .Select(h => new Map<string, string>(h, h))
+                .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
         } else if (type.IsArrayOf("Map")) {
-            return <Map<string, string>[]>headers;
+            return <MapTuple<string, string>[]>headers;
         } else if (type.IsEnumerator && typeof headers[0] == "string") {
             return (<IEnumerator<string>>headers)
-                .Select(h => new Map<string, string>(h, h))
+                .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
         } else if (type.IsEnumerator && TypeInfo.typeof(headers[0]).class == "Map") {
-            return (<IEnumerator<Map<string, string>>>headers).ToArray();
+            return (<IEnumerator<MapTuple<string, string>>>headers).ToArray();
         } else {
             throw `Invalid sequence type: ${type.class}`;
         }

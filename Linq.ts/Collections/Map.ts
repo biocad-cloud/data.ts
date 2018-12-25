@@ -2,7 +2,7 @@
 /**
  * 描述了一个键值对集合
 */
-class Map<K, V> {
+class MapTuple<K, V> {
 
     /**
      * 键名称，一般是字符串
@@ -20,6 +20,10 @@ class Map<K, V> {
     public constructor(key: K = null, value: V = null) {
         this.key = key;
         this.value = value;
+    }
+
+    public ToArray(): any[] {
+        return [this.key, this.value];
     }
 
     public toString(): string {
@@ -58,6 +62,10 @@ class NamedValue<T> {
     */
     public get IsEmpty(): boolean {
         return Strings.Empty(this.name) && (!this.value || this.value == undefined);
+    }
+
+    public ToArray(): any[] {
+        return [this.name, this.value];
     }
 
     public toString(): string {
