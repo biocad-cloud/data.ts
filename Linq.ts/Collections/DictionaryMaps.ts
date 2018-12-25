@@ -1,4 +1,4 @@
-/// <reference path="../../Data/StackTrace/StackTrace.ts" />
+/// <reference path="../Data/StackTrace/StackTrace.ts" />
 
 /**
  * 键值对映射哈希表

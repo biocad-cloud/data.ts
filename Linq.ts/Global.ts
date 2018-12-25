@@ -1,11 +1,11 @@
 /// <reference path="Data/sprintf.ts" />
-/// <reference path="Linq/Collections/Enumerator.ts" />
-/// <reference path="Linq/TsQuery/TsQuery.ts" />
+/// <reference path="Collections/Enumerator.ts" />
+/// <reference path="Framework/TsQuery/TsQuery.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 /// <reference path="Helpers/Strings.ts" />
 /// <reference path="Type.ts" />
 /// <reference path="Data/Encoder/MD5.ts" />
-/// <reference path="Linq/Define/Internal.ts" />
+/// <reference path="Framework/Define/Internal.ts" />
 
 // note: 2018-12-25
 // this module just working on browser, some of the DOM api
