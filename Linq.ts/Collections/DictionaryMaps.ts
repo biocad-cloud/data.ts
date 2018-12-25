@@ -14,8 +14,8 @@ class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
     /**
      * 可以使用``for (var [key, value] of Maps) {}``的语法来进行迭代
     */
-    public get Maps(): Map {
-        var maps: Map = (<any>window).Map();
+    public get Maps(): Map {        
+        var maps: Map = new Map();
 
         // 将内部的object转换为可以被迭代的ES6的Map对象
         Object.keys(this.maps)
