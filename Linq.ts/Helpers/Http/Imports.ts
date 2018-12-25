@@ -1,4 +1,6 @@
-﻿namespace HttpHelpers {
+﻿/// <reference path="../../Data/Encoder/Base64.ts" />
+
+namespace HttpHelpers {
 
     /**
      * Javascript动态加载帮助函数
@@ -88,6 +90,18 @@
             }
 
             this.doLoad(callback);
+        }
+
+        public static doEval(script: string, callback?: () => void): void {
+            if (Base64.isValidBase64String(script)) {
+                script = Base64.decode(script);
+            }
+
+            eval.apply(window, [script]);
+
+            if (callback) {
+                callback();
+            }
         }
     }
 }
