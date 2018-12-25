@@ -2,6 +2,15 @@
 
     export const contentTypes = {
         form: "multipart/form-data",
+        /**
+         * 请注意：如果是php服务器，则$_POST很有可能不会自动解析json数据，导致$_POST变量为空数组
+         * 则这个时候会需要你在php文件之中手动处理一下$_POST变量：
+         * 
+         * ```php
+         * $json  = file_get_contents("php://input");
+         * $_POST = json_decode($json, true);
+         * ```
+        */
         json: "application/json",
         text: "text/plain",
         /**
@@ -72,7 +81,7 @@
 
         http.open('POST', url, true);
         // Send the proper header information along with the request
-        http.setRequestHeader('Content-type', postData.type);
+        http.setRequestHeader('Content-Type', postData.type);
         // Call a function when the state changes.
         http.onreadystatechange = function () {
             if (http.readyState == 4) {
