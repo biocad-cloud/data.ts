@@ -109,6 +109,9 @@
     <TypeScriptCompile Include="Helpers\Cookie.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Helpers\Http\IMsg.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Linq\Collections\Map.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

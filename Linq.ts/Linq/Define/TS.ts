@@ -53,6 +53,8 @@
         */
         isNullOrEmpty<T>(list: T[] | IEnumerator<T>): boolean;
 
+        post<T>(url: string, data: object | FormData, callback?: ((response: IMsg<T>) => void)): void;
+        get<T>(url: string, callback?: ((response: IMsg<T>) => void)): void;
     }
 
     /**
