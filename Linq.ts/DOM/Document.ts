@@ -190,6 +190,9 @@ namespace DOM {
 
     /**
      * Execute a given function when the document is ready.
+     * It is called when the DOM is ready which can be prior to images and other external content is loaded.
+     * 
+     * 可以处理多个函数作为事件
      * 
      * @param fn A function that without any parameters
     */
@@ -204,7 +207,17 @@ namespace DOM {
             return fn();
         } else {
             // Otherwise, wait until document is loaded
-            document.addEventListener('DOMContentLoaded', fn, false);
+            var oldEvent = <any>document.onload;
+            // Combine the event handlers
+            var combine = <any>function (doc: Document, evt: Event) {
+                if (typeof oldEvent == "function") {
+                    oldEvent(doc, evt);
+                }
+
+                fn();
+            };
+
+            document.onload = combine;
         }
     }
 
