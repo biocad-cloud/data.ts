@@ -10,7 +10,7 @@ module Router {
 
     export function AddAppHandler(app: Bootstrap) {
         if (isNullOrUndefined(webApp)) {
-            webApp = new Dictionary<Bootstrap>();
+            webApp = new Dictionary<Bootstrap>({});
         }
 
         webApp.Add(app.appName, app);
