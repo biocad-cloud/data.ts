@@ -32,6 +32,8 @@ abstract class Bootstrap {
         // 必须要当前的App名称和当前的页面app一致的时候这个App的运行才会被触发
         if (currentAppName != this.appName) {
             return;
+        } else if ($ts.FrameworkDebug) {
+            console.log(`[${TypeInfo.typeof(this).class}] App Init...`);
         }
 
         // attach event handlers
@@ -74,8 +76,13 @@ abstract class Bootstrap {
         // do nothing
     }
 
+    /**
+     * 这个函数默认是取出url query之中的app参数字符串作为应用名称
+     * 
+     * @returns 如果没有定义app参数，则默认是返回``/``作为名称
+    */
     protected getCurrentAppPage(): string {
-        return getAllUrlParams().Item("app");
+        return getAllUrlParams().Item("app") || "/";
     }
 
     public toString(): string {
