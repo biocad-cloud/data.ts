@@ -68,13 +68,20 @@
 
         var data = new FormData();
 
-        data.append("File", postData.data);
+        data.append("File", <Blob>postData.data);
+
         HttpHelpers.POST(url, <PostData>{
             type: postData.type,
             data: data
         }, callback);
     }
 
+    /**
+     * 在这个数据包对象之中应该包含有
+     * 
+     * + ``type``属性，用来设置``Content-type``
+     * + ``data``属性，可以是``formData``或者一个``object``
+    */
     export class PostData {
 
         /**
@@ -84,7 +91,7 @@
         /**
          * 将要进行POST上传的数据包
         */
-        public data: any;
+        public data: FormData | object | string | Blob;
 
         public toString(): string {
             return this.type;

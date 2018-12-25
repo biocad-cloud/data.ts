@@ -1,5 +1,8 @@
 ﻿/// <reference path="TS.ts" />
 
+/**
+ * The internal implementation of the ``$ts`` object.
+*/
 namespace Internal {
 
     /**
@@ -13,8 +16,32 @@ namespace Internal {
 
         ins = extendsUtils(ins, stringEval);
         ins = extendsLINQ(ins);
+        ins = extendsHttpHelpers(ins);
 
         return <TypeScript>ins;
+    }
+
+    function extendsHttpHelpers(ts: any): any {
+        ts.post = function (url: string, data: object | FormData, callback?: ((response: IMsg<{}>) => void)) {
+            var contentType: string = data instanceof FormData ? "multipart/form-data" : "application/json";
+            var post = <HttpHelpers.PostData>{
+                type: contentType,
+                data: data
+            };
+
+            HttpHelpers.POST(url, post, function (response) {
+                if (callback) {
+                    callback(typeof response == "string" ? JSON.parse(response) : response);
+                }
+            });
+        };
+        ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
+            HttpHelpers.GetAsyn(url, function (response) {
+                if (callback) {
+                    callback(typeof response == "string" ? JSON.parse(response) : response);
+                }
+            });
+        };
     }
 
     function extendsUtils(ts: any, stringEval: Linq.TsQuery.stringEval): any {
