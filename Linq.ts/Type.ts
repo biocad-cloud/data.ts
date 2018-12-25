@@ -146,14 +146,14 @@ class TypeInfo {
     */
     public static CreateObject<V>(nameValues: NamedValue<V>[] |
         IEnumerator<NamedValue<V>> |
-        Map<string, V>[] |
-        IEnumerator<Map<string, V>>): object {
+        MapTuple<string, V>[] |
+        IEnumerator<MapTuple<string, V>>): object {
 
         var obj: object = {};
         var type = TypeInfo.typeof(nameValues);
 
         if (type.IsArray && type.class == "Map") {
-            (<Map<string, V>[]>nameValues).forEach(map => obj[map.key] = map.value);
+            (<MapTuple<string, V>[]>nameValues).forEach(map => obj[map.key] = map.value);
         } else if (type.IsArray && type.class == "NamedValue") {
             (<NamedValue<V>[]>nameValues).forEach(nv => obj[nv.name] = nv.value);
         } else if (type.class == "IEnumerator") {
@@ -162,7 +162,7 @@ class TypeInfo {
             type = seq.ElementType;
 
             if (type.class == "Map") {
-                (<IEnumerator<Map<string, V>>>nameValues)
+                (<IEnumerator<MapTuple<string, V>>>nameValues)
                     .ForEach(map => {
                         obj[map.key] = map.value;
                     });

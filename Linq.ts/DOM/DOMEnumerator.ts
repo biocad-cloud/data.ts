@@ -46,7 +46,7 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
                 list.push(<any>collection.item(i));
             }
         } else {
-            list = Linq.EnsureArray(<T[]>elements);
+            list = Framework.Extensions.EnsureArray(<T[]>elements);
         }
 
         return list;
@@ -97,7 +97,7 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
                     return value;
                 });
             } else {
-                var array: string[] = Linq.EnsureArray(val, this.Count);
+                var array: string[] = Framework.Extensions.EnsureArray(val, this.Count);
 
                 return this.Select((x, i) => {
                     var value: string = array[i];

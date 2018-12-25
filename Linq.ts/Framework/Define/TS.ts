@@ -5,6 +5,14 @@
     */
     export interface TypeScript {
 
+        /**
+         * 这个属性控制着这个框架的调试器的输出行为
+         * 
+         * + 如果这个参数为true，则会在浏览器的console上面输出各种和调试相关的信息
+         * + 如果这个参数为false，则不会再浏览器的console上面输出调试相关的信息，你会得到一个比较干净的console输出窗口
+        */
+        FrameworkDebug: boolean;
+
         <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
 
         /**
@@ -52,7 +60,36 @@
          * 判断目标集合是否为空
         */
         isNullOrEmpty<T>(list: T[] | IEnumerator<T>): boolean;
+        /**
+         * Linq函数链的起始
+        */
+        From<T>(seq: T[]): IEnumerator<T>;
 
+        /**
+         * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
+        */
+        post<T>(url: string, data: object | FormData, callback?: ((response: IMsg<T>) => void)): void;
+        /**
+         * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
+        */
+        get<T>(url: string, callback?: ((response: IMsg<T>) => void)): void;
+
+        /**
+         * 针对csv数据序列的操作帮助对象
+        */
+        csv: IcsvHelperApi;
+    }
+
+    export interface IcsvHelperApi {
+
+        /**
+         * 将csv文档文本进行解析，然后反序列化为js对象的集合
+        */
+        toObjects<T>(data: string): IEnumerator<T>;
+        /**
+         * 将js的对象序列进行序列化，构建出csv格式的文本文档字符串数据
+        */
+        toText<T>(data: IEnumerator<T> | T[]): string;
     }
 
     /**

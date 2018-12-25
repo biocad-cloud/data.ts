@@ -1,5 +1,35 @@
 ﻿namespace HttpHelpers {
 
+    export const contentTypes = {
+        form: "multipart/form-data",
+        /**
+         * 请注意：如果是php服务器，则$_POST很有可能不会自动解析json数据，导致$_POST变量为空数组
+         * 则这个时候会需要你在php文件之中手动处理一下$_POST变量：
+         * 
+         * ```php
+         * $json  = file_get_contents("php://input");
+         * $_POST = json_decode($json, true);
+         * ```
+        */
+        json: "application/json",
+        text: "text/plain",
+        /**
+         * 传统的表单post格式
+        */
+        www: "application/x-www-form-urlencoded"
+    }
+
+    export function measureContentType(obj: any): string {
+        if (obj instanceof FormData) {
+            return contentTypes.form;
+        } else if (typeof obj == "string") {
+            return contentTypes.text;
+        } else {
+            // object类型都会被转换为json发送回服务器
+            return contentTypes.json;
+        }
+    }
+
     /**
      * 这个函数只会返回200成功代码的响应内容，对于其他的状态代码都会返回null
      * (这个函数是同步方式的)
@@ -41,11 +71,17 @@
         callback: (response: string, code: number) => void) {
 
         var http = new XMLHttpRequest();
-        var data: any = postData.data;
+        var data = postData.data;
+
+        if (postData.type == contentTypes.json) {
+            if (typeof data != "string") {
+                data = JSON.stringify(data);
+            }
+        }
 
         http.open('POST', url, true);
         // Send the proper header information along with the request
-        http.setRequestHeader('Content-type', postData.type);
+        http.setRequestHeader('Content-Type', postData.type);
         // Call a function when the state changes.
         http.onreadystatechange = function () {
             if (http.readyState == 4) {
@@ -68,13 +104,20 @@
 
         var data = new FormData();
 
-        data.append("File", postData.data);
+        data.append("File", <Blob>postData.data);
+
         HttpHelpers.POST(url, <PostData>{
             type: postData.type,
             data: data
         }, callback);
     }
 
+    /**
+     * 在这个数据包对象之中应该包含有
+     * 
+     * + ``type``属性，用来设置``Content-type``
+     * + ``data``属性，可以是``formData``或者一个``object``
+    */
     export class PostData {
 
         /**
@@ -84,7 +127,7 @@
         /**
          * 将要进行POST上传的数据包
         */
-        public data: any;
+        public data: FormData | object | string | Blob;
 
         public toString(): string {
             return this.type;

@@ -1,10 +1,10 @@
-namespace Linq {
+namespace Framework.Extensions {
 
     /**
      * 确保所传递进来的参数输出的是一个序列集合对象
     */
     export function EnsureCollection<T>(data: T | T[] | IEnumerator<T>, n = -1): IEnumerator<T> {
-        return new IEnumerator<T>(Linq.EnsureArray(data, n));
+        return new IEnumerator<T>(EnsureArray(data, n));
     }
 
     /**
@@ -54,9 +54,11 @@ namespace Linq {
     }
 
     /**
-     * extends 'from' object with members from 'to'. If 'to' is null, a deep clone of 'from' is returned
+     * Extends `from` object with members from `to`.     
      * 
      * > https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
+     * 
+     * @param to If `to` is null, a deep clone of `from` is returned
     */
     export function extend<V>(from: V, to: V = null): V {
         if (from == null || typeof from != "object") return from;

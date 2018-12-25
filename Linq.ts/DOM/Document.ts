@@ -95,7 +95,7 @@ namespace DOM {
      * 向指定id编号的div添加select标签的组件
     */
     export function AddSelectOptions(
-        items: Map<string, string>[],
+        items: MapTuple<string, string>[],
         div: string,
         selectName: string,
         className: string = "") {
@@ -120,7 +120,7 @@ namespace DOM {
     */
     export function AddHTMLTable(
         rows: object[],
-        headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[],
+        headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[],
         div: string,
         attrs: node = null) {
 
@@ -168,21 +168,21 @@ namespace DOM {
         $ts(div).appendChild(table);
     }
 
-    function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[]): Map<string, string>[] {
+    function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[]): MapTuple<string, string>[] {
         var type = TypeInfo.typeof(headers);
 
         if (type.IsArrayOf("string")) {
             return From(<string[]>headers)
-                .Select(h => new Map<string, string>(h, h))
+                .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
         } else if (type.IsArrayOf("Map")) {
-            return <Map<string, string>[]>headers;
+            return <MapTuple<string, string>[]>headers;
         } else if (type.IsEnumerator && typeof headers[0] == "string") {
             return (<IEnumerator<string>>headers)
-                .Select(h => new Map<string, string>(h, h))
+                .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
         } else if (type.IsEnumerator && TypeInfo.typeof(headers[0]).class == "Map") {
-            return (<IEnumerator<Map<string, string>>>headers).ToArray();
+            return (<IEnumerator<MapTuple<string, string>>>headers).ToArray();
         } else {
             throw `Invalid sequence type: ${type.class}`;
         }
@@ -190,16 +190,26 @@ namespace DOM {
 
     /**
      * Execute a given function when the document is ready.
+     * It is called when the DOM is ready which can be prior to images and other external content is loaded.
+     * 
+     * 可以处理多个函数作为事件，也可以通过loadComplete函数参数来指定准备完毕的状态
+     * 默认的状态是interactive即只需要加载完DOM既可以开始立即执行函数
      * 
      * @param fn A function that without any parameters
+     * @param loadComplete + ``interactive``: The document has finished loading. We can now access the DOM elements.
+     *                     + ``complete``: The page is fully loaded.
     */
-    export function ready(fn: () => void) {
+    export function ready(fn: () => void, loadComplete: string[] = ["interactive", "complete"]) {
         if (typeof fn !== 'function') {
             // Sanity check
             return;
+        } else if ($ts.FrameworkDebug) {
+            console.log("Add Document.ready event handler.");
+            console.log(`document.readyState = ${document.readyState}`)
         }
 
-        if (document.readyState === 'complete') {
+        // 2018-12-25 "interactive", "complete" 这两种状态都可以算作是DOM已经准备好了
+        if (loadComplete.indexOf(document.readyState) > -1) {
             // If document is already loaded, run method
             return fn();
         } else {

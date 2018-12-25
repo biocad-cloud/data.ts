@@ -91,6 +91,9 @@
     <TypeScriptCompile Include="Data\URL.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Framework\ES6\Map.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Benchmark.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -109,27 +112,30 @@
     <TypeScriptCompile Include="Helpers\Cookie.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Collections\Map.ts">
+    <TypeScriptCompile Include="Helpers\Http\IMsg.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Collections\Map.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="DOM\Document.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Collections\Enumerable.ts" />
-    <TypeScriptCompile Include="Linq\Collections\Enumerator.ts" />
+    <TypeScriptCompile Include="Collections\Enumerable.ts" />
+    <TypeScriptCompile Include="Collections\Enumerator.ts" />
     <TypeScriptCompile Include="Helpers\Extensions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Collections\DictionaryMaps.ts">
+    <TypeScriptCompile Include="Collections\DictionaryMaps.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Collections\Group.ts">
+    <TypeScriptCompile Include="Collections\Group.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Collections\Pointer.ts">
+    <TypeScriptCompile Include="Collections\Pointer.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Collections\List.ts">
+    <TypeScriptCompile Include="Collections\List.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="DOM\DOMEnumerator.ts">
@@ -145,31 +151,34 @@
     <TypeScriptCompile Include="DOM\HTMLTsElement.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Define\TS.ts">
+    <TypeScriptCompile Include="Framework\Define\TS.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Define\Internal.ts">
+    <TypeScriptCompile Include="Framework\Define\Internal.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\TsQuery\TsQueryArguments.ts">
+    <TypeScriptCompile Include="Framework\TsQuery\TsQueryArguments.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\TsQuery\TsQuery.ts">
+    <TypeScriptCompile Include="Framework\TsQuery\TsQuery.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Router.ts">
+    <TypeScriptCompile Include="Framework\Router.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Extensions.ts">
+    <TypeScriptCompile Include="Framework\Extensions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\TsQuery\README.ts">
+    <TypeScriptCompile Include="Framework\TsQuery\README.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\TsQuery\stringEval.ts">
+    <TypeScriptCompile Include="Framework\TsQuery\stringEval.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Linq\Which.ts">
+    <TypeScriptCompile Include="Framework\Bootstrap.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Framework\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Type.ts">
@@ -194,23 +203,24 @@
   <ItemGroup>
     <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StackTrace\" />
+    <Folder Include="Framework\ES6\" />
     <Folder Include="Helpers\Canvas\" />
     <Folder Include="Helpers\Http\" />
-    <Folder Include="Linq\" />
+    <Folder Include="Framework\" />
     <Folder Include="Data\BinaryTree\" />
     <Folder Include="csv\" />
     <Folder Include="Helpers\" />
     <Folder Include="Data\" />
     <Folder Include="DOM\" />
-    <Folder Include="Linq\Collections\" />
-    <Folder Include="Linq\Define\" />
-    <Folder Include="Linq\TsQuery\" />
+    <Folder Include="Collections\" />
+    <Folder Include="Framework\Define\" />
+    <Folder Include="Framework\TsQuery\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\Http\Imports.ts">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Linq\Define\TagNameMaps.ts">
+    <Compile Include="Framework\Define\TagNameMaps.ts">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
