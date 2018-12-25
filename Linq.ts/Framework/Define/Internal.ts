@@ -57,6 +57,9 @@ namespace Internal {
 
             return new HttpHelpers.Imports(jsURL, onErrorResumeNext, echo).doLoad(callback);
         };
+        ts.eval = function (script: string, callback: () => void) {
+            HttpHelpers.Imports.doEval(script, callback);
+        }
         ts.loadText = function (id: string) {
             var nodeID: string = Linq.TsQuery.EnsureNodeId(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);

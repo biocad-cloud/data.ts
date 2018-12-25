@@ -42,6 +42,7 @@
         (ready: () => void): void;
 
         imports(jsURL: string | string[], callback?: () => void, onErrorResumeNext?: boolean, echo?: boolean): void;
+        eval(script: string, callback?: () => void): void;
 
         /**
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
