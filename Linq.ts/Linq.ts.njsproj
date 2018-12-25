@@ -67,6 +67,9 @@
     <TypeScriptCompile Include="Data\Encoder\MD5.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\Encoder\LZW.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Data\SlideWindow.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
