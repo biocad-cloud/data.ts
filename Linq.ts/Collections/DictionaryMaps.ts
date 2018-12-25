@@ -11,18 +11,18 @@ class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
         return Framework.Extensions.extend(this.maps);
     }
 
-    /**
-     * 可以使用``for (var [key, value] of Maps) {}``的语法来进行迭代
-    */
-    public get Maps(): Map {        
-        var maps: Map = new Map();
+    ///**
+    // * 可以使用``for (var [key, value] of Maps) {}``的语法来进行迭代
+    //*/
+    //public get Maps(): Map {        
+    //    var maps: Map = new Map();
 
-        // 将内部的object转换为可以被迭代的ES6的Map对象
-        Object.keys(this.maps)
-            .forEach(key => maps.set(key, this.maps[key]));
+    //    // 将内部的object转换为可以被迭代的ES6的Map对象
+    //    Object.keys(this.maps)
+    //        .forEach(key => maps.set(key, this.maps[key]));
 
-        return maps;
-    }
+    //    return maps;
+    //}
 
     /**
      * 如果键名称是空值的话，那么这个函数会自动使用caller的函数名称作为键名进行值的获取
