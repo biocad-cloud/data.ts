@@ -8,7 +8,7 @@ class Dictionary<V> extends IEnumerator<Map<string, V>>  {
     private maps: object;
 
     public get Object(): object {
-        return Linq.extend(this.maps);
+        return Framework.Extensions.extend(this.maps);
     }
 
     /**
