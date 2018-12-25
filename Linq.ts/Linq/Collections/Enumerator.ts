@@ -397,9 +397,16 @@ class IEnumerator<T> {
 
     /**
      * This function returns a clone copy of the source sequence.
+     * 
+     * @param clone If this parameter is false, then this function will 
+     * returns the origin array sequence directly.
     */
-    public ToArray(): T[] {
-        return [...this.sequence];
+    public ToArray(clone: boolean = true): T[] {
+        if (clone) {
+            return [...this.sequence];
+        } else {
+            return this.sequence;
+        }
     }
 
     /**
