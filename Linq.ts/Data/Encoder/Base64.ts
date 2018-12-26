@@ -12,6 +12,7 @@
 module Base64 {
 
     const base64Pattern: RegExp = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/g;
+    const keyStr: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
     /**
      * 简单的检测一下所给定的字符串是否是有效的base64字符串
@@ -49,10 +50,10 @@ module Base64 {
                 a = 64;
             }
 
-            base64.push(this.keyStr.charAt(s));
-            base64.push(this.keyStr.charAt(o));
-            base64.push(this.keyStr.charAt(u));
-            base64.push(this.keyStr.charAt(a));
+            base64.push(keyStr.charAt(s));
+            base64.push(keyStr.charAt(o));
+            base64.push(keyStr.charAt(u));
+            base64.push(keyStr.charAt(a));
         }
 
         return base64.join("");
@@ -70,10 +71,10 @@ module Base64 {
         base64 = base64.replace(/[^A-Za-z0-9+/=]/g, "");
 
         while (f < base64.length) {
-            s = this.keyStr.indexOf(base64.charAt(f++));
-            o = this.keyStr.indexOf(base64.charAt(f++));
-            u = this.keyStr.indexOf(base64.charAt(f++));
-            a = this.keyStr.indexOf(base64.charAt(f++));
+            s = keyStr.indexOf(base64.charAt(f++));
+            o = keyStr.indexOf(base64.charAt(f++));
+            u = keyStr.indexOf(base64.charAt(f++));
+            a = keyStr.indexOf(base64.charAt(f++));
             n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2;
             i = (u & 3) << 6 | a;
             text = text + String.fromCharCode(n);

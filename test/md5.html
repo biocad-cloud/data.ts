@@ -19,4 +19,12 @@
 	console.log(base64_decode(msg));
 	
 	
+	var lzw = LZW.encode(msg);
+	
+	console.log(lzw)
+	
+	base64 = LZW.decode(lzw)
+	
+	console.log(base64)
+	
 </script>
