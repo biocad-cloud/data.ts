@@ -71,7 +71,7 @@
         http.setRequestHeader('Content-Type', contentType);
         // http.setRequestHeader("Cookie", document.cookie);
         // http.setRequestHeader("Referer", window.location.href);
-        http.withCredentials = true;
+        // http.withCredentials = true;
     }
 
     export function POST(
