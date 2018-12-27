@@ -69,8 +69,9 @@
 
     function setheaders(http: XMLHttpRequest, contentType: string = null) {
         http.setRequestHeader('Content-Type', contentType);
-        http.setRequestHeader("Cookie", document.cookie);
-        http.setRequestHeader("Referer", window.location.href);
+        // http.setRequestHeader("Cookie", document.cookie);
+        // http.setRequestHeader("Referer", window.location.href);
+        http.withCredentials = true;
     }
 
     export function POST(
