@@ -68,7 +68,6 @@
     }
 
     function setheaders(http: XMLHttpRequest, contentType: string = null) {
-        http.setRequestHeader('Content-Type', contentType);
         // http.setRequestHeader("Cookie", document.cookie);
         // http.setRequestHeader("Referer", window.location.href);
         // http.withCredentials = true;
@@ -90,7 +89,9 @@
 
         http.open('POST', url, true);
         // Send the proper header information along with the request
-        setheaders(http, postData.type);
+        if (postData.sendContentType) {
+            http.setRequestHeader('Content-Type', postData.type);
+        }
         // Call a function when the state changes.
         http.onreadystatechange = function () {
             if (http.readyState == 4) {
@@ -137,6 +138,7 @@
          * 将要进行POST上传的数据包
         */
         public data: FormData | object | string | Blob;
+        public sendContentType: boolean = true;
 
         public toString(): string {
             return this.type;
