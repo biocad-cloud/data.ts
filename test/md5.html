@@ -16,7 +16,22 @@
 	
 	var msg = base64.info.align
 	
-	console.log(base64_decode(msg));
+	// console.log(base64_decode(msg));
 	
+	console.log("msg length = " + msg.length);
+	
+	var lzw = LZW.encode(msg);
+	
+	console.log("after compression = " + lzw.length)
+	
+	console.log(lzw)
+	
+	base64 = LZW.decode(lzw)
+	
+	console.log("restore message");
+	
+	console.log(base64)
+	
+	console.log("identical? " + (base64 == msg))
 	
 </script>

@@ -92,12 +92,16 @@ namespace HttpHelpers {
             this.doLoad(callback);
         }
 
-        public static doEval(script: string, callback?: () => void): void {
+        /**
+         * @param script 这个函数可以支持base64字符串格式的脚本的动态加载
+         * @param context 默认是添加在当前文档窗口环境之中
+        */
+        public static doEval(script: string, callback?: () => void, context: Window = window): void {
             if (Base64.isValidBase64String(script)) {
                 script = Base64.decode(script);
             }
 
-            eval.apply(window, [script]);
+            eval.apply(context, [script]);
 
             if (callback) {
                 callback();

@@ -39,6 +39,7 @@
 
         // `false` makes the request synchronous
         request.open('GET', url, false);
+        setheaders(request);
         request.send(null);
 
         if (request.status === 200) {
@@ -57,12 +58,19 @@
         var http = new XMLHttpRequest();
 
         http.open("GET", url, true);
+        setheaders(http);
         http.onreadystatechange = function () {
             if (http.readyState == 4) {
                 callback(http.response || http.responseText, http.status);
             }
         }
         http.send(null);
+    }
+
+    function setheaders(http: XMLHttpRequest, contentType: string = null) {
+        // http.setRequestHeader("Cookie", document.cookie);
+        // http.setRequestHeader("Referer", window.location.href);
+        // http.withCredentials = true;
     }
 
     export function POST(
@@ -81,7 +89,9 @@
 
         http.open('POST', url, true);
         // Send the proper header information along with the request
-        http.setRequestHeader('Content-Type', postData.type);
+        if (postData.sendContentType) {
+            http.setRequestHeader('Content-Type', postData.type);
+        }
         // Call a function when the state changes.
         http.onreadystatechange = function () {
             if (http.readyState == 4) {
@@ -128,6 +138,7 @@
          * 将要进行POST上传的数据包
         */
         public data: FormData | object | string | Blob;
+        public sendContentType: boolean = true;
 
         public toString(): string {
             return this.type;

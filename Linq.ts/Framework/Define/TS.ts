@@ -42,6 +42,7 @@
         (ready: () => void): void;
 
         imports(jsURL: string | string[], callback?: () => void, onErrorResumeNext?: boolean, echo?: boolean): void;
+        eval(script: string, lzw_decompress?: boolean, callback?: () => void): void;
 
         /**
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
@@ -68,7 +69,11 @@
         /**
          * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
         */
-        post<T>(url: string, data: object | FormData, callback?: ((response: IMsg<T>) => void)): void;
+        post<T>(url: string, data: object | FormData,
+            callback?: ((response: IMsg<T>) => void),
+            options?: {
+                sendContentType?: boolean
+            }): void;
         /**
          * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
         */

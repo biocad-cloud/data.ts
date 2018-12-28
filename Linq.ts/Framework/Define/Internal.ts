@@ -24,28 +24,49 @@ namespace Internal {
     }
 
     function extendsHttpHelpers(ts: any): any {
-        ts.post = function (url: string, data: object | FormData, callback?: ((response: IMsg<{}>) => void)) {
+        ts.post = function (url: string, data: object | FormData,
+            callback?: ((response: IMsg<{}>) => void),
+            options?: {
+                sendContentType?: boolean
+            }) {
+
             var contentType: string = HttpHelpers.measureContentType(data);
             var post = <HttpHelpers.PostData>{
                 type: contentType,
-                data: data
+                data: data,
+                sendContentType: (options || {}).sendContentType || true
             };
 
             HttpHelpers.POST(url, post, function (response) {
                 if (callback) {
-                    callback(typeof response == "string" ? JSON.parse(response) : response);
+                    callback(handleJSON(response));
                 }
             });
         };
         ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
             HttpHelpers.GetAsyn(url, function (response) {
                 if (callback) {
-                    callback(typeof response == "string" ? JSON.parse(response) : response);
+                    callback(handleJSON(response));
                 }
             });
         };
 
         return ts;
+    }
+
+    function handleJSON(response: any): any {
+        if (typeof response == "string") {
+            try {
+                return JSON.parse(response);
+            } catch (ex) {
+                console.error("Invalid json text: ");
+                console.error(response);
+
+                throw ex;
+            }
+        } else {
+            return response;
+        }
     }
 
     function extendsUtils(ts: any, stringEval: Linq.TsQuery.stringEval): any {
@@ -57,6 +78,12 @@ namespace Internal {
 
             return new HttpHelpers.Imports(jsURL, onErrorResumeNext, echo).doLoad(callback);
         };
+        ts.eval = function (script: string, lzw: boolean = false, callback?: () => void) {
+            if (lzw) {
+                script = LZW.decode(script);
+            }
+            HttpHelpers.Imports.doEval(script, callback);
+        }
         ts.loadText = function (id: string) {
             var nodeID: string = Linq.TsQuery.EnsureNodeId(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
