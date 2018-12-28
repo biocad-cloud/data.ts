@@ -54,6 +54,14 @@ class HTMLTsElement {
         return this;
     }
 
+    /**
+     * Clear all of the contents in current html element node.
+    */
+    public clear(): HTMLTsElement {
+        this.HTMLElement.innerHTML = "";
+        return this;
+    }
+
     public text(innerText: string): HTMLTsElement {
         this.HTMLElement.innerText = innerText;
         return this;
@@ -118,6 +126,7 @@ interface IHTMLElement extends HTMLElement, String {
     hide(): IHTMLElement;
     addClass(name: string): IHTMLElement;
     removeClass(name: string): IHTMLElement;
+    clear(): IHTMLElement;
 
     /**
      * type casting from this base type

@@ -7,6 +7,9 @@ class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
 
     private maps: object;
 
+    /**
+     * 返回一个被复制的当前的map对象
+    */
     public get Object(): object {
         return Framework.Extensions.extend(this.maps);
     }

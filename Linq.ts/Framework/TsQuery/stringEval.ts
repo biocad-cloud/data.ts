@@ -138,6 +138,10 @@ namespace Linq.TsQuery {
             obj.CType = function () {
                 return node;
             };
+            obj.clear = function () {
+                node.innerHTML = "";
+                return node;
+            }
 
             // 用这个方法可以很方便的从现有的节点进行转换
             // 也可以直接使用new进行构造
