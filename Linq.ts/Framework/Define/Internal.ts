@@ -114,6 +114,9 @@ namespace Internal {
             toObjects: (data: string) => csv.dataframe.Parse(data).Objects(),
             toText: data => csv.toDataFrame(data).buildDoc()
         };
+        ts.select = function (query: string, context: Window = window) {
+            return Linq.TsQuery.stringEval.select(query, context);
+        }
 
         return ts;
     }

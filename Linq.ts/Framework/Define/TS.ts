@@ -20,10 +20,13 @@
          * (创建或者查询节点)
         */
         <T extends HTMLElement>(query: string, args?: TypeScriptArgument): IHTMLElement;
+
         /**
          * Query by class name or tag name
+         * 
+         * @param query A selector expression
         */
-        <T extends HTMLElement>(collectionQuery: string): DOMEnumerator<T>;
+        select<T extends HTMLElement>(query: string, context?: Window): DOMEnumerator<T>;
 
         <T>(array: T[]): IEnumerator<T>;
 

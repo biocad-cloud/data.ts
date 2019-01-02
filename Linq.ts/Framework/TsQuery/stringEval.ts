@@ -48,6 +48,16 @@ namespace Linq.TsQuery {
             }
         }
 
+        public static select<T extends HTMLElement>(query: string, context: Window): DOMEnumerator<T> {
+            // 返回节点集合
+            var nodes = <NodeListOf<HTMLElement>>context
+                .document
+                .querySelectorAll(query);
+            var it = new DOMEnumerator<T>(<any>nodes);
+
+            return it;
+        }
+
         doEval(expr: string, type: TypeInfo, args: object): any {
             var query: DOM.Query = DOM.Query.parseQuery(expr);
             var argument: Arguments = stringEval.ensureArguments(args);
@@ -73,13 +83,7 @@ namespace Linq.TsQuery {
             } else if (query.type == DOM.QueryTypes.NoQuery) {
                 return stringEval.createNew(expr, argument, context);
             } else if (!query.singleNode) {
-                // 返回节点集合
-                var nodes = <NodeListOf<HTMLElement>>context
-                    .document
-                    .querySelectorAll(query.expression);
-                var it = new DOMEnumerator(nodes);
-
-                return it;
+                return stringEval.select(query.expression, context);
             } else if (query.type == DOM.QueryTypes.QueryMeta) {
                 // meta标签查询默认是可以在父节点文档之中查询的
                 // 所以在这里不需要context上下文环境
