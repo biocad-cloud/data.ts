@@ -48,11 +48,16 @@ namespace Linq.TsQuery {
             }
         }
 
+        /**
+         * @param query 函数会在这里自动的处理转义问题
+        */
         public static select<T extends HTMLElement>(query: string, context: Window): DOMEnumerator<T> {
+            // https://mathiasbynens.be/notes/css-escapes
+            var cssSelector: string = query.replace(":", "\\:");
             // 返回节点集合
             var nodes = <NodeListOf<HTMLElement>>context
                 .document
-                .querySelectorAll(query);
+                .querySelectorAll(cssSelector);
             var it = new DOMEnumerator<T>(<any>nodes);
 
             return it;
