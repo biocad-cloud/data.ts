@@ -140,7 +140,13 @@ namespace TsLinq {
         }
 
         public static IsWellFormedUriString(uri: string): boolean {
-            var match = uri.match(URLPatterns.uriPattern)[0];
+            var matches = uri.match(URLPatterns.uriPattern);
+
+            if (isNullOrUndefined(matches)) {
+                return false;
+            }
+
+            var match: string = matches[0];
 
             if (!Strings.Empty(match, true)) {
                 return uri.indexOf(match) == 0;
