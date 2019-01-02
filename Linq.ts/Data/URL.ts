@@ -2,6 +2,13 @@
 
 namespace TsLinq {
 
+    export module URLPatterns {
+
+        export const hostNamePattern: RegExp = /:\/\/(www[0-9]?\.)?(.[^/:]+)/i;
+        export const uriPattern: RegExp = /data[:]\S+[/]\S+;base64,[a-zA-Z0-9/=+]/ig;
+
+    }
+
     /**
      * URL组成字符串解析模块
     */
@@ -119,18 +126,26 @@ namespace TsLinq {
             return `${url}&refresh=${Math.random() * 10000}`;
         }
 
-        public static readonly hostNamePattern: RegExp = /:\/\/(www[0-9]?\.)?(.[^/:]+)/i;
-
         /**
          * 获取所给定的URL之中的host名称字符串，如果解析失败会返回空值
         */
         public static getHostName(url: string): string {
-            var match: RegExpMatchArray = url.match(this.hostNamePattern);
+            var match: RegExpMatchArray = url.match(URLPatterns.hostNamePattern);
 
             if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
                 return match[2];
             } else {
                 return null;
+            }
+        }
+
+        public static IsWellFormedUriString(uri: string): boolean {
+            var match = uri.match(URLPatterns.uriPattern)[0];
+
+            if (!Strings.Empty(match, true)) {
+                return uri.indexOf(match) == 0;
+            } else {
+                return false;
             }
         }
     }
