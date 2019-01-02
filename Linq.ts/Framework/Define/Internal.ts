@@ -56,10 +56,12 @@ namespace Internal {
 
     function handleJSON(response: any): any {
         if (typeof response == "string") {
+
+            /*
             if (TsLinq.URL.IsWellFormedUriString(response)) {
                 // 是一个uri字符串，则不做解析
                 return response;
-            }
+            }*/
 
             // 尝试以json的格式进行结果的解析
             try {
