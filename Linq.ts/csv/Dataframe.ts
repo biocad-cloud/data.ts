@@ -112,7 +112,7 @@ namespace csv {
         }
 
         private static ensureMapsAll(fieldMaps: object, headers: string[]): (i: number) => string {
-            for (var i = 0; i < headers.length - 1; i++) {
+            for (var i = 0; i < headers.length; i++) {
                 var column: string = headers[i];
 
                 if (column in fieldMaps) {
