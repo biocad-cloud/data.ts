@@ -199,7 +199,21 @@ namespace csv {
         */
         public static Parse(text: string, tsv: boolean = false): dataframe {
             var parse: (line: string) => row = tsv ? row.ParseTsv : row.Parse;
-            var rows: IEnumerator<row> = From(text.split(/\n/)).Select(parse);
+            var allTextLines: IEnumerator<string> = $ts.From(text.split(/\n/));
+            var rows: IEnumerator<row>;
+
+            if (Strings.Empty(allTextLines.Last)) {
+                // 2019-1-2 因为文本文件很有可能是以空行结尾的
+                // 所以在这里需要做下额外的判断
+                // 否则会在序列的最后面出现一行空数据
+                // 这个空数据很有可能会对下游程序代码产生bug影响
+                rows = allTextLines
+                    .Take(allTextLines.Count - 1)
+                    .Select(parse);
+
+            } else {
+                rows = allTextLines.Select(parse);
+            }
 
             return new dataframe(rows);
         }
