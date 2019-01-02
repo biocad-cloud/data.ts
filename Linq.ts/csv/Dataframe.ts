@@ -188,7 +188,10 @@ namespace csv {
         }
 
         private static defaultContent(content: string): content {
-            return { type: "csv", content: content };
+            return {
+                type: "csv",
+                content: content
+            };
         }
 
         /**

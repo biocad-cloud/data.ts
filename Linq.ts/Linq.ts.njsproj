@@ -97,6 +97,9 @@
     <TypeScriptCompile Include="Framework\ES6\Map.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Framework\Delegate.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Benchmark.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
