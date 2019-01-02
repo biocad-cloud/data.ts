@@ -9,6 +9,7 @@ interface IMsg<T> {
     code: number;
     /**
      * 消息的内容
+     * 当code不等于零的时候，表示发生错误，则这个时候的错误消息将会以字符串的形式返回
     */
-    info: T;
+    info: string | T;
 }

@@ -19,6 +19,7 @@ namespace DOM {
                 var content: string = meta.getAttribute("content");
                 return content ? content : Default;
             } else {
+                console.warn(`${selector} not found in current context!`);
                 return Default;
             }
         };
