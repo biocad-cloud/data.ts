@@ -93,6 +93,27 @@ namespace DOM {
     }
 
     /**
+     * return array containing references to selected option elements
+    */
+    export function getSelectedOptions(sel: HTMLSelectElement) {
+        var opts: HTMLOptionElement[] = []
+        var opt: HTMLOptionElement;
+
+        // loop through options in select list
+        for (var i = 0, len = sel.options.length; i < len; i++) {
+            opt = sel.options[i];
+
+            // check if selected
+            if (opt.selected) {
+                // add to array of option elements to return from this function
+                opts.push(opt);
+            }
+        }
+
+        return opts;
+    }
+
+    /**
      * 向指定id编号的div添加select标签的组件
     */
     export function AddSelectOptions(

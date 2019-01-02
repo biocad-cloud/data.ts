@@ -19,6 +19,7 @@ namespace Internal {
         ins = extendsUtils(ins, stringEval);
         ins = extendsLINQ(ins);
         ins = extendsHttpHelpers(ins);
+        ins = extendsSelector(ins);
 
         return <TypeScript>ins;
     }
@@ -114,9 +115,22 @@ namespace Internal {
             toObjects: (data: string) => csv.dataframe.Parse(data).Objects(),
             toText: data => csv.toDataFrame(data).buildDoc()
         };
+
+        return ts;
+    }
+
+    function extendsSelector(ts: any): any {
         ts.select = function (query: string, context: Window = window) {
             return Linq.TsQuery.stringEval.select(query, context);
         }
+        ts.select.getSelectedOptions = function (query: string, context: Window = window) {
+            var sel: HTMLElement = $ts(query, {
+                context: context
+            });
+            var options = DOM.getSelectedOptions(<any>sel);
+
+            return new DOMEnumerator<HTMLOptionElement>(options);
+        };
 
         return ts;
     }

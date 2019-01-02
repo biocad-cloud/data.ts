@@ -26,7 +26,7 @@
          * 
          * @param query A selector expression
         */
-        select<T extends HTMLElement>(query: string, context?: Window): DOMEnumerator<T>;
+        select: IquerySelector;
 
         <T>(array: T[]): IEnumerator<T>;
 
@@ -86,6 +86,12 @@
          * 针对csv数据序列的操作帮助对象
         */
         csv: IcsvHelperApi;
+    }
+
+    export interface IquerySelector {
+        <T extends HTMLElement>(query: string, context?: Window): DOMEnumerator<T>;
+
+        getSelectedOptions(query: string, context?: Window): DOMEnumerator<HTMLOptionElement>;
     }
 
     export interface IcsvHelperApi {
