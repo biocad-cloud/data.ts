@@ -24,6 +24,31 @@ module Router {
 
     export function RunApp(module = "/") {
         webApp[module].Select(app => app.value.Init());
+
+        if ($ts.FrameworkDebug) {
+            // 在console中显示table
+            var summary: {
+                module: string,
+                appName: string,
+                status: string;
+                hookUnload: string
+            }[] = [];
+
+            Object.keys(webApp).forEach(module => {
+                webApp[module]
+                    .Values
+                    .ForEach(function (app: Bootstrap) {
+                        summary.push({
+                            module: module,
+                            appName: app.appName,
+                            status: app.appStatus,
+                            hookUnload: app.appHookMsg
+                        });
+                    });
+            });
+
+            console.table(summary);
+        }
     }
 
     const routerLink: string = "router-link";

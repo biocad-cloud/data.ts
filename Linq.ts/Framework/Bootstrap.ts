@@ -26,6 +26,14 @@ abstract class Bootstrap {
 
     public abstract get appName(): string;
 
+    public get appStatus(): string {
+        return this.status;
+    }
+
+    public get appHookMsg(): string {
+        return this.hookUnload;
+    }
+
     public constructor() {
         this.status = "Sleep";
         this.hookUnload = null;
