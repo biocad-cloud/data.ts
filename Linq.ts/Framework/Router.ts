@@ -6,18 +6,24 @@
 module Router {
 
     var hashLinks: Dictionary<string>;
-    var webApp: Dictionary<Bootstrap>;
+    var webApp: Dictionary<Bootstrap>[];
 
-    export function AddAppHandler(app: Bootstrap) {
+    /**
+     * @param module 默认的模块是``/``，即如果服务器为php服务器的话，则默认为index.php
+    */
+    export function AddAppHandler(app: Bootstrap, module = "/") {
         if (isNullOrUndefined(webApp)) {
-            webApp = new Dictionary<Bootstrap>({});
+            webApp = <any>{};
+        }
+        if (!(module in webApp)) {
+            webApp[module] = new Dictionary<Bootstrap>({});
         }
 
-        webApp.Add(app.appName, app);
+        webApp[module].Add(app.appName, app);
     }
 
-    export function RunApp() {
-        webApp.Values.Select(app => app.Init());
+    export function RunApp(module = "/") {
+        webApp[module].Select(app => app.value.Init());
     }
 
     const routerLink: string = "router-link";

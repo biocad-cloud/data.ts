@@ -39,6 +39,9 @@ namespace TsLinq {
         */
         public protocol: string;
 
+        /**
+         * 在这里解析一个URL字符串
+        */
         public constructor(url: string) {
             // http://localhost/router.html#http://localhost/b.html
             var token = Strings.GetTagValue(url, "://");

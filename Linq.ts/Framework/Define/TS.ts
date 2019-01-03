@@ -83,6 +83,15 @@
         get<T>(url: string, callback?: ((response: IMsg<T>) => void)): void;
 
         /**
+         * 获取当前的页面的URL字符串解析模型
+        */
+        windowLocation(): TsLinq.URL;
+        /**
+         * 解析一个给定的URL字符串
+        */
+        parseURL(url: string): TsLinq.URL;
+
+        /**
          * 针对csv数据序列的操作帮助对象
         */
         csv: IcsvHelperApi;

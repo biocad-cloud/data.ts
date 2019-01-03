@@ -2,6 +2,10 @@
 
 /**
  * 键值对映射哈希表
+ * 
+ * ```
+ * IEnumerator<MapTuple<string, V>>
+ * ```
 */
 class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
 

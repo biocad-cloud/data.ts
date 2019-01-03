@@ -52,6 +52,9 @@ namespace Internal {
             });
         };
 
+        ts.windowLocation = TsLinq.URL.WindowLocation;
+        ts.parseURL = (url => new TsLinq.URL(url));
+
         return ts;
     }
 
