@@ -147,5 +147,6 @@
 
         "data-toggle"?: string;
         "data-target"?: string;
+        "aria-hidden"?: boolean;
     }
 }
