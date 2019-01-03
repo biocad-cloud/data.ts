@@ -1,4 +1,5 @@
 ﻿/// <reference path="TS.ts" />
+/// <reference path="../../Data/URL.ts" />
 
 /**
  * The internal implementation of the ``$ts`` object.
