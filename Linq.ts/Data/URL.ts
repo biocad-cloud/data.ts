@@ -25,7 +25,10 @@ namespace TsLinq {
         /**
          * URL查询参数
         */
-        public query: NamedValue<string>[];
+        public get query(): NamedValue<string>[] {
+            return this.queryArguments.ToArray(false);
+        };
+
         /**
          * 不带拓展名的文件名称
         */
@@ -38,6 +41,8 @@ namespace TsLinq {
          * 网络协议名称
         */
         public protocol: string;
+
+        private queryArguments: IEnumerator<NamedValue<string>>;
 
         /**
          * 在这里解析一个URL字符串
@@ -58,9 +63,22 @@ namespace TsLinq {
 
             var args: object = URL.UrlQuery(token.value);
 
-            this.query = new Dictionary<string>(args)
-                .Select(m => new NamedValue<string>(m.key, m.value))
-                .ToArray();
+            this.queryArguments = Dictionary
+                .MapSequence<string>(args)
+                .Select(m => new NamedValue<string>(m.key, m.value));
+        }
+
+        public getArgument(queryName: string, caseSensitive: boolean = true, Default: string = ""): string {
+            if (Strings.Empty(queryName, false)) {
+                return "";
+            } else if (!caseSensitive) {
+                queryName = queryName.toLowerCase();
+            }
+
+            return this.queryArguments
+                .Where(map => caseSensitive ? map.name == queryName : map.name.toLowerCase() == queryName)
+                .FirstOrDefault(<any>{ value: Default })
+                .value;
         }
 
         /**

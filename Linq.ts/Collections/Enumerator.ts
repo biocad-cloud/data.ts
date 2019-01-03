@@ -82,6 +82,17 @@ class IEnumerator<T> {
     }
 
     /**
+     * If the sequence length is zero, then returns the default value.
+    */
+    public FirstOrDefault(Default: T = null): T {
+        if (this.Count == 0) {
+            return Default;
+        } else {
+            return this.sequence[0];
+        }
+    }
+
+    /**
      * 两个序列求总和
     */
     public Union<U, K, V>(another: IEnumerator<U> | U[],

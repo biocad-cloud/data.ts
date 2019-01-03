@@ -89,6 +89,10 @@ class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
         return new Dictionary<V>(TypeInfo.CreateObject(values));
     }
 
+    public static MapSequence<V>(maps: object | MapTuple<string, V>[] | IEnumerator<MapTuple<string, V>>): IEnumerator<MapTuple<string, V>> {
+        return new IEnumerator(this.ObjectMaps(maps));
+    }
+
     /**
      * 将目标对象转换为一个类型约束的映射序列集合
     */
