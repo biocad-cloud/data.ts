@@ -9,6 +9,7 @@
  * 
  * + ``protected OnDocumentReady(): void``
  * + ``protected OnWindowLoad(): void``
+ * + ``protected OnWindowUnload(): string``
  * + ``protected OnHashChanged(hash: string): void``
  * 
  * 也可以重写下面的事件来获取当前的app的名称
@@ -18,11 +19,16 @@
 abstract class Bootstrap {
 
     protected status: string;
+    /**
+     * 是否阻止用户关闭当前页面
+    */
+    protected hookUnload: string;
 
     public abstract get appName(): string;
 
     public constructor() {
         this.status = "Sleep";
+        this.hookUnload = null;
     }
 
     public Init(): void {
@@ -43,6 +49,7 @@ abstract class Bootstrap {
         $ts(() => this.OnDocumentReady());
 
         window.onload = this.OnWindowLoad;
+        window.onbeforeunload = this.OnWindowUnload;
         window.onhashchange = function () {
             var hash = window.location.hash;
             var val = hash.substr(1);
@@ -70,6 +77,18 @@ abstract class Bootstrap {
     */
     protected OnWindowLoad(): void {
         // do nothing
+    }
+
+    protected OnWindowUnload(): string {
+        if (!Strings.Empty(this.hookUnload, true)) {
+            return this.hookUnload;
+        } else {
+            return null;
+        }
+    }
+
+    public unhook() {
+        this.hookUnload = null;
     }
 
     /**
