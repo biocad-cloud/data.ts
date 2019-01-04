@@ -22,15 +22,29 @@ module Router {
         webApp[module].Add(app.appName, app);
     }
 
+    /**
+     * fix for index.php, VBServerScript etc.
+    */
+    const indexModule = {
+        "/": "general",
+        "index.php": "php server",
+        "index.perl": "perl server",
+        "index.do": "",
+        "index.jsp": "java server",
+        "index.vbs": "VB server script",
+        "index.vb": "VB server",
+        "index.asp": "VB6 server",
+        "index.aspx": "VB.NET server"
+    };
+
     export function RunApp(module = "/") {
         if (module in webApp) {
             webApp[module].Select(app => app.value.Init());
-        } else if (module == "/") {
-            // fix for index.php, VBServerScript etc.
+        } else if (module in indexModule) {
             var runInit: boolean = false;
 
-            for (var index of ["index", "index.php", "index.vbs"]) {
-                if (index in webApp) {                    
+            for (var index of Object.keys(indexModule)) {
+                if (index in webApp) {
                     webApp[index].Select(app => app.value.Init());
                     runInit = true;
                     break;
@@ -40,7 +54,7 @@ module Router {
             if (!runInit) {
                 throw "Default module is not found!";
             }
-           
+
         } else {
             throw `Module "${module}" is not exists in your web app.`;
         }
