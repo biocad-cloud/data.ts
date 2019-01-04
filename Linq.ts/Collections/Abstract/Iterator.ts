@@ -28,7 +28,7 @@ class Iterator<T> {
     */
     protected sequence: T[];
 
-    private index: number = 0;
+    private i: number = 0;
 
     /**
      * 实现迭代器的关键元素之1
@@ -47,7 +47,7 @@ class Iterator<T> {
     }
 
     public reset(): Iterator<T> {
-        this.index = 0;
+        this.i = 0;
         return this;
     }
 
@@ -55,8 +55,8 @@ class Iterator<T> {
      * 实现迭代器的关键元素之2
     */
     public next(): IPopulated<T> {
-        return this.index < this.sequence.length ?
-            <IPopulated<T>>{ value: this.sequence[this.index++], done: false } :
+        return this.i < this.sequence.length ?
+            <IPopulated<T>>{ value: this.sequence[this.i++], done: false } :
             <IPopulated<T>>{ value: undefined, done: true };
     }
 }
