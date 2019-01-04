@@ -130,8 +130,8 @@
     <TypeScriptCompile Include="DOM\Document.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Collections\Enumerable.ts" />
-    <TypeScriptCompile Include="Collections\Enumerator.ts" />
+    <TypeScriptCompile Include="Collections\Abstract\Enumerable.ts" />
+    <TypeScriptCompile Include="Collections\Abstract\Enumerator.ts" />
     <TypeScriptCompile Include="Helpers\Extensions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

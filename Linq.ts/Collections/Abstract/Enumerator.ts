@@ -1,4 +1,4 @@
-/// <reference path="Abstract/Iterator.ts" />
+/// <reference path="Iterator.ts" />
 
 /**
  * Provides a set of static (Shared in Visual Basic) methods for querying 
