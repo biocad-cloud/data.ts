@@ -39,6 +39,9 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Collections\Abstract\Iterator.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="csv\HTML.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -207,6 +210,7 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Collections\Abstract\" />
     <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StackTrace\" />
     <Folder Include="Framework\ES6\" />
