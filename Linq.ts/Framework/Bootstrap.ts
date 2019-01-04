@@ -46,11 +46,11 @@ abstract class Bootstrap {
         // 必须要当前的App名称和当前的页面app一致的时候这个App的运行才会被触发
         if (currentAppName != this.appName) {
             if ($ts.FrameworkDebug) {
-                console.log(`[${TypeInfo.typeof(this).class}] Continue Sleep as: TRUE = ${currentAppName} <> ${this.appName}`);
+                console.log(`%c[${TypeInfo.typeof(this).class}] Continue Sleep as: TRUE = ${currentAppName} <> ${this.appName}`, "color:green;");
             }
             return;
         } else if ($ts.FrameworkDebug) {
-            console.log(`[${TypeInfo.typeof(this).class}] App(name:=${this.appName}) Init...`);
+            console.log(`%c[${TypeInfo.typeof(this).class}] App(name:=${this.appName}) Init...`, "color:blue;");
         }
 
         // attach event handlers
@@ -90,8 +90,6 @@ abstract class Bootstrap {
     protected OnWindowUnload(): string {
         if (!Strings.Empty(this.hookUnload, true)) {
             return this.hookUnload;
-        } else {
-            return null;
         }
     }
 
