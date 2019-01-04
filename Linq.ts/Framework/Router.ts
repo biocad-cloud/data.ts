@@ -40,7 +40,7 @@ module Router {
     export function RunApp(module = "/") {
         if (module in webApp) {
             webApp[module].Select(app => app.value.Init());
-        } else if (module in indexModule) {
+        } else if (module == "index" || module in indexModule) {
             var runInit: boolean = false;
 
             for (var index of Object.keys(indexModule)) {
