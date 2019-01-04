@@ -453,8 +453,8 @@ class IEnumerator<T> extends Iterator<T> {
     /**
      * 将当前的这个序列转换为一个滑窗数据的集合
     */
-    public SlideWindows(winSize: number, step: number = 1): IEnumerator<data.SlideWindow<T>> {
-        return data.SlideWindow.Split(this, winSize, step);
+    public SlideWindows(winSize: number, step: number = 1): IEnumerator<SlideWindow<T>> {
+        return SlideWindow.Split(this, winSize, step);
     }
 
     //#endregion
