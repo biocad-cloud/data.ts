@@ -109,15 +109,23 @@
     */
     export function UploadFile(
         url: string,
-        postData: PostData,
+        postData: File | Blob | string,
+        fileName: string = null,
         callback: (response: string, code: number) => void) {
 
-        var data = new FormData();
+        var data = new FormData();       
 
-        data.append("File", <Blob>postData.data);
+        if (postData instanceof File) {
+            data.append("filename", (<File>postData).name);
+            fileName = fileName || (<File>postData).name;
+        } else {
+            data.append("filename", fileName);
+        }
+
+        data.append("File", postData, fileName);               
 
         HttpHelpers.POST(url, <PostData>{
-            type: postData.type,
+            type: contentTypes.form,
             data: data
         }, callback);
     }
@@ -137,7 +145,7 @@
         /**
          * 将要进行POST上传的数据包
         */
-        public data: FormData | object | string | Blob;
+        public data: FormData | object | string | Blob | File;
         public sendContentType: boolean = true;
 
         public toString(): string {

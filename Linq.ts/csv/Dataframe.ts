@@ -137,20 +137,15 @@ namespace csv {
          * @param callback ajax异步回调，默认是打印返回结果到终端之上
          * 
         */
-        public save(
-            url: string,
+        public save(url: string, fileName: string = "upload.csv",
             callback: (response: string) => void =
                 (response: string) => {
                     console.log(response);
                 }): void {
 
             var file: string = this.buildDoc();
-            var data = <HttpHelpers.PostData>{
-                type: contentType,
-                data: file
-            };
 
-            HttpHelpers.UploadFile(url, data, callback);
+            HttpHelpers.UploadFile(url, file, fileName, callback);
         }
 
         /**

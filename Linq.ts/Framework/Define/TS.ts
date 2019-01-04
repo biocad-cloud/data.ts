@@ -81,6 +81,10 @@
          * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
         */
         get<T>(url: string, callback?: ((response: IMsg<T>) => void)): void;
+        /**
+         * File upload helper
+        */
+        upload<T>(url: string, file: File, callback?: ((response: IMsg<T>) => void)): void;
 
         /**
          * 获取当前的页面的URL字符串解析模型

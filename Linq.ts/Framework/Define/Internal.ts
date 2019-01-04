@@ -52,6 +52,13 @@ namespace Internal {
                 }
             });
         };
+        ts.upload = function (url: string, file: File, callback?: ((response: IMsg<{}>) => void)) {
+            HttpHelpers.UploadFile(url, file, null, function (response) {
+                if (callback) {
+                    callback(handleJSON(response));
+                }
+            });
+        };
 
         ts.windowLocation = TsLinq.URL.WindowLocation;
         ts.parseURL = (url => new TsLinq.URL(url));
