@@ -42,8 +42,15 @@ module Router {
         appName: string,
         status: string;
         hookUnload: string,
-        prototype: string,        
+        prototype: string,
         methods: string
+    }
+
+    const excludeMethods = {
+        constructor: "",
+        Init: "",
+        unhook: "",
+        toString: ""
     }
 
     export function getAppSummary(app: Bootstrap, module: string = "/"): IAppInfo {
@@ -53,8 +60,10 @@ module Router {
             appName: app.appName,
             status: app.appStatus,
             hookUnload: app.appHookMsg,
-            prototype: type.class,           
-            methods: type.methods.join(",")
+            prototype: type.class,
+            methods: type.methods
+                .filter(name => !(name in excludeMethods))
+                .join(",")
         }
 
         return info;
