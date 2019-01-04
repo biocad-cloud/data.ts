@@ -8,20 +8,20 @@ class Pointer<T> extends IEnumerator<T> {
     /**
      * The index pointer of the current data sequence.
     */
-    public i: number;
+    public p: number;
 
     /**
      * The index pointer is at the end of the data sequence?
     */
-    public get EndRead(): boolean {       
-        return this.i >= this.Count;
+    public get EndRead(): boolean {
+        return this.p >= this.Count;
     }
 
     /**
      * Get the element value in current location i;
     */
     public get Current(): T {
-        return this.sequence[this.i];
+        return this.sequence[this.p];
     }
 
     /**
@@ -30,7 +30,7 @@ class Pointer<T> extends IEnumerator<T> {
     */
     public get Next(): T {
         var x = this.Current;
-        this.i = this.i + 1;
+        this.p = this.p + 1;
         return x;
     }
 
@@ -39,7 +39,7 @@ class Pointer<T> extends IEnumerator<T> {
         // 2018-09-02 在js里面，数值必须要进行初始化
         // 否则会出现NA初始值，导致使用EndRead属性判断失败
         // 可能会导致死循环的问题出现
-        this.i = 0;
+        this.p = 0;
     }
 
     /**
@@ -47,7 +47,7 @@ class Pointer<T> extends IEnumerator<T> {
      * returns current pointer object.
     */
     public MoveNext(): Pointer<T> {
-        this.i = this.i + 1;
+        this.p = this.p + 1;
         return this;
     }
 }
