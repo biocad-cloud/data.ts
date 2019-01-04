@@ -23,7 +23,27 @@ module Router {
     }
 
     export function RunApp(module = "/") {
-        webApp[module].Select(app => app.value.Init());
+        if (module in webApp) {
+            webApp[module].Select(app => app.value.Init());
+        } else if (module == "/") {
+            // fix for index.php, VBServerScript etc.
+            var runInit: boolean = false;
+
+            for (var index of ["index", "index.php", "index.vbs"]) {
+                if (index in webApp) {                    
+                    webApp[index].Select(app => app.value.Init());
+                    runInit = true;
+                    break;
+                }
+            }
+
+            if (!runInit) {
+                throw "Default module is not found!";
+            }
+           
+        } else {
+            throw `Module "${module}" is not exists in your web app.`;
+        }
 
         if ($ts.FrameworkDebug) {
             // 在console中显示table

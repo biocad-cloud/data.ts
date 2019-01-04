@@ -61,7 +61,7 @@ class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
      * 获取这个字典对象之中的所有的键值
     */
     public get Values(): IEnumerator<V> {
-        return this.Keys.Select<V>(key => this.Item(key));
+        return this.Select(m => m.value);
     }
 
     /**
