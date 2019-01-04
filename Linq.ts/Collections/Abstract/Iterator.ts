@@ -23,12 +23,21 @@
 */
 class Iterator<T> {
 
+    /**
+     * The data sequence with specific generic type.
+    */
     protected sequence: T[];
 
     private index: number = 0;
 
+    /**
+     * 实现迭代器的关键元素之1
+    */
     [Symbol.iterator]() { return this; }
 
+    /**
+     * The number of elements in the data sequence.
+    */
     public get Count(): number {
         return this.sequence.length;
     }
@@ -42,6 +51,9 @@ class Iterator<T> {
         return this;
     }
 
+    /**
+     * 实现迭代器的关键元素之2
+    */
     public next(): IPopulated<T> {
         return this.index < this.sequence.length ?
             <IPopulated<T>>{ value: this.sequence[this.index++], done: false } :

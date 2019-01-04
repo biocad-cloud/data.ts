@@ -1,15 +1,12 @@
+/// <reference path="Abstract/Iterator.ts" />
+
 /**
  * Provides a set of static (Shared in Visual Basic) methods for querying 
  * objects that implement ``System.Collections.Generic.IEnumerable<T>``.
  * 
  * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型，这是一个静态的集合，不会发生元素的动态添加或者删除)
 */
-class IEnumerator<T> {
-
-    /**
-     * The data sequence with specific type.
-    */
-    protected sequence: T[];
+class IEnumerator<T> extends Iterator<T> {
 
     //#region "readonly property"
 
@@ -18,13 +15,6 @@ class IEnumerator<T> {
     */
     public get ElementType(): TypeInfo {
         return TypeInfo.typeof(this.First);
-    };
-
-    /**
-     * The number of elements in the data sequence.
-    */
-    public get Count(): number {
-        return this.sequence.length;
     };
 
     /**
@@ -52,14 +42,18 @@ class IEnumerator<T> {
      *       a sequence copy action on this given data source sequence at here.
     */
     constructor(source: T[] | IEnumerator<T>) {
+        super(IEnumerator.getArray(source));
+    }
+
+    private static getArray<T>(source: T[] | IEnumerator<T>): T[] {
         if (!source) {
-            this.sequence = [];
+            return [];
         } else if (Array.isArray(source)) {
             // 2018-07-31 为了防止外部修改source导致sequence数组被修改
             // 在这里进行数组复制，防止出现这种情况
-            this.sequence = [...source];
+            return [...source];
         } else {
-            this.sequence = [...source.sequence];
+            return [...source.sequence];
         }
     }
 
