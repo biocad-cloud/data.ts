@@ -73,7 +73,7 @@
     <TypeScriptCompile Include="Data\Encoder\LZW.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Data\SlideWindow.ts">
+    <TypeScriptCompile Include="Collections\SlideWindow.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Data\MetaReader.ts">

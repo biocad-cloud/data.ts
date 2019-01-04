@@ -64,6 +64,10 @@ class NamedValue<T> {
         return Strings.Empty(this.name) && (!this.value || this.value == undefined);
     }
 
+    public valueOf(): T {
+        return this.value;
+    }
+
     public ToArray(): any[] {
         return [this.name, this.value];
     }
