@@ -37,6 +37,29 @@ module Router {
         "index.aspx": "VB.NET server"
     };
 
+    export interface IAppInfo {
+        module: string,
+        appName: string,
+        status: string;
+        hookUnload: string,
+        prototype: string,        
+        methods: string
+    }
+
+    export function getAppSummary(app: Bootstrap, module: string = "/"): IAppInfo {
+        var type = TypeInfo.typeof(app);
+        var info = <IAppInfo>{
+            module: module,
+            appName: app.appName,
+            status: app.appStatus,
+            hookUnload: app.appHookMsg,
+            prototype: type.class,           
+            methods: type.methods.join(",")
+        }
+
+        return info;
+    }
+
     export function RunApp(module = "/") {
         if (module in webApp) {
             webApp[module].Select(app => app.value.Init());
@@ -61,24 +84,12 @@ module Router {
 
         if ($ts.FrameworkDebug) {
             // 在console中显示table
-            var summary: {
-                module: string,
-                appName: string,
-                status: string;
-                hookUnload: string
-            }[] = [];
+            var summary: IAppInfo[] = [];
 
             Object.keys(webApp).forEach(module => {
-                webApp[module]
+                (<Dictionary<Bootstrap>>webApp[module])
                     .Values
-                    .ForEach(function (app: Bootstrap) {
-                        summary.push({
-                            module: module,
-                            appName: app.appName,
-                            status: app.appStatus,
-                            hookUnload: app.appHookMsg
-                        });
-                    });
+                    .ForEach(app => summary.push(getAppSummary(app, module)));
             });
 
             console.table(summary);
