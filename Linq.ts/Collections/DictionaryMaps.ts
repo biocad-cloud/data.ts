@@ -1,3 +1,4 @@
+/// <reference path="./Abstract/Enumerator.ts" />
 /// <reference path="../Data/StackTrace/StackTrace.ts" />
 
 /**

@@ -1,3 +1,5 @@
+/// <reference path="./Abstract/Enumerator.ts" />
+
 /**
  * 表示一个动态列表对象
 */

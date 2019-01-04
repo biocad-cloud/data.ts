@@ -1,3 +1,5 @@
+/// <reference path="./Abstract/Enumerator.ts" />
+
 /**
  * 按照某一个键值进行分组的集合对象
 */

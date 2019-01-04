@@ -1,3 +1,5 @@
+/// <reference path="../Collections/Abstract/Enumerator.ts" />
+
 /**
  * http://www.rfc-editor.org/rfc/rfc4180.txt
 */

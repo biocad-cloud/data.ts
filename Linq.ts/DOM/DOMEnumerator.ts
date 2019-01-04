@@ -1,3 +1,5 @@
+/// <reference path="../Collections/Abstract/Enumerator.ts" />
+
 // 2018-12-06
 // 为了方便书写代码，在其他脚本之中添加变量类型申明，在这里就不进行命名空间的包裹了
 
