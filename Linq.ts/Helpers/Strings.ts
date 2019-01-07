@@ -222,6 +222,7 @@ module Strings {
         for (var i: number = strChars.length - 1; i > 0; i--) {
             if (chars.indexOf(strChars[i].charCodeAt(0)) == -1) {
                 lefts = i;
+                break;
             }
         }
 
