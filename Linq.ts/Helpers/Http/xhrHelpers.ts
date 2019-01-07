@@ -98,7 +98,7 @@
                 callback(http.responseText, http.status);
             }
         }
-        http.send(data);
+        http.send(<any>data);
     }
 
     /**
@@ -113,7 +113,7 @@
         fileName: string = null,
         callback: (response: string, code: number) => void) {
 
-        var data = new FormData();       
+        var data = new FormData();
 
         if (postData instanceof File) {
             data.append("filename", (<File>postData).name);
@@ -122,7 +122,7 @@
             data.append("filename", fileName);
         }
 
-        data.append("File", postData, fileName);               
+        data.append("File", postData, fileName);
 
         HttpHelpers.POST(url, <PostData>{
             type: contentTypes.form,
