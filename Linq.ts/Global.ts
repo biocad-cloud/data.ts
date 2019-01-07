@@ -143,6 +143,7 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
  * 
  * 如果当前的这个页面是一个iframe页面，则会通过父页面进行跳转
  * 
+ * @param url 这个参数支持对meta标签数据的查询操作
  * @param currentFrame 如果这个参数为true，则不会进行父页面的跳转操作
 */
 function Goto(url: string, currentFrame: boolean = false): void {
@@ -152,6 +153,13 @@ function Goto(url: string, currentFrame: boolean = false): void {
         // 从最顶层的文档页面进行跳转
         // https://developer.mozilla.org/en-US/docs/Web/API/Window/top
         win = window.top;
+    }
+    if (url.charAt(0) == "@") {
+        // 可能是对meta标签的查询
+        // 去除第一个@标记符号之后进行查询
+        // 因为url可能会带有@，所以可能会出现误查询的情况，所以在这里默认值设置为url
+        // 当误查询的时候就会查询不到结果的时候，就可以返回当前的url值了
+        url = DOM.metaValue(url.substr(1), url, !currentFrame);
     }
 
     win.location.href = url;
