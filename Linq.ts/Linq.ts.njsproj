@@ -94,6 +94,9 @@
     <TypeScriptCompile Include="Data\PriorityQueue.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\StringHelpers\TypeScript1.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Data\StringHelpers\URL.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

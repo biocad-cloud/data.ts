@@ -174,7 +174,7 @@ module Strings {
         if (typeof chars == "string") {
             chars = From(Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
-                .ToArray();
+                .ToArray(false);
         }
 
         return function (chars: number[]) {
@@ -185,6 +185,51 @@ module Strings {
                 .Reverse()
                 .JoinBy("");
         }(<number[]>chars);
+    }
+
+    export function LTrim(str: string, chars: string | number[] = " "): string {
+        if (Strings.Empty(str, false)) {
+            return "";
+        }
+
+        if (typeof chars == "string") {
+            chars = From(Strings.ToCharArray(chars))
+                .Select(c => c.charCodeAt(0))
+                .ToArray(false);
+        }
+
+        return function (chars: number[]) {
+            return From(Strings.ToCharArray(str))
+                .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
+                .JoinBy("");
+        }(<number[]>chars);
+    }
+
+    export function RTrim(str: string, chars: string | number[] = " "): string {
+        if (Strings.Empty(str, false)) {
+            return "";
+        }
+
+        if (typeof chars == "string") {
+            chars = From(Strings.ToCharArray(chars))
+                .Select(c => c.charCodeAt(0))
+                .ToArray(false);
+        }
+
+        var strChars: string[] = Strings.ToCharArray(str);
+        var lefts: number = 0;
+
+        for (var i: number = strChars.length - 1; i > 0; i--) {
+            if (chars.indexOf(strChars[i].charCodeAt(0)) == -1) {
+                lefts = i;
+            }
+        }
+
+        if (lefts == 0) {
+            return "";
+        } else {
+            return str.substr(0, lefts);
+        }
     }
 
     /**

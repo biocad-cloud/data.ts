@@ -93,18 +93,6 @@ namespace TsLinq {
         }
 
         /**
-         * 只保留文件名（已经去除了文件夹路径以及文件名最后的拓展名部分）
-        */
-        public static basename(fileName: string): string {
-            var nameTokens: string[] = From(fileName.split("/")).Last.split(".");
-            var name: string = From(nameTokens)
-                .Take(nameTokens.length - 1)
-                .JoinBy(".");
-
-            return name;
-        }
-
-        /**
          * 获取得到当前的url
         */
         public static WindowLocation(): URL {
