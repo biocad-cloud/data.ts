@@ -64,21 +64,6 @@ function md5(string: string, key: string = null, raw: string = null): string {
 }
 
 /**
- * ### Javascript sprintf
- * 
- * > http://www.webtoolkit.info/javascript-sprintf.html#.W5sf9FozaM8
- *  
- * Several programming languages implement a sprintf function, to output a 
- * formatted string. It originated from the C programming language, printf 
- * function. Its a string manipulation function.
- *
- * This is limited sprintf Javascript implementation. Function returns a 
- * string formatted by the usual printf conventions. See below for more details. 
- * You must specify the string and how to format the variables in it.
-*/
-const sprintf = data.sprintf.doFormat;
-
-/**
  * Linq数据流程管线的起始函数
  * 
  * @param source 需要进行数据加工的集合对象
@@ -207,6 +192,22 @@ function saveSvgAsPng(
 
     return CanvasHelper.saveSvgAsPng.Encoder.saveSvgAsPng(svg, name, options);
 }
+
+/**
+ * ### Javascript sprintf
+ * 
+ * > http://www.webtoolkit.info/javascript-sprintf.html#.W5sf9FozaM8
+ *  
+ * Several programming languages implement a sprintf function, to output a 
+ * formatted string. It originated from the C programming language, printf 
+ * function. Its a string manipulation function.
+ *
+ * This is limited sprintf Javascript implementation. Function returns a 
+ * string formatted by the usual printf conventions. See below for more details. 
+ * You must specify the string and how to format the variables in it.
+*/
+const sprintf = data.sprintf.doFormat;
+const executeJavaScript: string = "javascript:void(0);";
 
 /**
  * 对于这个函数的返回值还需要做类型转换
