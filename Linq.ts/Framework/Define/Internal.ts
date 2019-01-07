@@ -140,6 +140,22 @@ namespace Internal {
             return JSON.parse(this.loadText(id));
         };
 
+        // file path helpers
+        ts.parseFileName = TsLinq.PathHelper.fileName;
+
+        /**
+         * 得到不带有拓展名的文件名部分的字符串
+         * 
+         * @param path Full name
+        */
+        ts.baseName = TsLinq.PathHelper.basename;
+        /**
+         * 得到不带小数点的文件拓展名字符串
+         * 
+         * @param path Full name
+        */
+        ts.extensionName = TsLinq.PathHelper.extensionName;
+
         return ts;
     }
 
