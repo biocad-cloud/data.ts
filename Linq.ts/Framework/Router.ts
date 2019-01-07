@@ -7,14 +7,14 @@ module Router {
 
     var hashLinks: Dictionary<string>;
     var webApp: Dictionary<Bootstrap>[];
-    var caseSensitive: boolean = false;
+    var caseSensitive: boolean = true;
 
     export function isCaseSensitive(): boolean {
         return caseSensitive;
     }
 
-    export function CaseInsensitive(): void {
-        caseSensitive = false;
+    export function CaseInsensitive(option: boolean = false): void {
+        caseSensitive = !option;
     }
 
     /**
