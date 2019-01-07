@@ -14,6 +14,7 @@
         mode: Modes;
 
         <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
+        <T extends HTMLElement & Node & ChildNode>(nodes: NodeListOf<T>): DOMEnumerator<T>;
 
         /**
          * Create a new node or query a node by its id.
