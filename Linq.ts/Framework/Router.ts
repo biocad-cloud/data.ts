@@ -149,7 +149,9 @@ module Router {
         var size: number[] = DOM.clientSize();
 
         if (!app) {
-            console.warn(`[#${appId}] not found!`);
+            if (Internal.outputWarning()) {
+                console.warn(`[#${appId}] not found!`);
+            }
         } else {
             app.style.width = size[0].toString();
             app.style.height = size[1].toString();

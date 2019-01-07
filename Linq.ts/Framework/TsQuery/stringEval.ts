@@ -76,7 +76,10 @@ namespace Linq.TsQuery {
                     .getElementById(query.expression);
 
                 if (isNullOrUndefined(node)) {
-                    console.warn(`Unable to found a node which its ID='${expr}'!`);
+                    if (Internal.outputWarning()) {
+                        console.warn(`Unable to found a node which its ID='${expr}'!`);
+                    }
+                    
                     return null;
                 } else {
                     if (argument.nativeModel) {

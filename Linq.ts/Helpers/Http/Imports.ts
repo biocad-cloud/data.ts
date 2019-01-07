@@ -69,8 +69,10 @@ namespace HttpHelpers {
                         eval.apply(window, [script]);
                     } catch (ex) {
                         if (this.onErrorResumeNext) {
-                            console.warn(url);
-                            console.warn(ex);
+                            if (Internal.outputWarning()) {
+                                console.warn(url);
+                                console.warn(ex);
+                            }
                             this.errors.push(url);
                         } else {
                             throw ex;

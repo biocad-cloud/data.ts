@@ -85,7 +85,9 @@ module Strings {
         var n = Math.pow(10, decimals);
 
         if (isNaN(floatX)) {
-            console.warn(`Invalid number value: '${x}'`);
+            if (Internal.outputWarning()) {
+                console.warn(`Invalid number value: '${x}'`);
+            }
             return false;
         } else {
             return Math.round(floatX * n) / n;

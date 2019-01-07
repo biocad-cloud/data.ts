@@ -48,7 +48,9 @@
             }
 
             if (isExternal(href)) {
-                console.warn("Cannot render embedded images linking to external hosts: " + href);
+                if (Internal.outputWarning()) {
+                    console.warn("Cannot render embedded images linking to external hosts: " + href);
+                }
                 return;
             }
         }

@@ -19,7 +19,10 @@ namespace DOM {
                 var content: string = meta.getAttribute("content");
                 return content ? content : Default;
             } else {
-                console.warn(`${selector} not found in current context!`);
+                if (Internal.outputWarning()) {
+                    console.warn(`${selector} not found in current context!`);
+                }
+
                 return Default;
             }
         };
@@ -67,7 +70,10 @@ namespace DOM {
                     })
                 };
             } catch (e) {
-                console.warn('This browser does not support object URLs. Falling back to string URL.');
+                if (Internal.outputWarning()) {
+                    console.warn('This browser does not support object URLs. Falling back to string URL.');
+                }
+
                 saveLink.href = uri;
             }
 
