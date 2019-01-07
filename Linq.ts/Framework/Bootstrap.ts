@@ -56,8 +56,11 @@ abstract class Bootstrap {
         // attach event handlers
         $ts(() => this.OnDocumentReady());
 
-        window.onload = this.OnWindowLoad;
-        window.onbeforeunload = this.OnWindowUnload;
+        // 2019-1-7 因为js是解释执行的，所以OnWindowLoad函数里面的代码之中的this，
+        // 可能会被解释为window对象
+        // 从而导致出现bug，所以在这里需要使用一个函数的封装来避免这个问题
+        window.onload = () => this.OnWindowLoad();
+        window.onbeforeunload = () => this.OnWindowUnload();
         window.onhashchange = function () {
             var hash = window.location.hash;
             var val = hash.substr(1);
