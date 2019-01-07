@@ -7,6 +7,15 @@ module Router {
 
     var hashLinks: Dictionary<string>;
     var webApp: Dictionary<Bootstrap>[];
+    var caseSensitive: boolean = false;
+
+    export function isCaseSensitive(): boolean {
+        return caseSensitive;
+    }
+
+    export function CaseInsensitive(): void {
+        caseSensitive = false;
+    }
 
     /**
      * @param module 默认的模块是``/``，即如果服务器为php服务器的话，则默认为index.php
