@@ -229,7 +229,7 @@ module Strings {
         if (lefts == 0) {
             return "";
         } else {
-            return str.substr(0, lefts);
+            return str.substr(0, lefts + 1);
         }
     }
 
