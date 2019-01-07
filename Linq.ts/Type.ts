@@ -154,7 +154,7 @@ class TypeInfo {
         var obj: object = {};
         var type = TypeInfo.typeof(nameValues);
 
-        if (type.IsArray && type.class == "Map") {
+        if (type.IsArray && type.class == "MapTuple") {
             (<MapTuple<string, V>[]>nameValues).forEach(map => obj[map.key] = map.value);
         } else if (type.IsArray && type.class == "NamedValue") {
             (<NamedValue<V>[]>nameValues).forEach(nv => obj[nv.name] = nv.value);
@@ -163,7 +163,7 @@ class TypeInfo {
 
             type = seq.ElementType;
 
-            if (type.class == "Map") {
+            if (type.class == "MapTuple") {
                 (<IEnumerator<MapTuple<string, V>>>nameValues)
                     .ForEach(map => {
                         obj[map.key] = map.value;
