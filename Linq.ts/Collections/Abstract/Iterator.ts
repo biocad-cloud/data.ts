@@ -21,7 +21,7 @@
  * }
  * ```
 */
-class Iterator<T> {
+class LINQIterator<T> {
 
     /**
      * The data sequence with specific generic type.
@@ -46,7 +46,7 @@ class Iterator<T> {
         this.sequence = array;
     }
 
-    public reset(): Iterator<T> {
+    public reset(): LINQIterator<T> {
         this.i = 0;
         return this;
     }

@@ -6,7 +6,7 @@
  * 
  * (这个枚举器类型是构建出一个Linq查询表达式所必须的基础类型，这是一个静态的集合，不会发生元素的动态添加或者删除)
 */
-class IEnumerator<T> extends Iterator<T> {
+class IEnumerator<T> extends LINQIterator<T> {
 
     //#region "readonly property"
 
