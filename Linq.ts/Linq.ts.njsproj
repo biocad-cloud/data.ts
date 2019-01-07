@@ -85,16 +85,16 @@
     <TypeScriptCompile Include="Data\StackTrace\StackTrace.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Data\StringBuilder.ts">
+    <TypeScriptCompile Include="Data\StringHelpers\StringBuilder.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Data\sprintf.ts">
+    <TypeScriptCompile Include="Data\StringHelpers\sprintf.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Data\PriorityQueue.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Data\URL.ts">
+    <TypeScriptCompile Include="Data\StringHelpers\URL.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\ES6\Map.ts">
@@ -215,6 +215,7 @@
   <ItemGroup>
     <Folder Include="Collections\Abstract\" />
     <Folder Include="Data\Encoder\" />
+    <Folder Include="Data\StringHelpers\" />
     <Folder Include="Data\StackTrace\" />
     <Folder Include="Framework\ES6\" />
     <Folder Include="Helpers\Canvas\" />
