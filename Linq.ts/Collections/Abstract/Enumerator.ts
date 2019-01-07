@@ -424,7 +424,7 @@ class IEnumerator<T> extends LINQIterator<T> {
     /**
      * 将当前的这个数据序列对象转换为键值对字典对象，方便用于数据的查找操作
     */
-    public ToDictionary<K, V>(
+    public ToDictionary<V>(
         keySelector: (x: T) => string,
         elementSelector: (x: T) => V = (X: T) => {
             return <V>(<any>X);
