@@ -1,5 +1,8 @@
 ﻿namespace TsLinq {
 
+    /**
+     * String helpers for the file path string.
+    */
     export module PathHelper {
 
         /**
