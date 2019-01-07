@@ -199,7 +199,7 @@ namespace csv {
         */
         public static Parse(text: string, tsv: boolean = false): dataframe {
             var parse: (line: string) => row = tsv ? row.ParseTsv : row.Parse;
-            var allTextLines: IEnumerator<string> = $ts.From(text.split(/\n/));
+            var allTextLines: IEnumerator<string> = $ts.from(text.split(/\n/));
             var rows: IEnumerator<row>;
 
             if (Strings.Empty(allTextLines.Last)) {

@@ -41,7 +41,7 @@ module Router {
         module: string;
         appName: string;
         className: string;
-        status: string;        
+        status: string;
         hookUnload: string
     }
 
@@ -52,7 +52,7 @@ module Router {
             appName: app.appName,
             className: type.class,
             status: app.appStatus,
-            hookUnload: app.appHookMsg            
+            hookUnload: app.appHookMsg
         }
 
         return info;
@@ -80,7 +80,7 @@ module Router {
             throw `Module "${module}" is not exists in your web app.`;
         }
 
-        if ($ts.FrameworkDebug) {
+        if (Internal.outputEverything()) {
             // 在console中显示table
             var summary: IAppInfo[] = [];
 

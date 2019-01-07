@@ -45,11 +45,11 @@ abstract class Bootstrap {
 
         // 必须要当前的App名称和当前的页面app一致的时候这个App的运行才会被触发
         if (currentAppName != this.appName) {
-            if ($ts.FrameworkDebug) {
+            if (Internal.outputEverything()) {
                 console.log(`%c[${TypeInfo.typeof(this).class}] Continue Sleep as: TRUE = ${currentAppName} <> ${this.appName}`, "color:green;");
             }
             return;
-        } else if ($ts.FrameworkDebug) {
+        } else if (Internal.outputEverything()) {
             console.log(`%c[${TypeInfo.typeof(this).class}] App(name:=${this.appName}) Init...`, "color:blue;");
         }
 

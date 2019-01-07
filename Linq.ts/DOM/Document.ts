@@ -225,7 +225,7 @@ namespace DOM {
         if (typeof fn !== 'function') {
             // Sanity check
             return;
-        } else if ($ts.FrameworkDebug) {
+        } else if (Internal.outputEverything()) {
             console.log("Add Document.ready event handler.");
             console.log(`document.readyState = ${document.readyState}`)
         }

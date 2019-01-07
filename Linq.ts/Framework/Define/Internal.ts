@@ -1,10 +1,36 @@
 ﻿/// <reference path="TS.ts" />
 /// <reference path="../../Data/URL.ts" />
+/// <reference path="../Modes.ts" />
 
 /**
  * The internal implementation of the ``$ts`` object.
 */
 namespace Internal {
+
+    const warningLevel: number = Modes.development;
+    const anyoutputLevel: number = Modes.debug;
+    const errorOnly: number = Modes.production;
+
+    /**
+     * 应用程序的开发模式：只会输出框架的警告信息
+    */
+    export function outputWarning(): boolean {
+        return $ts.mode <= warningLevel;
+    }
+
+    /**
+     * 框架开发调试模式：会输出所有的调试信息到终端之上
+    */
+    export function outputEverything(): boolean {
+        return $ts.mode == anyoutputLevel;
+    }
+
+    /**
+     * 生产模式：只会输出错误信息
+    */
+    export function outputError(): boolean {
+        return $ts.mode == errorOnly;
+    }
 
     /**
      * 对``$ts``对象的内部实现过程在这里
@@ -15,7 +41,7 @@ namespace Internal {
 
         const stringEval = handle.string();
 
-        ins.FrameworkDebug = false;
+        ins.mode = Modes.production;
 
         ins = extendsUtils(ins, stringEval);
         ins = extendsLINQ(ins);
