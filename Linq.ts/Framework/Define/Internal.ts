@@ -121,7 +121,7 @@ namespace Internal {
         ts.isNullOrEmpty = function (obj: any) {
             return IsNullOrEmpty(obj);
         }
-        ts.From = From;
+        ts.from = From;
         ts.csv = {
             toObjects: (data: string) => csv.dataframe.Parse(data).Objects(),
             toText: data => csv.toDataFrame(data).buildDoc()

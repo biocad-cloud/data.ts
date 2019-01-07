@@ -8,10 +8,10 @@
         /**
          * 这个属性控制着这个框架的调试器的输出行为
          * 
-         * + 如果这个参数为true，则会在浏览器的console上面输出各种和调试相关的信息
-         * + 如果这个参数为false，则不会再浏览器的console上面输出调试相关的信息，你会得到一个比较干净的console输出窗口
+         * + 如果这个参数为``debug``，则会在浏览器的console上面输出各种和调试相关的信息
+         * + 如果这个参数为``production``，则不会在浏览器的console上面输出调试相关的信息，你会得到一个比较干净的console输出窗口
         */
-        FrameworkDebug: boolean;
+        mode: Modes;
 
         <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
 
@@ -67,7 +67,7 @@
         /**
          * Linq函数链的起始
         */
-        From<T>(seq: T[]): IEnumerator<T>;
+        from<T>(seq: T[]): IEnumerator<T>;
 
         /**
          * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
@@ -99,6 +99,25 @@
          * 针对csv数据序列的操作帮助对象
         */
         csv: IcsvHelperApi;
+
+        /**
+         * 解析的结果为``filename.ext``的完整文件名格式
+         * 
+         * @param path Full name
+        */
+        parseFileName(path: string): string;
+        /**
+         * 得到不带有拓展名的文件名部分的字符串
+         * 
+         * @param path Full name
+        */
+        baseName(path: string): string;
+        /**
+         * 得到不带小数点的文件拓展名字符串
+         * 
+         * @param path Full name
+        */
+        extensionName(path: string): string;
     }
 
     export interface IquerySelector {
