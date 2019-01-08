@@ -79,7 +79,7 @@ namespace Linq.TsQuery {
                     if (Internal.outputWarning()) {
                         console.warn(`Unable to found a node which its ID='${expr}'!`);
                     }
-                    
+
                     return null;
                 } else {
                     if (argument.nativeModel) {
@@ -181,24 +181,41 @@ namespace Linq.TsQuery {
 
             // 赋值额外的属性参数
             if (args) {
-                Arguments
-                    .nameFilter(args)
-                    .forEach(name => {
-                        if (eventFuncNames.indexOf(name) < 0) {
-                            node.setAttribute(name, <string>args[name]);
-                        }
-                    });
-
-                // 添加事件
-                if (hasKey(args, events.onclick)) {
-                    node.onclick = args[events.onclick];
-                }
+                stringEval.setAttributes(node, args);
             }
 
             if (args.nativeModel) {
                 return stringEval.extends(node);
             } else {
                 return new HTMLTsElement(node);
+            }
+        }
+
+        public static setAttributes(node: HTMLElement, attrs: object) {
+            var setAttr = function (name: string) {
+                if (eventFuncNames.indexOf(name) > -1) {
+                    return;
+                }
+
+                if (name == "class") {
+                    var classVals = attrs[name];
+
+                    if (Array.isArray(classVals)) {
+                        (<string[]>classVals).forEach(c => node.classList.add(c));
+                    } else {
+                        node.setAttribute(name, <string>classVals);
+                    }
+
+                } else {
+                    node.setAttribute(name, <string>attrs[name]);
+                }
+            }
+
+            Arguments.nameFilter(attrs).forEach(name => setAttr(name));
+
+            // 添加事件
+            if (hasKey(attrs, events.onclick)) {
+                node.onclick = attrs[events.onclick];
             }
         }
     }

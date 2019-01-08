@@ -143,52 +143,32 @@ namespace DOM {
      * 向给定编号的div对象之中添加一个表格对象
      * 
      * @param headers 表头
-     * @param div 新生成的table将会被添加在这个div之中
+     * @param div 新生成的table将会被添加在这个div之中，应该是一个带有``#``符号的节点id查询表达式
      * @param attrs ``<table>``的属性值，包括id，class等
     */
     export function AddHTMLTable(
         rows: object[],
-        headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[],
         div: string,
-        attrs: node = null) {
+        headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
+        attrs: Internal.TypeScriptArgument = null) {
 
         var thead: HTMLElement = $ts("<thead>");
         var tbody: HTMLElement = $ts("<tbody>");
         var table: HTMLElement = $ts(`<table id="${div}-table">`);
 
         if (attrs) {
-            if (attrs.id) {
-                table.id = attrs.id;
-            }
-            if (!IsNullOrEmpty(attrs.classList)) {
-                attrs.classList.forEach(c => table.classList.add(c));
-            }
-            if (!IsNullOrEmpty(attrs.attrs)) {
-                From(attrs.attrs)
-                    .Where(a => a.name != "id" && a.name != "class")
-                    .ForEach(a => {
-                        table.setAttribute(a.name, a.value);
-                    });
-            }
+            Linq.TsQuery.stringEval.setAttributes(table, attrs);
         }
 
-        var fields = headerMaps(headers);
-
-        rows.forEach(r => {
+        var fields: MapTuple<string, string>[] = headerMaps(headers || $ts(Object.keys(rows[0])));
+        var rowHTML = function (r: object) {
             var tr: HTMLElement = $ts("<tr>");
+            fields.forEach(m => tr.appendChild($ts("<td>").display(r[m.key])));
+            return tr;
+        }
 
-            fields.forEach(m => {
-                var td: HTMLElement = $ts("<td>");
-                td.innerHTML = r[m.key];
-                tr.appendChild(td);
-            });
-            tbody.appendChild(tr);
-        });
-        fields.forEach(r => {
-            var th: HTMLElement = $ts("th");
-            th.innerHTML = r.value;
-            thead.appendChild(th);
-        })
+        rows.forEach(r => tbody.appendChild(rowHTML(r)));
+        fields.forEach(r => thead.appendChild($ts("<th>").display(r.value)));
 
         table.appendChild(thead);
         table.appendChild(tbody);
@@ -203,13 +183,13 @@ namespace DOM {
             return From(<string[]>headers)
                 .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
-        } else if (type.IsArrayOf("Map")) {
+        } else if (type.IsArrayOf("MapTuple")) {
             return <MapTuple<string, string>[]>headers;
         } else if (type.IsEnumerator && typeof headers[0] == "string") {
             return (<IEnumerator<string>>headers)
                 .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
-        } else if (type.IsEnumerator && TypeInfo.typeof(headers[0]).class == "Map") {
+        } else if (type.IsEnumerator && TypeInfo.typeof(headers[0]).class == "MapTuple") {
             return (<IEnumerator<MapTuple<string, string>>>headers).ToArray();
         } else {
             throw `Invalid sequence type: ${type.class}`;

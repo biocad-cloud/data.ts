@@ -172,7 +172,7 @@
         /**
          * HTML节点对象的class类型（通用属性）
         */
-        class?: string;
+        class?: string | string[];
         type?: string;
         href?: string;
         target?: string;
