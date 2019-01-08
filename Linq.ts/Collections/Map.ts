@@ -22,6 +22,10 @@ class MapTuple<K, V> {
         this.value = value;
     }
 
+    public valueOf(): V {
+        return this.value;
+    }
+
     public ToArray(): any[] {
         return [this.key, this.value];
     }

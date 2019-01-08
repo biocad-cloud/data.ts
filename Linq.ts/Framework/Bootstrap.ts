@@ -42,9 +42,16 @@ abstract class Bootstrap {
     public Init(): void {
         var vm = this;
         var currentAppName: string = this.getCurrentAppPage();
+        var awake: boolean;
+
+        if (Router.isCaseSensitive()) {
+            awake = currentAppName == this.appName;
+        } else {
+            awake = currentAppName.toLowerCase() == this.appName.toLowerCase()
+        }
 
         // 必须要当前的App名称和当前的页面app一致的时候这个App的运行才会被触发
-        if (currentAppName != this.appName) {
+        if (!awake) {
             if (Internal.outputEverything()) {
                 console.log(`%c[${TypeInfo.typeof(this).class}] Continue Sleep as: TRUE = ${currentAppName} <> ${this.appName}`, "color:green;");
             }

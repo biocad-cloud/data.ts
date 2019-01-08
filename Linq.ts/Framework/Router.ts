@@ -7,6 +7,15 @@ module Router {
 
     var hashLinks: Dictionary<string>;
     var webApp: Dictionary<Bootstrap>[];
+    var caseSensitive: boolean = true;
+
+    export function isCaseSensitive(): boolean {
+        return caseSensitive;
+    }
+
+    export function CaseInsensitive(option: boolean = false): void {
+        caseSensitive = !option;
+    }
 
     /**
      * @param module 默认的模块是``/``，即如果服务器为php服务器的话，则默认为index.php
@@ -19,7 +28,11 @@ module Router {
             webApp[module] = new Dictionary<Bootstrap>({});
         }
 
-        webApp[module].Add(app.appName, app);
+        doModule(module, apps => apps.Add(app.appName, app));
+    }
+
+    function doModule(module: string, action: (apps: Dictionary<Bootstrap>) => void) {
+        action(webApp[module]);
     }
 
     /**
@@ -60,13 +73,13 @@ module Router {
 
     export function RunApp(module = "/") {
         if (module in webApp) {
-            webApp[module].Select(app => app.value.Init());
+            doModule(module, apps => apps.Select(app => app.value.Init()));
         } else if (module == "index" || module in indexModule) {
             var runInit: boolean = false;
 
             for (var index of Object.keys(indexModule)) {
                 if (index in webApp) {
-                    webApp[index].Select(app => app.value.Init());
+                    doModule(index, apps => apps.Select(app => app.value.Init()));
                     runInit = true;
                     break;
                 }
@@ -85,9 +98,9 @@ module Router {
             var summary: IAppInfo[] = [];
 
             Object.keys(webApp).forEach(module => {
-                (<Dictionary<Bootstrap>>webApp[module])
-                    .Values
-                    .ForEach(app => summary.push(getAppSummary(app, module)));
+                doModule(module, apps => {
+                    apps.ForEach(app => summary.push(getAppSummary(app.value, module)));
+                });
             });
 
             console.table(summary);

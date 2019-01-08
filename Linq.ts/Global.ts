@@ -111,6 +111,8 @@ function isNullOrUndefined(obj: any): boolean {
 
 /**
  * HTML/Javascript: how to access JSON data loaded in a script tag.
+ * 
+ * @param id 节点的id值，不带有``#``符号前缀的
 */
 function LoadJson(id: string): any {
     return JSON.parse(LoadText(id));
