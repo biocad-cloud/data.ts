@@ -1,5 +1,25 @@
 ## Using the ``$ts`` object
 
+#### 1. Query a node by Id
+
+```ts
+var node = $ts("#xxxxx");
+```
+
+#### 2. Create a node by tag name
+
+```ts
+var node = $ts("<tagName>");
+```
+
+#### 3. Query nodes by css selector
+
+The selector query function will create a html node element collection: [DOMEnumerator](../Linq.ts/DOM/DOMEnumerator.ts).
+
+```ts
+var nodes = $ts.select("css-selector"); 
+```
+
 ## Namespace and Modules
 
 #### 1. Framework Global objects
