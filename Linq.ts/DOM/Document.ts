@@ -183,13 +183,13 @@ namespace DOM {
             return From(<string[]>headers)
                 .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
-        } else if (type.IsArrayOf("MapTuple")) {
+        } else if (type.IsArrayOf(TypeExtensions.DictionaryMap)) {
             return <MapTuple<string, string>[]>headers;
         } else if (type.IsEnumerator && typeof (<IEnumerator<any>>headers).First == "string") {
             return (<IEnumerator<string>>headers)
                 .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
-        } else if (type.IsEnumerator && TypeInfo.typeof((<IEnumerator<any>>headers).First).class == "MapTuple") {
+        } else if (type.IsEnumerator && TypeInfo.getClass((<IEnumerator<any>>headers).First) == TypeExtensions.DictionaryMap) {
             return (<IEnumerator<MapTuple<string, string>>>headers).ToArray();
         } else {
             throw `Invalid sequence type: ${type.class}`;

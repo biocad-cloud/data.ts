@@ -3,7 +3,11 @@
 module TypeExtensions {
 
     export const objectIsNothing: string = "Object is nothing! [https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/nothing]";
-    export const DictionaryMap: string = TypeInfo.typeof(new MapTuple("","")).class
+
+    /**
+     * 字典类型的元素类型名称字符串
+    */
+    export const DictionaryMap: string = TypeInfo.getClass(new MapTuple("", ""));
 
     export function ensureNumeric(x: number | string): number {
         if (typeof x == "number") {

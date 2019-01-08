@@ -55,6 +55,9 @@ class TypeInfo {
         return this.IsArray && this.class == genericType;
     }
 
+    /**
+     * 获取得到类型名称
+    */
     public static getClass(obj: any): string {
         var type = typeof obj;
         var isObject: boolean = type == "object";
