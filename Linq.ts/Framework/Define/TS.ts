@@ -119,6 +119,14 @@
          * @param path Full name
         */
         extensionName(path: string): string;
+
+        /**
+         * 注意：这个函数是大小写无关的
+         * 
+         * @param path 文件路径字符串 
+         * @param ext 不带有小数点的文件拓展名字符串
+        */
+        withExtensionName(path: string, ext: string): boolean;
     }
 
     export interface IquerySelector {

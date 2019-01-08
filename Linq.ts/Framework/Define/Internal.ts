@@ -156,6 +156,12 @@ namespace Internal {
          * @param path Full name
         */
         ts.extensionName = TsLinq.PathHelper.extensionName;
+        ts.withExtensionName = function (path: string, ext: string) {
+            var fileExt: string = $ts.extensionName(path);
+            var equals: boolean = fileExt.toLowerCase() == ext.toLowerCase();
+
+            return equals;
+        };
 
         return ts;
     }
