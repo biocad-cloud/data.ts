@@ -132,4 +132,7 @@ interface IHTMLElement extends HTMLElement {
      * type casting from this base type
     */
     CType<T extends HTMLElement>(): T;
+
+    asImage: HTMLImageElement;
+    asInput: HTMLInputElement;
 }
