@@ -117,7 +117,7 @@ class HTMLTsElement {
     }
 }
 
-interface IHTMLElement extends HTMLElement, String {
+interface IHTMLElement extends HTMLElement {
 
     asExtends: HTMLTsElement;
 
