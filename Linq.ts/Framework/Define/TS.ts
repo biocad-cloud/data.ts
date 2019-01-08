@@ -132,7 +132,17 @@
     export interface IquerySelector {
         <T extends HTMLElement>(query: string, context?: Window): DOMEnumerator<T>;
 
+        /**
+         * query参数应该是节点id查询表达式
+        */
         getSelectedOptions(query: string, context?: Window): DOMEnumerator<HTMLOptionElement>;
+        /**
+         * 获取得到select控件的选中的选项值，没做选择则返回null
+         * 
+         * @param query id查询表达式，这个函数只支持单选模式的结果，例如select控件以及radio控件
+         * @returns 返回被选中的项目的value属性值
+        */
+        getOption(query: string, context?: Window): string;
     }
 
     export interface IcsvHelperApi {

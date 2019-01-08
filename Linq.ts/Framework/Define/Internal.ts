@@ -191,6 +191,18 @@ namespace Internal {
 
             return new DOMEnumerator<HTMLOptionElement>(options);
         };
+        ts.select.getOption = function (query: string, context: Window = window) {
+            var sel: HTMLElement = $ts(query, {
+                context: context
+            });
+            var options = DOM.getSelectedOptions(<any>sel);
+
+            if (options.length == 0) {
+                return null;
+            } else {
+                return options[0].value;
+            }
+        };
 
         return ts;
     }
