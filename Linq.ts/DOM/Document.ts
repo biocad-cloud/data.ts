@@ -185,11 +185,11 @@ namespace DOM {
                 .ToArray();
         } else if (type.IsArrayOf("MapTuple")) {
             return <MapTuple<string, string>[]>headers;
-        } else if (type.IsEnumerator && typeof headers[0] == "string") {
+        } else if (type.IsEnumerator && typeof (<IEnumerator<any>>headers).First == "string") {
             return (<IEnumerator<string>>headers)
                 .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
-        } else if (type.IsEnumerator && TypeInfo.typeof(headers[0]).class == "MapTuple") {
+        } else if (type.IsEnumerator && TypeInfo.typeof((<IEnumerator<any>>headers).First).class == "MapTuple") {
             return (<IEnumerator<MapTuple<string, string>>>headers).ToArray();
         } else {
             throw `Invalid sequence type: ${type.class}`;

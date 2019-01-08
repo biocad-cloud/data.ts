@@ -55,6 +55,42 @@ class TypeInfo {
         return this.IsArray && this.class == genericType;
     }
 
+    public static getClass(obj: any): string {
+        var type = typeof obj;
+        var isObject: boolean = type == "object";
+        var isArray: boolean = Array.isArray(obj);
+        var isNull: boolean = isNullOrUndefined(obj);
+
+        return TypeInfo.getClassInternal(obj, isArray, isObject, isNull);
+    }
+
+    private static getClassInternal(obj: any, isArray: boolean, isObject: boolean, isNull: boolean): string {
+        if (isArray) {
+            var x = (<any>obj)[0];
+            var className: string;
+
+            if ((className = typeof x) == "object") {
+                className = x.constructor.name;
+            } else {
+                // do nothing
+            }
+
+            return className;
+        } else if (isObject) {
+            if (isNull) {
+                if (Internal.outputWarning()) {
+                    console.warn(TypeExtensions.objectIsNothing);
+                }
+
+                return "null";
+            } else {
+                return (<any>obj.constructor).name;
+            }
+        } else {
+            return "";
+        }
+    }
+
     /**
      * 获取某一个对象的类型信息
     */
@@ -62,31 +98,9 @@ class TypeInfo {
         var type = typeof obj;
         var isObject: boolean = type == "object";
         var isArray: boolean = Array.isArray(obj);
-        var className: string = "";
         var isNull: boolean = isNullOrUndefined(obj);
-
-        if (isArray) {
-            var x = (<any>obj)[0];
-
-            if ((className = typeof x) == "object") {
-                className = x.constructor.name;
-            } else {
-                // do nothing
-            }
-        } else if (isObject) {
-            if (isNull) {
-                if (Internal.outputWarning()) {
-                    console.warn(TypeExtensions.objectIsNothing);
-                }
-                className = "null";
-            } else {
-                className = (<any>obj.constructor).name;
-            }
-        } else {
-            className = "";
-        }
-
         var typeInfo: TypeInfo = new TypeInfo;
+        var className: string = TypeInfo.getClassInternal(obj, isArray, isObject, isNull);
 
         typeInfo.typeOf = isArray ? "array" : type;
         typeInfo.class = className;
