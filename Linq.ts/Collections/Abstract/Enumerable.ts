@@ -90,7 +90,7 @@ module Enumerable {
         var takes: T[] = [];
 
         source.forEach(o => {
-            if (predicate(o)) {
+            if (true == predicate(o)) {
                 takes.push(o);
             }
         });
@@ -100,7 +100,7 @@ module Enumerable {
 
     export function SkipWhile<T>(source: T[], predicate: (e: T) => boolean): IEnumerator<T> {
         for (var i: number = 0; i < source.length; i++) {
-            if (predicate(source[i])) {
+            if (true == predicate(source[i])) {
                 // skip
             } else {
                 // end skip
@@ -124,7 +124,7 @@ module Enumerable {
 
     export function Any<T>(source: T[], predicate: (e: T) => boolean): boolean {
         for (var i = 0; i < source.length; i++) {
-            if (predicate(source[i])) {
+            if (true == predicate(source[i])) {
                 return true;
             }
         }

@@ -346,6 +346,9 @@ module Strings {
         }
     }
 
+    /**
+     * 比较两个字符串的大小，可以同于字符串的分组操作
+    */
     export function CompareTo(s1: string, s2: string): number {
         var l1 = Strings.Len(s1);
         var l2 = Strings.Len(s2);

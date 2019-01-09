@@ -162,7 +162,32 @@ class IEnumerator<T> extends LINQIterator<T> {
     */
     public GroupBy<TKey>(
         keySelector: (o: T) => TKey,
-        compares: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
+        compares?: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
+
+        if (isNullOrUndefined(compares)) {
+            var x = keySelector(this.First);
+
+            switch (typeof x) {
+                case "string": compares = <any>Strings.CompareTo; break;
+                case "number": compares = <any>((x, y) => x - y); break;
+                case "boolean":
+                    compares = <any>(function (x, y) {
+                        if (x == y) {
+                            return 0;
+                        }
+
+                        // 有一个肯定是false
+                        if (x == true) {
+                            return 1;
+                        } else {
+                            return -1
+                        }
+                    });
+                    break;
+                default:
+                    throw "No element comparer was specific!";
+            }
+        }
 
         return Enumerable.GroupBy(this.sequence, keySelector, compares);
     }
