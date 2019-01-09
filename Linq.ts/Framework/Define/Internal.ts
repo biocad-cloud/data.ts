@@ -135,7 +135,7 @@ namespace Internal {
             var metaQuery: string;
 
             // 第一个符号是@符号，跳过
-            for (var i: number = 1; i < url.length - 1; i++) {
+            for (var i: number = 1; i < url.length; i++) {
                 if (isValidSymbol(c = url.charAt(i))) {
                     tag.push(c);
                 } else {
@@ -144,7 +144,7 @@ namespace Internal {
             }
 
             metaQuery = tag.join("");
-            url = DOM.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length);
+            url = DOM.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length + 1);
         }
 
         return url;
