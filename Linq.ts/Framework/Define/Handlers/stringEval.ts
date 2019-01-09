@@ -50,14 +50,24 @@ namespace Internal.Handlers {
 
         /**
          * @param query 函数会在这里自动的处理转义问题
+         * @param context 默认为当前的窗口文档
         */
-        public static select<T extends HTMLElement>(query: string, context: Window): DOMEnumerator<T> {
+        public static select<T extends HTMLElement>(query: string, context: Window | HTMLElement = window): DOMEnumerator<T> {
             // https://mathiasbynens.be/notes/css-escapes
             var cssSelector: string = query.replace(":", "\\:");
             // 返回节点集合
-            var nodes = <NodeListOf<HTMLElement>>context
-                .document
-                .querySelectorAll(cssSelector);
+            var nodes: NodeListOf<HTMLElement>;
+
+            if (context instanceof Window) {
+                nodes = context
+                    .document
+                    .querySelectorAll(cssSelector);
+            } else if (context instanceof HTMLElement) {
+                nodes = context.querySelectorAll(cssSelector);
+            } else {
+                throw `Unsupported context type: ${TypeInfo.getClass(context)}`;
+            }
+
             var it = new DOMEnumerator<T>(<any>nodes);
 
             return it;

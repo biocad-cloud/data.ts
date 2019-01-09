@@ -39,6 +39,8 @@ interface HTMLExtensions {
 
     asImage: IHTMLImageElement;
     asInput: IHTMLInputElement;
+
+    selects<T extends HTMLElement>(cssSelector: string): DOMEnumerator<T>;
 }
 
 /**
