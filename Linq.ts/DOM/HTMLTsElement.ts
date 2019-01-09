@@ -159,10 +159,16 @@ interface HTMLExtensions {
     asInput: IHTMLInputElement;
 }
 
+/**
+ * 带有拓展元素的图像标签对象
+*/
 interface IHTMLImageElement extends HTMLImageElement, HTMLExtensions {
     
 }
 
+/**
+ * 带有拓展元素的输入框标签对象
+*/
 interface IHTMLInputElement extends HTMLInputElement, HTMLExtensions {
 
 }

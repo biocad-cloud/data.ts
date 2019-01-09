@@ -225,3 +225,17 @@ const executeJavaScript: string = "javascript:void(0);";
  * 如果是节点查询或者创建的话，可以使用``asExtends``属性来获取``HTMLTsElememnt``拓展对象
 */
 const $ts: Internal.TypeScript = Internal.Static();
+
+/**
+ * 从文档之中查询或者创建一个新的图像标签元素
+*/
+function $image(query: string, args: Internal.TypeScriptArgument): IHTMLImageElement {
+    return Internal.queryFunction(Linq.TsQuery.handler.string, query, args);
+}
+
+/**
+ * 从文档之中查询或者创建一个新的输入标签元素
+*/
+function $input(query: string, args: Internal.TypeScriptArgument): IHTMLInputElement {
+    return Internal.queryFunction(Linq.TsQuery.handler.string, query, args);
+}

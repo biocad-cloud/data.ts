@@ -207,7 +207,7 @@ namespace Internal {
         return ts;
     }
 
-    function queryFunction<T>(handle: object, any: ((() => void) | T | T[]), args: object): any {
+    export function queryFunction<T>(handle: object, any: ((() => void) | T | T[]), args: object): any {
         var type: TypeInfo = TypeInfo.typeof(any);
         var typeOf: string = type.typeOf;
         var eval: any = typeOf in handle ? handle[typeOf]() : null;
