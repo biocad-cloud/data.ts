@@ -104,16 +104,47 @@ namespace Internal {
         return ts;
     }
 
+    const querySymbols: string[] = [":", "_"];
+
+    function isValidSymbol(c: string): boolean {
+        if (querySymbols.indexOf(c) > -1) {
+            return true;
+        } else {
+            return Strings.isNumber(c) || Strings.isAlphabet(c);
+        }
+    }
+
     /**
      * 支持对meta标签解析内容的还原
+     * 
+     * @param url 对于meta标签，只会转义字符串最开始的url部分
     */
     export function urlSolver(url: string, currentFrame: boolean = false): string {
+        // var url = "@view:task/user/xyz";
+        // 在这里指定标签规则：
+        // 1. 以@符号起始，能够包含的符号为冒号:，下划线_，字母和数字，其他的符号都会被看作为结束符号
+        // 2. meta查询标签必须位于url字符串的起始位置，否则不进行解析
+
         if (url.charAt(0) == "@") {
             // 可能是对meta标签的查询
             // 去除第一个@标记符号之后进行查询
             // 因为url可能会带有@，所以可能会出现误查询的情况，所以在这里默认值设置为url
             // 当误查询的时候就会查询不到结果的时候，就可以返回当前的url值了
-            url = DOM.metaValue(url.substr(1), url, !currentFrame);
+            var tag: string[] = [];
+            var c: string;
+            var metaQuery: string;
+
+            // 第一个符号是@符号，跳过
+            for (var i: number = 1; i < url.length - 1; i++) {
+                if (isValidSymbol(c = url.charAt(i))) {
+                    tag.push(c);
+                } else {
+                    break;
+                }
+            }
+
+            metaQuery = tag.join();
+            url = DOM.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length);
         }
 
         return url;

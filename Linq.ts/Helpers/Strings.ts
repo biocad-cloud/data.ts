@@ -9,6 +9,10 @@ module Strings {
     export const asterisk: number = "*".charCodeAt(0);
     export const cr: number = "\c".charCodeAt(0);
     export const lf: number = "\r".charCodeAt(0);
+    export const a: number = "a".charCodeAt(0);
+    export const z: number = "z".charCodeAt(0);
+    export const A: number = "A".charCodeAt(0);
+    export const Z: number = "Z".charCodeAt(0);
 
     export const numericPattern: RegExp = /[-]?\d+(\.\d+)?/g;
 
@@ -95,11 +99,23 @@ module Strings {
     }
 
     /**
-     * @param text A single character
+     * 判断当前的这个字符是否是一个数字？
+     * 
+     * @param c A single character, length = 1
     */
-    export function isNumber(text: string): boolean {
-        var code = text.charCodeAt(0);
+    export function isNumber(c: string): boolean {
+        var code = c.charCodeAt(0);
         return code >= x0 && code <= x9;
+    }
+
+    /**
+     * 判断当前的这个字符是否是一个字母？
+     * 
+     * @param c A single character, length = 1
+    */
+    export function isAlphabet(c: string): boolean {
+        var code = c.charCodeAt(0);
+        return (code >= a && code <= z) || (code >= A && code <= Z);
     }
 
     /**
