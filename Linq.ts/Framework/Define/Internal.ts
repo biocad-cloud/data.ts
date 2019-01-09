@@ -91,13 +91,13 @@ namespace Internal {
 
         ts.windowLocation = TsLinq.URL.WindowLocation;
         ts.parseURL = (url => new TsLinq.URL(url));
-        ts.goto = function (url: string, currentFrame: boolean = false, lambda: boolean = false) {
-            if (lambda) {
+        ts.goto = function (url: string, opt: GotoOptions = { currentFrame: false, lambda: false }) {
+            if (opt.lambda) {
                 return function () {
-                    Goto(url, currentFrame);
+                    Goto(url, opt.currentFrame);
                 }
             } else {
-                Goto(url, currentFrame);
+                Goto(url, opt.currentFrame);
             }
         }
 
