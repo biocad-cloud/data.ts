@@ -45,7 +45,20 @@
         */
         (ready: () => void): void;
 
+        /**
+         * 动态的导入脚本
+         * 
+         * @param jsURL 需要进行动态导入的脚本的文件链接路径
+         * @param onErrorResumeNext 当加载出错的时候，是否继续执行下一个脚本？如果为false，则出错之后会抛出错误停止执行
+        */
         imports(jsURL: string | string[], callback?: () => void, onErrorResumeNext?: boolean, echo?: boolean): void;
+
+        /**
+         * 动态加载脚本
+         * 
+         * @param script 脚本的文本内容
+         * @param lzw_decompress 目标脚本内容是否是lzw压缩过后的内容，如果是的话，则这个函数会进行lzw解压缩
+        */
         eval(script: string, lzw_decompress?: boolean, callback?: () => void): void;
 
         /**
@@ -72,6 +85,8 @@
 
         /**
          * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
+         * 
+         * @param url 目标数据源，这个参数也支持meta标签的查询语法
         */
         post<T>(url: string, data: object | FormData,
             callback?: ((response: IMsg<T>) => void),
@@ -80,10 +95,14 @@
             }): void;
         /**
          * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错
+         * 
+         * @param url 目标数据源，这个参数也支持meta标签查询语法
         */
         get<T>(url: string, callback?: ((response: IMsg<T>) => void)): void;
         /**
          * File upload helper
+         * 
+         * @param url 目标数据源，这个参数也支持meta标签查询语法
         */
         upload<T>(url: string, file: File, callback?: ((response: IMsg<T>) => void)): void;
 

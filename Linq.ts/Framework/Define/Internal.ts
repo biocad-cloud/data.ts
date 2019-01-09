@@ -68,21 +68,21 @@ namespace Internal {
                 sendContentType: (options || {}).sendContentType || true
             };
 
-            HttpHelpers.POST(url, post, function (response) {
+            HttpHelpers.POST(urlSolver(url), post, function (response) {
                 if (callback) {
                     callback(handleJSON(response));
                 }
             });
         };
         ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
-            HttpHelpers.GetAsyn(url, function (response) {
+            HttpHelpers.GetAsyn(urlSolver(url), function (response) {
                 if (callback) {
                     callback(handleJSON(response));
                 }
             });
         };
         ts.upload = function (url: string, file: File, callback?: ((response: IMsg<{}>) => void)) {
-            HttpHelpers.UploadFile(url, file, null, function (response) {
+            HttpHelpers.UploadFile(urlSolver(url), file, null, function (response) {
                 if (callback) {
                     callback(handleJSON(response));
                 }
@@ -94,6 +94,13 @@ namespace Internal {
         ts.goto = Goto;
 
         return ts;
+    }
+
+    /**
+     * 支持对meta标签解析内容的还原
+    */
+    function urlSolver(url: string): string {
+        return url;
     }
 
     function handleJSON(response: any): any {
