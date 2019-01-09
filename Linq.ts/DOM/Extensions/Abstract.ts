@@ -46,13 +46,14 @@ interface HTMLExtensions {
 /**
  * 带有拓展元素的图像标签对象
 */
-interface IHTMLImageElement extends HTMLImageElement, HTMLExtensions {
-
-}
+interface IHTMLImageElement extends HTMLImageElement, HTMLExtensions { }
 
 /**
  * 带有拓展元素的输入框标签对象
 */
-interface IHTMLInputElement extends HTMLInputElement, HTMLExtensions {
+interface IHTMLInputElement extends HTMLInputElement, HTMLExtensions { }
 
-}
+/**
+ * 带有拓展元素的链接标签对象
+*/
+interface IHTMLLinkElement extends HTMLAnchorElement, HTMLExtensions { }

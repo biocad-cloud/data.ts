@@ -121,7 +121,7 @@
          * @param currentFrame 如果当前页面为iframe的话，则只跳转iframe的显示，当这个参数为真的话；
          *      如果这个参数为false，则从父页面进行跳转
         */
-        goto(url: string, currentFrame?: boolean): void;
+        goto(url: string, currentFrame?: boolean, lambda?: boolean): Delegate.Sub;
 
         /**
          * 针对csv数据序列的操作帮助对象

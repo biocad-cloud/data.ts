@@ -239,3 +239,7 @@ function $image(query: string, args?: Internal.TypeScriptArgument): IHTMLImageEl
 function $input(query: string, args?: Internal.TypeScriptArgument): IHTMLInputElement {
     return Internal.StringEval.doEval(query, null, args);
 }
+
+function $link(query: string, args?: Internal.TypeScriptArgument): IHTMLLinkElement {
+    return Internal.StringEval.doEval(query, null, args);
+}
