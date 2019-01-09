@@ -157,7 +157,7 @@ namespace DOM {
         var table: HTMLElement = $ts(`<table id="${div}-table">`);
 
         if (attrs) {
-            Linq.TsQuery.stringEval.setAttributes(table, attrs);
+            Internal.Handlers.stringEval.setAttributes(table, attrs);
         }
 
         var fields: MapTuple<string, string>[] = headerMaps(headers || $ts(Object.keys(rows[0])));
