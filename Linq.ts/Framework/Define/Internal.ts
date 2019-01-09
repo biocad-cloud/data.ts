@@ -143,7 +143,7 @@ namespace Internal {
                 }
             }
 
-            metaQuery = tag.join();
+            metaQuery = tag.join("");
             url = DOM.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length);
         }
 
