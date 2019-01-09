@@ -1,7 +1,7 @@
 ﻿/**
  * 在这里对原生的html节点进行拓展
 */
-module TypeScriptExtends {
+namespace TypeExtensions {
 
     /**
      * 在原生节点模式之下对输入的给定的节点对象添加拓展方法

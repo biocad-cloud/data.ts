@@ -83,7 +83,7 @@ namespace Internal.Handlers {
                     return null;
                 } else {
                     if (argument.nativeModel) {
-                        return stringEval.extends(node);
+                        return TypeExtensions.Extends(node);
                     } else {
                         return new HTMLTsElement(node);
                     }
@@ -102,7 +102,7 @@ namespace Internal.Handlers {
                     .document
                     .querySelector(query.expression);
             }
-        }        
+        }
 
         /**
          * 创建新的HTML节点元素
@@ -127,7 +127,7 @@ namespace Internal.Handlers {
             }
 
             if (args.nativeModel) {
-                return stringEval.extends(node);
+                return TypeExtensions.Extends(node);
             } else {
                 return new HTMLTsElement(node);
             }

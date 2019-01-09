@@ -1,6 +1,6 @@
 ﻿/// <reference path="./Collections/Map.ts" />
 
-module TypeExtensions {
+namespace TypeExtensions {
 
     export const objectIsNothing: string = "Object is nothing! [https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/nothing]";
 

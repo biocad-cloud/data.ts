@@ -53,7 +53,7 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
 
         // 在最后进行元素拓展
         for (var node of list) {
-            Internal.Handlers.stringEval.extends(node);
+            TypeExtensions.Extends(node);
         }
 
         return list;
