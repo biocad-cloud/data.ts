@@ -51,6 +51,11 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
             list = Framework.Extensions.EnsureArray(<T[]>elements);
         }
 
+        // 在最后进行元素拓展
+        for (var node of list) {
+            Internal.Handlers.stringEval.extends(node);
+        }
+
         return list;
     }
 

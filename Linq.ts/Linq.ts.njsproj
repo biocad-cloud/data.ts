@@ -100,6 +100,12 @@
     <TypeScriptCompile Include="Data\StringHelpers\URL.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\Extensions\Abstract.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\Extensions\TypeScriptExtends.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Delegate.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -163,7 +169,7 @@
     <TypeScriptCompile Include="DOM\NodeParser.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="DOM\HTMLTsElement.ts">
+    <TypeScriptCompile Include="DOM\Extensions\HTMLTsElement.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Define\TS.ts">
@@ -220,6 +226,7 @@
     <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StringHelpers\" />
     <Folder Include="Data\StackTrace\" />
+    <Folder Include="DOM\Extensions\" />
     <Folder Include="Framework\Define\Handlers\" />
     <Folder Include="Helpers\Canvas\" />
     <Folder Include="Helpers\Http\" />
