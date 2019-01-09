@@ -95,6 +95,14 @@
          * 解析一个给定的URL字符串
         */
         parseURL(url: string): TsLinq.URL;
+        /**
+         * 从当前页面跳转到给定的链接页面
+         * 
+         * @param url 链接，也支持meta查询表达式
+         * @param currentFrame 如果当前页面为iframe的话，则只跳转iframe的显示，当这个参数为真的话；
+         *      如果这个参数为false，则从父页面进行跳转
+        */
+        goto(url: string, currentFrame?: boolean): void;
 
         /**
          * 针对csv数据序列的操作帮助对象

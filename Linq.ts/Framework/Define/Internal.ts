@@ -91,6 +91,7 @@ namespace Internal {
 
         ts.windowLocation = TsLinq.URL.WindowLocation;
         ts.parseURL = (url => new TsLinq.URL(url));
+        ts.goto = Goto;
 
         return ts;
     }
