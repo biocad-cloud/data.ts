@@ -1,6 +1,6 @@
-﻿/// <reference path="../../DOM/DOMEnumerator.ts" />
+﻿/// <reference path="../../../DOM/DOMEnumerator.ts" />
 
-namespace Linq.TsQuery {
+namespace Internal.Handlers {
 
     const events = {
         onclick: "onclick"

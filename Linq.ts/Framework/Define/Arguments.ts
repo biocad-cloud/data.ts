@@ -1,4 +1,4 @@
-﻿namespace Linq.TsQuery {
+﻿namespace Internal {
 
     export class Arguments {
 

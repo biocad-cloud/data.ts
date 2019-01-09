@@ -1,6 +1,6 @@
 ﻿/// <reference path="./stringEval.ts" />
 
-namespace Linq.TsQuery {
+namespace Internal.Handlers {
 
     /**
      * 在这个字典之中的键名称主要有两大类型:
@@ -8,7 +8,7 @@ namespace Linq.TsQuery {
      * + typeof 类型判断结果
      * + TypeInfo.class 类型名称
     */
-    export const handler = {
+    export const Shared = {
         /**
          * HTML document query handler
         */

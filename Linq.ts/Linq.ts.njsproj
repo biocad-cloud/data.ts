@@ -172,10 +172,10 @@
     <TypeScriptCompile Include="Framework\Define\Internal.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\Define\TsQueryArguments.ts">
+    <TypeScriptCompile Include="Framework\Define\Arguments.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\Define\TsQuery.ts">
+    <TypeScriptCompile Include="Framework\Define\Handlers\Handlers.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Router.ts">
@@ -187,7 +187,7 @@
     <TypeScriptCompile Include="Framework\Define\README.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\Define\stringEval.ts">
+    <TypeScriptCompile Include="Framework\Define\Handlers\stringEval.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Bootstrap.ts">
@@ -220,6 +220,7 @@
     <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StringHelpers\" />
     <Folder Include="Data\StackTrace\" />
+    <Folder Include="Framework\Define\Handlers\" />
     <Folder Include="Helpers\Canvas\" />
     <Folder Include="Helpers\Http\" />
     <Folder Include="Framework\" />

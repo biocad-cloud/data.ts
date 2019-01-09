@@ -37,7 +37,7 @@ namespace Internal {
      * 对``$ts``对象的内部实现过程在这里
     */
     export function Static<T>(): TypeScript {
-        var handle = Linq.TsQuery.handler;
+        var handle = Internal.Handlers.Shared;
         var ins: any = (any: ((() => void) | T | T[]), args: object) => queryFunction(handle, any, args);
 
         const stringEval = handle.string();
@@ -116,7 +116,7 @@ namespace Internal {
         }
     }
 
-    function extendsUtils(ts: any, stringEval: Linq.TsQuery.stringEval): any {
+    function extendsUtils(ts: any, stringEval: Handlers.stringEval): any {
         ts.imports = function (
             jsURL: string | string[],
             callback: () => void = DoNothing,
@@ -132,7 +132,7 @@ namespace Internal {
             HttpHelpers.Imports.doEval(script, callback);
         }
         ts.loadText = function (id: string) {
-            var nodeID: string = Linq.TsQuery.EnsureNodeId(id);
+            var nodeID: string = Handlers.EnsureNodeId(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
 
             return (<HTMLElement>node).innerText;
@@ -181,7 +181,7 @@ namespace Internal {
 
     function extendsSelector(ts: any): any {
         ts.select = function (query: string, context: Window = window) {
-            return Linq.TsQuery.stringEval.select(query, context);
+            return Handlers.stringEval.select(query, context);
         }
         ts.select.getSelectedOptions = function (query: string, context: Window = window) {
             var sel: HTMLElement = $ts(query, {
@@ -214,7 +214,7 @@ namespace Internal {
 
         if (type.IsArray) {
             // 转化为序列集合对象，相当于from函数                
-            return (<Linq.TsQuery.arrayEval<T>>eval).doEval(<T[]>any, type, args);
+            return (<Handlers.arrayEval<T>>eval).doEval(<T[]>any, type, args);
         } else if (type.typeOf == "function") {
             // 当html文档加载完毕之后就会执行传递进来的这个
             // 函数进行初始化
@@ -222,12 +222,12 @@ namespace Internal {
         } else if (!isNullOrUndefined(eval)) {
             // 对html文档之中的节点元素进行查询操作
             // 或者创建新的节点
-            return (<Linq.TsQuery.IEval<T>>eval).doEval(<T>any, type, args);
+            return (<Handlers.IEval<T>>eval).doEval(<T>any, type, args);
         } else {
             eval = handle[type.class];
 
             if (!isNullOrUndefined(eval)) {
-                return (<Linq.TsQuery.IEval<T>>eval()).doEval(<T>any, type, args);
+                return (<Handlers.IEval<T>>eval()).doEval(<T>any, type, args);
             } else {
                 throw `Unsupported data type: ${type.toString()}`;
             }
