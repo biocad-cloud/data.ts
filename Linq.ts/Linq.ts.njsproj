@@ -100,9 +100,6 @@
     <TypeScriptCompile Include="Data\StringHelpers\URL.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\ES6\Map.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Delegate.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -175,10 +172,10 @@
     <TypeScriptCompile Include="Framework\Define\Internal.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\TsQuery\TsQueryArguments.ts">
+    <TypeScriptCompile Include="Framework\Define\TsQueryArguments.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\TsQuery\TsQuery.ts">
+    <TypeScriptCompile Include="Framework\Define\TsQuery.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Router.ts">
@@ -187,10 +184,10 @@
     <TypeScriptCompile Include="Framework\Extensions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\TsQuery\README.ts">
+    <TypeScriptCompile Include="Framework\Define\README.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\TsQuery\stringEval.ts">
+    <TypeScriptCompile Include="Framework\Define\stringEval.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Bootstrap.ts">
@@ -223,7 +220,6 @@
     <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StringHelpers\" />
     <Folder Include="Data\StackTrace\" />
-    <Folder Include="Framework\ES6\" />
     <Folder Include="Helpers\Canvas\" />
     <Folder Include="Helpers\Http\" />
     <Folder Include="Framework\" />
@@ -234,7 +230,6 @@
     <Folder Include="DOM\" />
     <Folder Include="Collections\" />
     <Folder Include="Framework\Define\" />
-    <Folder Include="Framework\TsQuery\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\Http\Imports.ts">
