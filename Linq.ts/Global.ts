@@ -230,12 +230,12 @@ const $ts: Internal.TypeScript = Internal.Static();
  * 从文档之中查询或者创建一个新的图像标签元素
 */
 function $image(query: string, args?: Internal.TypeScriptArgument): IHTMLImageElement {
-    return Internal.queryFunction(Internal.Handlers.Shared.string, query, args);
+    return Internal.StringEval.doEval(query, null, args);
 }
 
 /**
  * 从文档之中查询或者创建一个新的输入标签元素
 */
 function $input(query: string, args?: Internal.TypeScriptArgument): IHTMLInputElement {
-    return Internal.queryFunction(Internal.Handlers.Shared.string, query, args);
+    return Internal.StringEval.doEval(query, null, args);
 }

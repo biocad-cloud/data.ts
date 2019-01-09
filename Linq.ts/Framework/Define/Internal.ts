@@ -8,6 +8,8 @@
 */
 namespace Internal {
 
+    export const StringEval = new Handlers.stringEval();
+
     const warningLevel: number = Modes.development;
     const anyoutputLevel: number = Modes.debug;
     const errorOnly: number = Modes.production;
