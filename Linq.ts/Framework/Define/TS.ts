@@ -29,6 +29,16 @@
         */
         select: IquerySelector;
 
+        /**
+         * @param div 应该是带有``#``的id查询表达式
+        */
+        appendTable<T extends {}>(
+            rows: T[] | IEnumerator<T>,
+            div: string,
+            headers?: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[],
+            attrs?: Internal.TypeScriptArgument
+        );
+
         <T>(array: T[]): IEnumerator<T>;
 
         /**

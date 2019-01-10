@@ -139,27 +139,13 @@ namespace DOM {
         (<HTMLElement>$ts(`#${div}`)).innerHTML = html;
     }
 
-    /**
-     * 向给定编号的div对象之中添加一个表格对象
-     * 
-     * @param headers 表头
-     * @param div 新生成的table将会被添加在这个div之中，应该是一个带有``#``符号的节点id查询表达式
-     * @param attrs ``<table>``的属性值，包括id，class等
-    */
-    export function AddHTMLTable<T extends {}>(
+    export function CreateHTMLTableNode<T extends {}>(
         rows: T[] | IEnumerator<T>,
-        div: string,
         headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
-        attrs: Internal.TypeScriptArgument = null) {
+        attrs: Internal.TypeScriptArgument = null): HTMLTableElement {
 
         var thead: HTMLElement = $ts("<thead>");
         var tbody: HTMLElement = $ts("<tbody>");
-        var table: HTMLElement = $ts(`<table id="${div}-table">`);
-
-        if (attrs) {
-            Internal.Handlers.stringEval.setAttributes(table, attrs);
-        }
-
         var fields: MapTuple<string, string>[];
 
         if (Array.isArray(rows)) {
@@ -182,10 +168,35 @@ namespace DOM {
 
         fields.forEach(r => thead.appendChild($ts("<th>").display(r.value)));
 
-        table.appendChild(thead);
-        table.appendChild(tbody);
+        return <HTMLTableElement>$ts("<table>", attrs)
+            .asExtends
+            .append(thead)
+            .append(tbody)
+            .HTMLElement;
+    }
 
-        $ts(div).appendChild(table);
+    /**
+     * 向给定编号的div对象之中添加一个表格对象
+     * 
+     * @param headers 表头
+     * @param div 新生成的table将会被添加在这个div之中，应该是一个带有``#``符号的节点id查询表达式
+     * @param attrs ``<table>``的属性值，包括id，class等
+    */
+    export function AddHTMLTable<T extends {}>(
+        rows: T[] | IEnumerator<T>,
+        div: string,
+        headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
+        attrs: Internal.TypeScriptArgument = null) {
+
+        var id = `${div}-table`;
+
+        if (attrs) {
+            if (!attrs.id) { attrs.id = id; }
+        } else {
+            attrs = { id: id };
+        }
+
+        $ts(div).appendChild(CreateHTMLTableNode(rows, headers, attrs));
     }
 
     function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[]): MapTuple<string, string>[] {

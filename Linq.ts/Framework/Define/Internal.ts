@@ -2,6 +2,7 @@
 /// <reference path="../../Data/StringHelpers/URL.ts" />
 /// <reference path="../../Data/StringHelpers/PathHelper.ts" />
 /// <reference path="../Modes.ts" />
+/// <reference path="../../DOM/Document.ts" />
 
 /**
  * The internal implementation of the ``$ts`` object.
@@ -232,6 +233,7 @@ namespace Internal {
             toObjects: (data: string) => csv.dataframe.Parse(data).Objects(),
             toText: data => csv.toDataFrame(data).buildDoc()
         };
+        ts.appendTable = DOM.AddHTMLTable;
 
         return ts;
     }
