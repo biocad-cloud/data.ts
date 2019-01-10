@@ -146,8 +146,8 @@ namespace DOM {
      * @param div 新生成的table将会被添加在这个div之中，应该是一个带有``#``符号的节点id查询表达式
      * @param attrs ``<table>``的属性值，包括id，class等
     */
-    export function AddHTMLTable(
-        rows: object[],
+    export function AddHTMLTable<T extends {}>(
+        rows: T[] | IEnumerator<T>,
         div: string,
         headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
         attrs: Internal.TypeScriptArgument = null) {
@@ -160,14 +160,26 @@ namespace DOM {
             Internal.Handlers.stringEval.setAttributes(table, attrs);
         }
 
-        var fields: MapTuple<string, string>[] = headerMaps(headers || $ts(Object.keys(rows[0])));
+        var fields: MapTuple<string, string>[];
+
+        if (Array.isArray(rows)) {
+            fields = headerMaps(headers || $ts(Object.keys(rows[0])));
+        } else {
+            fields = headerMaps(headers || $ts(Object.keys(rows.First)));
+        }
+
         var rowHTML = function (r: object) {
             var tr: HTMLElement = $ts("<tr>");
             fields.forEach(m => tr.appendChild($ts("<td>").display(r[m.key])));
             return tr;
         }
 
-        rows.forEach(r => tbody.appendChild(rowHTML(r)));
+        if (Array.isArray(rows)) {
+            rows.forEach(r => tbody.appendChild(rowHTML(r)));
+        } else {
+            rows.ForEach(r => tbody.appendChild(rowHTML(r)));
+        }
+
         fields.forEach(r => thead.appendChild($ts("<th>").display(r.value)));
 
         table.appendChild(thead);
