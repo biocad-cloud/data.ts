@@ -233,8 +233,9 @@ namespace Internal {
             toObjects: (data: string) => csv.dataframe.Parse(data).Objects(),
             toText: data => csv.toDataFrame(data).buildDoc()
         };
+        ts.evalHTML = DOM.CreateHTMLTableNode;
         ts.appendTable = DOM.AddHTMLTable;
-
+        
         return ts;
     }
 
