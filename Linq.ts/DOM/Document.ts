@@ -139,6 +139,13 @@ namespace DOM {
         (<HTMLElement>$ts(`#${div}`)).innerHTML = html;
     }
 
+    /**
+     * @param headers 表格之中所显示的表头列表，也可以通过这个参数来对表格之中
+     *   所需要进行显示的列进行筛选以及显示控制：
+     *    + 如果这个参数为默认的空值，则说明显示所有的列数据
+     *    + 如果这个参数不为空值，则会显示这个参数所指定的列出来
+     *    + 可以通过``map [propertyName => display title]``来控制表头的标题输出
+    */
     export function CreateHTMLTableNode<T extends {}>(
         rows: T[] | IEnumerator<T>,
         headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
@@ -156,6 +163,7 @@ namespace DOM {
 
         var rowHTML = function (r: object) {
             var tr: HTMLElement = $ts("<tr>");
+            // 在这里将会控制列的显示
             fields.forEach(m => tr.appendChild($ts("<td>").display(r[m.key])));
             return tr;
         }
@@ -199,6 +207,9 @@ namespace DOM {
         $ts(div).appendChild(CreateHTMLTableNode(rows, headers, attrs));
     }
 
+    /**
+     * @param headers ``[propertyName => displayTitle]``
+    */
     function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[]): MapTuple<string, string>[] {
         var type = TypeInfo.typeof(headers);
 
