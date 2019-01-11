@@ -13,7 +13,13 @@ module Router {
         return caseSensitive;
     }
 
-    export function CaseInsensitive(option: boolean = false): void {
+    /**
+     * 设置路由器对URL的解析是否是大小写不敏感模式，也可以在这里函数中设置参数为false，来切换为大小写敏感模式
+     * 
+     * @param option 通过这个参数来设置是否为大小写不敏感模式？
+     * 
+    */
+    export function CaseInsensitive(option: boolean = true): void {
         caseSensitive = !option;
     }
 
