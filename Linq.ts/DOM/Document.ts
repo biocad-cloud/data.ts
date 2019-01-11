@@ -140,42 +140,76 @@ namespace DOM {
     }
 
     /**
+     * @param headers 表格之中所显示的表头列表，也可以通过这个参数来对表格之中
+     *   所需要进行显示的列进行筛选以及显示控制：
+     *    + 如果这个参数为默认的空值，则说明显示所有的列数据
+     *    + 如果这个参数不为空值，则会显示这个参数所指定的列出来
+     *    + 可以通过``map [propertyName => display title]``来控制表头的标题输出
+    */
+    export function CreateHTMLTableNode<T extends {}>(
+        rows: T[] | IEnumerator<T>,
+        headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
+        attrs: Internal.TypeScriptArgument = null): HTMLTableElement {
+
+        var thead: HTMLElement = $ts("<thead>");
+        var tbody: HTMLElement = $ts("<tbody>");
+        var fields: MapTuple<string, string>[];
+
+        if (Array.isArray(rows)) {
+            fields = headerMaps(headers || $ts(Object.keys(rows[0])));
+        } else {
+            fields = headerMaps(headers || $ts(Object.keys(rows.First)));
+        }
+
+        var rowHTML = function (r: object) {
+            var tr: HTMLElement = $ts("<tr>");
+            // 在这里将会控制列的显示
+            fields.forEach(m => tr.appendChild($ts("<td>").display(r[m.key])));
+            return tr;
+        }
+
+        if (Array.isArray(rows)) {
+            rows.forEach(r => tbody.appendChild(rowHTML(r)));
+        } else {
+            rows.ForEach(r => tbody.appendChild(rowHTML(r)));
+        }
+
+        fields.forEach(r => thead.appendChild($ts("<th>").display(r.value)));
+
+        return <HTMLTableElement>$ts("<table>", attrs)
+            .asExtends
+            .append(thead)
+            .append(tbody)
+            .HTMLElement;
+    }
+
+    /**
      * 向给定编号的div对象之中添加一个表格对象
      * 
      * @param headers 表头
      * @param div 新生成的table将会被添加在这个div之中，应该是一个带有``#``符号的节点id查询表达式
      * @param attrs ``<table>``的属性值，包括id，class等
     */
-    export function AddHTMLTable(
-        rows: object[],
+    export function AddHTMLTable<T extends {}>(
+        rows: T[] | IEnumerator<T>,
         div: string,
         headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
         attrs: Internal.TypeScriptArgument = null) {
 
-        var thead: HTMLElement = $ts("<thead>");
-        var tbody: HTMLElement = $ts("<tbody>");
-        var table: HTMLElement = $ts(`<table id="${div}-table">`);
+        var id = `${div}-table`;
 
         if (attrs) {
-            Internal.Handlers.stringEval.setAttributes(table, attrs);
+            if (!attrs.id) { attrs.id = id; }
+        } else {
+            attrs = { id: id };
         }
 
-        var fields: MapTuple<string, string>[] = headerMaps(headers || $ts(Object.keys(rows[0])));
-        var rowHTML = function (r: object) {
-            var tr: HTMLElement = $ts("<tr>");
-            fields.forEach(m => tr.appendChild($ts("<td>").display(r[m.key])));
-            return tr;
-        }
-
-        rows.forEach(r => tbody.appendChild(rowHTML(r)));
-        fields.forEach(r => thead.appendChild($ts("<th>").display(r.value)));
-
-        table.appendChild(thead);
-        table.appendChild(tbody);
-
-        $ts(div).appendChild(table);
+        $ts(div).appendChild(CreateHTMLTableNode(rows, headers, attrs));
     }
 
+    /**
+     * @param headers ``[propertyName => displayTitle]``
+    */
     function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[]): MapTuple<string, string>[] {
         var type = TypeInfo.typeof(headers);
 
