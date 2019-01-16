@@ -21,7 +21,7 @@
         return url && url.lastIndexOf('http', 0) == 0 && url.lastIndexOf(window.location.host) == -1;
     }
 
-    export function inlineImages(el: SVGSVGElement, callback: () => void) {
+    export function inlineImages(el: SVGSVGElement, callback: Delegate.Sub) {
         requireDomNode(el);
 
         var images: NodeListOf<SVGImageElement> = el.querySelectorAll('image');
@@ -55,7 +55,7 @@
             }
         }
 
-        var canvas = document.createElement('canvas');
+        var canvas: HTMLCanvasElement = <any>$ts('<canvas>');
         var ctx = canvas.getContext('2d');
         var img = new Image();
 

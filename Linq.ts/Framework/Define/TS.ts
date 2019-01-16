@@ -19,6 +19,10 @@
         /**
          * Create a new node or query a node by its id.
          * (创建或者查询节点)
+         * 
+         * @param query + ``#xxxx`` query a node element by id
+         *              + ``<xxx>`` create a new node element by a given tag name 
+         *              + ``<svg:xx>`` create a svg node.
         */
         <T extends HTMLElement>(query: string, args?: TypeScriptArgument): IHTMLElement;
 
