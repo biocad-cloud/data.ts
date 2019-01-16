@@ -3,6 +3,7 @@
 /// <reference path="../../Data/StringHelpers/PathHelper.ts" />
 /// <reference path="../Modes.ts" />
 /// <reference path="../../DOM/Document.ts" />
+/// <reference path="../../Data/Range.ts" />
 
 /**
  * The internal implementation of the ``$ts`` object.
@@ -221,6 +222,8 @@ namespace Internal {
             return equals;
         };
 
+        ts.doubleRange = data.NumericRange.Create;
+
         return ts;
     }
 
@@ -235,7 +238,7 @@ namespace Internal {
         };
         ts.evalHTML = DOM.CreateHTMLTableNode;
         ts.appendTable = DOM.AddHTMLTable;
-        
+
         return ts;
     }
 

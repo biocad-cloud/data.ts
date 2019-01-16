@@ -172,6 +172,7 @@
          * @param ext 不带有小数点的文件拓展名字符串
         */
         withExtensionName(path: string, ext: string): boolean;
+        doubleRange(x: number[] | IEnumerator<number>): data.NumericRange;
     }
 
     export interface GotoOptions {
