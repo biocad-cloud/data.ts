@@ -9,6 +9,10 @@ module Strings {
     export const asterisk: number = "*".charCodeAt(0);
     export const cr: number = "\c".charCodeAt(0);
     export const lf: number = "\r".charCodeAt(0);
+    export const a: number = "a".charCodeAt(0);
+    export const z: number = "z".charCodeAt(0);
+    export const A: number = "A".charCodeAt(0);
+    export const Z: number = "Z".charCodeAt(0);
 
     export const numericPattern: RegExp = /[-]?\d+(\.\d+)?/g;
 
@@ -85,7 +89,9 @@ module Strings {
         var n = Math.pow(10, decimals);
 
         if (isNaN(floatX)) {
-            console.warn(`Invalid number value: '${x}'`);
+            if (Internal.outputWarning()) {
+                console.warn(`Invalid number value: '${x}'`);
+            }
             return false;
         } else {
             return Math.round(floatX * n) / n;
@@ -93,11 +99,23 @@ module Strings {
     }
 
     /**
-     * @param text A single character
+     * 判断当前的这个字符是否是一个数字？
+     * 
+     * @param c A single character, length = 1
     */
-    export function isNumber(text: string): boolean {
-        var code = text.charCodeAt(0);
+    export function isNumber(c: string): boolean {
+        var code = c.charCodeAt(0);
         return code >= x0 && code <= x9;
+    }
+
+    /**
+     * 判断当前的这个字符是否是一个字母？
+     * 
+     * @param c A single character, length = 1
+    */
+    export function isAlphabet(c: string): boolean {
+        var code = c.charCodeAt(0);
+        return (code >= a && code <= z) || (code >= A && code <= Z);
     }
 
     /**
@@ -172,7 +190,7 @@ module Strings {
         if (typeof chars == "string") {
             chars = From(Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
-                .ToArray();
+                .ToArray(false);
         }
 
         return function (chars: number[]) {
@@ -183,6 +201,52 @@ module Strings {
                 .Reverse()
                 .JoinBy("");
         }(<number[]>chars);
+    }
+
+    export function LTrim(str: string, chars: string | number[] = " "): string {
+        if (Strings.Empty(str, false)) {
+            return "";
+        }
+
+        if (typeof chars == "string") {
+            chars = From(Strings.ToCharArray(chars))
+                .Select(c => c.charCodeAt(0))
+                .ToArray(false);
+        }
+
+        return function (chars: number[]) {
+            return From(Strings.ToCharArray(str))
+                .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
+                .JoinBy("");
+        }(<number[]>chars);
+    }
+
+    export function RTrim(str: string, chars: string | number[] = " "): string {
+        if (Strings.Empty(str, false)) {
+            return "";
+        }
+
+        if (typeof chars == "string") {
+            chars = From(Strings.ToCharArray(chars))
+                .Select(c => c.charCodeAt(0))
+                .ToArray(false);
+        }
+
+        var strChars: string[] = Strings.ToCharArray(str);
+        var lefts: number = 0;
+
+        for (var i: number = strChars.length - 1; i > 0; i--) {
+            if (chars.indexOf(strChars[i].charCodeAt(0)) == -1) {
+                lefts = i;
+                break;
+            }
+        }
+
+        if (lefts == 0) {
+            return "";
+        } else {
+            return str.substr(0, lefts + 1);
+        }
     }
 
     /**
@@ -298,6 +362,9 @@ module Strings {
         }
     }
 
+    /**
+     * 比较两个字符串的大小，可以同于字符串的分组操作
+    */
     export function CompareTo(s1: string, s2: string): number {
         var l1 = Strings.Len(s1);
         var l2 = Strings.Len(s2);

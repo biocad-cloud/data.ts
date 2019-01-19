@@ -1,11 +1,16 @@
-/// <reference path="Data/sprintf.ts" />
-/// <reference path="Linq/Collections/Enumerator.ts" />
-/// <reference path="Linq/TsQuery/TsQuery.ts" />
+/// <reference path="Data/StringHelpers/sprintf.ts" />
+/// <reference path="Collections/Abstract/Enumerator.ts" />
+/// <reference path="Framework/Define/Handlers/Handlers.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 /// <reference path="Helpers/Strings.ts" />
 /// <reference path="Type.ts" />
 /// <reference path="Data/Encoder/MD5.ts" />
-/// <reference path="Linq/Define/Internal.ts" />
+/// <reference path="Framework/Define/Internal.ts" />
+
+// note: 2018-12-25
+// this module just working on browser, some of the DOM api
+// related function may not works as expected on server side 
+// ``nodejs`` Environment.
 
 if (typeof String.prototype['startsWith'] != 'function') {
     String.prototype['startsWith'] = function (str) {
@@ -59,21 +64,6 @@ function md5(string: string, key: string = null, raw: string = null): string {
 }
 
 /**
- * ### Javascript sprintf
- * 
- * > http://www.webtoolkit.info/javascript-sprintf.html#.W5sf9FozaM8
- *  
- * Several programming languages implement a sprintf function, to output a 
- * formatted string. It originated from the C programming language, printf 
- * function. Its a string manipulation function.
- *
- * This is limited sprintf Javascript implementation. Function returns a 
- * string formatted by the usual printf conventions. See below for more details. 
- * You must specify the string and how to format the variables in it.
-*/
-const sprintf = data.sprintf.doFormat;
-
-/**
  * Linq数据流程管线的起始函数
  * 
  * @param source 需要进行数据加工的集合对象
@@ -91,6 +81,8 @@ function CharEnumerator(str: string): IEnumerator<string> {
 
 /**
  * 判断目标对象集合是否是空的？
+ * 
+ * 这个函数也包含有``isNullOrUndefined``函数的判断功能
  * 
  * @param array 如果这个数组对象是空值或者未定义，都会被判定为空，如果长度为零，则同样也会被判定为空值
 */
@@ -119,6 +111,8 @@ function isNullOrUndefined(obj: any): boolean {
 
 /**
  * HTML/Javascript: how to access JSON data loaded in a script tag.
+ * 
+ * @param id 节点的id值，不带有``#``符号前缀的
 */
 function LoadJson(id: string): any {
     return JSON.parse(LoadText(id));
@@ -151,6 +145,7 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
  * 
  * 如果当前的这个页面是一个iframe页面，则会通过父页面进行跳转
  * 
+ * @param url 这个参数支持对meta标签数据的查询操作
  * @param currentFrame 如果这个参数为true，则不会进行父页面的跳转操作
 */
 function Goto(url: string, currentFrame: boolean = false): void {
@@ -162,7 +157,7 @@ function Goto(url: string, currentFrame: boolean = false): void {
         win = window.top;
     }
 
-    win.location.href = url;
+    win.location.href = Internal.urlSolver(url, currentFrame);
 }
 
 /**
@@ -202,8 +197,42 @@ function saveSvgAsPng(
 }
 
 /**
+ * ### Javascript sprintf
+ * 
+ * > http://www.webtoolkit.info/javascript-sprintf.html#.W5sf9FozaM8
+ *  
+ * Several programming languages implement a sprintf function, to output a 
+ * formatted string. It originated from the C programming language, printf 
+ * function. Its a string manipulation function.
+ *
+ * This is limited sprintf Javascript implementation. Function returns a 
+ * string formatted by the usual printf conventions. See below for more details. 
+ * You must specify the string and how to format the variables in it.
+*/
+const sprintf = data.sprintf.doFormat;
+const executeJavaScript: string = "javascript:void(0);";
+
+/**
  * 对于这个函数的返回值还需要做类型转换
  * 
  * 如果是节点查询或者创建的话，可以使用``asExtends``属性来获取``HTMLTsElememnt``拓展对象
 */
 const $ts: Internal.TypeScript = Internal.Static();
+
+/**
+ * 从文档之中查询或者创建一个新的图像标签元素
+*/
+function $image(query: string, args?: Internal.TypeScriptArgument): IHTMLImageElement {
+    return Internal.StringEval.doEval(query, null, args);
+}
+
+/**
+ * 从文档之中查询或者创建一个新的输入标签元素
+*/
+function $input(query: string, args?: Internal.TypeScriptArgument): IHTMLInputElement {
+    return Internal.StringEval.doEval(query, null, args);
+}
+
+function $link(query: string, args?: Internal.TypeScriptArgument): IHTMLLinkElement {
+    return Internal.StringEval.doEval(query, null, args);
+}

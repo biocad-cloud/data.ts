@@ -1,3 +1,5 @@
+/// <reference path="../Collections/Abstract/Enumerator.ts" />
+
 namespace TsLinq {
 
     export class PriorityQueue<T> extends IEnumerator<QueueItem<T>> {

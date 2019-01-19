@@ -19,6 +19,10 @@ namespace DOM {
                 var content: string = meta.getAttribute("content");
                 return content ? content : Default;
             } else {
+                if (Internal.outputWarning()) {
+                    console.warn(`${selector} not found in current context!`);
+                }
+
                 return Default;
             }
         };
@@ -66,7 +70,10 @@ namespace DOM {
                     })
                 };
             } catch (e) {
-                console.warn('This browser does not support object URLs. Falling back to string URL.');
+                if (Internal.outputWarning()) {
+                    console.warn('This browser does not support object URLs. Falling back to string URL.');
+                }
+
                 saveLink.href = uri;
             }
 
@@ -92,10 +99,31 @@ namespace DOM {
     }
 
     /**
+     * return array containing references to selected option elements
+    */
+    export function getSelectedOptions(sel: HTMLSelectElement) {
+        var opts: HTMLOptionElement[] = []
+        var opt: HTMLOptionElement;
+
+        // loop through options in select list
+        for (var i = 0, len = sel.options.length; i < len; i++) {
+            opt = sel.options[i];
+
+            // check if selected
+            if (opt.selected) {
+                // add to array of option elements to return from this function
+                opts.push(opt);
+            }
+        }
+
+        return opts;
+    }
+
+    /**
      * 向指定id编号的div添加select标签的组件
     */
     export function AddSelectOptions(
-        items: Map<string, string>[],
+        items: MapTuple<string, string>[],
         div: string,
         selectName: string,
         className: string = "") {
@@ -112,77 +140,91 @@ namespace DOM {
     }
 
     /**
-     * 向给定编号的div对象之中添加一个表格对象
-     * 
-     * @param headers 表头
-     * @param div 新生成的table将会被添加在这个div之中
-     * @param attrs ``<table>``的属性值，包括id，class等
+     * @param headers 表格之中所显示的表头列表，也可以通过这个参数来对表格之中
+     *   所需要进行显示的列进行筛选以及显示控制：
+     *    + 如果这个参数为默认的空值，则说明显示所有的列数据
+     *    + 如果这个参数不为空值，则会显示这个参数所指定的列出来
+     *    + 可以通过``map [propertyName => display title]``来控制表头的标题输出
     */
-    export function AddHTMLTable(
-        rows: object[],
-        headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[],
-        div: string,
-        attrs: node = null) {
+    export function CreateHTMLTableNode<T extends {}>(
+        rows: T[] | IEnumerator<T>,
+        headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
+        attrs: Internal.TypeScriptArgument = null): HTMLTableElement {
 
         var thead: HTMLElement = $ts("<thead>");
         var tbody: HTMLElement = $ts("<tbody>");
-        var table: HTMLElement = $ts(`<table id="${div}-table">`);
+        var fields: MapTuple<string, string>[];
 
-        if (attrs) {
-            if (attrs.id) {
-                table.id = attrs.id;
-            }
-            if (!IsNullOrEmpty(attrs.classList)) {
-                attrs.classList.forEach(c => table.classList.add(c));
-            }
-            if (!IsNullOrEmpty(attrs.attrs)) {
-                From(attrs.attrs)
-                    .Where(a => a.name != "id" && a.name != "class")
-                    .ForEach(a => {
-                        table.setAttribute(a.name, a.value);
-                    });
-            }
+        if (Array.isArray(rows)) {
+            fields = headerMaps(headers || $ts(Object.keys(rows[0])));
+        } else {
+            fields = headerMaps(headers || $ts(Object.keys(rows.First)));
         }
 
-        var fields = headerMaps(headers);
-
-        rows.forEach(r => {
+        var rowHTML = function (r: object) {
             var tr: HTMLElement = $ts("<tr>");
+            // 在这里将会控制列的显示
+            fields.forEach(m => tr.appendChild($ts("<td>").display(r[m.key])));
+            return tr;
+        }
 
-            fields.forEach(m => {
-                var td: HTMLElement = $ts("<td>");
-                td.innerHTML = r[m.key];
-                tr.appendChild(td);
-            });
-            tbody.appendChild(tr);
-        });
-        fields.forEach(r => {
-            var th: HTMLElement = $ts("th");
-            th.innerHTML = r.value;
-            thead.appendChild(th);
-        })
+        if (Array.isArray(rows)) {
+            rows.forEach(r => tbody.appendChild(rowHTML(r)));
+        } else {
+            rows.ForEach(r => tbody.appendChild(rowHTML(r)));
+        }
 
-        table.appendChild(thead);
-        table.appendChild(tbody);
+        fields.forEach(r => thead.appendChild($ts("<th>").display(r.value)));
 
-        $ts(div).appendChild(table);
+        return <HTMLTableElement>$ts("<table>", attrs)
+            .asExtends
+            .append(thead)
+            .append(tbody)
+            .HTMLElement;
     }
 
-    function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<Map<string, string>> | Map<string, string>[]): Map<string, string>[] {
+    /**
+     * 向给定编号的div对象之中添加一个表格对象
+     * 
+     * @param headers 表头
+     * @param div 新生成的table将会被添加在这个div之中，应该是一个带有``#``符号的节点id查询表达式
+     * @param attrs ``<table>``的属性值，包括id，class等
+    */
+    export function AddHTMLTable<T extends {}>(
+        rows: T[] | IEnumerator<T>,
+        div: string,
+        headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
+        attrs: Internal.TypeScriptArgument = null) {
+
+        var id = `${div}-table`;
+
+        if (attrs) {
+            if (!attrs.id) { attrs.id = id; }
+        } else {
+            attrs = { id: id };
+        }
+
+        $ts(div).appendChild(CreateHTMLTableNode(rows, headers, attrs));
+    }
+
+    /**
+     * @param headers ``[propertyName => displayTitle]``
+    */
+    function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[]): MapTuple<string, string>[] {
         var type = TypeInfo.typeof(headers);
 
         if (type.IsArrayOf("string")) {
             return From(<string[]>headers)
-                .Select(h => new Map<string, string>(h, h))
+                .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
-        } else if (type.IsArrayOf("Map")) {
-            return <Map<string, string>[]>headers;
-        } else if (type.IsEnumerator && typeof headers[0] == "string") {
+        } else if (type.IsArrayOf(TypeExtensions.DictionaryMap)) {
+            return <MapTuple<string, string>[]>headers;
+        } else if (type.IsEnumerator && typeof (<IEnumerator<any>>headers).First == "string") {
             return (<IEnumerator<string>>headers)
-                .Select(h => new Map<string, string>(h, h))
+                .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
-        } else if (type.IsEnumerator && TypeInfo.typeof(headers[0]).class == "Map") {
-            return (<IEnumerator<Map<string, string>>>headers).ToArray();
+        } else if (type.IsEnumerator && TypeInfo.getClass((<IEnumerator<any>>headers).First) == TypeExtensions.DictionaryMap) {
+            return (<IEnumerator<MapTuple<string, string>>>headers).ToArray();
         } else {
             throw `Invalid sequence type: ${type.class}`;
         }
@@ -190,16 +232,26 @@ namespace DOM {
 
     /**
      * Execute a given function when the document is ready.
+     * It is called when the DOM is ready which can be prior to images and other external content is loaded.
+     * 
+     * 可以处理多个函数作为事件，也可以通过loadComplete函数参数来指定准备完毕的状态
+     * 默认的状态是interactive即只需要加载完DOM既可以开始立即执行函数
      * 
      * @param fn A function that without any parameters
+     * @param loadComplete + ``interactive``: The document has finished loading. We can now access the DOM elements.
+     *                     + ``complete``: The page is fully loaded.
     */
-    export function ready(fn: () => void) {
+    export function ready(fn: () => void, loadComplete: string[] = ["interactive", "complete"]) {
         if (typeof fn !== 'function') {
             // Sanity check
             return;
+        } else if (Internal.outputEverything()) {
+            console.log("Add Document.ready event handler.");
+            console.log(`document.readyState = ${document.readyState}`)
         }
 
-        if (document.readyState === 'complete') {
+        // 2018-12-25 "interactive", "complete" 这两种状态都可以算作是DOM已经准备好了
+        if (loadComplete.indexOf(document.readyState) > -1) {
             // If document is already loaded, run method
             return fn();
         } else {

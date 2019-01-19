@@ -1,3 +1,5 @@
+/// <reference path="../Collections/Abstract/Enumerator.ts" />
+
 // 2018-12-06
 // 为了方便书写代码，在其他脚本之中添加变量类型申明，在这里就不进行命名空间的包裹了
 
@@ -46,7 +48,12 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
                 list.push(<any>collection.item(i));
             }
         } else {
-            list = Linq.EnsureArray(<T[]>elements);
+            list = Framework.Extensions.EnsureArray(<T[]>elements);
+        }
+
+        // 在最后进行元素拓展
+        for (var node of list) {
+            TypeExtensions.Extends(node);
         }
 
         return list;
@@ -55,27 +62,39 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
     /**
      * 使用这个函数进行节点值的设置或者获取
      * 
+     * 这个函数不传递任何参数则表示获取值
+     * 
      * @param value 如果需要批量清除节点之中的值的话，需要传递一个空字符串，而非空值
     */
     public val(value: string | string[] | IEnumerator<string> = null): IEnumerator<string> {
-        if (!(value == null && value == undefined)) {
+        if (isNullOrUndefined(value)) {
+            return this.Select(element => DOMEnumerator.getVal(element));
+        } else {
             if (typeof value == "string") {
                 // 所有元素都设置同一个值
-                this.ForEach(element => {
-                    element.nodeValue = value;
-                });
+                this.ForEach(e => DOMEnumerator.setVal(e, <string>value));
             } else if (Array.isArray(value)) {
-                this.ForEach((element, i) => {
-                    element.nodeValue = value[i];
-                });
+                this.ForEach((e, i) => DOMEnumerator.setVal(e, value[i]));
             } else {
-                this.ForEach((element, i) => {
-                    element.nodeValue = value.ElementAt(i);
-                });
+                this.ForEach((e, i) => DOMEnumerator.setVal(e, (<IEnumerator<string>>value).ElementAt(i)));
             }
         }
+    }
 
-        return this.Select(element => element.nodeValue);
+    private static setVal(element: HTMLElement, text: string) {
+        if (element instanceof HTMLInputElement) {
+            (<HTMLInputElement>element).value = text;
+        } else {
+            element.textContent = text;
+        }
+    }
+
+    private static getVal(element: HTMLElement): string {
+        if (element instanceof HTMLInputElement) {
+            return (<HTMLInputElement>element).value;
+        } else {
+            return element.textContent;
+        }
     }
 
     /**
@@ -97,7 +116,7 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
                     return value;
                 });
             } else {
-                var array: string[] = Linq.EnsureArray(val, this.Count);
+                var array: string[] = Framework.Extensions.EnsureArray(val, this.Count);
 
                 return this.Select((x, i) => {
                     var value: string = array[i];

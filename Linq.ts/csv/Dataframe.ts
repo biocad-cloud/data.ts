@@ -1,3 +1,5 @@
+/// <reference path="../Collections/Abstract/Enumerator.ts" />
+
 /**
  * http://www.rfc-editor.org/rfc/rfc4180.txt
 */
@@ -27,6 +29,9 @@ namespace csv {
             return this.Skip(1);
         }
 
+        /**
+         * 从行序列之中构建出一个csv对象模型
+        */
         public constructor(rows: row[] | IEnumerator<row>) {
             super(rows);
         }
@@ -109,7 +114,7 @@ namespace csv {
         }
 
         private static ensureMapsAll(fieldMaps: object, headers: string[]): (i: number) => string {
-            for (var i = 0; i < headers.length - 1; i++) {
+            for (var i = 0; i < headers.length; i++) {
                 var column: string = headers[i];
 
                 if (column in fieldMaps) {
@@ -132,20 +137,15 @@ namespace csv {
          * @param callback ajax异步回调，默认是打印返回结果到终端之上
          * 
         */
-        public save(
-            url: string,
+        public save(url: string, fileName: string = "upload.csv",
             callback: (response: string) => void =
                 (response: string) => {
                     console.log(response);
                 }): void {
 
             var file: string = this.buildDoc();
-            var data = <HttpHelpers.PostData>{
-                type: contentType,
-                data: file
-            };
 
-            HttpHelpers.UploadFile(url, data, callback);
+            HttpHelpers.UploadFile(url, file, fileName, callback);
         }
 
         /**
@@ -185,7 +185,10 @@ namespace csv {
         }
 
         private static defaultContent(content: string): content {
-            return { type: "csv", content: content };
+            return {
+                type: "csv",
+                content: content
+            };
         }
 
         /**
@@ -196,7 +199,21 @@ namespace csv {
         */
         public static Parse(text: string, tsv: boolean = false): dataframe {
             var parse: (line: string) => row = tsv ? row.ParseTsv : row.Parse;
-            var rows: IEnumerator<row> = From(text.split(/\n/)).Select(parse);
+            var allTextLines: IEnumerator<string> = $ts.from(text.split(/\n/));
+            var rows: IEnumerator<row>;
+
+            if (Strings.Empty(allTextLines.Last)) {
+                // 2019-1-2 因为文本文件很有可能是以空行结尾的
+                // 所以在这里需要做下额外的判断
+                // 否则会在序列的最后面出现一行空数据
+                // 这个空数据很有可能会对下游程序代码产生bug影响
+                rows = allTextLines
+                    .Take(allTextLines.Count - 1)
+                    .Select(parse);
+
+            } else {
+                rows = allTextLines.Select(parse);
+            }
 
             return new dataframe(rows);
         }

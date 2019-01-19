@@ -1,4 +1,6 @@
-﻿namespace HttpHelpers {
+﻿/// <reference path="../../Data/Encoder/Base64.ts" />
+
+namespace HttpHelpers {
 
     /**
      * Javascript动态加载帮助函数
@@ -67,8 +69,10 @@
                         eval.apply(window, [script]);
                     } catch (ex) {
                         if (this.onErrorResumeNext) {
-                            console.warn(url);
-                            console.warn(ex);
+                            if (Internal.outputWarning()) {
+                                console.warn(url);
+                                console.warn(ex);
+                            }
                             this.errors.push(url);
                         } else {
                             throw ex;
@@ -88,6 +92,22 @@
             }
 
             this.doLoad(callback);
+        }
+
+        /**
+         * @param script 这个函数可以支持base64字符串格式的脚本的动态加载
+         * @param context 默认是添加在当前文档窗口环境之中
+        */
+        public static doEval(script: string, callback?: () => void, context: Window = window): void {
+            if (Base64.isValidBase64String(script)) {
+                script = Base64.decode(script);
+            }
+
+            eval.apply(context, [script]);
+
+            if (callback) {
+                callback();
+            }
         }
     }
 }
