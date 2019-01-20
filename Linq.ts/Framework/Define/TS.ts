@@ -90,7 +90,7 @@
         /**
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
         */
-        loadText(id: string): string;
+        text(id: string): string;
 
         /**
          * isNullOrUndefined

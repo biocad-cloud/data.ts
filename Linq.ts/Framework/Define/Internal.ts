@@ -190,14 +190,14 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
-        ts.loadText = function (id: string) {
+        ts.text = function (id: string) {
             var nodeID: string = Handlers.EnsureNodeId(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
 
             return (<HTMLElement>node).innerText;
         };
         ts.loadJSON = function (id: string) {
-            return JSON.parse(this.loadText(id));
+            return JSON.parse(this.text(id));
         };
 
         // file path helpers
