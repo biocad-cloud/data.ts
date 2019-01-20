@@ -76,6 +76,14 @@
         imports(jsURL: string | string[], callback?: () => void, onErrorResumeNext?: boolean, echo?: boolean): void;
 
         /**
+         * 将函数注入给定id编号的iframe之中
+         * 
+         * @param iframe ``#xxx``编号查询表达式
+         * @param fun 目标函数，请注意，这个函数应该是尽量不引用依赖其他对象的
+        */
+        inject(iframe: string, fun: Delegate.Func): void;
+
+        /**
          * 动态加载脚本
          * 
          * @param script 脚本的文本内容
@@ -131,7 +139,8 @@
         /**
          * 获取当前的页面的URL字符串解析模型
         */
-        windowLocation(): TsLinq.URL;
+        readonly windowLocation: TsLinq.URL;
+
         /**
          * 解析一个给定的URL字符串
         */

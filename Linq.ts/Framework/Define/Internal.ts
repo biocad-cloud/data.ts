@@ -91,7 +91,7 @@ namespace Internal {
             });
         };
 
-        ts.windowLocation = TsLinq.URL.WindowLocation;
+        ts.windowLocation = TsLinq.URL.WindowLocation();
         ts.parseURL = (url => new TsLinq.URL(url));
         ts.goto = function (url: string, opt: GotoOptions = { currentFrame: false, lambda: false }) {
             if (opt.lambda) {
@@ -190,6 +190,14 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
+        ts.inject = function (iframe: string, fun: Delegate.Func) {
+            var frame: HTMLIFrameElement = <any>$ts(iframe);
+            var envir: {
+                eval: Delegate.Func
+            } = (<any>frame).window;
+
+            envir.eval(fun.toString());
+        };
         ts.text = function (id: string) {
             var nodeID: string = Handlers.EnsureNodeId(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
