@@ -137,9 +137,10 @@
         upload<T>(url: string, file: File, callback?: ((response: IMsg<T>) => void)): void;
 
         /**
-         * 获取当前的页面的URL字符串解析模型
+         * Get the url location of current window page.
+         * (获取当前的页面的URL字符串解析模型)
         */
-        readonly windowLocation: TsLinq.URL;
+        readonly location: IURL;
 
         /**
          * 解析一个给定的URL字符串
@@ -186,6 +187,22 @@
         */
         withExtensionName(path: string, ext: string): boolean;
         doubleRange(x: number[] | IEnumerator<number>): data.NumericRange;
+    }
+
+    export interface IURL {
+
+        /**
+         * 获取得到GET参数
+        */
+        (arg: string, caseSensitive?: boolean, Default?: string): string;
+
+        readonly path: string;
+        readonly fileName: string;
+
+        /**
+         * 获取当前的url之中的hash值，这个返回来的哈希值是不带``#``符号前缀的
+        */
+        hash(): string
     }
 
     export interface GotoOptions {
