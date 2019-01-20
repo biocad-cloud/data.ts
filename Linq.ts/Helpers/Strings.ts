@@ -275,7 +275,7 @@ module Strings {
      * @param stringAsFactor 如果这个参数为真，则``\t``和``\s``等也会被当作为空白
     */
     export function Blank(str: string, stringAsFactor = false): boolean {
-        if (!str) {
+        if (!str || IsPattern(str, /\s+/g)) {
             return true;
         } else if (str == undefined || typeof str == "undefined") {
             return true;
