@@ -1,4 +1,6 @@
-﻿/**
+﻿/// <reference path="../Collections/Map.ts" />
+
+/**
  * TypeScript string helpers.
  * (这个模块之中的大部分的字符串处理函数的行为是和VisualBasic之中的字符串函数的行为是相似的)
 */

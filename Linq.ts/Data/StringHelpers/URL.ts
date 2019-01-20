@@ -1,4 +1,5 @@
 ﻿/// <reference path="./sprintf.ts" />
+/// <reference path="../../Collections/DictionaryMaps.ts" />
 
 namespace TsLinq {
 

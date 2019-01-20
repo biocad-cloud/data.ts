@@ -1,4 +1,4 @@
-/// <reference path="Enumerator.ts" />
+//// <reference path="Enumerator.ts" />
 
 /**
  * The linq pipline implements at here. (在这个模块之中实现具体的数据序列算法)
