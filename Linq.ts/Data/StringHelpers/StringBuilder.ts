@@ -24,7 +24,7 @@
         return this;
     }
 
-    public AppendLine(text: string): StringBuilder {
+    public AppendLine(text: string = ""): StringBuilder {
         return this.Append(text + this.newLine);
     }
 

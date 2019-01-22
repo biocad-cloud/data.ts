@@ -38,8 +38,7 @@
         var request = new XMLHttpRequest();
 
         // `false` makes the request synchronous
-        request.open('GET', url, false);
-        setheaders(request);
+        request.open('GET', url, false);        
         request.send(null);
 
         if (request.status === 200) {
@@ -57,20 +56,13 @@
     export function GetAsyn(url: string, callback: (response: string, code: number) => void) {
         var http = new XMLHttpRequest();
 
-        http.open("GET", url, true);
-        setheaders(http);
+        http.open("GET", url, true);        
         http.onreadystatechange = function () {
             if (http.readyState == 4) {
                 callback(http.response || http.responseText, http.status);
             }
         }
         http.send(null);
-    }
-
-    function setheaders(http: XMLHttpRequest, contentType: string = null) {
-        // http.setRequestHeader("Cookie", document.cookie);
-        // http.setRequestHeader("Referer", window.location.href);
-        // http.withCredentials = true;
     }
 
     export function POST(

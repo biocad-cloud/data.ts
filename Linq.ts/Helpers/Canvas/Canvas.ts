@@ -90,13 +90,44 @@ namespace CanvasHelper {
 
     export class fontSize {
 
-        public point: number;
-        public pixel: number;
-        public em: number;
-        public percent: number;
+        public point?: number;
+        public pixel?: number;
+        public em?: number;
+        public percent?: number;
 
         public readonly sizes: fontSize[] = [
 
         ];
+
+        public toString(): string {
+            return fontSize.css(this);
+        }
+
+        public static css(size: fontSize): string {
+            if (size.point) {
+                return `${size.point}pt`;
+            } else if (size.percent) {
+                return `${size.percent}%`;
+            } else if (size.em) {
+                return `${size.em}em`;
+            } else {
+                return size.pixel.toString();
+            }
+        }
+    }
+
+    export class CSSFont {
+
+        public fontName: string;
+        public size: fontSize;
+
+        public apply(node: HTMLElement) {
+            CSSFont.applyCSS(node, this);
+        }
+
+        public static applyCSS(node: HTMLElement, font: CSSFont) {
+            node.style.fontFamily = font.fontName;
+            node.style.fontSize = fontSize.css(font.size);
+        }
     }
 }

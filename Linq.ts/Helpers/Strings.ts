@@ -1,4 +1,6 @@
-﻿/**
+﻿/// <reference path="../Collections/Map.ts" />
+
+/**
  * TypeScript string helpers.
  * (这个模块之中的大部分的字符串处理函数的行为是和VisualBasic之中的字符串函数的行为是相似的)
 */
@@ -21,6 +23,23 @@ module Strings {
     */
     export function isNumericPattern(text: string): boolean {
         return IsPattern(text, Strings.numericPattern);
+    }
+
+    /**
+     * how to escape xml entities in javascript?
+     * 
+     * > https://stackoverflow.com/questions/7918868/how-to-escape-xml-entities-in-javascript
+    */
+    export function escapeXml(unsafe: string): string {
+        return unsafe.replace(/[<>&'"]/g, function (c) {
+            switch (c) {
+                case '<': return '&lt;';
+                case '>': return '&gt;';
+                case '&': return '&amp;';
+                case '\'': return '&apos;';
+                case '"': return '&quot;';
+            }
+        });
     }
 
     /**
@@ -275,7 +294,7 @@ module Strings {
      * @param stringAsFactor 如果这个参数为真，则``\t``和``\s``等也会被当作为空白
     */
     export function Blank(str: string, stringAsFactor = false): boolean {
-        if (!str) {
+        if (!str || IsPattern(str, /\s+/g)) {
             return true;
         } else if (str == undefined || typeof str == "undefined") {
             return true;

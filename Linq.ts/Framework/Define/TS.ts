@@ -76,6 +76,14 @@
         imports(jsURL: string | string[], callback?: () => void, onErrorResumeNext?: boolean, echo?: boolean): void;
 
         /**
+         * 将函数注入给定id编号的iframe之中
+         * 
+         * @param iframe ``#xxx``编号查询表达式
+         * @param fun 目标函数，请注意，这个函数应该是尽量不引用依赖其他对象的
+        */
+        inject(iframe: string, fun: Delegate.Func): void;
+
+        /**
          * 动态加载脚本
          * 
          * @param script 脚本的文本内容
@@ -90,7 +98,7 @@
         /**
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
         */
-        loadText(id: string): string;
+        text(id: string): string;
 
         /**
          * isNullOrUndefined
@@ -129,9 +137,11 @@
         upload<T>(url: string, file: File, callback?: ((response: IMsg<T>) => void)): void;
 
         /**
-         * 获取当前的页面的URL字符串解析模型
+         * Get the url location of current window page.
+         * (获取当前的页面的URL字符串解析模型)
         */
-        windowLocation(): TsLinq.URL;
+        readonly location: IURL;
+
         /**
          * 解析一个给定的URL字符串
         */
@@ -177,6 +187,22 @@
         */
         withExtensionName(path: string, ext: string): boolean;
         doubleRange(x: number[] | IEnumerator<number>): data.NumericRange;
+    }
+
+    export interface IURL {
+
+        /**
+         * 获取得到GET参数
+        */
+        (arg: string, caseSensitive?: boolean, Default?: string): string;
+
+        readonly path: string;
+        readonly fileName: string;
+
+        /**
+         * 获取当前的url之中的hash值，这个返回来的哈希值是不带``#``符号前缀的
+        */
+        hash(): string
     }
 
     export interface GotoOptions {

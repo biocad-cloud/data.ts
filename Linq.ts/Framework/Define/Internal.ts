@@ -91,7 +91,7 @@ namespace Internal {
             });
         };
 
-        ts.windowLocation = TsLinq.URL.WindowLocation;
+        ts.location = buildURLHelper();
         ts.parseURL = (url => new TsLinq.URL(url));
         ts.goto = function (url: string, opt: GotoOptions = { currentFrame: false, lambda: false }) {
             if (opt.lambda) {
@@ -104,6 +104,27 @@ namespace Internal {
         }
 
         return ts;
+    }
+
+    function buildURLHelper() {
+        var url = TsLinq.URL.WindowLocation();
+        var location: any = function (arg: string, caseSensitive: boolean = true, Default: string = "") {
+            return url.getArgument(arg, caseSensitive, Default);
+        }
+
+        location.path = url.path;
+        location.fileName = url.fileName;
+        location.hash = function () {
+            var tag = window.location.hash;
+
+            if (tag && tag.length > 1) {
+                return tag.substr(1);
+            } else {
+                return "";
+            }
+        }
+
+        return location;
     }
 
     const querySymbols: string[] = [":", "_"];
@@ -190,14 +211,22 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
-        ts.loadText = function (id: string) {
+        ts.inject = function (iframe: string, fun: Delegate.Func) {
+            var frame: HTMLIFrameElement = <any>$ts(iframe);
+            var envir: {
+                eval: Delegate.Func
+            } = (<any>frame).window;
+
+            envir.eval(fun.toString());
+        };
+        ts.text = function (id: string) {
             var nodeID: string = Handlers.EnsureNodeId(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
 
             return (<HTMLElement>node).innerText;
         };
         ts.loadJSON = function (id: string) {
-            return JSON.parse(this.loadText(id));
+            return JSON.parse(this.text(id));
         };
 
         // file path helpers
