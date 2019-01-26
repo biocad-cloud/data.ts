@@ -50,4 +50,11 @@ class Pointer<T> extends IEnumerator<T> {
         this.p = this.p + 1;
         return this;
     }
+
+    /**
+     * 以当前的位置为基础，得到偏移后的位置的值，但不会改变现有的指针的位置值
+    */
+    public Peek(offset: number): T {
+        return this.sequence[this.p + offset];
+    }
 }
