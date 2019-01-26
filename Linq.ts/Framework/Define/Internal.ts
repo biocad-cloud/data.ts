@@ -112,7 +112,7 @@ namespace Internal {
             return url.getArgument(arg, caseSensitive, Default);
         }
 
-        location.path = url.path;
+        location.path = url.path || "/";
         location.fileName = url.fileName;
         location.hash = function () {
             var tag = window.location.hash;
@@ -211,13 +211,25 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
-        ts.inject = function (iframe: string, fun: Delegate.Func) {
+        ts.inject = function (iframe: string, fun: (Delegate.Func | string)[] | string | Delegate.Func) {
             var frame: HTMLIFrameElement = <any>$ts(iframe);
             var envir: {
                 eval: Delegate.Func
-            } = (<any>frame).window;
+            } = <any>frame.contentWindow;
 
-            envir.eval(fun.toString());
+            if (Internal.outputEverything()) {
+                console.log(fun);
+            }
+
+            if (Array.isArray(fun)) {
+                for (let p of fun) {
+                    envir.eval(p.toString());
+                }
+            } else if (typeof fun == "string") {
+                envir.eval(fun);
+            } else {
+                envir.eval(fun.toString());
+            }
         };
         ts.text = function (id: string) {
             var nodeID: string = Handlers.EnsureNodeId(id);

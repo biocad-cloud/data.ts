@@ -109,5 +109,21 @@ namespace HttpHelpers {
                 callback();
             }
         }
+
+        /**
+         * 得到相对于当前路径而言的目标脚本全路径
+        */
+        public static getFullPath(url: string): string {
+            var location: string = $ts.location.path;
+
+            if (url.charAt(0) == "/") {
+                // 是一个绝对路径
+                return url;
+            } else {
+
+            }
+
+            console.log(location);
+        }
     }
 }
