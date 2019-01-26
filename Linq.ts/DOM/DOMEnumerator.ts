@@ -66,11 +66,11 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
      * 
      * @param value 如果需要批量清除节点之中的值的话，需要传递一个空字符串，而非空值
     */
-    public val(value: string | string[] | IEnumerator<string> = null): IEnumerator<string> {
+    public val(value: number | string | string[] | IEnumerator<string> = null): IEnumerator<string> {
         if (isNullOrUndefined(value)) {
             return this.Select(element => DOMEnumerator.getVal(element));
         } else {
-            if (typeof value == "string") {
+            if (typeof value == "string" || typeof value == "number") {
                 // 所有元素都设置同一个值
                 this.ForEach(e => DOMEnumerator.setVal(e, <string>value));
             } else if (Array.isArray(value)) {
