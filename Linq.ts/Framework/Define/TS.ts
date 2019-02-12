@@ -97,8 +97,9 @@
         loadJSON(id: string): any;
         /**
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
+         * @param htmlText 主要是针对``<pre>``标签之中的VB.NET代码
         */
-        text(id: string): string;
+        text(id: string, htmlText?: boolean): string;
 
         /**
          * isNullOrUndefined

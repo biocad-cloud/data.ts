@@ -231,11 +231,11 @@ namespace Internal {
                 envir.eval(fun.toString());
             }
         };
-        ts.text = function (id: string) {
+        ts.text = function (id: string, htmlText: boolean = false) {
             var nodeID: string = Handlers.EnsureNodeId(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
 
-            return (<HTMLElement>node).innerText;
+            return htmlText ? node.innerHTML : node.innerText;
         };
         ts.loadJSON = function (id: string) {
             return JSON.parse(this.text(id));
