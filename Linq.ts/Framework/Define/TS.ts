@@ -146,7 +146,7 @@
         /**
          * 解析一个给定的URL字符串
         */
-        parseURL(url: string): TsLinq.URL;
+        parseURL(url: string): TypeScript.URL;
         /**
          * 从当前页面跳转到给定的链接页面
          * 
