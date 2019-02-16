@@ -92,7 +92,7 @@ namespace Internal {
         };
 
         ts.location = buildURLHelper();
-        ts.parseURL = (url => new TsLinq.URL(url));
+        ts.parseURL = (url => new TypeScript.URL(url));
         ts.goto = function (url: string, opt: GotoOptions = { currentFrame: false, lambda: false }) {
             if (opt.lambda) {
                 return function () {
@@ -107,8 +107,12 @@ namespace Internal {
     }
 
     function buildURLHelper() {
-        var url = TsLinq.URL.WindowLocation();
-        var location: any = function (arg: string, caseSensitive: boolean = true, Default: string = "") {
+        var url = TypeScript.URL.WindowLocation();
+        var location: any = function (
+            arg: string, 
+            caseSensitive: boolean = true, 
+            Default: string = "") {
+                
             return url.getArgument(arg, caseSensitive, Default);
         }
 

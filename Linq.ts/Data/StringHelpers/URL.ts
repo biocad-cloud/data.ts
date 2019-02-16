@@ -56,7 +56,7 @@ namespace TypeScript {
             this.protocol = token.name; token = Strings.GetTagValue(token.value, "/");
             this.origin = token.name; token = Strings.GetTagValue(token.value, "?");
             this.path = token.name;
-            this.fileName = Strings.Empty(this.path) ? "" : PathHelper.basename(this.path);
+            this.fileName = Strings.Empty(this.path) ? "" : TsLinq.PathHelper.basename(this.path);
             this.hash = From(url.split("#")).Last;
 
             if (url.indexOf("#") < 0) {
