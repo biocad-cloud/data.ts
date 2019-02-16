@@ -138,7 +138,7 @@ namespace TypeScript {
          * 将目标文本之中的所有的url字符串匹配出来
         */
         public static ParseAllUrlStrings(text: string) : string[] {
-            var list = URLPatterns.urlPattern.exec(text).map(s => s);
+            var list : string[] = URLPatterns.urlPattern.exec(text);
 
             // Uncaught TypeError: Cannot read property 'length' of null
             if (!list) {
