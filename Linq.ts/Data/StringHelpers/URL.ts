@@ -100,22 +100,6 @@ namespace TsLinq {
             return new URL(window.location.href);
         }
 
-        /**
-         * 对bytes数值进行格式自动优化显示
-         * 
-         * @param bytes 
-         * 
-         * @return 经过自动格式优化过后的大小显示字符串
-        */
-        public static Lanudry(bytes: number): string {
-            var symbols = ["B", "KB", "MB", "GB", "TB"];
-            var exp = Math.floor(Math.log(bytes) / Math.log(1000));
-            var symbol: string = symbols[exp];
-            var val = (bytes / Math.pow(1000, Math.floor(exp)));
-
-            return sprintf(`%.2f ${symbol}`, val);
-        }
-
         public toString(): string {
             var query = From(this.query)
                 .Select(q => `${q.name}=${encodeURIComponent(q.value)}`)

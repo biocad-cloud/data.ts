@@ -26,6 +26,22 @@ module Strings {
     }
 
     /**
+     * 对bytes数值进行格式自动优化显示
+     * 
+     * @param bytes 
+     * 
+     * @return 经过自动格式优化过后的大小显示字符串
+    */
+    export function Lanudry(bytes: number): string {
+        var symbols = ["B", "KB", "MB", "GB", "TB"];
+        var exp = Math.floor(Math.log(bytes) / Math.log(1000));
+        var symbol: string = symbols[exp];
+        var val = (bytes / Math.pow(1000, Math.floor(exp)));
+
+        return sprintf(`%.2f ${symbol}`, val);
+    }
+
+    /**
      * how to escape xml entities in javascript?
      * 
      * > https://stackoverflow.com/questions/7918868/how-to-escape-xml-entities-in-javascript
