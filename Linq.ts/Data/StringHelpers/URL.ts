@@ -7,6 +7,7 @@ namespace TsLinq {
 
         export const hostNamePattern: RegExp = /:\/\/(www[0-9]?\.)?(.[^/:]+)/i;
         export const uriPattern: RegExp = /data[:]\S+[/]\S+;base64,[a-zA-Z0-9/=+]/ig;
+        export const urlPattern: RegExp = /((https?)|(ftp))[:]\/{2}\S+\.[a-z]+\S*/ig;
 
     }
 
@@ -131,6 +132,13 @@ namespace TsLinq {
             } else {
                 return null;
             }
+        }
+
+        /** 
+         * 将目标文本之中的所有的url字符串匹配出来
+        */
+        public static ParseAllUrlStrings(text: string) : string[] {
+            return URLPatterns.urlPattern.exec(text);
         }
 
         public static IsWellFormedUriString(uri: string): boolean {
