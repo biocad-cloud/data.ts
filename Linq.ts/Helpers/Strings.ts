@@ -206,26 +206,27 @@ module Strings {
         }
     }
 
-    export const getAllMatches = (text: string, pattern : string | RegExp) => ({
-        [Symbol.iterator]: function * () {
-        
-          let match : RegExpExecArray = null;
-          let clone: RegExp;
+    export function getAllMatches(text: string, pattern: string | RegExp) {
+        let match: RegExpExecArray = null;
+        let out: RegExpExecArray[] = [];
 
-          if (typeof pattern == "string") {
-              clone = new RegExp(pattern);
-          } else {
-            clone = new RegExp(pattern.source, (<any>pattern).flags);
-          }
-
-          do {
-            match = clone.exec(text);
-            if (match) {
-              yield match;
-            }
-          } while (match);
+        if (typeof pattern == "string") {
+            pattern = new RegExp(pattern);
         }
-      });
+
+        if (pattern.global) {
+            while (match = pattern.exec(text)) {
+                out.push(match);
+            }
+        }
+        else {
+            if (match = pattern.exec(text)) {
+                out.push(match);
+            }
+        }
+
+        return out;
+    }
 
     /**
      * Removes the given chars from the begining of the given 

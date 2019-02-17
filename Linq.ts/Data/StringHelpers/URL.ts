@@ -138,7 +138,13 @@ namespace TypeScript {
          * 将目标文本之中的所有的url字符串匹配出来
         */
         public static ParseAllUrlStrings(text: string) : string[] {
-            return [ ...Strings.getAllMatches(text, URLPatterns.urlPattern) ];
+            let urls: string[] = [];
+
+            for(let url of Strings.getAllMatches(text, URLPatterns.urlPattern)) {
+                urls.push(url[0]);
+            }
+
+            return urls;
         }
 
         public static IsWellFormedUriString(uri: string): boolean {
