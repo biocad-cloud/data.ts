@@ -206,6 +206,27 @@ module Strings {
         }
     }
 
+    export const getAllMatches = (text: string, pattern : string | RegExp) => ({
+        [Symbol.iterator]: function * () {
+        
+          let match : RegExpExecArray = null;
+          let clone: RegExp;
+
+          if (typeof pattern == "string") {
+              clone = new RegExp(pattern);
+          } else {
+            clone = new RegExp(pattern.source, (<any>pattern).flags);
+          }
+
+          do {
+            match = clone.exec(text);
+            if (match) {
+              yield match;
+            }
+          } while (match);
+        }
+      });
+
     /**
      * Removes the given chars from the begining of the given 
      * string and the end of the given string.
