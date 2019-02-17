@@ -138,14 +138,7 @@ namespace TypeScript {
          * 将目标文本之中的所有的url字符串匹配出来
         */
         public static ParseAllUrlStrings(text: string) : string[] {
-            var list : string[] = URLPatterns.urlPattern.exec(text);
-
-            // Uncaught TypeError: Cannot read property 'length' of null
-            if (!list) {
-                list = [];
-            }
-
-            return list;
+            return [ ...Strings.getAllMatches(text, URLPatterns.urlPattern) ];
         }
 
         public static IsWellFormedUriString(uri: string): boolean {
