@@ -6,7 +6,14 @@ namespace TypeScript {
     export module URLPatterns {
 
         export const hostNamePattern: RegExp = /:\/\/(www[0-9]?\.)?(.[^/:]+)/i;
+
+        /**
+         * Regexp pattern for data uri string
+        */
         export const uriPattern: RegExp = /data[:]\S+[/]\S+;base64,[a-zA-Z0-9/=+]/ig;
+        /**
+         * Regexp pattern for web browser url string
+        */
         export const urlPattern: RegExp = /((https?)|(ftp))[:]\/{2}\S+\.[a-z]+\S*/ig;
 
     }
@@ -137,10 +144,10 @@ namespace TypeScript {
         /** 
          * 将目标文本之中的所有的url字符串匹配出来
         */
-        public static ParseAllUrlStrings(text: string) : string[] {
+        public static ParseAllUrlStrings(text: string): string[] {
             let urls: string[] = [];
 
-            for(let url of Strings.getAllMatches(text, URLPatterns.urlPattern)) {
+            for (let url of Strings.getAllMatches(text, URLPatterns.urlPattern)) {
                 urls.push(url[0]);
             }
 

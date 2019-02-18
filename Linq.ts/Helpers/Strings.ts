@@ -97,6 +97,8 @@ module Strings {
     }
 
     /**
+     * Create new string value by repeats a given char n times.
+     * 
      * @param c A single char
      * @param n n chars
     */
@@ -117,11 +119,13 @@ module Strings {
     }
 
     /**
-     * 默认是保留3位有效数字的
+     * Round the number value or number text in given decimals.
+     * 
+     * @param decimals 默认是保留3位有效数字的
     */
     export function round(x: number | string, decimals: number = 3) {
         var floatX = typeof x == "number" ? x : parseFloat(x);
-        var n = Math.pow(10, decimals);
+        var n: number = Math.pow(10, decimals);
 
         if (isNaN(floatX)) {
             if (Internal.outputWarning()) {
@@ -206,6 +210,9 @@ module Strings {
         }
     }
 
+    /**
+     * Get all regex pattern matches in target text value.
+    */
     export function getAllMatches(text: string, pattern: string | RegExp) {
         let match: RegExpExecArray = null;
         let out: RegExpExecArray[] = [];
@@ -218,8 +225,7 @@ module Strings {
             while (match = pattern.exec(text)) {
                 out.push(match);
             }
-        }
-        else {
+        } else {
             if (match = pattern.exec(text)) {
                 out.push(match);
             }
