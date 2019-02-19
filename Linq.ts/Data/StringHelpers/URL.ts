@@ -14,7 +14,7 @@ namespace TypeScript {
         /**
          * Regexp pattern for web browser url string
         */
-        export const urlPattern: RegExp = /((https?)|(ftp))[:]\/{2}\S+\.[a-z]+[^ >]*/ig;
+        export const urlPattern: RegExp = /((https?)|(ftp))[:]\/{2}\S+\.[a-z]+[^ >"]*/ig;
 
     }
 
