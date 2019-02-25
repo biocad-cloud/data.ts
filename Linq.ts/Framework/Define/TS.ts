@@ -201,9 +201,11 @@
         readonly fileName: string;
 
         /**
-         * 获取当前的url之中的hash值，这个返回来的哈希值是不带``#``符号前缀的
+         * 获取当前的url之中的hash值，这个返回来的哈希标签是默认不带``#``符号前缀的
+         * 
+         * @returns 这个函数不会返回空值或者undefined，只会返回空字符串或者hash标签值
         */
-        hash(): string
+        hash(trimprefix?: boolean): string
     }
 
     export interface GotoOptions {

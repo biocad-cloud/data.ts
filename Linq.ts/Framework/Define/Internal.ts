@@ -121,13 +121,13 @@ namespace Internal {
 
         location.path = url.path || "/";
         location.fileName = url.fileName;
-        location.hash = function () {
+        location.hash = function (trimprefix: boolean = true) {
             var tag = window.location.hash;
 
-            if (tag && tag.length > 1) {
+            if (tag && trimprefix && (tag.length > 1)) {
                 return tag.substr(1);
             } else {
-                return "";
+                return isNullOrUndefined(tag) ? "" : tag;
             }
         }
 
