@@ -102,6 +102,17 @@ namespace TypeScript {
         }
 
         /**
+         * 跳转到url之中的hash编号的文档位置处
+         * 
+         * @param hash ``#xxx``文档节点编号表达式
+        */
+        public static JumpToHash(hash: string) {
+            // Getting Y of target element
+            // Go there directly or some transition
+            window.scrollTo(0, $ts(hash).offsetTop);
+        }
+
+        /**
          * 获取得到当前的url
         */
         public static WindowLocation(): URL {

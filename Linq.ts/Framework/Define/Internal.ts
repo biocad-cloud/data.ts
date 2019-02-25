@@ -94,7 +94,10 @@ namespace Internal {
         ts.location = buildURLHelper();
         ts.parseURL = (url => new TypeScript.URL(url));
         ts.goto = function (url: string, opt: GotoOptions = { currentFrame: false, lambda: false }) {
-            if (opt.lambda) {
+            if (url.charAt(0) == "#") {
+                // url是一个文档节点id表达式，则执行文档内跳转
+                TypeScript.URL.JumpToHash(url);
+            } else if (opt.lambda) {
                 return function () {
                     Goto(url, opt.currentFrame);
                 }
@@ -109,10 +112,10 @@ namespace Internal {
     function buildURLHelper() {
         var url = TypeScript.URL.WindowLocation();
         var location: any = function (
-            arg: string, 
-            caseSensitive: boolean = true, 
+            arg: string,
+            caseSensitive: boolean = true,
             Default: string = "") {
-                
+
             return url.getArgument(arg, caseSensitive, Default);
         }
 
