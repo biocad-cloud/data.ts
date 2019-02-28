@@ -139,7 +139,7 @@
 
         /**
          * Get the url location of current window page.
-         * (获取当前的页面的URL字符串解析模型)
+         * (获取当前的页面的URL字符串解析模型，这个只读属性可以接受一个变量名参数来获取得到对应的GET参数值)
         */
         readonly location: IURL;
 
