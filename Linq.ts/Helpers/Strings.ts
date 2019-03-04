@@ -211,6 +211,28 @@ module Strings {
     }
 
     /**
+     * 取出大文本之中指定的前n行文本
+    */
+    export function PeekLines(text: string, n: number): string[] {
+        let p: number = 0;
+        let out: string[] = [];
+
+        for (var i: number = 0; i < n; i++) {
+            let pn = text.indexOf("\n", p);
+
+            if (pn > -1) {
+                out.push(text.substr(p, pn - p));
+                p = pn;
+            } else {
+                // 已经到头了
+                break;
+            }
+        }
+
+        return out;
+    }
+
+    /**
      * Get all regex pattern matches in target text value.
     */
     export function getAllMatches(text: string, pattern: string | RegExp) {
