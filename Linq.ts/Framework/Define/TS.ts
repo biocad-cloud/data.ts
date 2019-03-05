@@ -282,7 +282,7 @@
         /**
          * 处理HTML节点对象的点击事件，这个属性值应该是一个无参数的函数来的
         */
-        onclick?: () => void;
+        onclick?: Delegate.Sub | string;
 
         "data-toggle"?: string;
         "data-target"?: string;

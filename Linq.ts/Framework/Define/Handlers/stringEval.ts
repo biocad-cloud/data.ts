@@ -167,7 +167,13 @@ namespace Internal.Handlers {
 
             // 添加事件
             if (hasKey(attrs, events.onclick)) {
-                node.onclick = attrs[events.onclick];
+                let onclick: string | Delegate.Sub = attrs[events.onclick];
+
+                if (typeof onclick == "string") {
+                    node.setAttribute(events.onclick, onclick);
+                } else {
+                    node.onclick = onclick;
+                }
             }
         }
     }
