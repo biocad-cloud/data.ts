@@ -259,6 +259,10 @@
         class?: string | string[];
         type?: string;
         href?: string;
+        /**
+         * 应用于``<a>``标签进行文件下载重命名文件所使用的
+        */
+        download?: string;
         target?: string;
         src?: string;
         width?: string | number;
