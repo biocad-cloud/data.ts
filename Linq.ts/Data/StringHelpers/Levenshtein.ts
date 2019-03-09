@@ -34,6 +34,21 @@
         let ns = src.length + 1;
         let nt = tar.length + 1;
 
-        let d = 
+        let d = new Matrix<number>(ns, nt, 0.0);
+
+        d.column(0, Enumerable.Range(0, ns - 1));
+        d.row(0, Enumerable.Range(0, nt - 1));
+
+        for (var j: number = 1; j < nt; j++) {
+            for (var i: number = 1; i < ns; i++) {
+                d.M(i, j, Enumerable.Min(
+                    d.M(i - 1, j) + score.delete(src[i - 1]),
+                    d.M(i, j - 1) + score.insert(tar[j - 1]),
+                    d.M(i - 1, j - 1) + score.substitute(src[i - 1], tar[j - 1])
+                ));
+            }
+        }
+
+        return d.ToArray(false);
     }
 }

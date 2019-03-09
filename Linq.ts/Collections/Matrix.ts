@@ -1,32 +1,36 @@
-﻿class Matrix<T> {
-
-    private matrix: T[][];
+﻿class Matrix<T> extends IEnumerator<T[]> {
 
     public get rows(): number {
-        return this.matrix.length;
+        return this.sequence.length;
     }
 
     public get columns(): number {
-        return this.matrix[0].length;
+        return this.sequence[0].length;
     }
 
     /**
      * [m, n], m列n行
     */
     public constructor(m: number, n: number, fill: T = null) {
-        this.matrix = [];
+        super(Matrix.emptyMatrix<T>(m, n, fill));
+    }
+
+    private static emptyMatrix<T>(m: number, n: number, fill: T): T[][] {
+        let matrix: T[][] = [];
 
         for (var i: number = 0; i < n; i++) {
-            this.matrix.push(DataExtensions.Dim(m, fill));
+            matrix.push(DataExtensions.Dim(m, fill));
         }
+
+        return matrix;
     }
 
     public M(i: number, j: number, val: T = null): T {
         if (isNullOrUndefined(val)) {
             // get
-            return this.matrix[i][j];
+            return this.sequence[i][j];
         } else {
-            this.matrix[i][j] = val;
+            this.sequence[i][j] = val;
         }
     }
 
@@ -36,7 +40,7 @@
             let col: T[] = [];
 
             for (var j: number = 0; j < this.rows; j++) {
-                col.push(this.matrix[j][i]);
+                col.push(this.sequence[j][i]);
             }
 
             return col;
@@ -50,7 +54,7 @@
             }
 
             for (var j: number = 0; j < this.rows; j++) {
-                this.matrix[j][i] = col[j];
+                this.sequence[j][i] = col[j];
             }
 
             return null;
@@ -60,12 +64,12 @@
     public row(i: number, set: T[] | IEnumerator<T> = null): T[] {
         if (isNullOrUndefined(set)) {
             // get
-            return this.matrix[i];
+            return this.sequence[i];
         } else {
             if (Array.isArray(set)) {
-                this.matrix[i] = set;
+                this.sequence[i] = set;
             } else {
-                this.matrix[i] = set.ToArray(false);
+                this.sequence[i] = set.ToArray(false);
             }
         }
     }
