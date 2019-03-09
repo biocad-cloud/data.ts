@@ -1,9 +1,9 @@
 ﻿namespace Levenshtein {
 
     export interface IScoreFunc {
-        insert(c: string): number;
-        delete(c: string): number;
-        substitute(s: string, t: string): number;
+        insert(c: string | number): number;
+        delete(c: string | number): number;
+        substitute(s: string | number, t: string | number): number;
     }
 
     const defaultScore: IScoreFunc = {
@@ -19,8 +19,8 @@
     }
 
     export function DistanceMatrix(source: string, target: string, score: IScoreFunc = defaultScore): number[][] {
-        let src: string[] = Strings.ToCharArray(source);
-        let tar: string[] = Strings.ToCharArray(target);
+        let src: number[] = <number[]>Strings.ToCharArray(source, true);
+        let tar: number[] = <number[]>Strings.ToCharArray(target, true);
 
         if (src.length == 0 && tar.length == 0) {
             return [[0]];
