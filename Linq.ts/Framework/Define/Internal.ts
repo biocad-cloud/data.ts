@@ -218,10 +218,10 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
-        ts.inject = function (iframe: string, fun: (Delegate.Func | string)[] | string | Delegate.Func) {
+        ts.inject = function (iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>) {
             var frame: HTMLIFrameElement = <any>$ts(iframe);
             var envir: {
-                eval: Delegate.Func
+                eval: Delegate.Func<any>
             } = <any>frame.contentWindow;
 
             if (Internal.outputEverything()) {

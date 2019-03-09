@@ -81,7 +81,7 @@
          * @param iframe ``#xxx``编号查询表达式
          * @param fun 目标函数，请注意，这个函数应该是尽量不引用依赖其他对象的
         */
-        inject(iframe: string, fun: (Delegate.Func | string)[] | string | Delegate.Func): void;
+        inject(iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>): void;
 
         /**
          * 动态加载脚本
