@@ -251,13 +251,13 @@ module Strings {
         }
 
         if (typeof chars == "string") {
-            chars = From(Strings.ToCharArray(chars))
+            chars = From(<string[]>Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
                 .ToArray(false);
         }
 
         return function (chars: number[]) {
-            return From(Strings.ToCharArray(str))
+            return From(<string[]>Strings.ToCharArray(str))
                 .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
                 .Reverse()
                 .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
@@ -272,13 +272,13 @@ module Strings {
         }
 
         if (typeof chars == "string") {
-            chars = From(Strings.ToCharArray(chars))
+            chars = From(<string[]>Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
                 .ToArray(false);
         }
 
         return function (chars: number[]) {
-            return From(Strings.ToCharArray(str))
+            return From(<string[]>Strings.ToCharArray(str))
                 .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
                 .JoinBy("");
         }(<number[]>chars);
@@ -290,12 +290,12 @@ module Strings {
         }
 
         if (typeof chars == "string") {
-            chars = From(Strings.ToCharArray(chars))
+            chars = From(<string[]>Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
                 .ToArray(false);
         }
 
-        var strChars: string[] = Strings.ToCharArray(str);
+        var strChars: string[] = <string[]>Strings.ToCharArray(str);
         var lefts: number = 0;
 
         for (var i: number = strChars.length - 1; i > 0; i--) {
