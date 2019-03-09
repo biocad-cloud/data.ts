@@ -399,15 +399,23 @@ module Strings {
      * @description > https://jsperf.com/convert-string-to-char-code-array/9
      *    经过测试，使用数组push的效率最高
      *    
+     * @param charCode 返回来的数组是否应该是一组字符的ASCII值而非字符本身？默认是返回字符数组的。 
+     *    
      * @returns A character array, all of the string element in the array 
      *      is one character length.
     */
-    export function ToCharArray(str: string): string[] {
-        var cc: string[] = [];
+    export function ToCharArray(str: string, charCode: boolean = false): string[] | number[] {
+        var cc: string[] | number[] = [];
         var strLen: number = str.length;
 
-        for (var i = 0; i < strLen; ++i) {
-            cc.push(str.charAt(i));
+        if (charCode) {
+            for (var i = 0; i < strLen; ++i) {
+                (<number[]>cc).push(str.charCodeAt(i));
+            }
+        } else {
+            for (var i = 0; i < strLen; ++i) {
+                (<string[]>cc).push(str.charAt(i));
+            }
         }
 
         return cc;
