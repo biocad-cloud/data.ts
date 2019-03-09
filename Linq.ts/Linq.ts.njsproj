@@ -42,6 +42,9 @@
     <TypeScriptCompile Include="Collections\Abstract\Iterator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Collections\Matrix.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="csv\HTML.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
