@@ -139,7 +139,7 @@
 
         /**
          * Get the url location of current window page.
-         * (获取当前的页面的URL字符串解析模型)
+         * (获取当前的页面的URL字符串解析模型，这个只读属性可以接受一个变量名参数来获取得到对应的GET参数值)
         */
         readonly location: IURL;
 
@@ -259,6 +259,10 @@
         class?: string | string[];
         type?: string;
         href?: string;
+        /**
+         * 应用于``<a>``标签进行文件下载重命名文件所使用的
+        */
+        download?: string;
         target?: string;
         src?: string;
         width?: string | number;
@@ -278,7 +282,7 @@
         /**
          * 处理HTML节点对象的点击事件，这个属性值应该是一个无参数的函数来的
         */
-        onclick?: () => void;
+        onclick?: Delegate.Sub | string;
 
         "data-toggle"?: string;
         "data-target"?: string;
