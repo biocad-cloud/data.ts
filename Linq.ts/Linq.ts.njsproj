@@ -42,6 +42,9 @@
     <TypeScriptCompile Include="Collections\Abstract\Iterator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Collections\Matrix.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="csv\HTML.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -95,6 +98,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Data\StringHelpers\PathHelper.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\StringHelpers\Levenshtein.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Data\StringHelpers\URL.ts">

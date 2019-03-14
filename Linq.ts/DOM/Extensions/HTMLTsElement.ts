@@ -30,11 +30,11 @@ class HTMLTsElement {
      * @param html 当这个参数为一个无参数的函数的时候，主要是用于生成一个比较复杂的文档节点而使用的;
      *    如果为字符串文本类型，则是直接将文本当作为HTML代码赋值给当前的这个节点对象的innerHTML属性;
     */
-    public display(html: string | HTMLElement | HTMLTsElement | (() => HTMLElement)): HTMLTsElement {
+    public display(html: string | number | boolean | HTMLElement | HTMLTsElement | (() => HTMLElement)): HTMLTsElement {
         if (!html) {
             this.HTMLElement.innerHTML = "";
-        } else if (typeof html == "string") {
-            this.HTMLElement.innerHTML = html;
+        } else if (typeof html == "string" || typeof html == "number" || typeof html == "boolean") {
+            this.HTMLElement.innerHTML = html.toString();
         } else {
             var node: HTMLElement;
             var parent: HTMLElement = this.HTMLElement;

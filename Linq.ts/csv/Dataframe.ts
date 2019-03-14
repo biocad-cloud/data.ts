@@ -157,7 +157,7 @@ namespace csv {
         */
         public static Load(url: string,
             callback: (csv: dataframe) => void = null,
-            parseText: (response: string) => content = this.defaultContent): dataframe {
+            parseText: (response: string, contentType?: string) => content = this.defaultContent): dataframe {
 
             if (callback == null || callback == undefined) {
                 // 同步
@@ -166,9 +166,9 @@ namespace csv {
                 return dataframe.Parse(load.content, tsv);
             } else {
                 // 异步
-                HttpHelpers.GetAsyn(url, (text, code) => {
+                HttpHelpers.GetAsyn(url, (text, code, contentType) => {
                     if (code == 200) {
-                        var load: content = parseText(text);
+                        var load: content = parseText(text, contentType);
                         var tsv: boolean = load.type == "tsv";
                         var data: dataframe = dataframe.Parse(load.content, tsv);
 

@@ -81,7 +81,7 @@
          * @param iframe ``#xxx``编号查询表达式
          * @param fun 目标函数，请注意，这个函数应该是尽量不引用依赖其他对象的
         */
-        inject(iframe: string, fun: (Delegate.Func | string)[] | string | Delegate.Func): void;
+        inject(iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>): void;
 
         /**
          * 动态加载脚本
@@ -139,7 +139,7 @@
 
         /**
          * Get the url location of current window page.
-         * (获取当前的页面的URL字符串解析模型)
+         * (获取当前的页面的URL字符串解析模型，这个只读属性可以接受一个变量名参数来获取得到对应的GET参数值)
         */
         readonly location: IURL;
 
@@ -150,7 +150,7 @@
         /**
          * 从当前页面跳转到给定的链接页面
          * 
-         * @param url 链接，也支持meta查询表达式
+         * @param url 链接，也支持meta查询表达式，如果是以``#``起始的文档节点id表达式，则会在文档内跳转到目标节点位置
          * @param currentFrame 如果当前页面为iframe的话，则只跳转iframe的显示，当这个参数为真的话；
          *      如果这个参数为false，则从父页面进行跳转
         */
@@ -201,9 +201,11 @@
         readonly fileName: string;
 
         /**
-         * 获取当前的url之中的hash值，这个返回来的哈希值是不带``#``符号前缀的
+         * 获取当前的url之中的hash值，这个返回来的哈希标签是默认不带``#``符号前缀的
+         * 
+         * @returns 这个函数不会返回空值或者undefined，只会返回空字符串或者hash标签值
         */
-        hash(): string
+        hash(trimprefix?: boolean): string
     }
 
     export interface GotoOptions {
@@ -257,6 +259,10 @@
         class?: string | string[];
         type?: string;
         href?: string;
+        /**
+         * 应用于``<a>``标签进行文件下载重命名文件所使用的
+        */
+        download?: string;
         target?: string;
         src?: string;
         width?: string | number;
@@ -276,7 +282,7 @@
         /**
          * 处理HTML节点对象的点击事件，这个属性值应该是一个无参数的函数来的
         */
-        onclick?: () => void;
+        onclick?: Delegate.Sub | string;
 
         "data-toggle"?: string;
         "data-target"?: string;

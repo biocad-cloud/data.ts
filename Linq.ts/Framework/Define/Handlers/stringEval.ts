@@ -107,6 +107,11 @@ namespace Internal.Handlers {
                 // 所以在这里不需要context上下文环境
                 return DOM.metaValue(query.expression, (args || {})["default"], context != window);
             } else {
+
+                if (Internal.outputEverything()) {
+                    console.warn(`Apply querySelector for expression: '${query.expression}', no typescript extension was made!`);
+                }
+
                 // 只返回第一个满足条件的节点
                 return context
                     .document
@@ -167,7 +172,13 @@ namespace Internal.Handlers {
 
             // 添加事件
             if (hasKey(attrs, events.onclick)) {
-                node.onclick = attrs[events.onclick];
+                let onclick: string | Delegate.Sub = attrs[events.onclick];
+
+                if (typeof onclick == "string") {
+                    node.setAttribute(events.onclick, onclick);
+                } else {
+                    node.onclick = onclick;
+                }
             }
         }
     }
