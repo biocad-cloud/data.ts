@@ -44,7 +44,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>Sub Main</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
