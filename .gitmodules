@@ -4,3 +4,6 @@
 [submodule "TsBuild/runtime/VB-lang"]
 	path = TsBuild/runtime/VB-lang
 	url = https://github.com/xieguigang/sciBASIC-lang-core.git
+[submodule "TsBuild/runtime/Microsoft.VisualBasic.Core"]
+	path = TsBuild/runtime/Microsoft.VisualBasic.Core
+	url = https://github.com/xieguigang/sciBASIC-lang-core.git
