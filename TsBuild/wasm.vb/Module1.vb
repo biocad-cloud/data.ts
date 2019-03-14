@@ -1,5 +1,9 @@
 ﻿Module Module1
 
+    Sub Main()
+        Call test()
+    End Sub
+
     Sub test()
 
         Dim src = "
