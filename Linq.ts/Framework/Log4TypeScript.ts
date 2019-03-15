@@ -8,7 +8,7 @@
      * Console logging helper
     */
     export class logging {
-                
+
         /**
          * 应用程序的开发模式：只会输出框架的警告信息
         */
@@ -28,6 +28,12 @@
         */
         public static get outputError(): boolean {
             return $ts.mode == errorOnly;
+        }
+
+        public static log(obj, color: string = "black") {
+            if (this.outputEverything) {
+                console.log(obj);
+            }
         }
     }
 }
