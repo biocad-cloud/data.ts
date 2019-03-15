@@ -4,6 +4,9 @@
     const anyoutputLevel: number = Modes.debug;
     const errorOnly: number = Modes.production;
 
+    /**
+     * Console logging helper
+    */
     export class logging {
                 
         /**

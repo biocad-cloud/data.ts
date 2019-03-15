@@ -81,7 +81,7 @@ class TypeInfo {
             return className;
         } else if (isObject) {
             if (isNull) {
-                if (Internal.outputWarning()) {
+                if (TypeScript.logging.outputWarning) {
                     console.warn(TypeExtensions.objectIsNothing);
                 }
 

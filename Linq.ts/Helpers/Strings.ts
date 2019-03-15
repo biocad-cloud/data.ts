@@ -128,7 +128,7 @@ module Strings {
         var n: number = Math.pow(10, decimals);
 
         if (isNaN(floatX)) {
-            if (Internal.outputWarning()) {
+            if (TypeScript.logging.outputWarning) {
                 console.warn(`Invalid number value: '${x}'`);
             }
             return false;

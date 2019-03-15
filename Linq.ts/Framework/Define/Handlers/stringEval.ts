@@ -86,7 +86,7 @@ namespace Internal.Handlers {
                     .getElementById(query.expression);
 
                 if (isNullOrUndefined(node)) {
-                    if (Internal.outputWarning()) {
+                    if (TypeScript.logging.outputWarning) {
                         console.warn(`Unable to found a node which its ID='${expr}'!`);
                     }
 
@@ -108,7 +108,7 @@ namespace Internal.Handlers {
                 return DOM.metaValue(query.expression, (args || {})["default"], context != window);
             } else {
 
-                if (Internal.outputEverything()) {
+                if (TypeScript.logging.outputEverything) {
                     console.warn(`Apply querySelector for expression: '${query.expression}', no typescript extension was made!`);
                 }
 

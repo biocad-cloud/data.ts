@@ -19,7 +19,7 @@ namespace DOM {
                 var content: string = meta.getAttribute("content");
                 return content ? content : Default;
             } else {
-                if (Internal.outputWarning()) {
+                if (TypeScript.logging.outputWarning) {
                     console.warn(`${selector} not found in current context!`);
                 }
 
@@ -70,7 +70,7 @@ namespace DOM {
                     })
                 };
             } catch (e) {
-                if (Internal.outputWarning()) {
+                if (TypeScript.logging.outputWarning) {
                     console.warn('This browser does not support object URLs. Falling back to string URL.');
                 }
 
@@ -245,7 +245,7 @@ namespace DOM {
         if (typeof fn !== 'function') {
             // Sanity check
             return;
-        } else if (Internal.outputEverything()) {
+        } else if (TypeScript.logging.outputEverything) {
             console.log("Add Document.ready event handler.");
             console.log(`document.readyState = ${document.readyState}`)
         }

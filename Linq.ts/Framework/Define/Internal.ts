@@ -199,7 +199,7 @@ namespace Internal {
                 eval: Delegate.Func<any>
             } = <any>frame.contentWindow;
 
-            if (Internal.outputEverything()) {
+            if (TypeScript.logging.outputEverything) {
                 console.log(fun);
             }
 
