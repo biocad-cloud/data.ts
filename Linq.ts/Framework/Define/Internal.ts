@@ -96,13 +96,29 @@ namespace Internal {
 
         location.path = url.path || "/";
         location.fileName = url.fileName;
-        location.hash = function (trimprefix: boolean = true) {
-            var tag = window.location.hash;
-
-            if (tag && trimprefix && (tag.length > 1)) {
-                return tag.substr(1);
+        location.hash = function (arg: hashArgument | boolean = { trimprefix: true, doJump: false }, urlhash: string = null) {
+            if (!isNullOrUndefined(urlhash)) {
+                if (((typeof arg == "boolean") && (arg === true)) || (<hashArgument>arg).doJump) {
+                    window.location.hash = urlhash;
+                } else {
+                    TypeScript.URL.SetHash(urlhash);
+                }
             } else {
-                return isNullOrUndefined(tag) ? "" : tag;
+                // 获取当前url字符串之中hash标签值
+                var tag = window.location.hash;
+                var trimprefix: boolean;
+
+                if (typeof arg == "boolean") {
+                    trimprefix = arg;
+                } else {
+                    trimprefix = arg.trimprefix;
+                }
+
+                if (tag && trimprefix && (tag.length > 1)) {
+                    return tag.substr(1);
+                } else {
+                    return isNullOrUndefined(tag) ? "" : tag;
+                }
             }
         }
 

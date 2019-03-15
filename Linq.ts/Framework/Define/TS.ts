@@ -203,9 +203,17 @@
         /**
          * 获取当前的url之中的hash值，这个返回来的哈希标签是默认不带``#``符号前缀的
          * 
+         * @param arg 如果参数urlHash不为空，则这个参数表示是否进行文档内跳转？
+         *    如果为空的话，则表示解析hash字符串的时候是否应该去掉前缀的``#``符号
+         * 
          * @returns 这个函数不会返回空值或者undefined，只会返回空字符串或者hash标签值
         */
-        hash(trimprefix?: boolean): string
+        hash(arg?: hashArgument | boolean, urlhash?: string): string
+    }
+
+    export interface hashArgument {
+        doJump?: boolean;
+        trimprefix?: boolean;
     }
 
     export interface GotoOptions {
