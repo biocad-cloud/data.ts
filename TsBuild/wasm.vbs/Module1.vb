@@ -1,4 +1,6 @@
-﻿Module Module1
+﻿Imports Microsoft.VisualBasic.Emit.CodeDOM_VBC
+
+Module Module1
 
     Sub Main()
         Call test()
@@ -15,7 +17,8 @@ End Function
 
 End Module
 "
+        Dim dll = VBC.CompileCode(src, VBC.CreateParameters({}))
 
-
+        Pause()
     End Sub
 End Module
