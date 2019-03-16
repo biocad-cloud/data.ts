@@ -162,7 +162,16 @@ namespace Internal.Handlers {
                     } else {
                         node.setAttribute(name, <string>classVals);
                     }
+                } else if (name == "style") {
 
+                    if (typeof attrs == "string") {
+                        node.setAttribute(name, attrs);
+                    } else {
+                        // node.style是一个只读属性，无法直接赋值
+                        for (var propertyName in attrs) {
+                            node.style[propertyName] = attrs[propertyName];
+                        }
+                    }
                 } else {
                     node.setAttribute(name, <string>attrs[name]);
                 }

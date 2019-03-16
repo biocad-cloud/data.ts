@@ -260,7 +260,7 @@
         /**
          * HTML节点对象的CSS样式字符串（通用属性）
         */
-        style?: string;
+        style?: string | CSSStyleDeclaration;
         /**
          * HTML节点对象的class类型（通用属性）
         */
