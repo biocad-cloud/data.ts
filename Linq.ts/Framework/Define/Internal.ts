@@ -51,6 +51,9 @@ namespace Internal {
                 }
             });
         };
+        ts.getText = function (url: string, callback: (text: string) => void) {
+            HttpHelpers.GetAsyn(urlSolver(url), callback);
+        }
         ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
             HttpHelpers.GetAsyn(urlSolver(url), function (response) {
                 if (callback) {
