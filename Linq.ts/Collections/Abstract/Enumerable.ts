@@ -63,11 +63,17 @@ module Enumerable {
         var takes: T[] = [];
         var len: number = source.length;
 
-        for (var i = 0; i < n; i++) {
-            if (i > len) {
-                break;
-            } else {
-                takes.push(source[i]);
+        if (len <= n) {
+            takes = source;
+        } else {
+            takes = [];
+
+            for (var i = 0; i < n; i++) {
+                if (i >= len) {
+                    break;
+                } else {
+                    takes.push(source[i]);
+                }
             }
         }
 
