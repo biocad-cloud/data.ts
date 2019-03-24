@@ -49,6 +49,7 @@ End Module"
     Public Function GetParameterType(parameter As ParameterSyntax) As NamedValue(Of String)
         Dim name = parameter.Identifier.Identifier.Text
         Dim type As Type
+        Dim default$ = Nothing
 
         If parameter.AsClause Is Nothing Then
             type = Scripting.GetType(Patterns.TypeCharName(name.Last))
@@ -57,7 +58,11 @@ End Module"
             type = GetAsType(parameter.AsClause)
         End If
 
-        Return New NamedValue(Of String)(name, Types.Convert2Wasm(type))
+        If Not parameter.Default Is Nothing Then
+            [default] = DirectCast(parameter.Default.Value, LiteralExpressionSyntax).Token.Value
+        End If
+
+        Return New NamedValue(Of String)(name, Types.Convert2Wasm(type), [default])
     End Function
 
 End Module
