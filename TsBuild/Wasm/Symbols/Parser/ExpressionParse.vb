@@ -37,7 +37,8 @@ Namespace Symbols.Parser
 
             Return New FuncInvoke With {
                 .Parameters = {left, right},
-                .Reference = $"{Types.Convert2Wasm(GetType(Double))}.{Types.Operators(op)}"
+                .Reference = $"{Types.Convert2Wasm(GetType(Double))}.{Types.Operators(op)}",
+                .[operator] = True
             }
         End Function
 
@@ -115,7 +116,8 @@ Namespace Symbols.Parser
             ' 需要根据类型来决定操作符函数的类型来源
             Return New FuncInvoke With {
                 .Parameters = {left, right},
-                .Reference = $"{Types.Convert2Wasm(GetType(Double))}.{Types.Operators(op)}"
+                .Reference = $"{Types.Convert2Wasm(GetType(Double))}.{Types.Operators(op)}",
+                .[operator] = True
             }
         End Function
     End Module

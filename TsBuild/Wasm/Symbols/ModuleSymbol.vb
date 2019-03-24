@@ -25,7 +25,7 @@ Namespace Symbols
         End Function
 
         Public Overrides Function ToSExpression() As String
-            Return $"(module 
+            Return $"(module ;; Module {LabelName}
 
     {Exports.JoinBy(ASCII.LF & "    ")} 
 

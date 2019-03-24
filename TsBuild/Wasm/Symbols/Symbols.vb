@@ -11,9 +11,14 @@
         ''' <returns></returns>
         Public Property Reference As String
         Public Property Parameters As Expression()
+        Public Property [operator] As Boolean
 
         Public Overrides Function ToSExpression() As String
-            Return $"(call {Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
+            If [operator] Then
+                Return $"({Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
+            Else
+                Return $"(call {Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
+            End If
         End Function
     End Class
 
