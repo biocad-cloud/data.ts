@@ -92,3 +92,13 @@ Public Class SetGlobalVariable : Inherits Expression
         Return $"(set_global {var})"
     End Function
 End Class
+
+Public Class DeclareLocal : Inherits Expression
+
+    Public Property name As String
+    Public Property type As String
+
+    Public Overrides Function ToSExpression() As String
+        Return $"(local {name} {type})"
+    End Function
+End Class
