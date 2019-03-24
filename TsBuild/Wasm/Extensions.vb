@@ -11,8 +11,8 @@ Public Module Extensions
         Dim tree As SyntaxTree = VisualBasicSyntaxTree.ParseText(vbcode)
         Dim root As CompilationUnitSyntax = tree.GetRoot
         Dim main As ModuleBlockSyntax = root.Members(Scan0)
-        Dim functions As New List(Of Func) From {
-            New Func With {
+        Dim functions As New List(Of FuncSymbol) From {
+            New FuncSymbol With {
                 .Name = "$ParenthesizedStack",
                 .Parameters = {
                     New NamedValue(Of String) With {

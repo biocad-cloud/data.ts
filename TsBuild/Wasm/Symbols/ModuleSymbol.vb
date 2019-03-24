@@ -4,7 +4,7 @@ Imports Microsoft.VisualBasic.Text
 Public Class ModuleSymbol : Inherits Expression
     Implements Enumeration(Of Expression)
 
-    Public Property InternalFunctions As Func()
+    Public Property InternalFunctions As FuncSymbol()
     Public Property Exports As ExportSymbolExpression()
     ''' <summary>
     ''' The module name label
@@ -13,7 +13,7 @@ Public Class ModuleSymbol : Inherits Expression
     Public Property LabelName As String
 
     Public Iterator Function GenericEnumerator() As IEnumerator(Of Expression) Implements Enumeration(Of Expression).GenericEnumerator
-        For Each func As Func In InternalFunctions
+        For Each func As FuncSymbol In InternalFunctions
             Yield func
         Next
     End Function

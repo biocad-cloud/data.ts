@@ -6,7 +6,7 @@ Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 Module FunctionParser
 
     <Extension>
-    Public Function Parse(method As MethodBlockSyntax) As Func
+    Public Function Parse(method As MethodBlockSyntax) As FuncSymbol
         Dim parameters = method.BlockStatement _
             .ParameterList _
             .Parameters _
@@ -20,7 +20,7 @@ Module FunctionParser
             .Select(Function(s) s.ParseExpression) _
             .ToArray
 
-        Dim func As New Func With {
+        Dim func As New FuncSymbol With {
             .Name = $"${name}",
             .Parameters = parameters,
             .Result = Types.Convert2Wasm(returns),

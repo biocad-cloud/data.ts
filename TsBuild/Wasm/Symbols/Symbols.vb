@@ -1,22 +1,4 @@
-﻿Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
-Imports Microsoft.VisualBasic.Linq
-Imports Microsoft.VisualBasic.Text
-
-Public Class Func : Inherits Expression
-
-    Public Property Name As String
-    Public Property Parameters As NamedValue(Of String)()
-    Public Property Result As String
-    Public Property Body As Expression()
-
-    Public Overrides Function ToSExpression() As String
-        Return $"(func {Name} {Parameters.Select(Function(a) a.param).JoinBy(" ")} (result {Result})
-    {Body.SafeQuery.Select(Function(b) b.ToSExpression).JoinBy(ASCII.LF & "    ")}
-)"
-    End Function
-End Class
-
-''' <summary>
+﻿''' <summary>
 ''' 一般的函数调用表达式，也包括运算符运算
 ''' </summary>
 Public Class FuncInvoke : Inherits Expression
@@ -31,16 +13,6 @@ Public Class FuncInvoke : Inherits Expression
     Public Overrides Function ToSExpression() As String
         Return $"(call {Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
     End Function
-End Class
-
-Public MustInherit Class Expression
-
-    Public MustOverride Function ToSExpression() As String
-
-    Public Overrides Function ToString() As String
-        Return ToSExpression()
-    End Function
-
 End Class
 
 Public Class LiteralExpression : Inherits Expression
