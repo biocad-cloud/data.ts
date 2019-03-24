@@ -53,7 +53,7 @@ Module BodyParser
         End If
 
         Return New DeclareLocal With {
-            .name = name,
+            .name = $"${name}",
             .type = type,
             .init = initValue
         }

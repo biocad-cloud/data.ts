@@ -10,7 +10,7 @@ Module FunctionParser
         Dim parameters = method.BlockStatement _
             .ParameterList _
             .Parameters _
-            .Select(AddressOf GetParameterType) _
+            .Select(AddressOf ParseParameter) _
             .ToArray
         Dim name As String = method.SubOrFunctionStatement.Identifier.ValueText
         Dim returns As Type = GetAsType(method.SubOrFunctionStatement.AsClause)
@@ -21,7 +21,7 @@ Module FunctionParser
             .ToArray
 
         Dim func As New Func With {
-            .Name = name,
+            .Name = $"${name}",
             .Parameters = parameters,
             .Result = Types.Convert2Wasm(returns),
             .Body = bodyExpressions
@@ -34,7 +34,7 @@ Module FunctionParser
         Return Scripting.GetType(DirectCast([as].Type, PredefinedTypeSyntax).Keyword.ValueText)
     End Function
 
-    Public Function GetParameterType(parameter As ParameterSyntax) As NamedValue(Of String)
+    Public Function ParseParameter(parameter As ParameterSyntax) As NamedValue(Of String)
         Dim name = parameter.Identifier.Identifier.Text
         Dim type As Type
         Dim default$ = Nothing
@@ -51,7 +51,7 @@ Module FunctionParser
         End If
 
         Return New NamedValue(Of String) With {
-            .Name = name,
+            .Name = $"${name}",
             .Value = Types.Convert2Wasm(type),
             .Description = [default]
         }
