@@ -28,7 +28,7 @@ End Module"
             Dim returns = GetAsType(api_method.SubOrFunctionStatement.AsClause)
             Dim body = api_method.Statements.ToArray
 
-            Dim func As New Func With {.Name = name, .Parameters = parameters, .Result = returns}
+            Dim func As New Func With {.Name = name, .Parameters = parameters, .Result = Types.Convert2Wasm(returns)}
 
 
             Pause()
@@ -37,22 +37,22 @@ End Module"
         Pause()
     End Sub
 
-    Public Function GetAsType([as] As SimpleAsClauseSyntax) As String
-        Return DirectCast([as].Type, PredefinedTypeSyntax).Keyword.ValueText
+    Public Function GetAsType([as] As SimpleAsClauseSyntax) As Type
+        Return Scripting.GetType(DirectCast([as].Type, PredefinedTypeSyntax).Keyword.ValueText)
     End Function
 
     Public Function GetParameterType(parameter As ParameterSyntax) As NamedValue(Of String)
         Dim name = parameter.Identifier.Identifier.Text
-        Dim type As String
+        Dim type As Type
 
         If parameter.AsClause Is Nothing Then
-            type = Patterns.TypeCharName(name.Last)
+            type = Scripting.GetType(Patterns.TypeCharName(name.Last))
             name = name.Substring(0, name.Length - 1)
         Else
             type = GetAsType(parameter.AsClause)
         End If
 
-        Return New NamedValue(Of String)(name, type)
+        Return New NamedValue(Of String)(name, Types.Convert2Wasm(type))
     End Function
 
 End Module
