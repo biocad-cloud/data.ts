@@ -13,7 +13,13 @@ Dim a& = 88888
 x = z * y ^2
 
 return x / 99 + a
-End Sub
+End Function
+
+Public Function Test1(a As Double) As Double
+
+return a + Main(a, -1)
+
+End Function
 
 End Module"
 
