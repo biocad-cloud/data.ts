@@ -25,6 +25,8 @@ End Module"
 
         Dim moduleMain As ModuleSymbol = Wasm.CreateModule(code)
 
+        Console.WriteLine(moduleMain.ToSExpression)
+
         Pause()
     End Sub
 

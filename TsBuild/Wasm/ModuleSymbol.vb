@@ -1,6 +1,8 @@
 ﻿Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Text
 
-Public Class ModuleSymbol : Implements Enumeration(Of Expression)
+Public Class ModuleSymbol : Inherits Expression
+    Implements Enumeration(Of Expression)
 
     Public Property InternalFunctions As Func()
     Public Property Exports As ExportSymbolExpression()
@@ -18,5 +20,9 @@ Public Class ModuleSymbol : Implements Enumeration(Of Expression)
 
     Public Iterator Function GetEnumerator() As IEnumerator Implements Enumeration(Of Expression).GetEnumerator
         Yield GenericEnumerator()
+    End Function
+
+    Public Overrides Function ToSExpression() As String
+        Return $"(module {Exports.JoinBy(ASCII.LF)} {InternalFunctions.JoinBy(ASCII.LF)})"
     End Function
 End Class
