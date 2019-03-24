@@ -47,7 +47,8 @@ Public Module Extensions
         Next
 
         Return New ModuleSymbol With {
-            .InternalFunctions = functions
+            .InternalFunctions = functions,
+            .LabelName = main.ModuleStatement.Identifier.Text
         }
     End Function
 
