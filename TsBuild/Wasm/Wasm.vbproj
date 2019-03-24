@@ -276,6 +276,7 @@
     <Compile Include="FunctionParser.vb" />
     <Compile Include="BodyParser.vb" />
     <Compile Include="ExpressionParse.vb" />
+    <Compile Include="Wabt.vb" />
     <Compile Include="ModuleSymbol.vb" />
     <Compile Include="Symbols.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -315,6 +316,7 @@
     </None>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Resources\wabt-1.0.10-win64.zip" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\runtime\Microsoft.VisualBasic.Core\47-dotnet_Microsoft.VisualBasic.vbproj">
