@@ -3,7 +3,7 @@
 Public Class ModuleSymbol : Implements Enumeration(Of Expression)
 
     Public Property InternalFunctions As Func()
-    Public Property Exports As String()
+    Public Property Exports As ExportSymbolExpression()
     ''' <summary>
     ''' The module name label
     ''' </summary>
