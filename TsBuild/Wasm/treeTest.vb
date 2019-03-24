@@ -2,6 +2,7 @@
 Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
 Module treeTest
 
@@ -40,7 +41,7 @@ End Module"
         Dim type As String
 
         If parameter.AsClause Is Nothing Then
-            type = name.Last
+            type = Patterns.TypeCharName(name.Last)
             name = name.Substring(0, name.Length - 1)
         Else
             type = GetAsType(parameter.AsClause)
