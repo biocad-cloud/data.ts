@@ -1,4 +1,6 @@
-﻿Module treeTest
+﻿Imports Wasm
+
+Module treeTest
 
     Sub Main()
         Dim code = "Module Main
@@ -15,7 +17,7 @@ End Sub
 
 End Module"
 
-        Dim moduleMain = Wasm.CreateModule(code)
+        Dim moduleMain As ModuleSymbol = Wasm.CreateModule(code)
 
         Pause()
     End Sub

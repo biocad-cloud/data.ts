@@ -276,7 +276,7 @@
     <Compile Include="FunctionParser.vb" />
     <Compile Include="BodyParser.vb" />
     <Compile Include="ExpressionParse.vb" />
-    <Compile Include="Module.vb" />
+    <Compile Include="ModuleSymbol.vb" />
     <Compile Include="Symbols.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
