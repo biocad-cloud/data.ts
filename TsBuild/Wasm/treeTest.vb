@@ -2,6 +2,7 @@
 Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
 Module treeTest
@@ -27,9 +28,13 @@ End Module"
             Dim name = api_method.SubOrFunctionStatement.Identifier.ValueText
             Dim returns = GetAsType(api_method.SubOrFunctionStatement.AsClause)
             Dim body = api_method.Statements.ToArray
-
-            Dim func As New Func With {.Name = name, .Parameters = parameters, .Result = Types.Convert2Wasm(returns)}
-
+            Dim bodyExpressions As New List(Of Expression)
+            Dim func As New Func With {
+                .Name = name,
+                .Parameters = parameters,
+                .Result = Types.Convert2Wasm(returns),
+                .Body = bodyExpressions
+            }
 
             Pause()
         Next
