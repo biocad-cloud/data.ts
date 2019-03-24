@@ -1,5 +1,9 @@
 ﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.CodeAnalysis
+Imports Microsoft.CodeAnalysis.VisualBasic
+Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
 ' how it works
@@ -31,6 +35,21 @@ Public Class Types
 End Class
 
 Public Module Extensions
+
+    Public Function CreateModule(vbcode As String) As ModuleSymbol
+        Dim tree As SyntaxTree = VisualBasicSyntaxTree.ParseText(vbcode)
+        Dim root As CompilationUnitSyntax = tree.GetRoot
+        Dim main As ModuleBlockSyntax = root.Members(Scan0)
+        Dim functions As New List(Of Func)
+
+        For Each method In main.Members.OfType(Of MethodBlockSyntax)
+            functions += method.Parse
+        Next
+
+        Return New ModuleSymbol With {
+            .InternalFunctions = functions
+        }
+    End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     <Extension>
