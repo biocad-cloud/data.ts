@@ -1,22 +1,24 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
-Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
 Module FunctionParser
 
     <Extension>
     Public Function Parse(method As MethodBlockSyntax) As Func
-        Dim parameters = method.BlockStatement.ParameterList.Parameters.Select(AddressOf GetParameterType).ToArray
-        Dim name = method.SubOrFunctionStatement.Identifier.ValueText
-        Dim returns = GetAsType(method.SubOrFunctionStatement.AsClause)
-        Dim body = method.Statements.ToArray
-        Dim bodyExpressions As New List(Of Expression)
-
-        For Each line In body.ExceptType(Of EndBlockStatementSyntax)
-
-        Next
+        Dim parameters = method.BlockStatement _
+            .ParameterList _
+            .Parameters _
+            .Select(AddressOf GetParameterType) _
+            .ToArray
+        Dim name As String = method.SubOrFunctionStatement.Identifier.ValueText
+        Dim returns As Type = GetAsType(method.SubOrFunctionStatement.AsClause)
+        Dim body As StatementSyntax() = method.Statements.ToArray
+        Dim bodyExpressions As Expression() = body _
+            .ExceptType(Of EndBlockStatementSyntax) _
+            .Select(Function(s) s.ParseExpression) _
+            .ToArray
 
         Dim func As New Func With {
             .Name = name,
@@ -48,6 +50,10 @@ Module FunctionParser
             [default] = DirectCast(parameter.Default.Value, LiteralExpressionSyntax).Token.Value
         End If
 
-        Return New NamedValue(Of String)(name, Types.Convert2Wasm(type), [default])
+        Return New NamedValue(Of String) With {
+            .Name = name,
+            .Value = Types.Convert2Wasm(type),
+            .Description = [default]
+        }
     End Function
 End Module
