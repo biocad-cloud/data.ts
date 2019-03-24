@@ -25,9 +25,9 @@ Public Class ModuleSymbol : Inherits Expression
     Public Overrides Function ToSExpression() As String
         Return $"(module 
 
-{Exports.JoinBy(ASCII.LF)} 
+    {Exports.JoinBy(ASCII.LF & "    ")} 
 
-{InternalFunctions.JoinBy(ASCII.LF & ASCII.LF)}
+{InternalFunctions.JoinBy(ASCII.LF & ASCII.LF).LineTokens.Select(Function(line) "    " & line).JoinBy(ASCII.LF)}
 
 )"
     End Function

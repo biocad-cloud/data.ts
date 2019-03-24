@@ -29,7 +29,7 @@ Module BodyParser
         Dim right = assign.Right.ValueExpression
 
         Return New SetLocalVariable With {
-            .var = var,
+            .var = $"${var}",
             .value = right
         }
     End Function
