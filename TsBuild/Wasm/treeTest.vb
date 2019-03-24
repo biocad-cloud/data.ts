@@ -36,6 +36,10 @@ End Module"
                 .Body = bodyExpressions
             }
 
+            For Each line In body.ExceptType(Of EndBlockStatementSyntax)
+
+            Next
+
             Pause()
         Next
 
