@@ -19,6 +19,7 @@ Module BodyParser
         Dim [declare] = statement.Declarators.First
         Dim name$ = [declare].Names.First.Identifier.Value
         Dim type$ = Types.Convert2Wasm(GetType(Double))
+        Dim initValue As Expression = Nothing
 
         If Not [declare].AsClause Is Nothing Then
             type = Types.Convert2Wasm(GetAsType([declare].AsClause))
@@ -28,13 +29,30 @@ Module BodyParser
         End If
 
         If Not [declare].Initializer Is Nothing Then
-
+            initValue = [declare].Initializer.Value.ValueExpression
         End If
 
         Return New DeclareLocal With {
             .name = name,
             .type = type
         }
+    End Function
+
+    <Extension>
+    Public Function ValueExpression(value As ExpressionSyntax) As Expression
+        Select Case value.GetType
+            Case GetType(BinaryExpressionSyntax)
+                Return DirectCast(value, BinaryExpressionSyntax).BinaryStack
+            Case GetType(ParenthesizedExpressionSyntax)
+                Return DirectCast(value, ParenthesizedExpressionSyntax).ParenthesizedStack
+            Case Else
+                Throw New NotImplementedException(value.GetType.FullName)
+        End Select
+    End Function
+
+    <Extension>
+    Public Function ParenthesizedStack(parenthesized As ParenthesizedExpressionSyntax) As Parenthesized
+        Return New Parenthesized With {.Internal = parenthesized.Expression.ValueExpression}
     End Function
 
     <Extension>
