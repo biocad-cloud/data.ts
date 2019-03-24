@@ -274,6 +274,7 @@
   <ItemGroup>
     <Compile Include="FunctionParser.vb" />
     <Compile Include="BodyParser.vb" />
+    <Compile Include="ExpressionParse.vb" />
     <Compile Include="Symbols.vb" />
     <Compile Include="treeTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

@@ -9,9 +9,21 @@ Module BodyParser
         Select Case statement.GetType
             Case GetType(LocalDeclarationStatementSyntax)
                 Return DirectCast(statement, LocalDeclarationStatementSyntax).LocalDeclare
+            Case GetType(AssignmentStatementSyntax)
+                Return DirectCast(statement, AssignmentStatementSyntax).ValueAssign
             Case Else
                 Throw New NotImplementedException(statement.GetType.FullName)
         End Select
+    End Function
+
+    <Extension>
+    Public Function ValueAssign(assign As AssignmentStatementSyntax) As Expression
+        Dim var = DirectCast(assign.Left, IdentifierNameSyntax).Identifier.ValueText
+        Dim right = assign.Right
+
+        Return New SetLocalVariable With {
+            .var = var
+        }
     End Function
 
     <Extension>
@@ -34,29 +46,8 @@ Module BodyParser
 
         Return New DeclareLocal With {
             .name = name,
-            .type = type
+            .type = type,
+            .init = initValue
         }
-    End Function
-
-    <Extension>
-    Public Function ValueExpression(value As ExpressionSyntax) As Expression
-        Select Case value.GetType
-            Case GetType(BinaryExpressionSyntax)
-                Return DirectCast(value, BinaryExpressionSyntax).BinaryStack
-            Case GetType(ParenthesizedExpressionSyntax)
-                Return DirectCast(value, ParenthesizedExpressionSyntax).ParenthesizedStack
-            Case Else
-                Throw New NotImplementedException(value.GetType.FullName)
-        End Select
-    End Function
-
-    <Extension>
-    Public Function ParenthesizedStack(parenthesized As ParenthesizedExpressionSyntax) As Parenthesized
-        Return New Parenthesized With {.Internal = parenthesized.Expression.ValueExpression}
-    End Function
-
-    <Extension>
-    Public Function BinaryStack(expression As BinaryExpressionSyntax) As FuncInvoke
-
     End Function
 End Module

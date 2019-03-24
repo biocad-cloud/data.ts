@@ -53,10 +53,10 @@ End Class
 Public Class LiteralExpression : Inherits Expression
 
     Public Property type As Type
-    Public Property value As Object
+    Public Property value As String
 
     Public Overrides Function ToSExpression() As String
-        Return $"{Types.Convert2Wasm(type)}.const {value}"
+        Return $"({Types.Convert2Wasm(type)}.const {value})"
     End Function
 End Class
 
