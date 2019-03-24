@@ -1,111 +1,114 @@
-﻿''' <summary>
-''' 一般的函数调用表达式，也包括运算符运算
-''' </summary>
-Public Class FuncInvoke : Inherits Expression
+﻿Namespace Symbols
 
     ''' <summary>
-    ''' Function reference string
+    ''' 一般的函数调用表达式，也包括运算符运算
     ''' </summary>
-    ''' <returns></returns>
-    Public Property Reference As String
-    Public Property Parameters As Expression()
+    Public Class FuncInvoke : Inherits Expression
 
-    Public Overrides Function ToSExpression() As String
-        Return $"(call {Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
-    End Function
-End Class
+        ''' <summary>
+        ''' Function reference string
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Reference As String
+        Public Property Parameters As Expression()
 
-Public Class LiteralExpression : Inherits Expression
+        Public Overrides Function ToSExpression() As String
+            Return $"(call {Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
+        End Function
+    End Class
 
-    Public Property type As Type
-    Public Property value As String
+    Public Class LiteralExpression : Inherits Expression
 
-    Public Overrides Function ToSExpression() As String
-        Return $"({Types.Convert2Wasm(type)}.const {value})"
-    End Function
-End Class
+        Public Property type As Type
+        Public Property value As String
 
-Public Class GetLocalVariable : Inherits Expression
+        Public Overrides Function ToSExpression() As String
+            Return $"({Types.Convert2Wasm(type)}.const {value})"
+        End Function
+    End Class
 
-    Public Property var As String
+    Public Class GetLocalVariable : Inherits Expression
 
-    Public Overrides Function ToSExpression() As String
-        Return $"(local.get {var})"
-    End Function
-End Class
+        Public Property var As String
 
-Public Class SetLocalVariable : Inherits Expression
+        Public Overrides Function ToSExpression() As String
+            Return $"(local.get {var})"
+        End Function
+    End Class
 
-    Public Property var As String
-    Public Property value As Expression
+    Public Class SetLocalVariable : Inherits Expression
 
-    Public Overrides Function ToSExpression() As String
-        Return $"(local.set {var} ({value}))"
-    End Function
-End Class
+        Public Property var As String
+        Public Property value As Expression
 
-Public Class GetGlobalVariable : Inherits Expression
+        Public Overrides Function ToSExpression() As String
+            Return $"(local.set {var} ({value}))"
+        End Function
+    End Class
 
-    Public Property var As String
+    Public Class GetGlobalVariable : Inherits Expression
 
-    Public Overrides Function ToSExpression() As String
-        Return $"(global.get {var})"
-    End Function
-End Class
+        Public Property var As String
 
-Public Class SetGlobalVariable : Inherits Expression
+        Public Overrides Function ToSExpression() As String
+            Return $"(global.get {var})"
+        End Function
+    End Class
 
-    Public Property var As String
+    Public Class SetGlobalVariable : Inherits Expression
 
-    Public Overrides Function ToSExpression() As String
-        Return $"(global.set {var})"
-    End Function
-End Class
+        Public Property var As String
 
-Public Class DeclareLocal : Inherits Expression
+        Public Overrides Function ToSExpression() As String
+            Return $"(global.set {var})"
+        End Function
+    End Class
 
-    Public Property name As String
-    Public Property type As String
-    Public Property init As Expression
+    Public Class DeclareLocal : Inherits Expression
 
-    Public Overrides Function ToSExpression() As String
-        If init Is Nothing Then
-            Return $"(local {name} {type})"
-        Else
-            Return $"(local {name} {type}) 
+        Public Property name As String
+        Public Property type As String
+        Public Property init As Expression
+
+        Public Overrides Function ToSExpression() As String
+            If init Is Nothing Then
+                Return $"(local {name} {type})"
+            Else
+                Return $"(local {name} {type}) 
 {New SetLocalVariable With {.var = name, .value = init}.ToSExpression}"
-        End If
-    End Function
-End Class
+            End If
+        End Function
+    End Class
 
-Public Class Parenthesized : Inherits Expression
+    Public Class Parenthesized : Inherits Expression
 
-    Public Property Internal As Expression
+        Public Property Internal As Expression
 
-    Public Overrides Function ToSExpression() As String
-        Return $"$ParenthesizedStack {Internal}"
-    End Function
-End Class
+        Public Overrides Function ToSExpression() As String
+            Return $"$ParenthesizedStack {Internal}"
+        End Function
+    End Class
 
-Public Class ExportSymbolExpression : Inherits Expression
+    Public Class ExportSymbolExpression : Inherits Expression
 
-    ''' <summary>
-    ''' 在对象进行导出的时候对外的名称
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property Name As String
-    ''' <summary>
-    ''' 导出对象的类型，一般为``func``函数类型
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property type As String
-    ''' <summary>
-    ''' 目标对象在模块内部的引用名称
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property target As String
+        ''' <summary>
+        ''' 在对象进行导出的时候对外的名称
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Name As String
+        ''' <summary>
+        ''' 导出对象的类型，一般为``func``函数类型
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property type As String
+        ''' <summary>
+        ''' 目标对象在模块内部的引用名称
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property target As String
 
-    Public Overrides Function ToSExpression() As String
-        Return $"(export ""{Name}"" ({type} {target}))"
-    End Function
-End Class
+        Public Overrides Function ToSExpression() As String
+            Return $"(export ""{Name}"" ({type} {target}))"
+        End Function
+    End Class
+End Namespace

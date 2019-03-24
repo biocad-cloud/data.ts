@@ -1,9 +1,12 @@
-﻿Public MustInherit Class Expression
+﻿Namespace Symbols
 
-    Public MustOverride Function ToSExpression() As String
+    Public MustInherit Class Expression
 
-    Public Overrides Function ToString() As String
-        Return ToSExpression()
-    End Function
+        Public MustOverride Function ToSExpression() As String
 
-End Class
+        Public Overrides Function ToString() As String
+            Return ToSExpression()
+        End Function
+
+    End Class
+End Namespace
