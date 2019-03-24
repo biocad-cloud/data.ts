@@ -20,11 +20,16 @@ End Module"
 
         Dim main As ModuleBlockSyntax = root.Members(Scan0)
 
+
+
         For Each api_method In main.Members.OfType(Of MethodBlockSyntax)
             Dim parameters = api_method.BlockStatement.ParameterList.Parameters.Select(AddressOf GetParameterType).ToArray
             Dim name = api_method.SubOrFunctionStatement.Identifier.ValueText
             Dim returns = GetAsType(api_method.SubOrFunctionStatement.AsClause)
             Dim body = api_method.Statements.ToArray
+
+            Dim func As New Func With {.Name = name, .Parameters = parameters, .Result = returns}
+
 
             Pause()
         Next
