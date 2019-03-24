@@ -4,6 +4,8 @@ Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
+Imports Wasm.Symbols
+Imports Wasm.Symbols.Parser
 
 Public Module Extensions
 

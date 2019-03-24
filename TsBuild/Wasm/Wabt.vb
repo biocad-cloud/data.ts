@@ -2,6 +2,7 @@
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.CommandLine
 Imports Microsoft.VisualBasic.Language
+Imports Wasm.Symbols
 
 ''' <summary>
 ''' WebAssembly ``S-Expression`` compiler

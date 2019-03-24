@@ -1,4 +1,5 @@
 ﻿Imports Wasm
+Imports Wasm.Symbols
 
 Module treeTest
 
