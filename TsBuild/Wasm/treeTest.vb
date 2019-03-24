@@ -11,10 +11,13 @@ Module treeTest
         Dim code = "Module MNain
 
 Public Function Main(x As Integer, Optional y& = 99) As Long
-Dim z =(1+1 + x) 
+
+Dim z  =(1+1 + x) 
+Dim a& = 88888
+
 x = z * y ^2
 
-return x / 99
+return x / 99 + a
 End Sub
 
 End Module"

@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
 ' how it works
 ' 
@@ -14,10 +15,16 @@ Public Class Types
         {GetType(Double), "f64"}
     }
 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Shared Function TypeCharWasm(c As Char) As String
+        Return Convert2Wasm(Scripting.GetType(Patterns.TypeCharName(c)))
+    End Function
+
 End Class
 
 Public Module Extensions
 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
     <Extension>
     Friend Function param(a As NamedValue(Of String)) As String
         Return $"(param {a.Name} {a.Value})"

@@ -97,6 +97,7 @@ Public Class DeclareLocal : Inherits Expression
 
     Public Property name As String
     Public Property type As String
+    Public Property init As String
 
     Public Overrides Function ToSExpression() As String
         Return $"(local {name} {type})"
