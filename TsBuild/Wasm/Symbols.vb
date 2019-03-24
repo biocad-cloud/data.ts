@@ -29,13 +29,6 @@ Public Class FuncInvoke : Inherits Expression
     Public Property Parameters As Expression()
 
     Public Overrides Function ToSExpression() As String
-        Return $"({Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
-    End Function
-End Class
-
-Public Class MethodCall : Inherits FuncInvoke
-
-    Public Overrides Function ToSExpression() As String
         Return $"(call {Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
     End Function
 End Class
@@ -65,7 +58,7 @@ Public Class GetLocalVariable : Inherits Expression
     Public Property var As String
 
     Public Overrides Function ToSExpression() As String
-        Return $"(get_local {var})"
+        Return $"(local.get {var})"
     End Function
 End Class
 
@@ -75,7 +68,7 @@ Public Class SetLocalVariable : Inherits Expression
     Public Property value As Expression
 
     Public Overrides Function ToSExpression() As String
-        Return $"(set_local {var} ({value}))"
+        Return $"(local.set {var} ({value}))"
     End Function
 End Class
 
@@ -84,7 +77,7 @@ Public Class GetGlobalVariable : Inherits Expression
     Public Property var As String
 
     Public Overrides Function ToSExpression() As String
-        Return $"(get_global {var})"
+        Return $"(global.get {var})"
     End Function
 End Class
 
@@ -93,7 +86,7 @@ Public Class SetGlobalVariable : Inherits Expression
     Public Property var As String
 
     Public Overrides Function ToSExpression() As String
-        Return $"(set_global {var})"
+        Return $"(global.set {var})"
     End Function
 End Class
 
