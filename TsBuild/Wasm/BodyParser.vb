@@ -20,7 +20,7 @@ Module BodyParser
 
     <Extension>
     Public Function ValueReturn(returnValue As ReturnStatementSyntax) As Expression
-
+        Return returnValue.Expression.ValueExpression
     End Function
 
     <Extension>
