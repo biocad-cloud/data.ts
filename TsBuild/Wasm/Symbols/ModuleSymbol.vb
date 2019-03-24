@@ -27,6 +27,10 @@ Namespace Symbols
         Public Overrides Function ToSExpression() As String
             Return $"(module ;; Module {LabelName}
 
+    ;; Math function imports
+    (import ""env"" ""exp"" (func ""$exp"" (param f64) (result f64)))
+    (import ""env"" ""pow"" (func ""$pow"" (param f64) (param f64) (result f64)))
+
     {Exports.JoinBy(ASCII.LF & "    ")} 
 
 {InternalFunctions.JoinBy(ASCII.LF & ASCII.LF).LineTokens.Select(Function(line) "    " & line).JoinBy(ASCII.LF)}

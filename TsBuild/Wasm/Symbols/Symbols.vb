@@ -12,6 +12,7 @@
         Public Property Reference As String
         Public Property Parameters As Expression()
         Public Property [operator] As Boolean
+        Public Property callImports As Boolean
 
         Public Overrides Function ToSExpression() As String
             Dim arguments = Parameters _
@@ -22,6 +23,8 @@
 
             If [operator] Then
                 Return $"({Reference} {arguments})"
+            ElseIf callImports Then
+                Return $"(call_import {Reference} {arguments})"
             Else
                 Return $"(call {Reference} {arguments})"
             End If

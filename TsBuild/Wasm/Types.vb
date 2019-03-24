@@ -19,7 +19,7 @@ Public Class Types
         {"-", "sub"},
         {"*", "mul"},
         {"/", "div"},
-        {"^", "pow"}
+        {"^", "$pow"}
     }
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>

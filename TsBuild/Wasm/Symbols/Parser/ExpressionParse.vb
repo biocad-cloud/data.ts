@@ -112,12 +112,21 @@ Namespace Symbols.Parser
             Dim left = expression.Left.ValueExpression
             Dim right = expression.Right.ValueExpression
             Dim op$ = expression.OperatorToken.ValueText
+            Dim funcOpName$ = Types.Operators(op)
+            Dim callImports As Boolean = False
+
+            If funcOpName.First = "$"c Then
+                callImports = True
+            Else
+                funcOpName = $"{Types.Convert2Wasm(GetType(Double))}.{funcOpName}"
+            End If
 
             ' 需要根据类型来决定操作符函数的类型来源
             Return New FuncInvoke With {
                 .Parameters = {left, right},
-                .Reference = $"{Types.Convert2Wasm(GetType(Double))}.{Types.Operators(op)}",
-                .[operator] = True
+                .Reference = funcOpName,
+                .[operator] = Not callImports,
+                .callImports = callImports
             }
         End Function
     End Module
