@@ -9,10 +9,15 @@ Imports Wasm.Symbols
 ''' </summary>
 Public Module Wabt
 
-    ReadOnly wat2wasm$ = App.GetAppSysTempFile(".bin", App.PID) & "/wat2wasm.exe"
+    ReadOnly wat2wasm$ = App.ProductSharedDIR & "/wabt_bin/wat2wasm.exe"
 
     Sub New()
-        With App.GetAppSysTempFile(".zip", App.PID)
+        If wat2wasm.FileExists Then
+            Return
+        End If
+
+        ' Release compiler if not exists.
+        With App.GetAppSysTempFile(".zip")
             Call My.Resources.wabt_1_0_10_win64.FlushStream(.ByRef)
             Call ZipLib.ImprovedExtractToDirectory(.ByRef, wat2wasm.ParentPath, Overwrite.Always)
 

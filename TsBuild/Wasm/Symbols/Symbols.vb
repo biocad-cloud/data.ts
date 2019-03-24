@@ -85,7 +85,7 @@
         Public Property Internal As Expression
 
         Public Overrides Function ToSExpression() As String
-            Return $"$ParenthesizedStack {Internal}"
+            Return $"call $ParenthesizedStack {Internal}"
         End Function
     End Class
 
