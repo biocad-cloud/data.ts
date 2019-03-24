@@ -72,9 +72,10 @@ End Class
 Public Class SetLocalVariable : Inherits Expression
 
     Public Property var As String
+    Public Property value As Expression
 
     Public Overrides Function ToSExpression() As String
-        Return $"(set_local {var})"
+        Return $"(set_local {var} ({value}))"
     End Function
 End Class
 

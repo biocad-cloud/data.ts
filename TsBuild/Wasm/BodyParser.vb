@@ -11,18 +11,26 @@ Module BodyParser
                 Return DirectCast(statement, LocalDeclarationStatementSyntax).LocalDeclare
             Case GetType(AssignmentStatementSyntax)
                 Return DirectCast(statement, AssignmentStatementSyntax).ValueAssign
+            Case GetType(ReturnStatementSyntax)
+                Return DirectCast(statement, ReturnStatementSyntax).ValueReturn
             Case Else
                 Throw New NotImplementedException(statement.GetType.FullName)
         End Select
     End Function
 
     <Extension>
+    Public Function ValueReturn(returnValue As ReturnStatementSyntax) As Expression
+
+    End Function
+
+    <Extension>
     Public Function ValueAssign(assign As AssignmentStatementSyntax) As Expression
         Dim var = DirectCast(assign.Left, IdentifierNameSyntax).Identifier.ValueText
-        Dim right = assign.Right
+        Dim right = assign.Right.ValueExpression
 
         Return New SetLocalVariable With {
-            .var = var
+            .var = var,
+            .value = right
         }
     End Function
 
