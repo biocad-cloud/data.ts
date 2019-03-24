@@ -14,10 +14,16 @@
         Public Property [operator] As Boolean
 
         Public Overrides Function ToSExpression() As String
+            Dim arguments = Parameters _
+                .Select(Function(a)
+                            Return a.ToSExpression
+                        End Function) _
+                .JoinBy(" ")
+
             If [operator] Then
-                Return $"({Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
+                Return $"({Reference} {arguments})"
             Else
-                Return $"(call {Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
+                Return $"(call {Reference} {arguments})"
             End If
         End Function
     End Class
@@ -47,7 +53,7 @@
         Public Property value As Expression
 
         Public Overrides Function ToSExpression() As String
-            Return $"(local.set {var} ({value}))"
+            Return $"(local.set {var} {value})"
         End Function
     End Class
 
@@ -90,7 +96,7 @@
         Public Property Internal As Expression
 
         Public Overrides Function ToSExpression() As String
-            Return $"call $ParenthesizedStack {Internal}"
+            Return $"{Internal}"
         End Function
     End Class
 

@@ -13,21 +13,7 @@ Public Module Extensions
         Dim tree As SyntaxTree = VisualBasicSyntaxTree.ParseText(vbcode)
         Dim root As CompilationUnitSyntax = tree.GetRoot
         Dim main As ModuleBlockSyntax = root.Members(Scan0)
-        Dim functions As New List(Of FuncSymbol) From {
-            New FuncSymbol With {
-                .Name = "$ParenthesizedStack",
-                .Parameters = {
-                    New NamedValue(Of String) With {
-                        .Name = "$any",
-                        .Value = Types.Convert2Wasm(GetType(Double))
-                    }
-                },
-                .Body = {
-                    New GetLocalVariable With {.var = "$any"}
-                },
-                .Result = Types.Convert2Wasm(GetType(Double))
-            }
-        }
+        Dim functions As New List(Of FuncSymbol)
         Dim exports As New List(Of ExportSymbolExpression)
 
         For Each method In main.Members.OfType(Of MethodBlockSyntax)
