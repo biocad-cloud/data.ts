@@ -27,6 +27,9 @@ End Module"
 
         Console.WriteLine(moduleMain.ToSExpression)
 
+        ' compile vbcode to webassembly
+        Call moduleMain.Compile("X:\test.wasm")
+
         Pause()
     End Sub
 

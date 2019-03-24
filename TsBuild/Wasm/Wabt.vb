@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ApplicationServices
+Imports Microsoft.VisualBasic.CommandLine
 Imports Microsoft.VisualBasic.Language
 
 ''' <summary>
@@ -26,10 +27,16 @@ Public Module Wabt
     ''' <param name="[module]"></param>
     ''' <returns></returns>
     <Extension>
-    Public Function Compile([module] As ModuleSymbol) As String
+    Public Function Compile([module] As ModuleSymbol, output$, Optional verbos As Boolean = True) As String
         With App.GetAppSysTempFile(".wast", App.PID)
-            Call [module].ToSExpression.SaveTo(.ByRef)
+            Call [module] _
+                .ToSExpression _
+                .SaveTo(.ByRef)
 
+            With New IORedirectFile(wat2wasm, $"{ .CLIPath} {"" Or "-v".When(verbos)}")
+                Call .Run()
+                Return .StandardOutput
+            End With
         End With
     End Function
 End Module
