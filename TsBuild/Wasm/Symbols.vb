@@ -11,7 +11,7 @@ Public Class Func : Inherits Expression
 
     Public Overrides Function ToSExpression() As String
         Return $"(func {Name} {Parameters.Select(Function(a) a.param).JoinBy(" ")} (result {Result})
-    {Body.SafeQuery.Select(Function(b) b.ToSExpression).JoinBy(ASCII.LF)}
+    {Body.SafeQuery.Select(Function(b) b.ToSExpression).JoinBy(ASCII.LF & "    ")}
 )"
     End Function
 End Class
@@ -29,14 +29,14 @@ Public Class FuncInvoke : Inherits Expression
     Public Property Parameters As Expression()
 
     Public Overrides Function ToSExpression() As String
-        Return $"({Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(ASCII.LF)})"
+        Return $"({Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
     End Function
 End Class
 
 Public Class MethodCall : Inherits FuncInvoke
 
     Public Overrides Function ToSExpression() As String
-        Return $"(call {Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(ASCII.LF)})"
+        Return $"(call {Reference} {Parameters.Select(Function(a) a.ToSExpression).JoinBy(" ")})"
     End Function
 End Class
 
@@ -107,7 +107,8 @@ Public Class DeclareLocal : Inherits Expression
         If init Is Nothing Then
             Return $"(local {name} {type})"
         Else
-            Return $"(local {name} {type} {init})"
+            Return $"(local {name} {type}) 
+{New SetLocalVariable With {.var = name, .value = init}.ToSExpression}"
         End If
     End Function
 End Class
@@ -117,7 +118,7 @@ Public Class Parenthesized : Inherits Expression
     Public Property Internal As Expression
 
     Public Overrides Function ToSExpression() As String
-        Return $"( {Internal} )"
+        Return $"$ParenthesizedStack {Internal}"
     End Function
 End Class
 

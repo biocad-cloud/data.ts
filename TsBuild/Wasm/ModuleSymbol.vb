@@ -23,6 +23,12 @@ Public Class ModuleSymbol : Inherits Expression
     End Function
 
     Public Overrides Function ToSExpression() As String
-        Return $"(module {Exports.JoinBy(ASCII.LF)} {InternalFunctions.JoinBy(ASCII.LF)})"
+        Return $"(module 
+
+{Exports.JoinBy(ASCII.LF)} 
+
+{InternalFunctions.JoinBy(ASCII.LF & ASCII.LF)}
+
+)"
     End Function
 End Class
