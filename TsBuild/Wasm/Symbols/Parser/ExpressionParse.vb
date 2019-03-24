@@ -126,7 +126,7 @@ Namespace Symbols.Parser
                 .Parameters = {left, right},
                 .Reference = funcOpName,
                 .[operator] = Not callImports,
-                .callImports = callImports
+                .callImports = False
             }
         End Function
     End Module

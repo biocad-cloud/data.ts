@@ -28,8 +28,8 @@ Namespace Symbols
             Return $"(module ;; Module {LabelName}
 
     ;; Math function imports
-    (import ""env"" ""exp"" (func ""$exp"" (param f64) (result f64)))
-    (import ""env"" ""pow"" (func ""$pow"" (param f64) (param f64) (result f64)))
+    (func $exp (import ""Math"" ""exp"") (param f64) (result f64))
+    (func $pow (import ""Math"" ""pow"") (param f64) (param f64) (result f64))
 
     {Exports.JoinBy(ASCII.LF & "    ")} 
 
