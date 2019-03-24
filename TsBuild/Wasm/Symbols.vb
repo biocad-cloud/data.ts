@@ -16,6 +16,9 @@ Public Class Func : Inherits Expression
     End Function
 End Class
 
+''' <summary>
+''' 一般的函数调用表达式，也包括运算符运算
+''' </summary>
 Public Class FuncInvoke : Inherits Expression
 
     ''' <summary>
@@ -97,9 +100,22 @@ Public Class DeclareLocal : Inherits Expression
 
     Public Property name As String
     Public Property type As String
-    Public Property init As String
+    Public Property init As Expression
 
     Public Overrides Function ToSExpression() As String
-        Return $"(local {name} {type})"
+        If init Is Nothing Then
+            Return $"(local {name} {type})"
+        Else
+            Return $"(local {name} {type} {init})"
+        End If
+    End Function
+End Class
+
+Public Class Parenthesized : Inherits Expression
+
+    Public Property Internal As Expression
+
+    Public Overrides Function ToSExpression() As String
+        Return $"( {Internal} )"
     End Function
 End Class

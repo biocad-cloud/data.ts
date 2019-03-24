@@ -27,9 +27,18 @@ Module BodyParser
             name = name.Substring(0, name.Length - 1)
         End If
 
+        If Not [declare].Initializer Is Nothing Then
+
+        End If
+
         Return New DeclareLocal With {
             .name = name,
             .type = type
         }
+    End Function
+
+    <Extension>
+    Public Function BinaryStack(expression As BinaryExpressionSyntax) As FuncInvoke
+
     End Function
 End Module

@@ -15,6 +15,14 @@ Public Class Types
         {GetType(Double), "f64"}
     }
 
+    Public Shared ReadOnly Property Operators As New Dictionary(Of String, String) From {
+        {"+", "add"},
+        {"-", "sub"},
+        {"*", "mul"},
+        {"/", "div"},
+        {"^", "pow"}
+    }
+
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Shared Function TypeCharWasm(c As Char) As String
         Return Convert2Wasm(Scripting.GetType(Patterns.TypeCharName(c)))
