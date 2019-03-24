@@ -276,6 +276,7 @@
     <Compile Include="Extensions.vb" />
     <Compile Include="Symbols\FuncSymbol.vb" />
     <Compile Include="Symbols\Expression.vb" />
+    <Compile Include="Symbols\ExportSymbol.vb" />
     <Compile Include="Symbols\Parser\FunctionParser.vb" />
     <Compile Include="Symbols\Parser\BodyParser.vb" />
     <Compile Include="Symbols\Parser\ExpressionParse.vb" />
