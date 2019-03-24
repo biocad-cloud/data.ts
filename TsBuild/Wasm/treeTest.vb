@@ -28,6 +28,8 @@ End Module"
         For Each api_method In main.Members.OfType(Of MethodBlockSyntax)
             Dim func = api_method.Parse
 
+            Call Console.WriteLine(func.ToSExpression)
+
             Pause()
         Next
 
