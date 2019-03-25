@@ -1,4 +1,4 @@
-﻿/// <reference path="TS.ts" />
+﻿/// <reference path="./Abstracts/TS.ts" />
 /// <reference path="../../Data/StringHelpers/URL.ts" />
 /// <reference path="../../Data/StringHelpers/PathHelper.ts" />
 /// <reference path="../Modes.ts" />
@@ -11,31 +11,6 @@
 namespace Internal {
 
     export const StringEval = new Handlers.stringEval();
-
-    const warningLevel: number = Modes.development;
-    const anyoutputLevel: number = Modes.debug;
-    const errorOnly: number = Modes.production;
-
-    /**
-     * 应用程序的开发模式：只会输出框架的警告信息
-    */
-    export function outputWarning(): boolean {
-        return $ts.mode <= warningLevel;
-    }
-
-    /**
-     * 框架开发调试模式：会输出所有的调试信息到终端之上
-    */
-    export function outputEverything(): boolean {
-        return $ts.mode == anyoutputLevel;
-    }
-
-    /**
-     * 生产模式：只会输出错误信息
-    */
-    export function outputError(): boolean {
-        return $ts.mode == errorOnly;
-    }
 
     /**
      * 对``$ts``对象的内部实现过程在这里
@@ -76,6 +51,9 @@ namespace Internal {
                 }
             });
         };
+        ts.getText = function (url: string, callback: (text: string) => void) {
+            HttpHelpers.GetAsyn(urlSolver(url), callback);
+        }
         ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
             HttpHelpers.GetAsyn(urlSolver(url), function (response) {
                 if (callback) {
@@ -121,13 +99,29 @@ namespace Internal {
 
         location.path = url.path || "/";
         location.fileName = url.fileName;
-        location.hash = function (trimprefix: boolean = true) {
-            var tag = window.location.hash;
-
-            if (tag && trimprefix && (tag.length > 1)) {
-                return tag.substr(1);
+        location.hash = function (arg: hashArgument | boolean = { trimprefix: true, doJump: false }, urlhash: string = null) {
+            if (!isNullOrUndefined(urlhash)) {
+                if (((typeof arg == "boolean") && (arg === true)) || (<hashArgument>arg).doJump) {
+                    window.location.hash = urlhash;
+                } else {
+                    TypeScript.URL.SetHash(urlhash);
+                }
             } else {
-                return isNullOrUndefined(tag) ? "" : tag;
+                // 获取当前url字符串之中hash标签值
+                var tag = window.location.hash;
+                var trimprefix: boolean;
+
+                if (typeof arg == "boolean") {
+                    trimprefix = arg;
+                } else {
+                    trimprefix = arg.trimprefix;
+                }
+
+                if (tag && trimprefix && (tag.length > 1)) {
+                    return tag.substr(1);
+                } else {
+                    return isNullOrUndefined(tag) ? "" : tag;
+                }
             }
         }
 
@@ -224,7 +218,7 @@ namespace Internal {
                 eval: Delegate.Func<any>
             } = <any>frame.contentWindow;
 
-            if (Internal.outputEverything()) {
+            if (TypeScript.logging.outputEverything) {
                 console.log(fun);
             }
 

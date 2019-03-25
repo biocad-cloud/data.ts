@@ -112,6 +112,9 @@
     <TypeScriptCompile Include="DOM\Extensions\TypeScriptExtends.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Framework\Define\Abstracts\TypeScriptArgument.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Delegate.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -178,7 +181,7 @@
     <TypeScriptCompile Include="DOM\Extensions\HTMLTsElement.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\Define\TS.ts">
+    <TypeScriptCompile Include="Framework\Define\Abstracts\TS.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Define\Internal.ts">
@@ -234,6 +237,7 @@
     <Folder Include="Data\StackTrace\" />
     <Folder Include="DOM\Extensions\" />
     <Folder Include="Framework\Define\Handlers\" />
+    <Folder Include="Framework\Define\Abstracts\" />
     <Folder Include="Helpers\Canvas\" />
     <Folder Include="Helpers\Http\" />
     <Folder Include="Framework\" />
@@ -249,7 +253,7 @@
     <Compile Include="Helpers\Http\Imports.ts">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Framework\Define\TagNameMaps.ts">
+    <Compile Include="Framework\Define\Abstracts\TagNameMaps.ts">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

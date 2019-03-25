@@ -86,7 +86,7 @@ namespace Internal.Handlers {
                     .getElementById(query.expression);
 
                 if (isNullOrUndefined(node)) {
-                    if (Internal.outputWarning()) {
+                    if (TypeScript.logging.outputWarning) {
                         console.warn(`Unable to found a node which its ID='${expr}'!`);
                     }
 
@@ -108,7 +108,7 @@ namespace Internal.Handlers {
                 return DOM.metaValue(query.expression, (args || {})["default"], context != window);
             } else {
 
-                if (Internal.outputEverything()) {
+                if (TypeScript.logging.outputEverything) {
                     console.warn(`Apply querySelector for expression: '${query.expression}', no typescript extension was made!`);
                 }
 
@@ -162,7 +162,16 @@ namespace Internal.Handlers {
                     } else {
                         node.setAttribute(name, <string>classVals);
                     }
+                } else if (name == "style") {
 
+                    if (typeof attrs == "string") {
+                        node.setAttribute(name, attrs);
+                    } else {
+                        // node.style是一个只读属性，无法直接赋值
+                        for (var propertyName in attrs) {
+                            node.style[propertyName] = attrs[propertyName];
+                        }
+                    }
                 } else {
                     node.setAttribute(name, <string>attrs[name]);
                 }

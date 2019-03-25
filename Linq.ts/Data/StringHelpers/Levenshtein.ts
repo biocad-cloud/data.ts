@@ -51,4 +51,11 @@
 
         return d.ToArray(false);
     }
+
+    export function ComputeDistance(source: string, target: string, score: IScoreFunc = defaultScore): number {
+        let d: number[][] = DistanceMatrix(source, target, score);
+        let distance: number = d[d.length - 1][d[0].length - 1];
+
+        return distance;
+    }
 }
