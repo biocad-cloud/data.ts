@@ -8,24 +8,31 @@ Namespace Symbols.Parser
     Module FunctionParser
 
         <Extension>
+        Public Function FuncVariable(method As MethodBlockSyntax) As NamedValue(Of String)
+            Dim name As String = method.SubOrFunctionStatement.Identifier.ValueText
+            Dim returns As Type = GetAsType(method.SubOrFunctionStatement.AsClause)
+
+            Return New NamedValue(Of String) With {
+                .Name = name,
+                .Value = Types.Convert2Wasm(returns)
+            }
+        End Function
+
+        <Extension>
         Public Function Parse(method As MethodBlockSyntax) As FuncSymbol
             Dim parameters = method.BlockStatement _
                 .ParameterList _
                 .Parameters _
                 .Select(AddressOf ParseParameter) _
                 .ToArray
-            Dim name As String = method.SubOrFunctionStatement.Identifier.ValueText
-            Dim returns As Type = GetAsType(method.SubOrFunctionStatement.AsClause)
             Dim body As StatementSyntax() = method.Statements.ToArray
             Dim bodyExpressions As Expression() = body _
                 .ExceptType(Of EndBlockStatementSyntax) _
                 .Select(Function(s) s.ParseExpression) _
                 .ToArray
 
-            Dim func As New FuncSymbol With {
-                .Name = name,
+            Dim func As New FuncSymbol(method.FuncVariable) With {
                 .Parameters = parameters,
-                .Result = Types.Convert2Wasm(returns),
                 .Body = bodyExpressions
             }
 

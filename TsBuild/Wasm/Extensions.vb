@@ -15,6 +15,7 @@ Public Module Extensions
         Dim main As ModuleBlockSyntax = root.Members(Scan0)
         Dim functions As New List(Of FuncSymbol)
         Dim exports As New List(Of ExportSymbolExpression)
+        Dim symbolTable As New SymbolTable(main.Members.OfType(Of MethodBlockSyntax))
 
         For Each method In main.Members.OfType(Of MethodBlockSyntax)
             functions += method.Parse

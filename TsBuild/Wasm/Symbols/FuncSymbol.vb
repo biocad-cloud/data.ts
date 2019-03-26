@@ -1,15 +1,31 @@
-﻿Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Text
 
 Namespace Symbols
 
-    Public MustInherit Class FuncSignature : Inherits Expression
+    Public Class FuncSignature : Inherits Expression
 
         Public Property Name As String
         Public Property Parameters As NamedValue(Of String)()
         Public Property Result As String
 
+        Friend Sub New()
+        End Sub
+
+        Friend Sub New(var As NamedValue(Of String))
+            Name = var.Name
+            Result = var.Value
+        End Sub
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Throw New NotImplementedException()
+        End Function
+
+        Public Overrides Function ToSExpression() As String
+            Throw New NotImplementedException()
+        End Function
     End Class
 
     Public Class FuncSymbol : Inherits FuncSignature
@@ -21,6 +37,14 @@ Namespace Symbols
                 Return $"Public Function {Name} ({Parameters.Select(Function(a) $"{a.Name} As {a.Value}").JoinBy(", ")}) As {Result}"
             End Get
         End Property
+
+        Sub New()
+        End Sub
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Friend Sub New(funcVar As NamedValue(Of String))
+            Call MyBase.New(funcVar)
+        End Sub
 
         ''' <summary>
         ''' 因为webassembly只允许变量必须要定义在最开始的位置
