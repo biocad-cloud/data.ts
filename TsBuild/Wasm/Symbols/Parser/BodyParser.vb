@@ -33,11 +33,10 @@ Namespace Symbols.Parser
             Dim var = DirectCast(assign.Left, IdentifierNameSyntax).Identifier.ValueText
             Dim right = assign.Right.ValueExpression(symbols)
             Dim typeL As String = symbols.GetObjectSymbol(var).type
-            Dim typeR As String = right.TypeInfer(symbols)
 
             Return New SetLocalVariable With {
                 .var = var,
-                .value = right
+                .value = CTypeParser.CType(typeL, right, symbols)
             }
         End Function
 
@@ -57,6 +56,7 @@ Namespace Symbols.Parser
 
             If Not [declare].Initializer Is Nothing Then
                 initValue = [declare].Initializer.Value.ValueExpression(symbols)
+                initValue = CTypeParser.CType(type, initValue, symbols)
             End If
 
             Return New DeclareLocal With {
