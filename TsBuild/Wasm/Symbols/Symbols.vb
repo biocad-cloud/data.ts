@@ -43,16 +43,16 @@ Namespace Symbols
 
     Public Class LiteralExpression : Inherits Expression
 
-        Public Property type As Type
+        Public Property type As String
         Public Property value As String
 
         Public Overrides Function ToSExpression() As String
-            Return $"({TypeInfer(Nothing)}.const {value})"
+            Return $"({type}.const {value})"
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return Types.Convert2Wasm(type)
+            Return type
         End Function
     End Class
 

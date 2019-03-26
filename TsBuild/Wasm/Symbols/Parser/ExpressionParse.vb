@@ -31,7 +31,7 @@ Namespace Symbols.Parser
             Dim op$ = unary.OperatorToken.ValueText
             Dim right = unary.Operand.ValueExpression(symbols)
             Dim left = New LiteralExpression With {
-                .type = GetType(Integer),
+                .type = right.TypeInfer(symbols),
                 .value = 0
             }
 
@@ -95,7 +95,7 @@ Namespace Symbols.Parser
             Dim type As Type = value.GetType
 
             Return New LiteralExpression With {
-                .type = type,
+                .type = Types.Convert2Wasm(type),
                 .value = value
             }
         End Function
