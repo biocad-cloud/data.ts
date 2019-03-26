@@ -21,5 +21,13 @@
         Public Overrides Function ToSExpression() As String
             Return $"(export ""{Name}"" ({type} ${target}))"
         End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            If type = "func" Then
+                Return symbolTable.GetFunctionSymbol(target).Result
+            Else
+                Throw New NotImplementedException
+            End If
+        End Function
     End Class
 End Namespace

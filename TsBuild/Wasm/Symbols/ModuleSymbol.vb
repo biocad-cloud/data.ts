@@ -51,5 +51,9 @@ Namespace Symbols
 
 )"
         End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return "any"
+        End Function
     End Class
 End Namespace

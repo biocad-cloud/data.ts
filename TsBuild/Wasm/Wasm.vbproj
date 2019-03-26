@@ -274,6 +274,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.vb" />
+    <Compile Include="Symbols\SymbolTable.vb" />
     <Compile Include="Symbols\ImportSymbol.vb" />
     <Compile Include="Symbols\FuncSymbol.vb" />
     <Compile Include="Symbols\Expression.vb" />

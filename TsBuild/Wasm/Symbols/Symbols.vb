@@ -1,4 +1,6 @@
-﻿Namespace Symbols
+﻿Imports System.Runtime.CompilerServices
+
+Namespace Symbols
 
     ''' <summary>
     ''' 一般的函数调用表达式，也包括运算符运算
@@ -29,6 +31,14 @@
                 Return $"(call ${Reference} {arguments})"
             End If
         End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            If [operator] Then
+                Throw New NotImplementedException
+            Else
+                Return symbolTable.GetFunctionSymbol(Reference).Result
+            End If
+        End Function
     End Class
 
     Public Class LiteralExpression : Inherits Expression
@@ -37,7 +47,12 @@
         Public Property value As String
 
         Public Overrides Function ToSExpression() As String
-            Return $"({Types.Convert2Wasm(type)}.const {value})"
+            Return $"({TypeInfer(Nothing)}.const {value})"
+        End Function
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return Types.Convert2Wasm(type)
         End Function
     End Class
 
@@ -47,6 +62,10 @@
 
         Public Overrides Function ToSExpression() As String
             Return $"(get_local ${var})"
+        End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return symbolTable.GetObjectSymbol(var).type
         End Function
     End Class
 
@@ -62,6 +81,10 @@
                 Return $"(set_local ${var} {value})"
             End If
         End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return symbolTable.GetObjectSymbol(var).type
+        End Function
     End Class
 
     Public Class GetGlobalVariable : Inherits Expression
@@ -71,6 +94,10 @@
         Public Overrides Function ToSExpression() As String
             Return $"(get_global {var})"
         End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return symbolTable.GetObjectSymbol(var).type
+        End Function
     End Class
 
     Public Class SetGlobalVariable : Inherits Expression
@@ -79,6 +106,10 @@
 
         Public Overrides Function ToSExpression() As String
             Return $"(set_global {var})"
+        End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return symbolTable.GetObjectSymbol(var).type
         End Function
     End Class
 
@@ -100,6 +131,10 @@
         Public Overrides Function ToSExpression() As String
             Return $"(local ${name} {type})"
         End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return type
+        End Function
     End Class
 
     Public Class Parenthesized : Inherits Expression
@@ -108,6 +143,10 @@
 
         Public Overrides Function ToSExpression() As String
             Return $"{Internal}"
+        End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return Internal.TypeInfer(symbolTable)
         End Function
     End Class
 End Namespace

@@ -33,6 +33,9 @@ Namespace Symbols
             Yield New ImportSymbol With {.Package = Math, .ImportObject = "", .Name = "", .Parameters = {}, .Result = ""}
         End Function
 
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return Result
+        End Function
     End Class
 End Namespace
 
