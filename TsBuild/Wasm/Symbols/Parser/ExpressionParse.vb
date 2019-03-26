@@ -107,11 +107,28 @@ Namespace Symbols.Parser
             }
         End Function
 
+        ''' <summary>
+        ''' NOTE: div between two integer will convert to double div automatic. 
+        ''' </summary>
+        ''' <param name="expression"></param>
+        ''' <param name="symbols"></param>
+        ''' <returns></returns>
         <Extension>
         Public Function BinaryStack(expression As BinaryExpressionSyntax, symbols As SymbolTable) As FuncInvoke
             Dim left = expression.Left.ValueExpression(symbols)
             Dim right = expression.Right.ValueExpression(symbols)
             Dim op$ = expression.OperatorToken.ValueText
+
+            If op = "/" Then
+                ' require type conversion if left and right is integer
+                If Types.IsInteger(left, symbols) Then
+                    left = Types.CDbl(left, symbols)
+                End If
+                If Types.IsInteger(right, symbols) Then
+                    right = Types.CDbl(right, symbols)
+                End If
+            End If
+
             Dim funcOpName$ = Types.Operators(op)
             Dim callImports As Boolean = False
 

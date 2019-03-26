@@ -32,6 +32,8 @@ Namespace Symbols.Parser
         Public Function ValueAssign(assign As AssignmentStatementSyntax, symbols As SymbolTable) As Expression
             Dim var = DirectCast(assign.Left, IdentifierNameSyntax).Identifier.ValueText
             Dim right = assign.Right.ValueExpression(symbols)
+            Dim typeL As String = symbols.GetObjectSymbol(var).type
+            Dim typeR As String = right.TypeInfer(symbols)
 
             Return New SetLocalVariable With {
                 .var = var,
