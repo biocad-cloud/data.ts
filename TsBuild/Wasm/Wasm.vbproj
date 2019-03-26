@@ -281,6 +281,8 @@
     <Compile Include="Symbols\Parser\FunctionParser.vb" />
     <Compile Include="Symbols\Parser\BodyParser.vb" />
     <Compile Include="Symbols\Parser\ExpressionParse.vb" />
+    <Compile Include="Symbols\Parser\CTypeParser.vb" />
+    <Compile Include="Symbols\Parser\BitConverter.vb" />
     <Compile Include="Wabt.vb" />
     <Compile Include="Symbols\ModuleSymbol.vb" />
     <Compile Include="Symbols\Symbols.vb" />
