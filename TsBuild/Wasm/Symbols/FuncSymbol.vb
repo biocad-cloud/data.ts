@@ -4,11 +4,16 @@ Imports Microsoft.VisualBasic.Text
 
 Namespace Symbols
 
-    Public Class FuncSymbol : Inherits Expression
+    Public MustInherit Class FuncSignature : Inherits Expression
 
         Public Property Name As String
         Public Property Parameters As NamedValue(Of String)()
         Public Property Result As String
+
+    End Class
+
+    Public Class FuncSymbol : Inherits FuncSignature
+
         Public Property Body As Expression()
 
         Public ReadOnly Property VBDeclare As String
