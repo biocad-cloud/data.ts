@@ -19,7 +19,7 @@
         Public Property target As String
 
         Public Overrides Function ToSExpression() As String
-            Return $"(export ""{Name}"" ({type} {target}))"
+            Return $"(export ""{Name}"" ({type} ${target}))"
         End Function
     End Class
 End Namespace

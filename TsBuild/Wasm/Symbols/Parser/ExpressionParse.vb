@@ -76,7 +76,7 @@ Namespace Symbols.Parser
             End Select
 
             Return New FuncInvoke With {
-                .Reference = $"${funcName}",
+                .Reference = funcName,
                 .Parameters = arguments
             }
         End Function
@@ -85,7 +85,7 @@ Namespace Symbols.Parser
         <Extension>
         Public Function ReferVariable(name As IdentifierNameSyntax) As Expression
             Return New GetLocalVariable With {
-                .var = $"${name.Identifier.ValueText}"
+                .var = name.Identifier.ValueText
             }
         End Function
 

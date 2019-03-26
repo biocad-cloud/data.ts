@@ -58,6 +58,6 @@ Public Module Extensions
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     <Extension>
     Friend Function param(a As NamedValue(Of String)) As String
-        Return $"(param {a.Name} {a.Value})"
+        Return $"(param ${a.Name} {a.Value})"
     End Function
 End Module

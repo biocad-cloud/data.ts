@@ -34,7 +34,7 @@ Namespace Symbols.Parser
             Dim right = assign.Right.ValueExpression
 
             Return New SetLocalVariable With {
-                .var = $"${var}",
+                .var = var,
                 .value = right
             }
         End Function
@@ -58,7 +58,7 @@ Namespace Symbols.Parser
             End If
 
             Return New DeclareLocal With {
-                .name = $"${name}",
+                .name = name,
                 .type = type,
                 .init = initValue
             }

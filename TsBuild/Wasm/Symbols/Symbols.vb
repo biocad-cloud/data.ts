@@ -24,9 +24,9 @@
             If [operator] Then
                 Return $"({Reference} {arguments})"
             ElseIf callImports Then
-                Return $"(call_import {Reference} {arguments})"
+                Return $"(call_import ${Reference} {arguments})"
             Else
-                Return $"(call {Reference} {arguments})"
+                Return $"(call ${Reference} {arguments})"
             End If
         End Function
     End Class
@@ -46,7 +46,7 @@
         Public Property var As String
 
         Public Overrides Function ToSExpression() As String
-            Return $"(get_local {var})"
+            Return $"(get_local ${var})"
         End Function
     End Class
 
@@ -57,9 +57,9 @@
 
         Public Overrides Function ToSExpression() As String
             If TypeOf value Is FuncInvoke Then
-                Return $"(set_local {var} {value})"
+                Return $"(set_local ${var} {value})"
             Else
-                Return $"(set_local {var} {value})"
+                Return $"(set_local ${var} {value})"
             End If
         End Function
     End Class
@@ -98,7 +98,7 @@
         End Property
 
         Public Overrides Function ToSExpression() As String
-            Return $"(local {name} {type})"
+            Return $"(local ${name} {type})"
         End Function
     End Class
 

@@ -52,7 +52,7 @@ Namespace Symbols
         Public Overrides Function ToSExpression() As String
             Dim params$ = Parameters.Select(Function(a) a.param).JoinBy(" ")
 
-            Return $"(func {Name} {params} (result {Result})
+            Return $"(func ${Name} {params} (result {Result})
     ;; {VBDeclare}
     {buildBody()}
 )"

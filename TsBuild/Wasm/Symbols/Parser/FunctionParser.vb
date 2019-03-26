@@ -23,7 +23,7 @@ Namespace Symbols.Parser
                 .ToArray
 
             Dim func As New FuncSymbol With {
-                .Name = $"${name}",
+                .Name = name,
                 .Parameters = parameters,
                 .Result = Types.Convert2Wasm(returns),
                 .Body = bodyExpressions
@@ -53,7 +53,7 @@ Namespace Symbols.Parser
             End If
 
             Return New NamedValue(Of String) With {
-                .Name = $"${name}",
+                .Name = name,
                 .Value = Types.Convert2Wasm(type),
                 .Description = [default]
             }
