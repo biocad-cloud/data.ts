@@ -36,6 +36,7 @@ Namespace Symbols
 
             If [Imports].IsNullOrEmpty Then
                 import = [Imports] _
+                    .SafeQuery _
                     .Select(Function(i) i.ToSExpression) _
                     .JoinBy(ASCII.LF & "    ")
             End If

@@ -57,8 +57,7 @@
 
         Public Overrides Function ToSExpression() As String
             If TypeOf value Is FuncInvoke Then
-                Return $"{value} 
-(local.set {var})"
+                Return $"(local.set {var} {value})"
             Else
                 Return $"(local.set {var} {value})"
             End If
