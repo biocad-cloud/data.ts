@@ -46,7 +46,7 @@
         Public Property var As String
 
         Public Overrides Function ToSExpression() As String
-            Return $"(local.get {var})"
+            Return $"(get_local {var})"
         End Function
     End Class
 
@@ -57,9 +57,9 @@
 
         Public Overrides Function ToSExpression() As String
             If TypeOf value Is FuncInvoke Then
-                Return $"(local.set {var} {value})"
+                Return $"(set_local {var} {value})"
             Else
-                Return $"(local.set {var} {value})"
+                Return $"(set_local {var} {value})"
             End If
         End Function
     End Class
@@ -69,7 +69,7 @@
         Public Property var As String
 
         Public Overrides Function ToSExpression() As String
-            Return $"(global.get {var})"
+            Return $"(get_global {var})"
         End Function
     End Class
 
@@ -78,7 +78,7 @@
         Public Property var As String
 
         Public Overrides Function ToSExpression() As String
-            Return $"(global.set {var})"
+            Return $"(set_global {var})"
         End Function
     End Class
 
