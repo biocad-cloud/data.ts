@@ -34,7 +34,7 @@ Namespace Symbols
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             If [operator] Then
-                Throw New NotImplementedException
+                Return Reference.Split("."c).First
             Else
                 Return symbolTable.GetFunctionSymbol(Reference).Result
             End If
