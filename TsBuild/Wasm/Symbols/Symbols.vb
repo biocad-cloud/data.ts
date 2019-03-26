@@ -88,13 +88,17 @@
         Public Property type As String
         Public Property init As Expression
 
+        Public ReadOnly Property SetLocal As SetLocalVariable
+            Get
+                Return New SetLocalVariable With {
+                    .var = name,
+                    .value = init
+                }
+            End Get
+        End Property
+
         Public Overrides Function ToSExpression() As String
-            If init Is Nothing Then
-                Return $"(local {name} {type})"
-            Else
-                Return $"(local {name} {type}) 
-{New SetLocalVariable With {.var = name, .value = init}.ToSExpression}"
-            End If
+            Return $"(local {name} {type})"
         End Function
     End Class
 
