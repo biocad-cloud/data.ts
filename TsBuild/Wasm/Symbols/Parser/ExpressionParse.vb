@@ -37,7 +37,7 @@ Namespace Symbols.Parser
 
             Return New FuncInvoke With {
                 .Parameters = {left, right},
-                .Reference = $"{Types.Convert2Wasm(GetType(Double))}.{Types.Operators(op)}",
+                .Reference = $"{left.type}.{Types.Operators(op)}",
                 .[operator] = True
             }
         End Function
