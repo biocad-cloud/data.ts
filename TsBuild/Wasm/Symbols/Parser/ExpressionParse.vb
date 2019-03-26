@@ -118,7 +118,7 @@ Namespace Symbols.Parser
             If funcOpName.First = "$"c Then
                 callImports = True
             Else
-                funcOpName = $"{Types.Convert2Wasm(GetType(Double))}.{funcOpName}"
+                funcOpName = $"{left.TypeInfer(symbols)}.{funcOpName}"
             End If
 
             ' 需要根据类型来决定操作符函数的类型来源
