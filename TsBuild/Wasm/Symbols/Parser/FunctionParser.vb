@@ -26,9 +26,26 @@ Namespace Symbols.Parser
                 .Select(AddressOf ParseParameter) _
                 .ToArray
             Dim body As StatementSyntax() = method.Statements.ToArray
+
+            For Each arg In parameters
+                Call symbols.AddLocal(arg)
+            Next
+
+            Dim runParser = Function(statement As StatementSyntax)
+                                Dim expression As Expression = statement.ParseExpression(symbols)
+
+                                If TypeOf expression Is DeclareLocal Then
+                                    Call symbols.AddLocal(expression)
+                                End If
+
+                                Return expression
+                            End Function
+
             Dim bodyExpressions As Expression() = body _
                 .ExceptType(Of EndBlockStatementSyntax) _
-                .Select(Function(s) s.ParseExpression) _
+                .Select(Function(s)
+                            Return runParser(statement:=s)
+                        End Function) _
                 .ToArray
 
             Dim func As New FuncSymbol(method.FuncVariable) With {

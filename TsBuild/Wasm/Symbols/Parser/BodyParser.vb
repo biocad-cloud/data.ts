@@ -10,7 +10,7 @@ Namespace Symbols.Parser
     Module BodyParser
 
         <Extension>
-        Public Function ParseExpression(statement As StatementSyntax) As Expression
+        Public Function ParseExpression(statement As StatementSyntax, symbols As SymbolTable) As Expression
             Select Case statement.GetType
                 Case GetType(LocalDeclarationStatementSyntax)
                     Return DirectCast(statement, LocalDeclarationStatementSyntax).LocalDeclare

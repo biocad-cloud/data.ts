@@ -1,4 +1,5 @@
 ﻿Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Wasm.Symbols.Parser
 
@@ -22,6 +23,10 @@ Namespace Symbols
 
         Public Sub AddLocal([declare] As DeclareLocal)
             Call locals.Add([declare].name, [declare])
+        End Sub
+
+        Public Sub AddLocal([declare] As NamedValue(Of String))
+            Call locals.Add([declare].Name, New DeclareLocal With {.name = [declare].Name, .type = [declare].Value})
         End Sub
 
         Public Sub ClearLocals()
