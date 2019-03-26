@@ -23,9 +23,15 @@ Namespace Symbols
         End Property
 
         Public Overrides Function ToSExpression() As String
-            Return $"(func {Name} {Parameters.Select(Function(a) a.param).JoinBy(" ")} (result {Result})
+            Dim params$ = Parameters.Select(Function(a) a.param).JoinBy(" ")
+            Dim body$ = Me.Body _
+                .SafeQuery _
+                .Select(Function(b) b.ToSExpression) _
+                .JoinBy(ASCII.LF & "    ")
+
+            Return $"(func {Name} {params} (result {Result})
     ;; {VBDeclare}
-    {Body.SafeQuery.Select(Function(b) b.ToSExpression).JoinBy(ASCII.LF & "    ")}
+    {body}
 )"
         End Function
     End Class

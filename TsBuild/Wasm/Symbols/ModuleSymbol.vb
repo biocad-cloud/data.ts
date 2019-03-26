@@ -8,6 +8,8 @@ Namespace Symbols
 
         Public Property InternalFunctions As FuncSymbol()
         Public Property Exports As ExportSymbolExpression()
+        Public Property [Imports] As ImportSymbol()
+
         ''' <summary>
         ''' The module name label
         ''' </summary>
@@ -25,15 +27,26 @@ Namespace Symbols
         End Function
 
         Public Overrides Function ToSExpression() As String
+            Dim import$ = ""
+            Dim internal$ = InternalFunctions _
+                .JoinBy(ASCII.LF & ASCII.LF) _
+                .LineTokens _
+                .Select(Function(line) "    " & line) _
+                .JoinBy(ASCII.LF)
+
+            If [Imports].IsNullOrEmpty Then
+                import = [Imports] _
+                    .Select(Function(i) i.ToSExpression) _
+                    .JoinBy(ASCII.LF & "    ")
+            End If
+
             Return $"(module ;; Module {LabelName}
 
-    ;; Math function imports
-    (func $exp (import ""Math"" ""exp"") (param f64) (result f64))
-    (func $pow (import ""Math"" ""pow"") (param f64) (param f64) (result f64))
+    {import}
 
     {Exports.JoinBy(ASCII.LF & "    ")} 
 
-{InternalFunctions.JoinBy(ASCII.LF & ASCII.LF).LineTokens.Select(Function(line) "    " & line).JoinBy(ASCII.LF)}
+{internal}
 
 )"
         End Function
