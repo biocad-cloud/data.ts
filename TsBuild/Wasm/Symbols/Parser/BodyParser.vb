@@ -13,25 +13,25 @@ Namespace Symbols.Parser
         Public Function ParseExpression(statement As StatementSyntax, symbols As SymbolTable) As Expression
             Select Case statement.GetType
                 Case GetType(LocalDeclarationStatementSyntax)
-                    Return DirectCast(statement, LocalDeclarationStatementSyntax).LocalDeclare
+                    Return DirectCast(statement, LocalDeclarationStatementSyntax).LocalDeclare(symbols)
                 Case GetType(AssignmentStatementSyntax)
-                    Return DirectCast(statement, AssignmentStatementSyntax).ValueAssign
+                    Return DirectCast(statement, AssignmentStatementSyntax).ValueAssign(symbols)
                 Case GetType(ReturnStatementSyntax)
-                    Return DirectCast(statement, ReturnStatementSyntax).ValueReturn
+                    Return DirectCast(statement, ReturnStatementSyntax).ValueReturn(symbols)
                 Case Else
                     Throw New NotImplementedException(statement.GetType.FullName)
             End Select
         End Function
 
         <Extension>
-        Public Function ValueReturn(returnValue As ReturnStatementSyntax) As Expression
-            Return returnValue.Expression.ValueExpression
+        Public Function ValueReturn(returnValue As ReturnStatementSyntax, symbols As SymbolTable) As Expression
+            Return returnValue.Expression.ValueExpression(symbols)
         End Function
 
         <Extension>
-        Public Function ValueAssign(assign As AssignmentStatementSyntax) As Expression
+        Public Function ValueAssign(assign As AssignmentStatementSyntax, symbols As SymbolTable) As Expression
             Dim var = DirectCast(assign.Left, IdentifierNameSyntax).Identifier.ValueText
-            Dim right = assign.Right.ValueExpression
+            Dim right = assign.Right.ValueExpression(symbols)
 
             Return New SetLocalVariable With {
                 .var = var,
@@ -40,7 +40,7 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax) As DeclareLocal
+        Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax, symbols As SymbolTable) As DeclareLocal
             Dim [declare] = statement.Declarators.First
             Dim name$ = [declare].Names.First.Identifier.Value
             Dim type$ = Types.Convert2Wasm(GetType(Double))
@@ -54,7 +54,7 @@ Namespace Symbols.Parser
             End If
 
             If Not [declare].Initializer Is Nothing Then
-                initValue = [declare].Initializer.Value.ValueExpression
+                initValue = [declare].Initializer.Value.ValueExpression(symbols)
             End If
 
             Return New DeclareLocal With {

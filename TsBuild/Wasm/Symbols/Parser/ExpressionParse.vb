@@ -7,29 +7,29 @@ Namespace Symbols.Parser
     Module ExpressionParse
 
         <Extension>
-        Public Function ValueExpression(value As ExpressionSyntax) As Expression
+        Public Function ValueExpression(value As ExpressionSyntax, symbols As SymbolTable) As Expression
             Select Case value.GetType
                 Case GetType(BinaryExpressionSyntax)
-                    Return DirectCast(value, BinaryExpressionSyntax).BinaryStack
+                    Return DirectCast(value, BinaryExpressionSyntax).BinaryStack(symbols)
                 Case GetType(ParenthesizedExpressionSyntax)
-                    Return DirectCast(value, ParenthesizedExpressionSyntax).ParenthesizedStack
+                    Return DirectCast(value, ParenthesizedExpressionSyntax).ParenthesizedStack(symbols)
                 Case GetType(LiteralExpressionSyntax)
                     Return DirectCast(value, LiteralExpressionSyntax).ConstantExpression
                 Case GetType(IdentifierNameSyntax)
                     Return DirectCast(value, IdentifierNameSyntax).ReferVariable
                 Case GetType(InvocationExpressionSyntax)
-                    Return DirectCast(value, InvocationExpressionSyntax).FunctionInvoke
+                    Return DirectCast(value, InvocationExpressionSyntax).FunctionInvoke(symbols)
                 Case GetType(UnaryExpressionSyntax)
-                    Return DirectCast(value, UnaryExpressionSyntax).UnaryExpression
+                    Return DirectCast(value, UnaryExpressionSyntax).UnaryExpression(symbols)
                 Case Else
                     Throw New NotImplementedException(value.GetType.FullName)
             End Select
         End Function
 
         <Extension>
-        Public Function UnaryExpression(unary As UnaryExpressionSyntax) As FuncInvoke
+        Public Function UnaryExpression(unary As UnaryExpressionSyntax, symbols As SymbolTable) As FuncInvoke
             Dim op$ = unary.OperatorToken.ValueText
-            Dim right = unary.Operand.ValueExpression
+            Dim right = unary.Operand.ValueExpression(symbols)
             Dim left = New LiteralExpression With {
                 .type = GetType(Integer),
                 .value = 0
@@ -43,16 +43,16 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Iterator Function [Select](args As SeparatedSyntaxList(Of ArgumentSyntax)) As IEnumerable(Of Expression)
+        Public Iterator Function [Select](args As SeparatedSyntaxList(Of ArgumentSyntax), symbols As SymbolTable) As IEnumerable(Of Expression)
             For i As Integer = 0 To args.Count - 1
                 Yield args.Item(i) _
                     .GetExpression _
-                    .ValueExpression
+                    .ValueExpression(symbols)
             Next
         End Function
 
         <Extension>
-        Public Function FunctionInvoke(invoke As InvocationExpressionSyntax) As FuncInvoke
+        Public Function FunctionInvoke(invoke As InvocationExpressionSyntax, symbols As SymbolTable) As FuncInvoke
             Dim reference = invoke.Expression
             Dim arguments As Expression()
             Dim funcName$
@@ -62,7 +62,7 @@ Namespace Symbols.Parser
             Else
                 arguments = invoke.ArgumentList _
                     .Arguments _
-                    .Select() _
+                    .Select(symbols) _
                     .ToArray
             End If
 
@@ -101,16 +101,16 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Function ParenthesizedStack(parenthesized As ParenthesizedExpressionSyntax) As Parenthesized
+        Public Function ParenthesizedStack(parenthesized As ParenthesizedExpressionSyntax, symbols As SymbolTable) As Parenthesized
             Return New Parenthesized With {
-                .Internal = parenthesized.Expression.ValueExpression
+                .Internal = parenthesized.Expression.ValueExpression(symbols)
             }
         End Function
 
         <Extension>
-        Public Function BinaryStack(expression As BinaryExpressionSyntax) As FuncInvoke
-            Dim left = expression.Left.ValueExpression
-            Dim right = expression.Right.ValueExpression
+        Public Function BinaryStack(expression As BinaryExpressionSyntax, symbols As SymbolTable) As FuncInvoke
+            Dim left = expression.Left.ValueExpression(symbols)
+            Dim right = expression.Right.ValueExpression(symbols)
             Dim op$ = expression.OperatorToken.ValueText
             Dim funcOpName$ = Types.Operators(op)
             Dim callImports As Boolean = False
