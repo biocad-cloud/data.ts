@@ -4,6 +4,9 @@ Imports Wasm.Symbols.Parser
 
 Namespace Symbols
 
+    ''' <summary>
+    ''' A symbol table for type infer
+    ''' </summary>
     Public Class SymbolTable
 
         Dim functionList As New Dictionary(Of String, FuncSignature)

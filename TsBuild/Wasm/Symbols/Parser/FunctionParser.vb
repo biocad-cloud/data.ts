@@ -19,7 +19,7 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Function Parse(method As MethodBlockSyntax) As FuncSymbol
+        Public Function Parse(method As MethodBlockSyntax, symbols As SymbolTable) As FuncSymbol
             Dim parameters = method.BlockStatement _
                 .ParameterList _
                 .Parameters _

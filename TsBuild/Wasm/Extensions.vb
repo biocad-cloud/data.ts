@@ -18,7 +18,8 @@ Public Module Extensions
         Dim symbolTable As New SymbolTable(main.Members.OfType(Of MethodBlockSyntax))
 
         For Each method In main.Members.OfType(Of MethodBlockSyntax)
-            functions += method.Parse
+            functions += method.Parse(symbolTable)
+            symbolTable.ClearLocals()
 
             If method.SubOrFunctionStatement.isExportObject Then
                 exports += New ExportSymbolExpression With {
