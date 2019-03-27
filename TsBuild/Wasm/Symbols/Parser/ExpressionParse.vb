@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 
 Namespace Symbols.Parser
 
@@ -43,11 +44,14 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Iterator Function [Select](args As SeparatedSyntaxList(Of ArgumentSyntax), symbols As SymbolTable) As IEnumerable(Of Expression)
+        Public Iterator Function [Select](args As SeparatedSyntaxList(Of ArgumentSyntax), symbols As SymbolTable, params As NamedValue(Of String)()) As IEnumerable(Of Expression)
             For i As Integer = 0 To args.Count - 1
-                Yield args.Item(i) _
+                Dim value As Expression = args.Item(i) _
                     .GetExpression _
                     .ValueExpression(symbols)
+                Dim left$ = params(i).Value
+
+                Yield Types.CType(left, value, symbols)
             Next
         End Function
 
@@ -57,15 +61,7 @@ Namespace Symbols.Parser
             Dim arguments As Expression()
             Dim funcName$
 
-            If invoke.ArgumentList Is Nothing Then
-                arguments = {}
-            Else
-                arguments = invoke.ArgumentList _
-                    .Arguments _
-                    .Select(symbols) _
-                    .ToArray
-            End If
-
+            ' 得到被调用的目标函数的名称符号
             Select Case reference.GetType
                 Case GetType(SimpleNameSyntax)
                     funcName = DirectCast(reference, SimpleNameSyntax).Identifier.Text
@@ -74,6 +70,17 @@ Namespace Symbols.Parser
                 Case Else
                     Throw New NotImplementedException(reference.GetType.FullName)
             End Select
+
+            Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
+
+            If invoke.ArgumentList Is Nothing Then
+                arguments = {}
+            Else
+                arguments = invoke.ArgumentList _
+                    .Arguments _
+                    .Select(symbols, funcDeclare.Parameters) _
+                    .ToArray
+            End If
 
             Return New FuncInvoke With {
                 .Reference = funcName,
