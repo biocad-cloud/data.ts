@@ -141,8 +141,8 @@ Namespace Symbols.Parser
                     type = rt
                 End If
 
-                left = CTypeParser.CType(type, left, symbols)
-                right = CTypeParser.CType(type, right, symbols)
+                left = Types.CType(type, left, symbols)
+                right = Types.CType(type, right, symbols)
             End If
 
             Dim funcOpName$ = Types.Operators(op)
