@@ -118,24 +118,42 @@ Namespace Symbols.Parser
             Dim left = expression.Left.ValueExpression(symbols)
             Dim right = expression.Right.ValueExpression(symbols)
             Dim op$ = expression.OperatorToken.ValueText
+            Dim type$
 
             If op = "/" Then
                 ' require type conversion if left and right is integer
-                If Types.IsInteger(left, symbols) Then
-                    left = Types.CDbl(left, symbols)
+                ' 对于除法，必须要首先转换为浮点型才能够完成运算
+                left = Types.CDbl(left, symbols)
+                right = Types.CDbl(right, symbols)
+                type = "f64"
+            Else
+                ' 其他的运算符则需要两边的类型保持一致
+                ' 往高位转换
+                ' i32 -> f32 -> i64 -> f64
+                Dim lt = left.TypeInfer(symbols)
+                Dim rt = right.TypeInfer(symbols)
+                Dim li = Types.Orders.IndexOf(lt)
+                Dim ri = Types.Orders.IndexOf(rt)
+
+                If li > ri Then
+                    type = lt
+                Else
+                    type = rt
                 End If
-                If Types.IsInteger(right, symbols) Then
-                    right = Types.CDbl(right, symbols)
-                End If
+
+                left = CTypeParser.CType(type, left, symbols)
+                right = CTypeParser.CType(type, right, symbols)
             End If
 
             Dim funcOpName$ = Types.Operators(op)
             Dim callImports As Boolean = False
 
             If funcOpName.First = "$"c Then
+                ' 当前的VB.NET的运算符是webassembly之中没有原生支持的
+                ' 需要从外部导入
                 callImports = True
             Else
-                funcOpName = $"{left.TypeInfer(symbols)}.{funcOpName}"
+                funcOpName = $"{type}.{funcOpName}"
             End If
 
             ' 需要根据类型来决定操作符函数的类型来源

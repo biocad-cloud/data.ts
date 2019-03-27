@@ -9,6 +9,8 @@ Imports Wasm.Symbols
 
 Public Class Types
 
+    Public Shared ReadOnly Property Orders As String() = {"i32", "f32", "i64", "f64"}
+
     Public Shared ReadOnly Property Convert2Wasm As New Dictionary(Of Type, String) From {
         {GetType(Integer), "i32"},
         {GetType(Long), "i64"},

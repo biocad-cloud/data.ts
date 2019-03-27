@@ -12,7 +12,7 @@
         ''' </summary>
         ''' <param name="left"></param>
         ''' <returns></returns>
-        Public Function [CType](left As String, right As Expression, symbols As SymbolTable) As FuncInvoke
+        Public Function [CType](left As String, right As Expression, symbols As SymbolTable) As Expression
             Select Case left
                 Case "i32"
                     Return Types.CInt(right, symbols)
