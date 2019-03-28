@@ -4,6 +4,9 @@ Imports Wasm.Symbols
 Module treeTest
 
     Sub Main()
+
+        Call test2()
+
         Dim code = "Module Main
 
 Public Function Main(x As Integer, Optional y& = 99) As Long
@@ -34,6 +37,14 @@ End Module"
         Dim hex = moduleMain.HexDump(verbose:=True)
 
         Call hex.SaveTo("X:\test.dmp")
+
+        Pause()
+    End Sub
+
+    Sub test2()
+        Dim moduletest = Wasm.CreateModule("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF\Math.vb")
+
+        moduletest.Compile("X:\test.wasm")
 
         Pause()
     End Sub

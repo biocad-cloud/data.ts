@@ -7,6 +7,7 @@ Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Wasm.Symbols
 Imports Wasm.Symbols.Parser
+Imports Vbproj = Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio.Project
 
 Public Module Extensions
 
@@ -15,7 +16,14 @@ Public Module Extensions
     ''' </summary>
     ''' <param name="vbproj"></param>
     ''' <returns></returns>
+    ''' 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function CreateModuleFromProject(vbproj As String) As ModuleSymbol
+        Return vbproj.LoadXml(Of Vbproj).CreateModuleFromProject
+    End Function
+
+    <Extension>
+    Public Function CreateModuleFromProject(vbproj As Vbproj) As ModuleSymbol
 
     End Function
 
@@ -44,6 +52,13 @@ Public Module Extensions
         Dim functions As New List(Of FuncSymbol)
         Dim exports As New List(Of ExportSymbolExpression)
         Dim symbolTable As New SymbolTable(main.Members.OfType(Of MethodBlockSyntax))
+
+        ' 添加declare导入
+        For Each api As DeclareStatementSyntax In main.Members.OfType(Of DeclareStatementSyntax)
+            Dim apiImports As New FuncSignature(api.FuncVariable) With {
+                .Parameters = api.ParseParameters
+            }
+        Next
 
         For Each method In main.Members.OfType(Of MethodBlockSyntax)
             functions += method.Parse(symbolTable)

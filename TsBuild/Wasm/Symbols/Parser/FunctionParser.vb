@@ -18,18 +18,47 @@ Namespace Symbols.Parser
             }
         End Function
 
+        <Extension>
+        Public Function FuncVariable(api As DeclareStatementSyntax) As NamedValue(Of String)
+            Dim name As String = api.Identifier.ValueText
+            Dim returns As Type = GetAsType(api.AsClause)
+
+            Return New NamedValue(Of String) With {
+                .Name = name,
+                .Value = Types.Convert2Wasm(returns)
+            }
+        End Function
+
+        ''' <summary>
+        ''' 解析出函数的参数列表
+        ''' </summary>
+        ''' <param name="api"></param>
+        ''' <returns></returns>
+        ''' 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        <Extension>
+        Public Function ParseParameters(api As DeclarationStatementSyntax) As NamedValue(Of String)()
+            Return DirectCast(api, MethodBaseSyntax).ParseParameters.ToArray
+        End Function
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        <Extension>
+        Private Function ParseParameters(method As MethodBaseSyntax) As IEnumerable(Of NamedValue(Of String))
+            Return method.ParameterList _
+                .Parameters _
+                .Select(AddressOf ParseParameter)
+        End Function
+
         ''' <summary>
         ''' 解析出函数的参数列表
         ''' </summary>
         ''' <param name="method"></param>
         ''' <returns></returns>
+        ''' 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         <Extension>
         Public Function ParseParameters(method As MethodBlockSyntax) As NamedValue(Of String)()
-            Return method.BlockStatement _
-                .ParameterList _
-                .Parameters _
-                .Select(AddressOf ParseParameter) _
-                .ToArray
+            Return method.BlockStatement.ParseParameters.ToArray
         End Function
 
         <Extension>
@@ -61,7 +90,6 @@ Namespace Symbols.Parser
                             Return runParser(statement:=s)
                         End Function) _
                 .ToArray
-
             Dim func As New FuncSymbol(funcVar) With {
                 .Parameters = parameters,
                 .Body = bodyExpressions
