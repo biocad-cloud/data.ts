@@ -22,7 +22,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--debug-parser")>
+    <Argv("--debug-parser", CLITypes.Boolean)>
     Public Property debugParser As Boolean
 
     ''' <summary>
@@ -30,7 +30,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--dump-module")>
+    <Argv("--dump-module", CLITypes.Boolean)>
     Public Property dumpModule As Boolean
 
     ''' <summary>
@@ -38,7 +38,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--enable-exceptions")>
+    <Argv("--enable-exceptions", CLITypes.Boolean)>
     Public Property enableExceptions As Boolean
 
     ''' <summary>
@@ -46,7 +46,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--disable-mutable-globals")>
+    <Argv("--disable-mutable-globals", CLITypes.Boolean)>
     Public Property disableMutableGlobals As Boolean
 
     ''' <summary>
@@ -54,7 +54,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--enable-saturating-float-to-int")>
+    <Argv("--enable-saturating-float-to-int", CLITypes.Boolean)>
     Public Property enableSaturatingFloatToInt As Boolean
 
     ''' <summary>
@@ -62,7 +62,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--enable-sign-extension")>
+    <Argv("--enable-sign-extension", CLITypes.Boolean)>
     Public Property enableSignExtension As Boolean
 
     ''' <summary>
@@ -70,7 +70,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--enable-simd")>
+    <Argv("--enable-simd", CLITypes.Boolean)>
     Public Property enableSimd As Boolean
 
     ''' <summary>
@@ -78,7 +78,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--enable-threads")>
+    <Argv("--enable-threads", CLITypes.Boolean)>
     Public Property enableThreads As Boolean
 
     ''' <summary>
@@ -86,7 +86,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--output", CLITypes.File, Format:="--output=%s")>
+    <Argv("--output", CLITypes.File)>
     Public Property output As String
 
     ''' <summary>
@@ -94,7 +94,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--relocatable")>
+    <Argv("--relocatable", CLITypes.Boolean)>
     Public Property relocatable As Boolean
 
     ''' <summary>
@@ -102,7 +102,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--no-canonicalize-leb128s")>
+    <Argv("--no-canonicalize-leb128s", CLITypes.Boolean)>
     Public Property noCanonicalizeLEB128s As Boolean
 
     ''' <summary>
@@ -110,7 +110,7 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--debug-names")>
+    <Argv("--debug-names", CLITypes.Boolean)>
     Public Property debugNames As Boolean
 
     ''' <summary>
@@ -118,11 +118,15 @@ Public Class wat2wasm
     ''' </summary>
     ''' <returns></returns>
     ''' 
-    <Argv("--no-check")>
+    <Argv("--no-check", CLITypes.Boolean)>
     Public Property noCheck As Boolean
 
     Public Overrides Function ToString() As String
         Return Me.GetCLI
     End Function
+
+    Public Shared Widening Operator CType(output As String) As wat2wasm
+        Return New wat2wasm With {.output = output}
+    End Operator
 
 End Class

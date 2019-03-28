@@ -29,7 +29,11 @@ End Module"
         Console.WriteLine(moduleMain.ToSExpression)
 
         ' compile vbcode to webassembly
-        Call moduleMain.Compile("X:\test.wasm")
+        Dim log = moduleMain.Compile("X:\test.wasm")
+
+        Dim hex = moduleMain.HexDump(verbose:=True)
+
+        Call hex.SaveTo("X:\test.dmp")
 
         Pause()
     End Sub
