@@ -149,4 +149,11 @@ Namespace Symbols
             Return Internal.TypeInfer(symbolTable)
         End Function
     End Class
+
+    Public Class ReturnValue : Inherits Parenthesized
+
+        Public Overrides Function ToSExpression() As String
+            Return $"(return {Internal.ToSExpression})"
+        End Function
+    End Class
 End Namespace

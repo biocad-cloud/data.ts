@@ -9,8 +9,35 @@ Imports Wasm.Symbols.Parser
 
 Public Module Extensions
 
-    Public Function CreateModule(vbcode As String) As ModuleSymbol
-        Dim tree As SyntaxTree = VisualBasicSyntaxTree.ParseText(vbcode)
+    ''' <summary>
+    ''' Create a WebAssembly module from vb project. 
+    ''' </summary>
+    ''' <param name="vbproj"></param>
+    ''' <returns></returns>
+    Public Function CreateModuleFromProject(vbproj As String) As ModuleSymbol
+
+    End Function
+
+    <Extension>
+    Private Function SolveStream(vbcode As [Variant](Of FileInfo, String)) As String
+        If vbcode Like GetType(String) Then
+            Return CType(vbcode, String).SolveStream
+        Else
+            Return DirectCast(vbcode, FileInfo).FullName.SolveStream
+        End If
+    End Function
+
+    ''' <summary>
+    ''' This function have some limitations: 
+    ''' 
+    ''' 1. <paramref name="vbcode"/> should only have 1 module define in it and no class/strucutre was allowed.
+    ''' 2. Only allows numeric algorithm code in the modules
+    ''' 3. Not supports string and other non-primitive type.
+    ''' </summary>
+    ''' <param name="vbcode">This parameter can be file path or file text content.</param>
+    ''' <returns></returns>
+    Public Function CreateModule(vbcode As [Variant](Of FileInfo, String)) As ModuleSymbol
+        Dim tree As SyntaxTree = VisualBasicSyntaxTree.ParseText(vbcode.SolveStream)
         Dim root As CompilationUnitSyntax = tree.GetRoot
         Dim main As ModuleBlockSyntax = root.Members(Scan0)
         Dim functions As New List(Of FuncSymbol)
@@ -33,7 +60,7 @@ Public Module Extensions
         Return New ModuleSymbol With {
             .InternalFunctions = functions,
             .LabelName = main.ModuleStatement.Identifier.Text,
-            .Exports = exports
+            .exports = exports
         }
     End Function
 

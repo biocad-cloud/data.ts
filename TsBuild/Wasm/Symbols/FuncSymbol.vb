@@ -5,6 +5,9 @@ Imports Microsoft.VisualBasic.Text
 
 Namespace Symbols
 
+    ''' <summary>
+    ''' The abstract of the function object, only have function name, parameter and result type definition.
+    ''' </summary>
     Public Class FuncSignature : Inherits Expression
 
         Public Property Name As String
@@ -28,13 +31,21 @@ Namespace Symbols
         End Function
     End Class
 
+    ''' <summary>
+    ''' Contains function body declare
+    ''' </summary>
     Public Class FuncSymbol : Inherits FuncSignature
 
         Public Property Body As Expression()
 
         Public ReadOnly Property VBDeclare As String
             Get
-                Return $"Public Function {Name} ({Parameters.Select(Function(a) $"{a.Name} As {a.Value}").JoinBy(", ")}) As {Result}"
+                With Parameters _
+                    .Select(Function(a) $"{a.Name} As {a.Value}") _
+                    .JoinBy(", ")
+
+                    Return $"Public Function {Name}({ .ByRef}) As {Result}"
+                End With
             End Get
         End Property
 

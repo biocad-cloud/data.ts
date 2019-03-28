@@ -2,6 +2,10 @@
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 
 Namespace Symbols
+
+    ''' <summary>
+    ''' Imports object can be parse from the VB.NET ``Declare`` statement
+    ''' </summary>
     Public Class ImportSymbol : Inherits FuncSignature
 
         Public Property Package As String
