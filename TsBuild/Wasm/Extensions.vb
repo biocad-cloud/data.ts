@@ -1,4 +1,5 @@
-﻿Imports System.Runtime.CompilerServices
+﻿Imports System.IO
+Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
@@ -23,7 +24,7 @@ Public Module Extensions
         If vbcode Like GetType(String) Then
             Return CType(vbcode, String).SolveStream
         Else
-            Return DirectCast(vbcode, FileInfo).FullName.SolveStream
+            Return CType(vbcode, FileInfo).FullName.SolveStream
         End If
     End Function
 
@@ -60,7 +61,7 @@ Public Module Extensions
         Return New ModuleSymbol With {
             .InternalFunctions = functions,
             .LabelName = main.ModuleStatement.Identifier.Text,
-            .exports = exports
+            .Exports = exports
         }
     End Function
 

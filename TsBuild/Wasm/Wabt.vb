@@ -31,7 +31,9 @@ Public Module Wabt
     ''' Compile VB.NET module parse result to webAssembly binary
     ''' </summary>
     ''' <param name="[module]"></param>
-    ''' <returns></returns>
+    ''' <returns>
+    ''' This function returns the compiler standard output
+    ''' </returns>
     <Extension>
     Public Function Compile([module] As ModuleSymbol, output$, Optional verbos As Boolean = True) As String
         With App.GetAppSysTempFile(".wast", App.PID)
@@ -44,5 +46,14 @@ Public Module Wabt
                 Return .StandardOutput
             End With
         End With
+    End Function
+
+    ''' <summary>
+    ''' Compile wast file to wasm binary and then returns the compiler log.
+    ''' </summary>
+    ''' <param name="wast"></param>
+    ''' <returns></returns>
+    Public Function CompileWast(wast As String) As String
+
     End Function
 End Module
