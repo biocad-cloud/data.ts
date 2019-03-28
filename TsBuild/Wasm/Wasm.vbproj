@@ -294,6 +294,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="wat2wasm.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Symbols\SymbolTable.vb" />
     <Compile Include="Symbols\ImportSymbol.vb" />
