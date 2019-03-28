@@ -18,9 +18,16 @@ Namespace Symbols.Parser
                     Return DirectCast(statement, AssignmentStatementSyntax).ValueAssign(symbols)
                 Case GetType(ReturnStatementSyntax)
                     Return DirectCast(statement, ReturnStatementSyntax).ValueReturn(symbols)
+                Case GetType(WhileBlockSyntax)
+                    Return DirectCast(statement, WhileBlockSyntax).DoWhile()
                 Case Else
                     Throw New NotImplementedException(statement.GetType.FullName)
             End Select
+        End Function
+
+        <Extension>
+        Public Function DoWhile(whileBlock As WhileBlockSyntax) As Expression
+
         End Function
 
         <Extension>
