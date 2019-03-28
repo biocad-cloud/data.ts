@@ -36,6 +36,10 @@ Namespace Symbols.Parser
         Public Function Parse(method As MethodBlockSyntax, symbols As SymbolTable) As FuncSymbol
             Dim parameters = method.ParseParameters
             Dim body As StatementSyntax() = method.Statements.ToArray
+            Dim funcVar = method.FuncVariable
+
+            ' using for return value ctype operation
+            symbols.CurrentSymbol = funcVar.Name
 
             For Each arg As NamedValue(Of String) In parameters
                 Call symbols.AddLocal(arg)
@@ -58,7 +62,7 @@ Namespace Symbols.Parser
                         End Function) _
                 .ToArray
 
-            Dim func As New FuncSymbol(method.FuncVariable) With {
+            Dim func As New FuncSymbol(funcVar) With {
                 .Parameters = parameters,
                 .Body = bodyExpressions
             }

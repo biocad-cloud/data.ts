@@ -25,7 +25,14 @@ Namespace Symbols.Parser
 
         <Extension>
         Public Function ValueReturn(returnValue As ReturnStatementSyntax, symbols As SymbolTable) As Expression
-            Return returnValue.Expression.ValueExpression(symbols)
+            Dim value As Expression = returnValue.Expression.ValueExpression(symbols)
+            Dim returnType = symbols.GetFunctionSymbol(symbols.CurrentSymbol).Result
+
+            value = Types.CType(returnType, value, symbols)
+
+            Return New ReturnValue With {
+                .Internal = value
+            }
         End Function
 
         <Extension>

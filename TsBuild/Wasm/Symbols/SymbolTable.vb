@@ -13,6 +13,12 @@ Namespace Symbols
         Dim functionList As New Dictionary(Of String, FuncSignature)
         Dim locals As New Dictionary(Of String, DeclareLocal)
 
+        ''' <summary>
+        ''' 当前所进行解析的函数的名称
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property CurrentSymbol As String
+
         Sub New(methods As IEnumerable(Of MethodBlockSyntax))
             For Each method In methods
                 With method.FuncVariable
