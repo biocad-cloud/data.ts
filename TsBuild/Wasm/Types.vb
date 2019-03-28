@@ -26,6 +26,7 @@ Public Class Types
 
     Shared ReadOnly integerType As Index(Of String) = {"i32", "i64"}
 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Shared Function IsInteger(exp As Expression, symbols As SymbolTable) As Boolean
         Return exp.TypeInfer(symbols) Like integerType
     End Function
@@ -47,11 +48,7 @@ Public Class Types
                 Throw New NotImplementedException
         End Select
 
-        Return New FuncInvoke With {
-            .Reference = [operator],
-            .[operator] = True,
-            .Parameters = {exp}
-        }
+        Return CTypeInvoke([operator], exp)
     End Function
 
     Public Shared Function [CLng](exp As Expression, symbols As SymbolTable) As Expression
@@ -71,11 +68,7 @@ Public Class Types
                 Throw New NotImplementedException
         End Select
 
-        Return New FuncInvoke With {
-            .Reference = [operator],
-            .[operator] = True,
-            .Parameters = {exp}
-        }
+        Return CTypeInvoke([operator], exp)
     End Function
 
     Public Shared Function [CSng](exp As Expression, symbols As SymbolTable) As Expression
@@ -95,11 +88,7 @@ Public Class Types
                 Throw New NotImplementedException
         End Select
 
-        Return New FuncInvoke With {
-            .Reference = [operator],
-            .[operator] = True,
-            .Parameters = {exp}
-        }
+        Return CTypeInvoke([operator], exp)
     End Function
 
     Public Shared Function [CDbl](exp As Expression, symbols As SymbolTable) As Expression
@@ -119,6 +108,11 @@ Public Class Types
                 Throw New NotImplementedException
         End Select
 
+        Return CTypeInvoke([operator], exp)
+    End Function
+
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Private Shared Function CTypeInvoke(operator$, exp As Expression) As Expression
         Return New FuncInvoke With {
             .Reference = [operator],
             .[operator] = True,
