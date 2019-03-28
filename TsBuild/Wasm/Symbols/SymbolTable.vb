@@ -16,7 +16,9 @@ Namespace Symbols
         Sub New(methods As IEnumerable(Of MethodBlockSyntax))
             For Each method In methods
                 With method.FuncVariable
-                    functionList(.Name) = New FuncSignature(.ByRef)
+                    functionList(.Name) = New FuncSignature(.ByRef) With {
+                        .Parameters = method.ParseParameters
+                    }
                 End With
             Next
         End Sub

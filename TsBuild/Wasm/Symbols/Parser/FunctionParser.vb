@@ -18,16 +18,26 @@ Namespace Symbols.Parser
             }
         End Function
 
+        ''' <summary>
+        ''' 解析出函数的参数列表
+        ''' </summary>
+        ''' <param name="method"></param>
+        ''' <returns></returns>
         <Extension>
-        Public Function Parse(method As MethodBlockSyntax, symbols As SymbolTable) As FuncSymbol
-            Dim parameters = method.BlockStatement _
+        Public Function ParseParameters(method As MethodBlockSyntax) As NamedValue(Of String)()
+            Return method.BlockStatement _
                 .ParameterList _
                 .Parameters _
                 .Select(AddressOf ParseParameter) _
                 .ToArray
+        End Function
+
+        <Extension>
+        Public Function Parse(method As MethodBlockSyntax, symbols As SymbolTable) As FuncSymbol
+            Dim parameters = method.ParseParameters
             Dim body As StatementSyntax() = method.Statements.ToArray
 
-            For Each arg In parameters
+            For Each arg As NamedValue(Of String) In parameters
                 Call symbols.AddLocal(arg)
             Next
 
@@ -56,6 +66,7 @@ Namespace Symbols.Parser
             Return func
         End Function
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetAsType([as] As SimpleAsClauseSyntax) As Type
             Return Scripting.GetType(DirectCast([as].Type, PredefinedTypeSyntax).Keyword.ValueText)
         End Function

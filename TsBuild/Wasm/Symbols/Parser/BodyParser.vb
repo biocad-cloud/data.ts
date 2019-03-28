@@ -36,7 +36,7 @@ Namespace Symbols.Parser
 
             Return New SetLocalVariable With {
                 .var = var,
-                .value = CTypeParser.CType(typeL, right, symbols)
+                .value = Types.CType(typeL, right, symbols)
             }
         End Function
 
@@ -56,7 +56,7 @@ Namespace Symbols.Parser
 
             If Not [declare].Initializer Is Nothing Then
                 initValue = [declare].Initializer.Value.ValueExpression(symbols)
-                initValue = CTypeParser.CType(type, initValue, symbols)
+                initValue = Types.CType(type, initValue, symbols)
             End If
 
             Return New DeclareLocal With {

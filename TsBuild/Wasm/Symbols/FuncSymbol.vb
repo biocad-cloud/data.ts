@@ -20,7 +20,7 @@ Namespace Symbols
         End Sub
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Throw New NotImplementedException()
+            Return Result
         End Function
 
         Public Overrides Function ToSExpression() As String
@@ -80,10 +80,6 @@ Namespace Symbols
     ;; {VBDeclare}
     {buildBody()}
 )"
-        End Function
-
-        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return Result
         End Function
     End Class
 End Namespace

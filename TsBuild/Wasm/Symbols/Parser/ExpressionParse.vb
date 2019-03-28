@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 
 Namespace Symbols.Parser
 
@@ -43,11 +44,14 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Iterator Function [Select](args As SeparatedSyntaxList(Of ArgumentSyntax), symbols As SymbolTable) As IEnumerable(Of Expression)
+        Public Iterator Function [Select](args As SeparatedSyntaxList(Of ArgumentSyntax), symbols As SymbolTable, params As NamedValue(Of String)()) As IEnumerable(Of Expression)
             For i As Integer = 0 To args.Count - 1
-                Yield args.Item(i) _
+                Dim value As Expression = args.Item(i) _
                     .GetExpression _
                     .ValueExpression(symbols)
+                Dim left$ = params(i).Value
+
+                Yield Types.CType(left, value, symbols)
             Next
         End Function
 
@@ -57,15 +61,7 @@ Namespace Symbols.Parser
             Dim arguments As Expression()
             Dim funcName$
 
-            If invoke.ArgumentList Is Nothing Then
-                arguments = {}
-            Else
-                arguments = invoke.ArgumentList _
-                    .Arguments _
-                    .Select(symbols) _
-                    .ToArray
-            End If
-
+            ' 得到被调用的目标函数的名称符号
             Select Case reference.GetType
                 Case GetType(SimpleNameSyntax)
                     funcName = DirectCast(reference, SimpleNameSyntax).Identifier.Text
@@ -74,6 +70,17 @@ Namespace Symbols.Parser
                 Case Else
                     Throw New NotImplementedException(reference.GetType.FullName)
             End Select
+
+            Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
+
+            If invoke.ArgumentList Is Nothing Then
+                arguments = {}
+            Else
+                arguments = invoke.ArgumentList _
+                    .Arguments _
+                    .Select(symbols, funcDeclare.Parameters) _
+                    .ToArray
+            End If
 
             Return New FuncInvoke With {
                 .Reference = funcName,
@@ -118,24 +125,42 @@ Namespace Symbols.Parser
             Dim left = expression.Left.ValueExpression(symbols)
             Dim right = expression.Right.ValueExpression(symbols)
             Dim op$ = expression.OperatorToken.ValueText
+            Dim type$
 
             If op = "/" Then
                 ' require type conversion if left and right is integer
-                If Types.IsInteger(left, symbols) Then
-                    left = Types.CDbl(left, symbols)
+                ' 对于除法，必须要首先转换为浮点型才能够完成运算
+                left = Types.CDbl(left, symbols)
+                right = Types.CDbl(right, symbols)
+                type = "f64"
+            Else
+                ' 其他的运算符则需要两边的类型保持一致
+                ' 往高位转换
+                ' i32 -> f32 -> i64 -> f64
+                Dim lt = left.TypeInfer(symbols)
+                Dim rt = right.TypeInfer(symbols)
+                Dim li = Types.Orders.IndexOf(lt)
+                Dim ri = Types.Orders.IndexOf(rt)
+
+                If li > ri Then
+                    type = lt
+                Else
+                    type = rt
                 End If
-                If Types.IsInteger(right, symbols) Then
-                    right = Types.CDbl(right, symbols)
-                End If
+
+                left = Types.CType(type, left, symbols)
+                right = Types.CType(type, right, symbols)
             End If
 
             Dim funcOpName$ = Types.Operators(op)
             Dim callImports As Boolean = False
 
             If funcOpName.First = "$"c Then
+                ' 当前的VB.NET的运算符是webassembly之中没有原生支持的
+                ' 需要从外部导入
                 callImports = True
             Else
-                funcOpName = $"{left.TypeInfer(symbols)}.{funcOpName}"
+                funcOpName = $"{type}.{funcOpName}"
             End If
 
             ' 需要根据类型来决定操作符函数的类型来源

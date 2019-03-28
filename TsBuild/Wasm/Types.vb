@@ -9,6 +9,8 @@ Imports Wasm.Symbols
 
 Public Class Types
 
+    Public Shared ReadOnly Property Orders As String() = {"i32", "f32", "i64", "f64"}
+
     Public Shared ReadOnly Property Convert2Wasm As New Dictionary(Of Type, String) From {
         {GetType(Integer), "i32"},
         {GetType(Long), "i64"},
@@ -29,6 +31,29 @@ Public Class Types
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Shared Function IsInteger(exp As Expression, symbols As SymbolTable) As Boolean
         Return exp.TypeInfer(symbols) Like integerType
+    End Function
+
+    ''' <summary>
+    ''' ``CType`` operator to webassembly 
+    ''' ``Datatype conversions, truncations, reinterpretations, promotions, and demotions`` feature.
+    ''' 
+    ''' > https://github.com/WebAssembly/design/blob/master/Semantics.md
+    ''' </summary>
+    ''' <param name="left"></param>
+    ''' <returns></returns>
+    Public Shared Function [CType](left As String, right As Expression, symbols As SymbolTable) As Expression
+        Select Case left
+            Case "i32"
+                Return Types.CInt(right, symbols)
+            Case "i64"
+                Return Types.CLng(right, symbols)
+            Case "f32"
+                Return Types.CSng(right, symbols)
+            Case "f64"
+                Return Types.CDbl(right, symbols)
+            Case Else
+                Throw New NotImplementedException
+        End Select
     End Function
 
     Public Shared Function [CInt](exp As Expression, symbols As SymbolTable) As Expression
