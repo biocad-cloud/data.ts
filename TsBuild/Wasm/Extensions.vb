@@ -51,14 +51,20 @@ Public Module Extensions
         Dim main As ModuleBlockSyntax = root.Members(Scan0)
         Dim functions As New List(Of FuncSymbol)
         Dim exports As New List(Of ExportSymbolExpression)
+        Dim [imports] As New List(Of ImportSymbol)
         Dim symbolTable As New SymbolTable(main.Members.OfType(Of MethodBlockSyntax))
 
         ' 添加declare导入
         For Each api As DeclareStatementSyntax In main.Members.OfType(Of DeclareStatementSyntax)
-            Dim apiImports As New FuncSignature(api.FuncVariable) With {
-                .Parameters = api.ParseParameters
+            Dim define As NamedValue(Of String) = api.FuncVariable
+            Dim apiImports As New ImportSymbol(api.ParseParameters) With {
+                .Name = define.Name,
+                .Result = define.Value,
+                .ImportObject = api.AliasName.Token.ValueText,
+                .Package = api.LibraryName.Token.ValueText
             }
             ' add api symbols for type match in function body
+            Call [imports].Add(apiImports)
             Call symbolTable.AddImports(apiImports)
         Next
 

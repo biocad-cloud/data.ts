@@ -34,7 +34,13 @@ Namespace Symbols
         Private Shared Iterator Function mathImport() As IEnumerable(Of ImportSymbol)
             Const Math$ = NameOf(Math)
 
-            Yield New ImportSymbol With {.Package = Math, .ImportObject = "", .Name = "", .Parameters = {}, .Result = ""}
+            Yield New ImportSymbol With {
+                .Package = Math,
+                .ImportObject = "",
+                .Name = "",
+                .Parameters = {},
+                .Result = ""
+            }
         End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
