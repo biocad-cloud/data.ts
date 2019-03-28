@@ -294,7 +294,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="wat2wasm.vb" />
+    <Compile Include="Compiler\wat2wasm.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Symbols\SymbolTable.vb" />
     <Compile Include="Symbols\ImportSymbol.vb" />
@@ -306,7 +306,7 @@
     <Compile Include="Symbols\Parser\ExpressionParser.vb" />
     <Compile Include="Symbols\Parser\CTypeParser.vb" />
     <Compile Include="Symbols\Parser\BitConverter.vb" />
-    <Compile Include="Wabt.vb" />
+    <Compile Include="Compiler\Wabt.vb" />
     <Compile Include="Symbols\ModuleSymbol.vb" />
     <Compile Include="Symbols\Symbols.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
