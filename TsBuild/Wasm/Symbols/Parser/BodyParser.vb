@@ -26,11 +26,6 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Function DoWhile(whileBlock As WhileBlockSyntax) As Expression
-
-        End Function
-
-        <Extension>
         Public Function ValueReturn(returnValue As ReturnStatementSyntax, symbols As SymbolTable) As Expression
             Dim value As Expression = returnValue.Expression.ValueExpression(symbols)
             Dim returnType = symbols.GetFunctionSymbol(symbols.CurrentSymbol).Result
