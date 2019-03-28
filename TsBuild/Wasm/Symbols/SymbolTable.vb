@@ -29,6 +29,10 @@ Namespace Symbols
             Next
         End Sub
 
+        Public Sub AddImports(api As FuncSignature)
+            functionList.Add(api.Name, api)
+        End Sub
+
         Public Sub AddLocal([declare] As DeclareLocal)
             Call locals.Add([declare].name, [declare])
         End Sub

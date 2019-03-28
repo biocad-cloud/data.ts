@@ -58,6 +58,8 @@ Public Module Extensions
             Dim apiImports As New FuncSignature(api.FuncVariable) With {
                 .Parameters = api.ParseParameters
             }
+            ' add api symbols for type match in function body
+            Call symbolTable.AddImports(apiImports)
         Next
 
         For Each method In main.Members.OfType(Of MethodBlockSyntax)
