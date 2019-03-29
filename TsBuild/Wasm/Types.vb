@@ -23,10 +23,44 @@ Public Class Types
         {"-", "sub"},
         {"*", "mul"},
         {"/", "div"},
-        {"^", "$pow"}
+        {"^", "$pow"},
+        {"=", "eq"},
+        {"<>", "ne"}
     }
 
     Shared ReadOnly integerType As Index(Of String) = {"i32", "i64"}
+    Shared ReadOnly floatType As Index(Of String) = {"f32", "f64"}
+
+    Public Shared Function Compares(type$, op$) As String
+        Select Case op
+            Case ">"
+                If type Like integerType Then
+                    Return $"{type}.gt_s"
+                Else
+                    Return $"{type}.gt"
+                End If
+            Case ">="
+                If type Like integerType Then
+                    Return $"{type}.ge_s"
+                Else
+                    Return $"{type}.ge"
+                End If
+            Case "<"
+                If type Like integerType Then
+                    Return $"{type}.lt_s"
+                Else
+                    Return $"{type}.lt"
+                End If
+            Case "<="
+                If type Like integerType Then
+                    Return $"{type}.le_s"
+                Else
+                    Return $"{type}.le"
+                End If
+            Case Else
+                Throw New NotImplementedException
+        End Select
+    End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Shared Function IsInteger(exp As Expression, symbols As SymbolTable) As Boolean

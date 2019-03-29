@@ -155,6 +155,12 @@ Namespace Symbols.Parser
             Dim funcOpName$ = Types.Operators(op)
             Dim callImports As Boolean = False
 
+            If Types.Operators.ContainsKey(op) Then
+                funcOpName = Types.Operators(op)
+            Else
+                funcOpName = Types.Compares(type, op)
+            End If
+
             If funcOpName.First = "$"c Then
                 ' 当前的VB.NET的运算符是webassembly之中没有原生支持的
                 ' 需要从外部导入

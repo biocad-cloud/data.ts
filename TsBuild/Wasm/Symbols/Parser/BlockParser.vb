@@ -14,7 +14,19 @@ Namespace Symbols.Parser
                 .LoopID = $"loop_{symbols.NextGuid}"
             }
             Dim internal As New List(Of Expression)
-            Dim condition = whileBlock.WhileStatement.Condition
+            Dim condition As Expression = whileBlock _
+                .WhileStatement _
+                .Condition _
+                .ValueExpression(symbols)
+
+            internal += New br_if With {.BlockLabel = block.Guid, .Condition = condition}
+            internal += New br With {
+                .BlockLabel = block.LoopID
+            }
+
+            For Each statement As StatementSyntax In whileBlock.Statements
+                internal += statement.ParseExpression(symbols)
+            Next
 
             block.Internal = internal
 
