@@ -34,7 +34,7 @@ Namespace Symbols
                 .Select(Function(line) "    " & line) _
                 .JoinBy(ASCII.LF)
 
-            If [Imports].IsNullOrEmpty Then
+            If Not [Imports].IsNullOrEmpty Then
                 import = [Imports] _
                     .SafeQuery _
                     .Select(Function(i) i.ToSExpression) _
