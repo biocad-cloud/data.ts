@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PoissonPDF", "PoissonPDF.vbproj", "{0D95581F-B7E3-476B-99FB-30B6E086D05C}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "test", "test\test.vbproj", "{05D3B6C3-E6A3-446B-BACA-B8319C07C9A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0D95581F-B7E3-476B-99FB-30B6E086D05C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D95581F-B7E3-476B-99FB-30B6E086D05C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D95581F-B7E3-476B-99FB-30B6E086D05C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05D3B6C3-E6A3-446B-BACA-B8319C07C9A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05D3B6C3-E6A3-446B-BACA-B8319C07C9A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05D3B6C3-E6A3-446B-BACA-B8319C07C9A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05D3B6C3-E6A3-446B-BACA-B8319C07C9A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
