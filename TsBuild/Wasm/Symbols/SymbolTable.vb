@@ -12,12 +12,23 @@ Namespace Symbols
 
         Dim functionList As New Dictionary(Of String, FuncSignature)
         Dim locals As New Dictionary(Of String, DeclareLocal)
+        Dim uid As VBInteger = 100
 
         ''' <summary>
         ''' 当前所进行解析的函数的名称
         ''' </summary>
         ''' <returns></returns>
         Public Property CurrentSymbol As String
+
+        ''' <summary>
+        ''' Generate a guid for loop controls
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property NextGuid As String
+            Get
+                Return ++uid
+            End Get
+        End Property
 
         Sub New(methods As IEnumerable(Of MethodBlockSyntax))
             For Each method In methods
