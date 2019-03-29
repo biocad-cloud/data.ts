@@ -7,7 +7,7 @@ function RunAssembly(module, run) {
                 "global": {},
                 "env": {}
             };
-            dependencies["global.Math"] = window.Math;
+            dependencies["Math"] = window.Math;
             var moduleBufferView = new Uint8Array(buffer);
             return WebAssembly.instantiate(moduleBufferView, dependencies);
         }).then(wasm => {
