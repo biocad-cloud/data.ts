@@ -72,42 +72,43 @@
 0000055: 41                                        ; i32.const
 0000056: 01                                        ; i32 literal
 0000057: 4e                                        ; i32.ge_s
-0000058: 0d                                        ; br_if
-0000059: 01                                        ; break depth
-000005a: 0c                                        ; br
-000005b: 00                                        ; break depth
-000005c: 20                                        ; local.get
-000005d: 02                                        ; local index
-000005e: 20                                        ; local.get
-000005f: 01                                        ; local index
-0000060: 20                                        ; local.get
-0000061: 00                                        ; local index
-0000062: b7                                        ; f64.convert_i32_s
-0000063: a3                                        ; f64.div
-0000064: a2                                        ; f64.mul
-0000065: 21                                        ; local.set
-0000066: 02                                        ; local index
-0000067: 20                                        ; local.get
-0000068: 00                                        ; local index
-0000069: 41                                        ; i32.const
-000006a: 01                                        ; i32 literal
-000006b: 6b                                        ; i32.sub
-000006c: 21                                        ; local.set
-000006d: 00                                        ; local index
-000006e: 0b                                        ; end
+0000058: 45                                        ; i32.eqz
+0000059: 0d                                        ; br_if
+000005a: 01                                        ; break depth
+000005b: 0c                                        ; br
+000005c: 00                                        ; break depth
+000005d: 20                                        ; local.get
+000005e: 02                                        ; local index
+000005f: 20                                        ; local.get
+0000060: 01                                        ; local index
+0000061: 20                                        ; local.get
+0000062: 00                                        ; local index
+0000063: b7                                        ; f64.convert_i32_s
+0000064: a3                                        ; f64.div
+0000065: a2                                        ; f64.mul
+0000066: 21                                        ; local.set
+0000067: 02                                        ; local index
+0000068: 20                                        ; local.get
+0000069: 00                                        ; local index
+000006a: 41                                        ; i32.const
+000006b: 01                                        ; i32 literal
+000006c: 6b                                        ; i32.sub
+000006d: 21                                        ; local.set
+000006e: 00                                        ; local index
 000006f: 0b                                        ; end
-0000070: 20                                        ; local.get
-0000071: 02                                        ; local index
-0000072: 0f                                        ; return
-0000073: 0b                                        ; end
-000003b: 38                                        ; FIXUP func body size
-0000039: 3a                                        ; FIXUP section size
+0000070: 0b                                        ; end
+0000071: 20                                        ; local.get
+0000072: 02                                        ; local index
+0000073: 0f                                        ; return
+0000074: 0b                                        ; end
+000003b: 39                                        ; FIXUP func body size
+0000039: 3b                                        ; FIXUP section size
 ;; dump
 0000000: 0061 736d 0100 0000 010c 0260 017c 017c 
 0000010: 6002 7f7c 017c 020c 0104 4d61 7468 0365 
 0000020: 7870 0000 0302 0101 070e 010a 506f 6973 
-0000030: 736f 6e50 4446 0001 0a3a 0138 0101 7c44 
+0000030: 736f 6e50 4446 0001 0a3b 0139 0101 7c44 
 0000040: 0000 0000 0000 0000 2001 a110 0021 0202 
-0000050: 4003 4020 0041 014e 0d01 0c00 2002 2001 
-0000060: 2000 b7a3 a221 0220 0041 016b 2100 0b0b 
-0000070: 2002 0f0b                               
+0000050: 4003 4020 0041 014e 450d 010c 0020 0220 
+0000060: 0120 00b7 a3a2 2102 2000 4101 6b21 000b 
+0000070: 0b20 020f 0b                            

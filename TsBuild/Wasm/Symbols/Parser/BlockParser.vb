@@ -14,10 +14,7 @@ Namespace Symbols.Parser
                 .LoopID = $"loop_{symbols.NextGuid}"
             }
             Dim internal As New List(Of Expression)
-            Dim condition As Expression = whileBlock _
-                .WhileStatement _
-                .Condition _
-                .ValueExpression(symbols)
+            Dim condition As Expression = whileBlock.whileCondition(symbols)
 
             internal += New br_if With {.BlockLabel = block.Guid, .Condition = condition}
             internal += New br With {
@@ -31,6 +28,20 @@ Namespace Symbols.Parser
             block.Internal = internal
 
             Return block
+        End Function
+
+        <Extension>
+        Private Function whileCondition(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As Expression
+            Dim condition As Expression = whileBlock _
+                .WhileStatement _
+                .Condition _
+                .ValueExpression(symbols)
+
+            Return New FuncInvoke With {
+                .[operator] = True,
+                .Parameters = {condition},
+                .Reference = "i32.eqz"
+            }
         End Function
     End Module
 End Namespace
