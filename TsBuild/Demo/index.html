@@ -1,0 +1,8 @@
+<script type="text/javascript" src="wasm.js"></script>
+<script type="text/javascript">
+    RunAssembly("PoissonPDF.wasm", function(math) {
+        var PoissonPDF = math.instance.exports.PoissonPDF;
+
+        console.log(PoissonPDF(5, 2.0));
+    });
+</script>
