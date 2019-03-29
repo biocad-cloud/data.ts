@@ -12,9 +12,9 @@
         (loop $loop_9b020000
     
             (br_if $block_9a020000 (i32.eq (i32.ge_s (get_local $k) (i32.const 1)) (i32.const 0)))
-    (br $loop_9b020000)
     (set_local $result (f64.mul (get_local $result) (f64.div (get_local $lambda) (f64.convert_s/i32 (get_local $k)))))
     (set_local $k (i32.sub (get_local $k) (i32.const 1)))
+    (br $loop_9b020000)
     
         )
     )

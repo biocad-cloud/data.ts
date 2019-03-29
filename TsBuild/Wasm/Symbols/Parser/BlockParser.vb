@@ -17,14 +17,12 @@ Namespace Symbols.Parser
             Dim condition As Expression = whileBlock.whileCondition(symbols)
 
             internal += New br_if With {.BlockLabel = block.Guid, .Condition = condition}
-            internal += New br With {
-                .BlockLabel = block.LoopID
-            }
 
             For Each statement As StatementSyntax In whileBlock.Statements
                 internal += statement.ParseExpression(symbols)
             Next
 
+            internal += New br With {.BlockLabel = block.LoopID}
             block.Internal = internal
 
             Return block
