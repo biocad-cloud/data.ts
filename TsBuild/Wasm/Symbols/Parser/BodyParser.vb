@@ -19,7 +19,7 @@ Namespace Symbols.Parser
                 Case GetType(ReturnStatementSyntax)
                     Return DirectCast(statement, ReturnStatementSyntax).ValueReturn(symbols)
                 Case GetType(WhileBlockSyntax)
-                    Return DirectCast(statement, WhileBlockSyntax).DoWhile()
+                    Return DirectCast(statement, WhileBlockSyntax).DoWhile(symbols)
                 Case Else
                     Throw New NotImplementedException(statement.GetType.FullName)
             End Select

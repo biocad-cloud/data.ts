@@ -12,7 +12,7 @@ Namespace Symbols
 
         Dim functionList As New Dictionary(Of String, FuncSignature)
         Dim locals As New Dictionary(Of String, DeclareLocal)
-        Dim uid As VBInteger = 100
+        Dim uid As VBInteger = 666
 
         ''' <summary>
         ''' 当前所进行解析的函数的名称
@@ -26,7 +26,7 @@ Namespace Symbols
         ''' <returns></returns>
         Public ReadOnly Property NextGuid As String
             Get
-                Return ++uid
+                Return (++uid).ToHexString
             End Get
         End Property
 

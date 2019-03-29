@@ -32,4 +32,35 @@ Namespace Symbols.Blocks
 )"
         End Function
     End Class
+
+    Public Class br : Inherits Expression
+
+        Public Property BlockLabel As String
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return "void"
+        End Function
+
+        Public Overrides Function ToSExpression() As String
+            Return $"(br ${BlockLabel})"
+        End Function
+    End Class
+
+    Public Class br_if : Inherits br
+
+        ''' <summary>
+        ''' Is a logical expression
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Condition As Expression
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return "void"
+        End Function
+
+        Public Overrides Function ToSExpression() As String
+            Return $"(br_if ${BlockLabel} {Condition})"
+        End Function
+    End Class
+
 End Namespace
