@@ -16,7 +16,7 @@ Public Class Types
     ''' </summary>
     ''' <returns></returns>
     Public Shared ReadOnly Property Convert2Wasm As New Dictionary(Of Type, String) From {
-        {GetType(Boolean), "i32"},
+        {GetType(Boolean), "i32"},   ' True = 1, False = 0
         {GetType(Integer), "i32"},
         {GetType(Long), "i64"},
         {GetType(Single), "f32"},

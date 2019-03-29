@@ -39,8 +39,8 @@ Namespace Symbols.Parser
 
             Return New FuncInvoke With {
                 .[operator] = True,
-                .Parameters = {condition},
-                .Reference = "i32.eqz"
+                .Parameters = {condition, New LiteralExpression With {.type = "i32", .value = 0}},
+                .Reference = "i32.eq"
             }
         End Function
     End Module
