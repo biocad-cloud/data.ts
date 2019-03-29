@@ -125,6 +125,16 @@ Namespace Symbols.Parser
             Dim left = expression.Left.ValueExpression(symbols)
             Dim right = expression.Right.ValueExpression(symbols)
             Dim op$ = expression.OperatorToken.ValueText
+
+            Return BinaryStack(left, right, op, symbols)
+        End Function
+
+        ''' <summary>
+        ''' NOTE: div between two integer will convert to double div automatic. 
+        ''' </summary>
+        ''' <param name="symbols"></param>
+        ''' <returns></returns>
+        Public Function BinaryStack(left As Expression, right As Expression, op$, symbols As SymbolTable) As FuncInvoke
             Dim type$
 
             If op = "/" Then
@@ -152,21 +162,21 @@ Namespace Symbols.Parser
                 right = Types.CType(type, right, symbols)
             End If
 
-            Dim funcOpName$ = Types.Operators(op)
+            Dim funcOpName$
             Dim callImports As Boolean = False
 
             If Types.Operators.ContainsKey(op) Then
                 funcOpName = Types.Operators(op)
+
+                If funcOpName.First = "$"c Then
+                    ' 当前的VB.NET的运算符是webassembly之中没有原生支持的
+                    ' 需要从外部导入
+                    callImports = True
+                Else
+                    funcOpName = $"{type}.{funcOpName}"
+                End If
             Else
                 funcOpName = Types.Compares(type, op)
-            End If
-
-            If funcOpName.First = "$"c Then
-                ' 当前的VB.NET的运算符是webassembly之中没有原生支持的
-                ' 需要从外部导入
-                callImports = True
-            Else
-                funcOpName = $"{type}.{funcOpName}"
             End If
 
             ' 需要根据类型来决定操作符函数的类型来源

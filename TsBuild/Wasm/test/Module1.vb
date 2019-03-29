@@ -44,6 +44,8 @@ End Module"
     Sub test2()
         Dim moduletest = Wasm.CreateModule("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF\Math.vb")
 
+        Console.WriteLine(moduletest.ToSExpression)
+
         moduletest.Compile("X:\test.wasm")
 
         Pause()

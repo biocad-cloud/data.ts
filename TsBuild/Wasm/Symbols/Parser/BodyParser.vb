@@ -42,6 +42,22 @@ Namespace Symbols.Parser
             Dim var = DirectCast(assign.Left, IdentifierNameSyntax).Identifier.ValueText
             Dim right = assign.Right.ValueExpression(symbols)
             Dim typeL As String = symbols.GetObjectSymbol(var).type
+            Dim op$ = assign.OperatorToken.ValueText
+
+            Select Case op
+                Case "*="
+                    right = BinaryStack(New GetLocalVariable(var), right, "*", symbols)
+                Case "+="
+                    right = BinaryStack(New GetLocalVariable(var), right, "+", symbols)
+                Case "-="
+                    right = BinaryStack(New GetLocalVariable(var), right, "-", symbols)
+                Case "/="
+                    right = BinaryStack(New GetLocalVariable(var), right, "/", symbols)
+                Case "="
+                    ' do nothing
+                Case Else
+                    Throw New NotImplementedException
+            End Select
 
             Return New SetLocalVariable With {
                 .var = var,

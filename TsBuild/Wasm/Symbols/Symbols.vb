@@ -60,6 +60,10 @@ Namespace Symbols
 
         Public Property var As String
 
+        Sub New(Optional ref As String = Nothing)
+            var = ref
+        End Sub
+
         Public Overrides Function ToSExpression() As String
             Return $"(get_local ${var})"
         End Function

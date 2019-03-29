@@ -84,7 +84,8 @@ Public Module Extensions
         Return New ModuleSymbol With {
             .InternalFunctions = functions,
             .LabelName = main.ModuleStatement.Identifier.Text,
-            .Exports = exports
+            .Exports = exports,
+            .[Imports] = [imports]
         }
     End Function
 
