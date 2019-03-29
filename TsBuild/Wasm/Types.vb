@@ -11,7 +11,12 @@ Public Class Types
 
     Public Shared ReadOnly Property Orders As String() = {"i32", "f32", "i64", "f64"}
 
+    ''' <summary>
+    ''' Webassembly之中，逻辑值是一个32位整型数
+    ''' </summary>
+    ''' <returns></returns>
     Public Shared ReadOnly Property Convert2Wasm As New Dictionary(Of Type, String) From {
+        {GetType(Boolean), "i32"},
         {GetType(Integer), "i32"},
         {GetType(Long), "i64"},
         {GetType(Single), "f32"},

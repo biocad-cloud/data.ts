@@ -2,7 +2,9 @@
 
     (func $Exp (import "Math" "exp") (param $x f64) (result f64))
 
-    (export "PoissonPDF" (func $PoissonPDF)) 
+    (export "PoissonPDF" (func $PoissonPDF))
+    (export "IfTest" (func $IfTest))
+    (export "IfFalse" (func $IfFalse)) 
 
     (func $PoissonPDF (param $k i32) (param $lambda f64) (result f64)
         ;; Public Function PoissonPDF(k As i32, lambda As f64) As f64
@@ -19,6 +21,16 @@
         )
     )
     (return (get_local $result))
+    )
+    
+    (func $IfTest  (result i32)
+        ;; Public Function IfTest() As i32
+        (return (i32.gt_s (i32.const 3) (i32.const 1)))
+    )
+    
+    (func $IfFalse  (result i32)
+        ;; Public Function IfFalse() As i32
+        (return (i32.lt_s (i32.const 3) (i32.const 1)))
     )
 
 )
