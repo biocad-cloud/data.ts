@@ -46,7 +46,9 @@ End Module"
 
         Console.WriteLine(moduletest.ToSExpression)
 
-        moduletest.Compile("X:\test.wasm")
+        moduletest.Compile("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wasm")
+        moduletest.ToSExpression.SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wast")
+        moduletest.HexDump(True).SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.dmp")
 
         Pause()
     End Sub
