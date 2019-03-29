@@ -1,3 +1,9 @@
+/** 
+ * Run the compiled VisualBasic.NET assembly module
+ * 
+ * @param module The ``*.wasm`` module file path
+ * @param run A action delegate for utilize the VB.NET assembly module
+*/
 function RunAssembly(module, run) {
     fetch(module).then(function (response) {
             return response.arrayBuffer();
