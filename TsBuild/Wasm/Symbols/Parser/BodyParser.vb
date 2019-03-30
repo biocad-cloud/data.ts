@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
 Namespace Symbols.Parser
@@ -10,7 +11,7 @@ Namespace Symbols.Parser
     Module BodyParser
 
         <Extension>
-        Public Function ParseExpression(statement As StatementSyntax, symbols As SymbolTable) As Expression
+        Public Function ParseExpression(statement As StatementSyntax, symbols As SymbolTable) As [Variant](Of Expression, Expression())
             Select Case statement.GetType
                 Case GetType(LocalDeclarationStatementSyntax)
                     Return DirectCast(statement, LocalDeclarationStatementSyntax).LocalDeclare(symbols)
@@ -67,6 +68,12 @@ Namespace Symbols.Parser
             }
         End Function
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="statement"></param>
+        ''' <param name="symbols"></param>
+        ''' <returns>May be contains multiple local variables</returns>
         <Extension>
         Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax, symbols As SymbolTable) As DeclareLocal
             Dim [declare] = statement.Declarators.First

@@ -59,6 +59,7 @@ End Module"
 Module Test
 
 Dim x As Double
+Dim y&, z As Single
 
 Public Function AddAndSet(x As Double) As Integer
 
