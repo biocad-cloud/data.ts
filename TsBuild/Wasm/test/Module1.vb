@@ -5,6 +5,7 @@ Module treeTest
 
     Sub Main()
 
+        Call IfTest()
         Call test2()
 
         Dim code = "Module Main
@@ -49,6 +50,34 @@ End Module"
         moduletest.Compile("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wasm")
         moduletest.ToSExpression.SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wast")
         moduletest.HexDump(True).SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.dmp")
+
+        Pause()
+    End Sub
+
+    Sub IfTest()
+
+        Dim code = "Module Test
+
+Public Function Abs(x as Double) As Long
+
+If x > 0 Then
+Return 1
+Else 
+Return -10
+End If
+
+End Function
+
+End Module"
+
+
+        Dim moduletest = Wasm.CreateModule(code)
+
+        Console.WriteLine(moduletest.ToSExpression)
+
+        moduletest.Compile("X:\iF.wasm")
+        moduletest.ToSExpression.SaveTo("X:\iF.wast")
+        moduletest.HexDump(True).SaveTo("X:\iF.dmp")
 
         Pause()
     End Sub

@@ -1,16 +1,27 @@
-﻿Imports Microsoft.VisualBasic.Text
+﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.Text
 
 Namespace Symbols.Blocks
 
-    Public MustInherit Class Block : Inherits Expression
-
+    Public MustInherit Class AbstractBlock : Inherits Expression
         ''' <summary>
         ''' The label of this block
         ''' </summary>
         ''' <returns></returns>
         Public Property Guid As String
+
+    End Class
+
+    Public MustInherit Class Block : Inherits AbstractBlock
+
         Public Property Internal As Expression()
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Public Shared Function InternalBlock(block As IEnumerable(Of Expression), indent As String) As String
+            Return block _
+                .Select(Function(line) indent & line.ToSExpression) _
+                .JoinBy(ASCII.LF)
+        End Function
     End Class
 
     Public Class [Loop] : Inherits Block
@@ -26,7 +37,7 @@ Namespace Symbols.Blocks
 (block ${Guid} 
     (loop ${LoopID}
 
-        {Internal.Select(Function(line) line.ToSExpression).JoinBy(ASCII.LF)}
+        {InternalBlock(Internal, "        ")}
 
     )
 )"
@@ -52,7 +63,7 @@ Namespace Symbols.Blocks
         ''' Is a logical expression
         ''' </summary>
         ''' <returns></returns>
-        Public Property Condition As Expression
+        Public Property Condition As BooleanSymbol
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             Return "void"

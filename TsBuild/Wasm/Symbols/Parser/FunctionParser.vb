@@ -95,6 +95,18 @@ Namespace Symbols.Parser
                 .Body = bodyExpressions
             }
 
+            If Not TypeOf func.Body.Last Is ReturnValue Then
+                Dim implicitReturn As New ReturnValue With {
+                    .Internal = New LiteralExpression With {
+                        .type = funcVar.Value,
+                        .value = 0
+                    }
+                }
+
+                ' 自动添加一个返回语句，如果最后一行没有返回表达式的话？
+                Call func.Body.Add(implicitReturn)
+            End If
+
             Return func
         End Function
 
