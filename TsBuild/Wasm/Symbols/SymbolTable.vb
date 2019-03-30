@@ -13,6 +13,10 @@ Namespace Symbols
         Dim functionList As New Dictionary(Of String, FuncSignature)
         Dim locals As New Dictionary(Of String, DeclareLocal)
         Dim uid As VBInteger = 666
+        ''' <summary>
+        ''' [name => type]
+        ''' </summary>
+        Dim globals As New Dictionary(Of String, String)
 
         ''' <summary>
         ''' 当前所进行解析的函数的名称
@@ -46,6 +50,18 @@ Namespace Symbols
 
         Public Sub AddLocal([declare] As DeclareLocal)
             Call locals.Add([declare].name, [declare])
+        End Sub
+
+        Public Function IsLocal(var As String) As Boolean
+            Return locals.ContainsKey(var)
+        End Function
+
+        Public Function GetGlobal(var As String) As String
+            Return globals(var)
+        End Function
+
+        Public Sub AddGlobal(var$, type$)
+            Call globals.Add(var, type)
         End Sub
 
         Public Sub AddLocal([declare] As NamedValue(Of String))

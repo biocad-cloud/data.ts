@@ -6,7 +6,7 @@ Module treeTest
     Sub Main()
 
         Call IfTest()
-        Call test2()
+        Call testDemo()
 
         Dim code = "Module Main
 
@@ -42,7 +42,7 @@ End Module"
         Pause()
     End Sub
 
-    Sub test2()
+    Sub testDemo()
         Dim moduletest = Wasm.CreateModule("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF\Math.vb")
 
         Console.WriteLine(moduletest.ToSExpression)
