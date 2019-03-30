@@ -73,7 +73,9 @@ Public Module Extensions
             Dim names = field.Declarators
 
             For Each var As VariableDeclaratorSyntax In names
-                Dim fieldName = var.Names
+                Dim fieldNames = var.Names
+                Dim type = var.AsClause
+
 
             Next
         Next
