@@ -211,6 +211,9 @@
     <TypeScriptCompile Include="Framework\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Helpers\WebAssembly.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Type.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
