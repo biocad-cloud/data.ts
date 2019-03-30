@@ -40,10 +40,9 @@ Namespace Symbols.Parser
                 .Condition _
                 .ValueExpression(symbols)
 
-            Return New FuncInvoke With {
-                .[operator] = True,
-                .Parameters = {condition, New LiteralExpression With {.type = "i32", .value = 0}},
-                .Reference = "i32.eq"
+            Return New BooleanSymbol With {
+                .Condition = condition,
+                .[IsNot] = True
             }
         End Function
     End Module
