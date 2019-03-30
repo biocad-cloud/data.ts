@@ -23,5 +23,14 @@
                 Return test
             End If
         End Function
+
+        ''' <summary>
+        ''' 逻辑值操作主要是数学关系操作符判断
+        ''' </summary>
+        ''' <param name="op"></param>
+        ''' <returns></returns>
+        Public Shared Widening Operator CType(op As FuncInvoke) As BooleanSymbol
+            Return New BooleanSymbol With {.Condition = op}
+        End Operator
     End Class
 End Namespace

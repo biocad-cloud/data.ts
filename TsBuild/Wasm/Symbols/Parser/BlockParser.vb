@@ -9,7 +9,30 @@ Namespace Symbols.Parser
 
         <Extension>
         Public Function IfBlock(doIf As MultiLineIfBlockSyntax, symbols As SymbolTable) As Expression
+            Dim test As New BooleanSymbol With {
+                .Condition = doIf _
+                    .IfStatement _
+                    .Condition _
+                    .ValueExpression(symbols)
+            }
+            Dim thenBlock As New List(Of Expression)
+            Dim elseBlock As New List(Of Expression)
 
+            For Each line In doIf.Statements
+                thenBlock += line.ParseExpression(symbols)
+            Next
+
+            If Not doIf.ElseBlock Is Nothing Then
+                For Each line In doIf.ElseBlock.Statements
+                    elseBlock += line.ParseExpression(symbols)
+                Next
+            End If
+
+            Return New IfBlock With {
+                .Condition = test,
+                .[Then] = thenBlock,
+                .[Else] = elseBlock
+            }
         End Function
 
         <Extension>

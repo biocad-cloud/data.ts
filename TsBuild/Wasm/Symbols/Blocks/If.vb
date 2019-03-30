@@ -1,6 +1,6 @@
 ﻿Namespace Symbols.Blocks
 
-    Public Class IfBlock : Inherits Block
+    Public Class IfBlock : Inherits AbstractBlock
 
         Public Property Condition As BooleanSymbol
         Public Property [Then] As Expression()
@@ -14,10 +14,10 @@
             Return $"
 (if {Condition} 
     (then
-        {InternalBlock([Then], "        ")}
+        {Block.InternalBlock([Then], "        ")}
     )
     (else
-        {InternalBlock([Else], "        ")}
+        {Block.InternalBlock([Else], "        ")}
     )
 )"
         End Function

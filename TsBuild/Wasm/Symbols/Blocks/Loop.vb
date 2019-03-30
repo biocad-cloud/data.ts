@@ -3,13 +3,17 @@ Imports Microsoft.VisualBasic.Text
 
 Namespace Symbols.Blocks
 
-    Public MustInherit Class Block : Inherits Expression
-
+    Public MustInherit Class AbstractBlock : Inherits Expression
         ''' <summary>
         ''' The label of this block
         ''' </summary>
         ''' <returns></returns>
         Public Property Guid As String
+
+    End Class
+
+    Public MustInherit Class Block : Inherits AbstractBlock
+
         Public Property Internal As Expression()
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
