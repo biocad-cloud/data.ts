@@ -59,7 +59,7 @@ Namespace Symbols.Blocks
         ''' Is a logical expression
         ''' </summary>
         ''' <returns></returns>
-        Public Property Condition As Expression
+        Public Property Condition As BooleanSymbol
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             Return "void"

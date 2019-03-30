@@ -2,7 +2,7 @@
 
     Public Class IfBlock : Inherits Block
 
-        Public Property Condition As Expression
+        Public Property Condition As BooleanSymbol
         Public Property [Then] As Expression()
         Public Property [Else] As Expression()
 
