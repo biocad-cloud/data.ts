@@ -8,6 +8,11 @@ Namespace Symbols.Parser
     Module BlockParser
 
         <Extension>
+        Public Function IfBlock(doIf As MultiLineIfBlockSyntax, symbols As SymbolTable) As Expression
+
+        End Function
+
+        <Extension>
         Public Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As Expression
             Dim block As New [Loop] With {
                 .Guid = $"block_{symbols.NextGuid}",
