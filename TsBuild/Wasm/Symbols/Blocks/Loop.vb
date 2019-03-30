@@ -1,4 +1,5 @@
-﻿Imports Microsoft.VisualBasic.Text
+﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.Text
 
 Namespace Symbols.Blocks
 
@@ -11,6 +12,12 @@ Namespace Symbols.Blocks
         Public Property Guid As String
         Public Property Internal As Expression()
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Public Shared Function InternalBlock(block As IEnumerable(Of Expression), indent As String) As String
+            Return block _
+                .Select(Function(line) indent & line.ToSExpression) _
+                .JoinBy(ASCII.LF)
+        End Function
     End Class
 
     Public Class [Loop] : Inherits Block
@@ -26,7 +33,7 @@ Namespace Symbols.Blocks
 (block ${Guid} 
     (loop ${LoopID}
 
-        {Internal.Select(Function(line) line.ToSExpression).JoinBy(ASCII.LF)}
+        {InternalBlock(Internal, "        ")}
 
     )
 )"
