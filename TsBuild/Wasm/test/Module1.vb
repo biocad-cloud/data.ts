@@ -4,7 +4,7 @@ Imports Wasm.Symbols
 Module treeTest
 
     Sub Main()
-
+        Call globalTest()
         Call IfTest()
         Call testDemo()
 
@@ -50,6 +50,32 @@ End Module"
         moduletest.Compile("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wasm")
         moduletest.ToSExpression.SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wast")
         moduletest.HexDump(True).SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.dmp")
+
+        Pause()
+    End Sub
+
+    Sub globalTest()
+        Dim code = "
+Module Test
+
+Dim x As Double
+
+Public Function AddAndSet(x As Double) As Integer
+
+Test.x = Test.x + x
+Return Test.x
+
+End Function
+
+End Module
+"
+        Dim moduletest = Wasm.CreateModule(code)
+
+        Console.WriteLine(moduletest.ToSExpression)
+
+        moduletest.Compile("X:\global.wasm")
+        moduletest.ToSExpression.SaveTo("X:\global.wast")
+        moduletest.HexDump(True).SaveTo("X:\global.dmp")
 
         Pause()
     End Sub
