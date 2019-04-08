@@ -28,6 +28,7 @@ Namespace Symbols.Parser
             Dim functions As New List(Of FuncSymbol)
             Dim exports As New List(Of ExportSymbolExpression)
             Dim symbolTable As New SymbolTable(main.Members.OfType(Of MethodBlockSyntax))
+            Dim moduleName$ = main.ModuleStatement.Identifier.Text
 
             ' 添加declare导入
             Call main.Members _
@@ -54,9 +55,9 @@ Namespace Symbols.Parser
 
             Return New ModuleSymbol With {
                 .InternalFunctions = functions,
-                .LabelName = main.ModuleStatement.Identifier.Text,
+                .LabelName = moduleName,
                 .Exports = exports,
-                .[Imports] = [imports]
+                .[Imports] = symbolTable.GetAllImports.ToArray
             }
         End Function
 
@@ -70,8 +71,8 @@ Namespace Symbols.Parser
                     .ImportObject = api.AliasName.Token.ValueText,
                     .Package = api.LibraryName.Token.ValueText
                 }
+
                 ' add api symbols for type match in function body
-                Call [imports].Add(apiImports)
                 Call symbolTable.AddImports(apiImports)
             Next
         End Sub
