@@ -36,7 +36,10 @@ Namespace Symbols.Parser
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetAsType([as] As SimpleAsClauseSyntax) As Type
-            Return Scripting.GetType(DirectCast([as].Type, PredefinedTypeSyntax).Keyword.ValueText)
+            Dim type = DirectCast([as].Type, PredefinedTypeSyntax)
+            Dim token$ = type.Keyword.ValueText
+
+            Return Scripting.GetType(token)
         End Function
     End Module
 End Namespace
