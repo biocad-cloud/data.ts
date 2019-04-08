@@ -5,8 +5,9 @@ Module treeTest
 
     Sub Main()
         Call declareTest()
+        Call globalTest()
         Call IfTest()
-        Call test2()
+        Call testDemo()
 
         Dim code = "Module Main
 
@@ -60,6 +61,7 @@ Dim E%,F&
     End Sub
 
     Sub test2()
+    Sub testDemo()
         Dim moduletest = Wasm.CreateModule("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF\Math.vb")
 
         Console.WriteLine(moduletest.ToSExpression)
@@ -67,6 +69,33 @@ Dim E%,F&
         moduletest.Compile("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wasm")
         moduletest.ToSExpression.SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wast")
         moduletest.HexDump(True).SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.dmp")
+
+        Pause()
+    End Sub
+
+    Sub globalTest()
+        Dim code = "
+Module Test
+
+Dim x As Double
+Dim y&, z As Single
+
+Public Function AddAndSet(x As Double) As Integer
+
+Test.x = Test.x + x
+Return Test.x
+
+End Function
+
+End Module
+"
+        Dim moduletest = Wasm.CreateModule(code)
+
+        Console.WriteLine(moduletest.ToSExpression)
+
+        moduletest.Compile("X:\global.wasm")
+        moduletest.ToSExpression.SaveTo("X:\global.wast")
+        moduletest.HexDump(True).SaveTo("X:\global.dmp")
 
         Pause()
     End Sub

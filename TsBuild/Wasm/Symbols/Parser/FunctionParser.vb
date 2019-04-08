@@ -1,6 +1,8 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
 Namespace Symbols.Parser
@@ -74,21 +76,13 @@ Namespace Symbols.Parser
                 Call symbols.AddLocal(arg)
             Next
 
-            Dim runParser = Function(statement As StatementSyntax)
-                                Dim expression As Expression = statement.ParseExpression(symbols)
-
-                                If TypeOf expression Is DeclareLocal Then
-                                    Call symbols.AddLocal(expression)
-                                End If
-
-                                Return expression
-                            End Function
-
+            Dim runParser = symbols.runParser
             Dim bodyExpressions As Expression() = body _
                 .ExceptType(Of EndBlockStatementSyntax) _
                 .Select(Function(s)
-                            Return runParser(statement:=s)
+                            Return runParser(s)
                         End Function) _
+                .IteratesALL _
                 .ToArray
             Dim func As New FuncSymbol(funcVar) With {
                 .Parameters = parameters,
@@ -108,6 +102,28 @@ Namespace Symbols.Parser
             End If
 
             Return func
+        End Function
+
+        <Extension>
+        Private Function runParser(symbols As SymbolTable) As Func(Of StatementSyntax, Expression())
+            Return Function(statement As StatementSyntax)
+                       Dim expression As [Variant](Of Expression, Expression()) = statement.ParseExpression(symbols)
+                       Dim expressionList As Expression()
+
+                       If expression Like GetType(Expression) Then
+                           expressionList = {expression.TryCast(Of Expression)}
+                       Else
+                           expressionList = expression
+                       End If
+
+                       For Each exp As Expression In expressionList
+                           If TypeOf exp Is DeclareLocal Then
+                               Call symbols.AddLocal(exp)
+                           End If
+                       Next
+
+                       Return expressionList
+                   End Function
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>

@@ -17,14 +17,27 @@ Namespace Symbols.Parser
             }
             Dim thenBlock As New List(Of Expression)
             Dim elseBlock As New List(Of Expression)
+            Dim lineSymbols As [Variant](Of Expression, Expression())
 
             For Each line In doIf.Statements
-                thenBlock += line.ParseExpression(symbols)
+                lineSymbols = line.ParseExpression(symbols)
+
+                If lineSymbols Like GetType(Expression) Then
+                    thenBlock += lineSymbols.TryCast(Of Expression)
+                Else
+                    thenBlock += lineSymbols.TryCast(Of Expression())
+                End If
             Next
 
             If Not doIf.ElseBlock Is Nothing Then
                 For Each line In doIf.ElseBlock.Statements
-                    elseBlock += line.ParseExpression(symbols)
+                    lineSymbols = line.ParseExpression(symbols)
+
+                    If lineSymbols Like GetType(Expression) Then
+                        elseBlock += lineSymbols.TryCast(Of Expression)
+                    Else
+                        elseBlock += lineSymbols.TryCast(Of Expression())
+                    End If
                 Next
             End If
 
@@ -43,11 +56,18 @@ Namespace Symbols.Parser
             }
             Dim internal As New List(Of Expression)
             Dim condition As Expression = whileBlock.whileCondition(symbols)
+            Dim lineSymbols As [Variant](Of Expression, Expression())
 
             internal += New br_if With {.BlockLabel = block.Guid, .Condition = condition}
 
             For Each statement As StatementSyntax In whileBlock.Statements
-                internal += statement.ParseExpression(symbols)
+                lineSymbols = statement.ParseExpression(symbols)
+
+                If lineSymbols Like GetType(Expression) Then
+                    internal += lineSymbols.TryCast(Of Expression)
+                Else
+                    internal += lineSymbols.TryCast(Of Expression())
+                End If
             Next
 
             internal += New br With {.BlockLabel = block.LoopID}

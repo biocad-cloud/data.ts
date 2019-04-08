@@ -68,6 +68,18 @@ Public Module Extensions
             Call symbolTable.AddImports(apiImports)
         Next
 
+        ' global variable
+        For Each field As FieldDeclarationSyntax In main.Members.OfType(Of FieldDeclarationSyntax)
+            Dim names = field.Declarators
+
+            For Each var As VariableDeclaratorSyntax In names
+                Dim fieldNames = var.Names
+                Dim type = var.AsClause
+
+
+            Next
+        Next
+
         For Each method In main.Members.OfType(Of MethodBlockSyntax)
             functions += method.Parse(symbolTable)
             symbolTable.ClearLocals()

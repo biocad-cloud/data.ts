@@ -15,7 +15,7 @@ function RunAssembly(module, run) {
             };
             dependencies["Math"] = window.Math;
             var moduleBufferView = new Uint8Array(buffer);
-            return WebAssembly.instantiate(moduleBufferView, dependencies);
+            return window.WebAssembly.instantiate(moduleBufferView, dependencies);
         }).then(wasm => {
             console.log(wasm);
             run(wasm);
