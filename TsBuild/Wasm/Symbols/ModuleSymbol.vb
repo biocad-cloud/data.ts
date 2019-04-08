@@ -1,5 +1,7 @@
-﻿Imports Microsoft.VisualBasic.Linq
+﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
+Imports Wasm.Symbols.Parser
 
 Namespace Symbols
 
@@ -52,8 +54,14 @@ Namespace Symbols
 )"
         End Function
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             Return "any"
+        End Function
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Public Shared Function CreateModule(vbcode As String) As ModuleSymbol
+            Return ModuleParser.CreateModule(vbcode)
         End Function
     End Class
 End Namespace

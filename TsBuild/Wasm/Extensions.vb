@@ -4,6 +4,7 @@ Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Wasm.Symbols
+Imports Wasm.Symbols.Parser
 Imports Vbproj = Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio.Project
 
 Public Module Extensions
@@ -22,6 +23,11 @@ Public Module Extensions
     <Extension>
     Public Function CreateModuleFromProject(vbproj As Vbproj) As ModuleSymbol
 
+    End Function
+
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Function CreateModule(vbcode As [Variant](Of FileInfo, String)) As ModuleSymbol
+        Return ModuleParser.CreateModule(vbcode)
     End Function
 
     <Extension>
