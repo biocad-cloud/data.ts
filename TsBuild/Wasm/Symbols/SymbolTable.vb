@@ -51,6 +51,10 @@ Namespace Symbols
             Return functionList.OfType(Of ImportSymbol)
         End Function
 
+        Public Function GetAllGlobals() As IEnumerable(Of DeclareGlobal)
+            Return globals.Select(Function(var) New DeclareGlobal With {.name = var.Key, .type = var.Value})
+        End Function
+
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Sub AddImports(api As FuncSignature)
             functionList.Add(api.Name, api)

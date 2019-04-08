@@ -117,11 +117,7 @@ Namespace Symbols
         End Function
     End Class
 
-    Public Class DeclareLocal : Inherits Expression
-
-        Public Property name As String
-        Public Property type As String
-        Public Property init As Expression
+    Public Class DeclareLocal : Inherits DeclareVariable
 
         Public ReadOnly Property SetLocal As SetLocalVariable
             Get
@@ -133,11 +129,26 @@ Namespace Symbols
         End Property
 
         Public Overrides Function ToSExpression() As String
-            Return $"(local ${name} {type})"
+            Return $"(local ${name} {Type})"
         End Function
+
+    End Class
+
+    Public MustInherit Class DeclareVariable : Inherits Expression
+
+        Public Property name As String
+        Public Property type As String
+        Public Property init As Expression
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             Return type
+        End Function
+    End Class
+
+    Public Class DeclareGlobal : Inherits DeclareVariable
+
+        Public Overrides Function ToSExpression() As String
+            Return $"(global ${name} {type})"
         End Function
     End Class
 

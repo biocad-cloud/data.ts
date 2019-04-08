@@ -57,7 +57,8 @@ Namespace Symbols.Parser
                 .InternalFunctions = functions,
                 .LabelName = moduleName,
                 .Exports = exports,
-                .[Imports] = symbolTable.GetAllImports.ToArray
+                .[Imports] = symbolTable.GetAllImports.ToArray,
+                .Globals = symbolTable.GetAllGlobals.ToArray
             }
         End Function
 
