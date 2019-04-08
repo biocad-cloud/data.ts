@@ -102,7 +102,7 @@ Namespace Symbols.Parser
                             init = var.Initializer.GetInitialize(symbolTable, type)
                         End If
 
-                        symbolTable.AddGlobal(name, type, 0)
+                        symbolTable.AddGlobal(name, type, init)
                     Next
                 Next
             Next

@@ -81,8 +81,8 @@ Namespace Symbols
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Public Sub AddGlobal(var$, type$, init As Double)
-            Call globals.Add(var, New DeclareGlobal With {.name = var, .type = type})
+        Public Sub AddGlobal(var$, type$, init As LiteralExpression)
+            Call globals.Add(var, New DeclareGlobal With {.name = var, .type = type, .init = init})
         End Sub
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
