@@ -1,4 +1,5 @@
-﻿Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Wasm.Symbols.Parser
@@ -29,6 +30,7 @@ Namespace Symbols
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property NextGuid As String
+            <MethodImpl(MethodImplOptions.AggressiveInlining)>
             Get
                 Return (++uid).ToHexString
             End Get
@@ -44,38 +46,52 @@ Namespace Symbols
             Next
         End Sub
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Public Function GetAllImports() As IEnumerable(Of ImportSymbol)
+            Return functionList.OfType(Of ImportSymbol)
+        End Function
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Sub AddImports(api As FuncSignature)
             functionList.Add(api.Name, api)
         End Sub
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Sub AddLocal([declare] As DeclareLocal)
             Call locals.Add([declare].name, [declare])
         End Sub
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function IsLocal(var As String) As Boolean
             Return locals.ContainsKey(var)
         End Function
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetGlobal(var As String) As String
             Return globals(var)
         End Function
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Sub AddGlobal(var$, type$)
             Call globals.Add(var, type)
         End Sub
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Sub AddLocal([declare] As NamedValue(Of String))
             Call locals.Add([declare].Name, New DeclareLocal With {.name = [declare].Name, .type = [declare].Value})
         End Sub
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Sub ClearLocals()
             Call locals.Clear()
         End Sub
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetFunctionSymbol(name As String) As FuncSignature
             Return functionList(name.Trim("$"c))
         End Function
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetObjectSymbol(name As String) As DeclareLocal
             Return locals(name.Trim("$"c))
         End Function

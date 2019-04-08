@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
@@ -26,36 +27,17 @@ Namespace Symbols.Parser
             Dim main As ModuleBlockSyntax = root.Members(Scan0)
             Dim functions As New List(Of FuncSymbol)
             Dim exports As New List(Of ExportSymbolExpression)
-            Dim [imports] As New List(Of ImportSymbol)
             Dim symbolTable As New SymbolTable(main.Members.OfType(Of MethodBlockSyntax))
 
             ' 添加declare导入
-            For Each api As DeclareStatementSyntax In main.Members.OfType(Of DeclareStatementSyntax)
-                Dim define As NamedValue(Of String) = api.FuncVariable
-                Dim apiImports As New ImportSymbol(api.ParseParameters) With {
-                    .Name = define.Name,
-                    .Result = define.Value,
-                    .ImportObject = api.AliasName.Token.ValueText,
-                    .Package = api.LibraryName.Token.ValueText
-                }
-                ' add api symbols for type match in function body
-                Call [imports].Add(apiImports)
-                Call symbolTable.AddImports(apiImports)
-            Next
+            Call main.Members _
+                .OfType(Of DeclareStatementSyntax) _
+                .parseImports(symbolTable)
 
-            ' global variable
-            For Each field As FieldDeclarationSyntax In main.Members.OfType(Of FieldDeclarationSyntax)
-                Dim names = field.Declarators
-
-                For Each var As VariableDeclaratorSyntax In names
-                    Dim fieldNames = var.Names
-                    Dim type = var.AsClause
-
-                    For Each name In fieldNames
-
-                    Next
-                Next
-            Next
+            ' 添加内部模块变量
+            Call main.Members _
+                .OfType(Of FieldDeclarationSyntax) _
+                .parseGlobals(symbolTable)
 
             For Each method In main.Members.OfType(Of MethodBlockSyntax)
                 functions += method.Parse(symbolTable)
@@ -77,5 +59,41 @@ Namespace Symbols.Parser
                 .[Imports] = [imports]
             }
         End Function
+
+        <Extension>
+        Private Sub parseImports(declares As IEnumerable(Of DeclareStatementSyntax), symbolTable As SymbolTable)
+            For Each api As DeclareStatementSyntax In declares
+                Dim define As NamedValue(Of String) = api.FuncVariable
+                Dim apiImports As New ImportSymbol(api.ParseParameters) With {
+                    .Name = define.Name,
+                    .Result = define.Value,
+                    .ImportObject = api.AliasName.Token.ValueText,
+                    .Package = api.LibraryName.Token.ValueText
+                }
+                ' add api symbols for type match in function body
+                Call [imports].Add(apiImports)
+                Call symbolTable.AddImports(apiImports)
+            Next
+        End Sub
+
+        ''' <summary>
+        ''' Parse global variables
+        ''' </summary>
+        ''' <param name="declares"></param>
+        <Extension>
+        Private Sub parseGlobals(declares As IEnumerable(Of FieldDeclarationSyntax), symbolTable As SymbolTable)
+            For Each field As FieldDeclarationSyntax In declares
+                Dim names = field.Declarators
+
+                For Each var As VariableDeclaratorSyntax In names
+                    Dim fieldNames = var.Names
+                    Dim type = var.AsClause
+
+                    For Each name In fieldNames
+
+                    Next
+                Next
+            Next
+        End Sub
     End Module
 End Namespace
