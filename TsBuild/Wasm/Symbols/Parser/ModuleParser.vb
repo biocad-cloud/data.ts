@@ -51,7 +51,9 @@ Namespace Symbols.Parser
                     Dim fieldNames = var.Names
                     Dim type = var.AsClause
 
+                    For Each name In fieldNames
 
+                    Next
                 Next
             Next
 

@@ -126,11 +126,6 @@ Namespace Symbols.Parser
                    End Function
         End Function
 
-        <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Public Function GetAsType([as] As SimpleAsClauseSyntax) As Type
-            Return Scripting.GetType(DirectCast([as].Type, PredefinedTypeSyntax).Keyword.ValueText)
-        End Function
-
         Public Function ParseParameter(parameter As ParameterSyntax) As NamedValue(Of String)
             Dim name = parameter.Identifier.Identifier.Text
             Dim type As Type
@@ -144,7 +139,9 @@ Namespace Symbols.Parser
             End If
 
             If Not parameter.Default Is Nothing Then
-                [default] = DirectCast(parameter.Default.Value, LiteralExpressionSyntax).Token.Value
+                With DirectCast(parameter.Default.Value, LiteralExpressionSyntax)
+                    [default] = .Token.Value
+                End With
             End If
 
             Return New NamedValue(Of String) With {

@@ -78,15 +78,8 @@ Namespace Symbols.Parser
         Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax, symbols As SymbolTable) As DeclareLocal
             Dim [declare] = statement.Declarators.First
             Dim name$ = [declare].Names.First.Identifier.Value
-            Dim type$ = Types.Convert2Wasm(GetType(Double))
             Dim initValue As Expression = Nothing
-
-            If Not [declare].AsClause Is Nothing Then
-                type = Types.Convert2Wasm(GetAsType([declare].AsClause))
-            ElseIf name.Last Like Patterns.TypeChar Then
-                type = Types.TypeCharWasm(name.Last)
-                name = name.Substring(0, name.Length - 1)
-            End If
+            Dim type$ = name.AsType([declare].AsClause)
 
             If Not [declare].Initializer Is Nothing Then
                 initValue = [declare].Initializer.Value.ValueExpression(symbols)
