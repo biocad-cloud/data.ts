@@ -60,7 +60,6 @@ Dim E%,F&
         Pause()
     End Sub
 
-    Sub test2()
     Sub testDemo()
         Dim moduletest = Wasm.CreateModule("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF\Math.vb")
 
