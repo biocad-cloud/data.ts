@@ -82,7 +82,7 @@ Namespace Symbols.Parser
             Dim type$ = name.AsType([declare].AsClause)
 
             If Not [declare].Initializer Is Nothing Then
-                initValue = [declare].Initializer.Value.ValueExpression(symbols)
+                initValue = [declare].Initializer.GetInitialize(symbols, Nothing)
                 initValue = Types.CType(type, initValue, symbols)
             End If
 
@@ -91,6 +91,35 @@ Namespace Symbols.Parser
                 .type = type,
                 .init = initValue
             }
+        End Function
+
+        <Extension>
+        Public Function GetInitialize(init As EqualsValueSyntax, symbols As SymbolTable, type$) As Expression
+            Dim val As ExpressionSyntax = init.Value
+
+            If TypeOf val Is LiteralExpressionSyntax Then
+                If type.StringEmpty Then
+                    Return val.ValueExpression(symbols)
+                Else
+                    With DirectCast(val, LiteralExpressionSyntax)
+                        Return .ConstantExpression(type)
+                    End With
+                End If
+            ElseIf TypeOf val Is UnaryExpressionSyntax Then
+                ' unary
+                Dim unary As UnaryExpressionSyntax = val
+                Dim op$ = unary.OperatorToken.ValueText
+                Dim right As LiteralExpression
+
+                With DirectCast(unary.Operand, LiteralExpressionSyntax)
+                    right = .ConstantExpression(type)
+                    right.value = op & right.value
+                End With
+
+                Return right
+            Else
+                Return val.ValueExpression(symbols)
+            End If
         End Function
     End Module
 End Namespace

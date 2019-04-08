@@ -99,9 +99,7 @@ Namespace Symbols.Parser
                             ' 默认是零
                             init = New LiteralExpression(0, type)
                         Else
-                            With DirectCast(var.Initializer.Value, LiteralExpressionSyntax)
-                                init = .ConstantExpression(type)
-                            End With
+                            init = var.Initializer.GetInitialize(symbolTable, type)
                         End If
 
                         symbolTable.AddGlobal(name, type, 0)
