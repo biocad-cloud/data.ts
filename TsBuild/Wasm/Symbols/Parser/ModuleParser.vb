@@ -90,10 +90,21 @@ Namespace Symbols.Parser
                 For Each var As VariableDeclaratorSyntax In names
                     Dim fieldNames = var.Names
                     Dim type$
+                    Dim init As LiteralExpression
 
                     For Each name As String In fieldNames.Select(Function(v) v.Identifier.Text)
                         type = name.AsType(var.AsClause)
-                        symbolTable.AddGlobal(name, type)
+
+                        If var.Initializer Is Nothing Then
+                            ' 默认是零
+                            init = New LiteralExpression(0, type)
+                        Else
+                            With DirectCast(var.Initializer.Value, LiteralExpressionSyntax)
+                                init = .ConstantExpression(type)
+                            End With
+                        End If
+
+                        symbolTable.AddGlobal(name, type, 0)
                     Next
                 Next
             Next

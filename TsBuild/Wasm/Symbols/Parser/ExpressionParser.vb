@@ -15,7 +15,7 @@ Namespace Symbols.Parser
                 Case GetType(ParenthesizedExpressionSyntax)
                     Return DirectCast(value, ParenthesizedExpressionSyntax).ParenthesizedStack(symbols)
                 Case GetType(LiteralExpressionSyntax)
-                    Return DirectCast(value, LiteralExpressionSyntax).ConstantExpression
+                    Return DirectCast(value, LiteralExpressionSyntax).ConstantExpression(Nothing)
                 Case GetType(IdentifierNameSyntax)
                     Return DirectCast(value, IdentifierNameSyntax).ReferVariable
                 Case GetType(InvocationExpressionSyntax)
@@ -97,12 +97,16 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Function ConstantExpression([const] As LiteralExpressionSyntax) As Expression
+        Public Function ConstantExpression([const] As LiteralExpressionSyntax, wasmType$) As Expression
             Dim value = [const].Token.Value
             Dim type As Type = value.GetType
 
+            If wasmType.StringEmpty Then
+                wasmType = Types.Convert2Wasm(type)
+            End If
+
             Return New LiteralExpression With {
-                .type = Types.Convert2Wasm(type),
+                .type = wasmType,
                 .value = value
             }
         End Function

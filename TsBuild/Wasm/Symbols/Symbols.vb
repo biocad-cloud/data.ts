@@ -46,6 +46,14 @@ Namespace Symbols
         Public Property type As String
         Public Property value As String
 
+        Sub New()
+        End Sub
+
+        Sub New(value$, type$)
+            Me.type = type
+            Me.value = value
+        End Sub
+
         Public Overrides Function ToSExpression() As String
             Return $"({type}.const {value})"
         End Function
@@ -138,6 +146,10 @@ Namespace Symbols
 
         Public Property name As String
         Public Property type As String
+        ''' <summary>
+        ''' 初始值，对于全局变量而言，则必须要有一个初始值，全局变量默认的初始值为零
+        ''' </summary>
+        ''' <returns></returns>
         Public Property init As Expression
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
@@ -148,7 +160,7 @@ Namespace Symbols
     Public Class DeclareGlobal : Inherits DeclareVariable
 
         Public Overrides Function ToSExpression() As String
-            Return $"(global ${name} {type})"
+            Return $"(global ${name} (mut {type}) {init.ToSExpression})"
         End Function
     End Class
 

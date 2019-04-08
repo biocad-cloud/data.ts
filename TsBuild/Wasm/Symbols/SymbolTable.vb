@@ -17,7 +17,7 @@ Namespace Symbols
         ''' <summary>
         ''' [name => type]
         ''' </summary>
-        Dim globals As New Dictionary(Of String, String)
+        Dim globals As New Dictionary(Of String, DeclareGlobal)
 
         ''' <summary>
         ''' 当前所进行解析的函数的名称
@@ -52,7 +52,7 @@ Namespace Symbols
         End Function
 
         Public Function GetAllGlobals() As IEnumerable(Of DeclareGlobal)
-            Return globals.Select(Function(var) New DeclareGlobal With {.name = var.Key, .type = var.Value})
+            Return globals.Values
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -70,14 +70,19 @@ Namespace Symbols
             Return locals.ContainsKey(var)
         End Function
 
+        ''' <summary>
+        ''' Get global variable type
+        ''' </summary>
+        ''' <param name="var"></param>
+        ''' <returns></returns>
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetGlobal(var As String) As String
-            Return globals(var)
+            Return globals(var).type
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Public Sub AddGlobal(var$, type$)
-            Call globals.Add(var, type)
+        Public Sub AddGlobal(var$, type$, init As Double)
+            Call globals.Add(var, New DeclareGlobal With {.name = var, .type = type})
         End Sub
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
