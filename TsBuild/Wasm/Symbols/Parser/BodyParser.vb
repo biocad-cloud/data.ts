@@ -75,7 +75,7 @@ Namespace Symbols.Parser
         ''' <param name="symbols"></param>
         ''' <returns>May be contains multiple local variables</returns>
         <Extension>
-        Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax, symbols As SymbolTable) As DeclareLocal
+        Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax, symbols As SymbolTable) As Expression
             Dim [declare] = statement.Declarators.First
             Dim name$ = [declare].Names.First.Identifier.Value
             Dim initValue As Expression = Nothing

@@ -110,7 +110,7 @@ Namespace Symbols.Parser
                        Dim expression As [Variant](Of Expression, Expression()) = statement.ParseExpression(symbols)
                        Dim expressionList As Expression()
 
-                       If expression Like GetType(Expression) Then
+                       If expression.GetUnderlyingType.IsInheritsFrom(GetType(Expression)) Then
                            expressionList = {expression.TryCast(Of Expression)}
                        Else
                            expressionList = expression
