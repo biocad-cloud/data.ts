@@ -44,16 +44,7 @@ End Module"
     End Sub
 
     Sub declareTest()
-        Dim code = "Module Main
-
-Dim A,B,C As Double
-Dim E%,F&
-
-
-
-"
-
-        Dim moduleMain As ModuleSymbol = Wasm.CreateModule(code)
+        Dim moduleMain As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\DeclareTest.vb")
 
         Console.WriteLine(moduleMain.ToSExpression)
 
