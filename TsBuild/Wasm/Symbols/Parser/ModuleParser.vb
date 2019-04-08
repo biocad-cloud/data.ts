@@ -88,10 +88,11 @@ Namespace Symbols.Parser
 
                 For Each var As VariableDeclaratorSyntax In names
                     Dim fieldNames = var.Names
-                    Dim type = var.AsClause
+                    Dim type$
 
-                    For Each name In fieldNames
-
+                    For Each name As String In fieldNames.Select(Function(v) v.Identifier.Text)
+                        type = name.AsType(var.AsClause)
+                        symbolTable.AddGlobal(name, type)
                     Next
                 Next
             Next
