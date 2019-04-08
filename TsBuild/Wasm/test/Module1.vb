@@ -4,7 +4,7 @@ Imports Wasm.Symbols
 Module treeTest
 
     Sub Main()
-
+        Call declareTest()
         Call IfTest()
         Call test2()
 
@@ -38,6 +38,23 @@ End Module"
         Dim hex = moduleMain.HexDump(verbose:=True)
 
         Call hex.SaveTo("X:\test.dmp")
+
+        Pause()
+    End Sub
+
+    Sub declareTest()
+        Dim code = "Module Main
+
+Dim A,B,C As Double
+Dim E%,F&
+
+
+
+"
+
+        Dim moduleMain As ModuleSymbol = Wasm.CreateModule(code)
+
+        Console.WriteLine(moduleMain.ToSExpression)
 
         Pause()
     End Sub
