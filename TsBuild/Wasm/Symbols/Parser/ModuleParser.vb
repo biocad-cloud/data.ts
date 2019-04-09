@@ -85,7 +85,10 @@ Namespace Symbols.Parser
         <Extension>
         Private Sub parseGlobals(declares As IEnumerable(Of FieldDeclarationSyntax), symbolTable As SymbolTable)
             For Each field As FieldDeclarationSyntax In declares
-                Call field.Declarators.ParseDeclarator(symbolTable, isGlobal:=True)
+                ' 已经在函数的内部进行添加调用了
+                Call field.Declarators _
+                    .ParseDeclarator(symbolTable, isGlobal:=True) _
+                    .ToArray
             Next
         End Sub
     End Module

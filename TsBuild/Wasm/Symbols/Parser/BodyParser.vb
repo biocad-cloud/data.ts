@@ -87,7 +87,7 @@ Namespace Symbols.Parser
             For Each var As VariableDeclaratorSyntax In names
                 Dim fieldNames = var.Names
                 Dim type$
-                Dim init As LiteralExpression
+                Dim init As Expression
 
                 For Each name As String In fieldNames.Select(Function(v) v.Identifier.Text)
                     type = name.AsType(var.AsClause)
