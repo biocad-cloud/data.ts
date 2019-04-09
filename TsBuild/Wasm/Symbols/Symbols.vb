@@ -41,6 +41,18 @@ Namespace Symbols
         End Function
     End Class
 
+    Public Class CommentText : Inherits Expression
+
+        Public Property Text As String
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return "void"
+        End Function
+
+        Public Overrides Function ToSExpression() As String
+            Return ";; " & Text
+        End Function
+    End Class
     Public Class LiteralExpression : Inherits Expression
 
         Public Property type As String
@@ -143,7 +155,7 @@ Namespace Symbols
         End Property
 
         Public Overrides Function ToSExpression() As String
-            Return $"(local ${name} {Type})"
+            Return $"(local ${name} {type})"
         End Function
 
     End Class
