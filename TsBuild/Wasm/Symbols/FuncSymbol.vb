@@ -2,6 +2,7 @@
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Text
+Imports Wasm.Symbols.Blocks
 
 Namespace Symbols
 
@@ -76,6 +77,14 @@ Namespace Symbols
                             body += .SetLocal.ToSExpression
                         End If
                     End With
+                ElseIf TypeOf line Is AbstractBlock Then
+                    For Each local In DirectCast(line, AbstractBlock).GetDeclareLocals
+                        ' set local 在block的内部执行
+                        ' 在这里只需要提取出申明部分即可
+                        declareLocals += line.ToSExpression
+                    Next
+
+                    body += line.ToSExpression
                 Else
                     body += line.ToSExpression
                 End If

@@ -15,30 +15,13 @@ Namespace Symbols.Parser
                     .Condition _
                     .ValueExpression(symbols)
             }
-            Dim thenBlock As New List(Of Expression)
-            Dim elseBlock As New List(Of Expression)
-            Dim lineSymbols As [Variant](Of Expression, Expression())
-
-            For Each line In doIf.Statements
-                lineSymbols = line.ParseExpression(symbols)
-
-                If lineSymbols Like GetType(Expression) Then
-                    thenBlock += lineSymbols.TryCast(Of Expression)
-                Else
-                    thenBlock += lineSymbols.TryCast(Of Expression())
-                End If
-            Next
+            Dim elseBlock As Expression()
+            Dim thenBlock As Expression() = doIf.Statements.ParseBlockInternal(symbols)
 
             If Not doIf.ElseBlock Is Nothing Then
-                For Each line In doIf.ElseBlock.Statements
-                    lineSymbols = line.ParseExpression(symbols)
-
-                    If lineSymbols Like GetType(Expression) Then
-                        elseBlock += lineSymbols.TryCast(Of Expression)
-                    Else
-                        elseBlock += lineSymbols.TryCast(Of Expression())
-                    End If
-                Next
+                elseBlock = doIf.ElseBlock.Statements.ParseBlockInternal(symbols)
+            Else
+                elseBlock = {}
             End If
 
             Return New IfBlock With {
@@ -107,6 +90,12 @@ Namespace Symbols.Parser
             Dim ctlVar As GetLocalVariable = control.ctlGetLocal
             Dim ctrlTest As BooleanSymbol
 
+            If TypeOf control Is DeclareLocal Then
+                With DirectCast(control, DeclareLocal)
+                    Call symbols.AddLocal(.ByRef)
+                End With
+            End If
+
             ' for i = 0 to 10 step 1
             ' equals to
             '
@@ -156,10 +145,10 @@ Namespace Symbols.Parser
             For Each statement As StatementSyntax In block
                 lineSymbols = statement.ParseExpression(symbols)
 
-                If lineSymbols Like GetType(Expression) Then
-                    Internal += lineSymbols.TryCast(Of Expression)
+                If lineSymbols.GetUnderlyingType.IsInheritsFrom(GetType(Expression)) Then
+                    internal += lineSymbols.TryCast(Of Expression)
                 Else
-                    Internal += lineSymbols.TryCast(Of Expression())
+                    internal += lineSymbols.TryCast(Of Expression())
                 End If
             Next
 
