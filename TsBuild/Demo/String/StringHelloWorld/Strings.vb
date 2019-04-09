@@ -1,6 +1,6 @@
 ﻿Module Strings
 
-    Public Declare Function Print Lib "Console" Alias "WriteLine" (text As String) As Integer
+    Public Declare Function Print Lib "console" Alias "log" (text As String) As Integer
 
     Public Function Main() As String
         Dim str As String = Hello() & " " & World()
