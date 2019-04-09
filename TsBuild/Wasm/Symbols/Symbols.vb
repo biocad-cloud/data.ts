@@ -46,6 +46,12 @@ Namespace Symbols
         Public Property type As String
         Public Property value As String
 
+        Public ReadOnly Property Sign As Integer
+            Get
+                Return Math.Sign(Val(type))
+            End Get
+        End Property
+
         Sub New()
         End Sub
 

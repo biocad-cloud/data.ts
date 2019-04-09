@@ -56,7 +56,40 @@ Namespace Symbols.Blocks
         Public Property [Step] As Expression
 
         Public Overrides Function ToSExpression() As String
-            Return MyBase.ToSExpression()
+            Dim ctlVar As GetLocalVariable
+
+            If TypeOf Control Is DeclareLocal Then
+                ctlVar = New GetLocalVariable With {
+                    .var = DirectCast(Control, DeclareLocal).name
+                }
+            Else
+                ctlVar = Control
+            End If
+
+            ' for i = 0 to 10 step 1
+            ' equals to
+            '
+            ' if i >= 10 then
+            '    break
+            ' end if
+
+            ' for i = 10 to 0 step -1
+            ' equals to
+            '
+            ' if i <= 0 then
+            '    break
+            ' end if
+
+            Return $"
+(block ${Guid}
+
+    (loop ${LoopID}
+        ;; For loop condition controls
+        
+
+    )
+
+)"
         End Function
 
     End Class

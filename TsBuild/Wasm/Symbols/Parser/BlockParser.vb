@@ -70,7 +70,9 @@ Namespace Symbols.Parser
                 .[To] = final,
                 .[Step] = stepValue,
                 .Control = control,
-                .Internal = forBlock.Statements.ParseBlockInternal(symbols)
+                .Internal = forBlock.Statements.ParseBlockInternal(symbols),
+                .Guid = $"block_{symbols.NextGuid}",
+                .LoopID = $"loop_{symbols.NextGuid}"
             }
         End Function
 
