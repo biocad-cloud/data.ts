@@ -44,6 +44,23 @@ Namespace Symbols.Blocks
         End Function
     End Class
 
+    Public Class ForLoop : Inherits [Loop]
+
+        ''' <summary>
+        ''' 条件判断对象，这个表达式最终会被转换为<see cref="GetLocalVariable"/>
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Control As Expression
+        Public Property From As Expression
+        Public Property [To] As Expression
+        Public Property [Step] As Expression
+
+        Public Overrides Function ToSExpression() As String
+            Return MyBase.ToSExpression()
+        End Function
+
+    End Class
+
     Public Class br : Inherits Expression
 
         Public Property BlockLabel As String

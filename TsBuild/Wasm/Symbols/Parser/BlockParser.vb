@@ -65,6 +65,13 @@ Namespace Symbols.Parser
                     .ValueExpression(symbols)
             End If
 
+            Return New ForLoop With {
+                .From = init,
+                .[To] = final,
+                .[Step] = stepValue,
+                .Control = control,
+                .Internal = forBlock.Statements.ParseBlockInternal(symbols)
+            }
         End Function
 
         <Extension>
@@ -80,6 +87,24 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
+        Friend Function ParseBlockInternal(block As IEnumerable(Of StatementSyntax), symbols As SymbolTable) As Expression()
+            Dim lineSymbols As [Variant](Of Expression, Expression())
+            Dim internal As New List(Of Expression)
+
+            For Each statement As StatementSyntax In block
+                lineSymbols = statement.ParseExpression(symbols)
+
+                If lineSymbols Like GetType(Expression) Then
+                    Internal += lineSymbols.TryCast(Of Expression)
+                Else
+                    Internal += lineSymbols.TryCast(Of Expression())
+                End If
+            Next
+
+            Return internal
+        End Function
+
+        <Extension>
         Public Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As Expression
             Dim block As New [Loop] With {
                 .Guid = $"block_{symbols.NextGuid}",
@@ -87,21 +112,14 @@ Namespace Symbols.Parser
             }
             Dim internal As New List(Of Expression)
             Dim condition As Expression = whileBlock.whileCondition(symbols)
-            Dim lineSymbols As [Variant](Of Expression, Expression())
 
-            internal += New br_if With {.BlockLabel = block.Guid, .Condition = condition}
-
-            For Each statement As StatementSyntax In whileBlock.Statements
-                lineSymbols = statement.ParseExpression(symbols)
-
-                If lineSymbols Like GetType(Expression) Then
-                    internal += lineSymbols.TryCast(Of Expression)
-                Else
-                    internal += lineSymbols.TryCast(Of Expression())
-                End If
-            Next
-
+            internal += New br_if With {
+                .BlockLabel = block.Guid,
+                .Condition = condition
+            }
+            internal += whileBlock.Statements.ParseBlockInternal(symbols)
             internal += New br With {.BlockLabel = block.LoopID}
+
             block.Internal = internal
 
             Return block
