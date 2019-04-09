@@ -1,5 +1,6 @@
 ﻿Module Strings
 
+    ' imports console.log api from javascript
     Public Declare Function Print Lib "console" Alias "log" (text As String) As Integer
 
     Public Function Main() As String
