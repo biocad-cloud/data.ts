@@ -23,6 +23,8 @@ Namespace Symbols.Parser
                     Return DirectCast(statement, WhileBlockSyntax).DoWhile(symbols)
                 Case GetType(MultiLineIfBlockSyntax)
                     Return DirectCast(statement, MultiLineIfBlockSyntax).IfBlock(symbols)
+                Case GetType(ForBlockSyntax)
+                    Return DirectCast(statement, ForBlockSyntax).ForLoop(symbols)
                 Case Else
                     Throw New NotImplementedException(statement.GetType.FullName)
             End Select
@@ -85,37 +87,46 @@ Namespace Symbols.Parser
                                                  isGlobal As Boolean) As IEnumerable(Of Expression)
 
             For Each var As VariableDeclaratorSyntax In names
-                Dim fieldNames = var.Names
-                Dim type$
-                Dim init As Expression
-
-                For Each name As String In fieldNames.Select(Function(v) v.Identifier.Text)
-                    type = name.AsType(var.AsClause)
-
-                    If isGlobal Then
-                        If var.Initializer Is Nothing Then
-                            ' 默认是零
-                            init = New LiteralExpression(0, type)
-                        Else
-                            init = var.Initializer.GetInitialize(symbols, type)
-                        End If
-
-                        Call symbols.AddGlobal(name, type, init)
-                    Else
-                        If Not var.Initializer Is Nothing Then
-                            init = var.Initializer.GetInitialize(symbols, Nothing)
-                            init = Types.CType(type, init, symbols)
-                        Else
-                            init = Nothing
-                        End If
-
-                        Yield New DeclareLocal With {
-                            .name = name,
-                            .type = type,
-                            .init = init
-                        }
-                    End If
+                For Each [declare] As Expression In var.ParseDeclarator(symbols, isGlobal)
+                    Yield [declare]
                 Next
+            Next
+        End Function
+
+        <Extension>
+        Friend Iterator Function ParseDeclarator(var As VariableDeclaratorSyntax,
+                                                 symbols As SymbolTable,
+                                                 isGlobal As Boolean) As IEnumerable(Of Expression)
+            Dim fieldNames = var.Names
+            Dim type$
+            Dim init As Expression
+
+            For Each name As String In fieldNames.Select(Function(v) v.Identifier.Text)
+                type = name.AsType(var.AsClause)
+
+                If isGlobal Then
+                    If var.Initializer Is Nothing Then
+                        ' 默认是零
+                        init = New LiteralExpression(0, type)
+                    Else
+                        init = var.Initializer.GetInitialize(symbols, type)
+                    End If
+
+                    Call symbols.AddGlobal(name, type, init)
+                Else
+                    If Not var.Initializer Is Nothing Then
+                        init = var.Initializer.GetInitialize(symbols, Nothing)
+                        init = Types.CType(type, init, symbols)
+                    Else
+                        init = Nothing
+                    End If
+
+                    Yield New DeclareLocal With {
+                        .name = name,
+                        .type = type,
+                        .init = init
+                    }
+                End If
             Next
         End Function
 

@@ -49,6 +49,37 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
+        Public Function ForLoop(forBlock As ForBlockSyntax, symbols As SymbolTable) As Expression
+            Dim control As Expression = forBlock.parseControlVariable(symbols)
+            Dim init = forBlock.ForStatement.FromValue.ValueExpression(symbols)
+            Dim final = forBlock.ForStatement.ToValue.ValueExpression(symbols)
+            Dim stepValue As LiteralExpression
+
+            If forBlock.ForStatement.StepClause Is Nothing Then
+                ' 默认是1
+                stepValue = New LiteralExpression(1, control.TypeInfer(symbols))
+            Else
+                stepValue = forBlock.ForStatement _
+                    .StepClause _
+                    .StepValue _
+                    .ValueExpression(symbols)
+            End If
+
+        End Function
+
+        <Extension>
+        Private Function parseControlVariable(forBlock As ForBlockSyntax, symbols As SymbolTable) As Expression
+            Dim control = forBlock.ForStatement.ControlVariable
+
+            If TypeOf control Is VariableDeclaratorSyntax Then
+                Return DirectCast(control, VariableDeclaratorSyntax).ParseDeclarator(symbols, False).First
+            Else
+                ' reference a local variable
+                Throw New NotImplementedException
+            End If
+        End Function
+
+        <Extension>
         Public Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As Expression
             Dim block As New [Loop] With {
                 .Guid = $"block_{symbols.NextGuid}",
