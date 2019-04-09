@@ -162,7 +162,9 @@ namespace csv {
             if (callback == null || callback == undefined) {
                 // 同步
                 var load: content = parseText(HttpHelpers.GET(url));
-                var tsv: boolean = load.type == "tsv";
+                var type: string = load.type.trim();
+                var tsv: boolean = (type == "tsv") || (type == "#tsv");
+
                 return dataframe.Parse(load.content, tsv);
             } else {
                 // 异步
