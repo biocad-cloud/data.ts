@@ -1,5 +1,7 @@
-﻿Imports Microsoft.VisualBasic.Linq
+﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
+Imports Wasm.Symbols.Parser
 
 Namespace Symbols
 
@@ -9,6 +11,7 @@ Namespace Symbols
         Public Property InternalFunctions As FuncSymbol()
         Public Property Exports As ExportSymbolExpression()
         Public Property [Imports] As ImportSymbol()
+        Public Property Globals As DeclareGlobal()
 
         ''' <summary>
         ''' The module name label
@@ -28,6 +31,7 @@ Namespace Symbols
 
         Public Overrides Function ToSExpression() As String
             Dim import$ = ""
+            Dim globals$ = ""
             Dim internal$ = InternalFunctions _
                 .JoinBy(ASCII.LF & ASCII.LF) _
                 .LineTokens _
@@ -40,10 +44,17 @@ Namespace Symbols
                     .Select(Function(i) i.ToSExpression) _
                     .JoinBy(ASCII.LF & "    ")
             End If
+            If Not Me.Globals.IsNullOrEmpty Then
+                globals = Me.Globals _
+                    .Select(Function(g) g.ToSExpression) _
+                    .JoinBy(ASCII.LF & ASCII.LF)
+            End If
 
             Return $"(module ;; Module {LabelName}
 
     {import}
+    
+    {globals}
 
     {Exports.JoinBy(ASCII.LF & "    ")} 
 
@@ -52,8 +63,14 @@ Namespace Symbols
 )"
         End Function
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             Return "any"
+        End Function
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Public Shared Function CreateModule(vbcode As String) As ModuleSymbol
+            Return ModuleParser.CreateModule(vbcode)
         End Function
     End Class
 End Namespace

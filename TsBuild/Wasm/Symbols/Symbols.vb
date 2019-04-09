@@ -46,6 +46,14 @@ Namespace Symbols
         Public Property type As String
         Public Property value As String
 
+        Sub New()
+        End Sub
+
+        Sub New(value$, type$)
+            Me.type = type
+            Me.value = value
+        End Sub
+
         Public Overrides Function ToSExpression() As String
             Return $"({type}.const {value})"
         End Function
@@ -117,11 +125,7 @@ Namespace Symbols
         End Function
     End Class
 
-    Public Class DeclareLocal : Inherits Expression
-
-        Public Property name As String
-        Public Property type As String
-        Public Property init As Expression
+    Public Class DeclareLocal : Inherits DeclareVariable
 
         Public ReadOnly Property SetLocal As SetLocalVariable
             Get
@@ -133,11 +137,30 @@ Namespace Symbols
         End Property
 
         Public Overrides Function ToSExpression() As String
-            Return $"(local ${name} {type})"
+            Return $"(local ${name} {Type})"
         End Function
+
+    End Class
+
+    Public MustInherit Class DeclareVariable : Inherits Expression
+
+        Public Property name As String
+        Public Property type As String
+        ''' <summary>
+        ''' 初始值，对于全局变量而言，则必须要有一个初始值，全局变量默认的初始值为零
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property init As Expression
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             Return type
+        End Function
+    End Class
+
+    Public Class DeclareGlobal : Inherits DeclareVariable
+
+        Public Overrides Function ToSExpression() As String
+            Return $"(global ${name} (mut {type}) {init.ToSExpression})"
         End Function
     End Class
 
