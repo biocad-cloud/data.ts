@@ -162,8 +162,7 @@ namespace csv {
             if (callback == null || callback == undefined) {
                 // 同步
                 var load: content = parseText(HttpHelpers.GET(url));
-                var type: string = load.type.trim();
-                var tsv: boolean = (type == "tsv") || (type == "#tsv");
+                var tsv: boolean = this.isTsv(load);
 
                 return dataframe.Parse(load.content, tsv);
             } else {
@@ -171,7 +170,7 @@ namespace csv {
                 HttpHelpers.GetAsyn(url, (text, code, contentType) => {
                     if (code == 200) {
                         var load: content = parseText(text, contentType);
-                        var tsv: boolean = load.type == "tsv";
+                        var tsv: boolean = this.isTsv(load);
                         var data: dataframe = dataframe.Parse(load.content, tsv);
 
                         console.log(data.headers);
@@ -186,6 +185,16 @@ namespace csv {
             return null;
         }
 
+        private static isTsv(load: content): boolean {
+            var type: string = load.type.trim();
+            var tsv: boolean = (type == "tsv") || (type == "#tsv");
+
+            return tsv;
+        }
+
+        /**
+         * 默认是直接加个csv标签将格式设为默认的csv文件
+        */
         private static defaultContent(content: string): content {
             return {
                 type: "csv",
