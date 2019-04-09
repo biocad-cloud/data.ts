@@ -172,6 +172,12 @@ namespace Internal.Handlers {
                             node.style[propertyName] = attrs[propertyName];
                         }
                     }
+                } else if (name == "visible") {
+                    if (<boolean>attrs[name]) {
+                        node.style.display = "block";
+                    } else {
+                        node.style.display = "none";
+                    }
                 } else {
                     node.setAttribute(name, <string>attrs[name]);
                 }
