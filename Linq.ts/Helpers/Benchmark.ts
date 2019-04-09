@@ -1,4 +1,4 @@
-﻿namespace TsLinq {
+﻿namespace TypeScript {
 
     /**
      * 性能计数器

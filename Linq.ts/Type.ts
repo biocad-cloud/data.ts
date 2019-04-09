@@ -81,7 +81,7 @@ class TypeInfo {
             return className;
         } else if (isObject) {
             if (isNull) {
-                if (Internal.outputWarning()) {
+                if (TypeScript.logging.outputWarning) {
                     console.warn(TypeExtensions.objectIsNothing);
                 }
 
@@ -148,13 +148,26 @@ class TypeInfo {
      * @param names object的属性名称列表
      * @param init 使用这个函数为该属性指定一个初始值
     */
-    public static EmptyObject<V>(names: string[] | IEnumerator<string>, init: () => V): object {
+    public static EmptyObject<V>(names: string[] | IEnumerator<string>, init: (() => V) | V = null): object {
         var obj: object = {};
 
-        if (Array.isArray(names)) {
-            names.forEach(name => obj[name] = init());
+        if (typeof init == "function") {
+            // 通过函数来进行初始化，则每一个属性值可能会不一样
+            // 例如使用随机数函数来初始化
+            let create: Delegate.Func<V> = <any>init;
+
+            if (Array.isArray(names)) {
+                names.forEach(name => obj[name] = create());
+            } else {
+                names.ForEach(name => obj[name] = create());
+            }
         } else {
-            names.ForEach(name => obj[name] = init());
+            // 直接是一个值的时候，则所有的属性值都是一样的          
+            if (Array.isArray(names)) {
+                names.forEach(name => obj[name] = <V>init);
+            } else {
+                names.ForEach(name => obj[name] = <V>init);
+            }
         }
 
         return obj;

@@ -12,6 +12,9 @@ db.lock
 *.ide-wal
 bin/
 
+packages/
+obj/
+
 # Runtime data
 pids
 *.pid
