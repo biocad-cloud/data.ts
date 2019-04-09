@@ -4,6 +4,9 @@ Imports Wasm.Symbols
 Module treeTest
 
     Sub Main()
+
+        Call forlooptest()
+
         Call declareTest()
         Call globalTest()
         Call IfTest()
@@ -39,6 +42,14 @@ End Module"
         Dim hex = moduleMain.HexDump(verbose:=True)
 
         Call hex.SaveTo("X:\test.dmp")
+
+        Pause()
+    End Sub
+
+    Sub forlooptest()
+        Dim moduleMain As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.vb")
+
+        Console.WriteLine(moduleMain.ToSExpression)
 
         Pause()
     End Sub
