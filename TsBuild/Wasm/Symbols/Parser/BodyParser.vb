@@ -14,7 +14,7 @@ Namespace Symbols.Parser
         Public Function ParseExpression(statement As StatementSyntax, symbols As SymbolTable) As [Variant](Of Expression, Expression())
             Select Case statement.GetType
                 Case GetType(LocalDeclarationStatementSyntax)
-                    Return DirectCast(statement, LocalDeclarationStatementSyntax).LocalDeclare(symbols)
+                    Return DirectCast(statement, LocalDeclarationStatementSyntax).LocalDeclare(symbols).ToArray
                 Case GetType(AssignmentStatementSyntax)
                     Return DirectCast(statement, AssignmentStatementSyntax).ValueAssign(symbols)
                 Case GetType(ReturnStatementSyntax)
@@ -75,22 +75,48 @@ Namespace Symbols.Parser
         ''' <param name="symbols"></param>
         ''' <returns>May be contains multiple local variables</returns>
         <Extension>
-        Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax, symbols As SymbolTable) As Expression
-            Dim [declare] = statement.Declarators.First
-            Dim name$ = [declare].Names.First.Identifier.Value
-            Dim initValue As Expression = Nothing
-            Dim type$ = name.AsType([declare].AsClause)
+        Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
+            Return statement.Declarators.ParseDeclarator(symbols, False)
+        End Function
 
-            If Not [declare].Initializer Is Nothing Then
-                initValue = [declare].Initializer.GetInitialize(symbols, Nothing)
-                initValue = Types.CType(type, initValue, symbols)
-            End If
+        <Extension>
+        Friend Iterator Function ParseDeclarator(names As IEnumerable(Of VariableDeclaratorSyntax),
+                                                 symbols As SymbolTable,
+                                                 isGlobal As Boolean) As IEnumerable(Of Expression)
 
-            Return New DeclareLocal With {
-                .name = name,
-                .type = type,
-                .init = initValue
-            }
+            For Each var As VariableDeclaratorSyntax In names
+                Dim fieldNames = var.Names
+                Dim type$
+                Dim init As LiteralExpression
+
+                For Each name As String In fieldNames.Select(Function(v) v.Identifier.Text)
+                    type = name.AsType(var.AsClause)
+
+                    If isGlobal Then
+                        If var.Initializer Is Nothing Then
+                            ' 默认是零
+                            init = New LiteralExpression(0, type)
+                        Else
+                            init = var.Initializer.GetInitialize(symbols, type)
+                        End If
+
+                        Call symbols.AddGlobal(name, type, init)
+                    Else
+                        If Not var.Initializer Is Nothing Then
+                            init = var.Initializer.GetInitialize(symbols, Nothing)
+                            init = Types.CType(type, init, symbols)
+                        Else
+                            init = Nothing
+                        End If
+
+                        Yield New DeclareLocal With {
+                            .name = name,
+                            .type = type,
+                            .init = init
+                        }
+                    End If
+                Next
+            Next
         End Function
 
         <Extension>
