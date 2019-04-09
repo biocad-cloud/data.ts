@@ -1,6 +1,7 @@
 ﻿Module Strings
 
-    Public Declare Function Print Lib "Console" Alias "WriteLine" (text As String) As Integer
+    ' imports console.log api from javascript
+    Public Declare Function Print Lib "console" Alias "log" (text As String) As Integer
 
     Public Function Main() As String
         Dim str As String = Hello() & " " & World()
