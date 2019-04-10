@@ -86,7 +86,8 @@ Namespace Symbols.Parser
                 .ToArray
             Dim func As New FuncSymbol(funcVar) With {
                 .Parameters = parameters,
-                .Body = bodyExpressions
+                .Body = bodyExpressions,
+                .Locals = symbols.GetAllLocals.ToArray
             }
 
             If Not TypeOf func.Body.Last Is ReturnValue Then

@@ -38,6 +38,7 @@ Namespace Symbols
     Public Class FuncSymbol : Inherits FuncSignature
 
         Public Property Body As Expression()
+        Public Property Locals As DeclareLocal()
 
         Public ReadOnly Property VBDeclare As String
             Get
