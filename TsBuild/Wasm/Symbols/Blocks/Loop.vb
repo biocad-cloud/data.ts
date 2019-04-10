@@ -1,15 +1,24 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Text
+Imports Wasm.Symbols.Parser
 
 Namespace Symbols.Blocks
 
     Public MustInherit Class AbstractBlock : Inherits Expression
+
         ''' <summary>
         ''' The label of this block
         ''' </summary>
         ''' <returns></returns>
         Public Property Guid As String
 
+        ''' <summary>
+        ''' By default no declares, returns an empty array 
+        ''' </summary>
+        ''' <returns></returns>
+        Friend Overridable Iterator Function GetDeclareLocals() As IEnumerable(Of DeclareLocal)
+            ' empty
+        End Function
     End Class
 
     Public MustInherit Class Block : Inherits AbstractBlock

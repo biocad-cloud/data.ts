@@ -15,30 +15,13 @@ Namespace Symbols.Parser
                     .Condition _
                     .ValueExpression(symbols)
             }
-            Dim thenBlock As New List(Of Expression)
-            Dim elseBlock As New List(Of Expression)
-            Dim lineSymbols As [Variant](Of Expression, Expression())
-
-            For Each line In doIf.Statements
-                lineSymbols = line.ParseExpression(symbols)
-
-                If lineSymbols Like GetType(Expression) Then
-                    thenBlock += lineSymbols.TryCast(Of Expression)
-                Else
-                    thenBlock += lineSymbols.TryCast(Of Expression())
-                End If
-            Next
+            Dim elseBlock As Expression()
+            Dim thenBlock As Expression() = doIf.Statements.ParseBlockInternal(symbols)
 
             If Not doIf.ElseBlock Is Nothing Then
-                For Each line In doIf.ElseBlock.Statements
-                    lineSymbols = line.ParseExpression(symbols)
-
-                    If lineSymbols Like GetType(Expression) Then
-                        elseBlock += lineSymbols.TryCast(Of Expression)
-                    Else
-                        elseBlock += lineSymbols.TryCast(Of Expression())
-                    End If
-                Next
+                elseBlock = doIf.ElseBlock.Statements.ParseBlockInternal(symbols)
+            Else
+                elseBlock = {}
             End If
 
             Return New IfBlock With {
@@ -48,32 +31,170 @@ Namespace Symbols.Parser
             }
         End Function
 
+        ''' <summary>
+        ''' Convert for loop for while loop
+        ''' </summary>
+        ''' <param name="forBlock"></param>
+        ''' <param name="symbols"></param>
+        ''' <returns></returns>
         <Extension>
-        Public Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As Expression
+        Public Iterator Function ForLoop(forBlock As ForBlockSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
+            Dim control As Expression = forBlock.parseControlVariable(symbols)
+            Dim init = forBlock.ForStatement.FromValue.ValueExpression(symbols)
+            Dim final = forBlock.ForStatement.ToValue.ValueExpression(symbols)
+            Dim stepValue As Expression
+
+            ' set for loop variable init value
+            If TypeOf control Is DeclareLocal Then
+                Yield New SetLocalVariable With {
+                    .var = DirectCast(control, DeclareLocal).name,
+                    .value = Types.CType(control.TypeInfer(symbols), init, symbols)
+                }
+            Else
+                Yield control
+            End If
+
+            If forBlock.ForStatement.StepClause Is Nothing Then
+                ' 默认是1
+                stepValue = New LiteralExpression(1, control.TypeInfer(symbols))
+            Else
+                stepValue = forBlock.ForStatement _
+                    .StepClause _
+                    .StepValue _
+                    .ValueExpression(symbols)
+            End If
+
+            Yield New CommentText With {
+                .Text = forBlock.ForStatement.ToString
+            }
+
             Dim block As New [Loop] With {
                 .Guid = $"block_{symbols.NextGuid}",
                 .LoopID = $"loop_{symbols.NextGuid}"
             }
+            Dim break As New br_if With {
+                .BlockLabel = block.Guid,
+                .Condition = parseForLoopTest(control, stepValue, final, symbols)
+            }
+            Dim [next] As New br With {.BlockLabel = block.LoopID}
             Dim internal As New List(Of Expression)
-            Dim condition As Expression = whileBlock.whileCondition(symbols)
+
+            internal += break
+            internal += ExpressionParse.BinaryStack(control.ctlGetLocal, stepValue, "+", symbols)
+            internal += forBlock.Statements.ParseBlockInternal(symbols)
+            internal += [next]
+
+            block.Internal = internal
+
+            Yield block
+        End Function
+
+        <Extension>
+        Private Function ctlGetLocal(control As Expression) As GetLocalVariable
+            If TypeOf control Is DeclareLocal Then
+                Return New GetLocalVariable With {
+                    .var = DirectCast(control, DeclareLocal).name
+                }
+            Else
+                Return control
+            End If
+        End Function
+
+        Private Function parseForLoopTest(control As Expression, [step] As Expression, [to] As Expression, symbols As SymbolTable) As BooleanSymbol
+            Dim ctlVar As GetLocalVariable = control.ctlGetLocal
+            Dim ctrlTest As BooleanSymbol
+
+            If TypeOf control Is DeclareLocal Then
+                With DirectCast(control, DeclareLocal)
+                    Call symbols.AddLocal(.ByRef)
+                End With
+            End If
+
+            ' for i = 0 to 10 step 1
+            ' equals to
+            '
+            ' if i >= 10 then
+            '    break
+            ' end if
+
+            ' for i = 10 to 0 step -1
+            ' equals to
+            '
+            ' if i <= 0 then
+            '    break
+            ' end if
+
+            If TypeOf [step] Is LiteralExpression Then
+                With DirectCast([step], LiteralExpression)
+                    If .Sign > 0 Then
+                        ctrlTest = BooleanSymbol.BinaryCompares(ctlVar, [to], ">=", symbols)
+                    Else
+                        ctrlTest = BooleanSymbol.BinaryCompares(ctlVar, [to], "<=", symbols)
+                    End If
+                End With
+            Else
+                ctrlTest = BooleanSymbol.BinaryCompares(ctlVar, [to], "=", symbols)
+            End If
+
+            Return ctrlTest
+        End Function
+
+        <Extension>
+        Private Function parseControlVariable(forBlock As ForBlockSyntax, symbols As SymbolTable) As Expression
+            Dim control = forBlock.ForStatement.ControlVariable
+
+            If TypeOf control Is VariableDeclaratorSyntax Then
+                Dim declareCtl = DirectCast(control, VariableDeclaratorSyntax) _
+                    .ParseDeclarator(symbols, False) _
+                    .First
+
+                Return declareCtl
+            Else
+                ' reference a local variable
+                Throw New NotImplementedException
+            End If
+        End Function
+
+        <Extension>
+        Friend Function ParseBlockInternal(block As IEnumerable(Of StatementSyntax), symbols As SymbolTable) As Expression()
             Dim lineSymbols As [Variant](Of Expression, Expression())
+            Dim internal As New List(Of Expression)
 
-            internal += New br_if With {.BlockLabel = block.Guid, .Condition = condition}
-
-            For Each statement As StatementSyntax In whileBlock.Statements
+            For Each statement As StatementSyntax In block
                 lineSymbols = statement.ParseExpression(symbols)
 
-                If lineSymbols Like GetType(Expression) Then
+                If lineSymbols.GetUnderlyingType.IsInheritsFrom(GetType(Expression)) Then
                     internal += lineSymbols.TryCast(Of Expression)
                 Else
                     internal += lineSymbols.TryCast(Of Expression())
                 End If
             Next
 
+            Return internal
+        End Function
+
+        <Extension>
+        Public Iterator Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
+            Dim block As New [Loop] With {
+                .Guid = $"block_{symbols.NextGuid}",
+                .LoopID = $"loop_{symbols.NextGuid}"
+            }
+            Dim internal As New List(Of Expression)
+            Dim condition As Expression = whileBlock.whileCondition(symbols)
+
+            Yield New CommentText With {.Text = $"Start Do While Block {block.Guid}"}
+
+            internal += New br_if With {
+                .BlockLabel = block.Guid,
+                .Condition = condition
+            }
+            internal += whileBlock.Statements.ParseBlockInternal(symbols)
             internal += New br With {.BlockLabel = block.LoopID}
+
             block.Internal = internal
 
-            Return block
+            Yield block
+            Yield New CommentText With {.Text = $"End Loop {block.LoopID}"}
         End Function
 
         <Extension>

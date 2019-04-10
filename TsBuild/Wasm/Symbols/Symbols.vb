@@ -41,10 +41,28 @@ Namespace Symbols
         End Function
     End Class
 
+    Public Class CommentText : Inherits Expression
+
+        Public Property Text As String
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return "void"
+        End Function
+
+        Public Overrides Function ToSExpression() As String
+            Return ";; " & Text
+        End Function
+    End Class
     Public Class LiteralExpression : Inherits Expression
 
         Public Property type As String
         Public Property value As String
+
+        Public ReadOnly Property Sign As Integer
+            Get
+                Return Math.Sign(Val(type))
+            End Get
+        End Property
 
         Sub New()
         End Sub
@@ -127,6 +145,10 @@ Namespace Symbols
 
     Public Class DeclareLocal : Inherits DeclareVariable
 
+        ''' <summary>
+        ''' 对这个变量进行初始值设置
+        ''' </summary>
+        ''' <returns></returns>
         Public ReadOnly Property SetLocal As SetLocalVariable
             Get
                 Return New SetLocalVariable With {
@@ -137,7 +159,7 @@ Namespace Symbols
         End Property
 
         Public Overrides Function ToSExpression() As String
-            Return $"(local ${name} {Type})"
+            Return $"(local ${name} {type})"
         End Function
 
     End Class

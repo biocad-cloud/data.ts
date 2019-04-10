@@ -85,26 +85,10 @@ Namespace Symbols.Parser
         <Extension>
         Private Sub parseGlobals(declares As IEnumerable(Of FieldDeclarationSyntax), symbolTable As SymbolTable)
             For Each field As FieldDeclarationSyntax In declares
-                Dim names = field.Declarators
-
-                For Each var As VariableDeclaratorSyntax In names
-                    Dim fieldNames = var.Names
-                    Dim type$
-                    Dim init As LiteralExpression
-
-                    For Each name As String In fieldNames.Select(Function(v) v.Identifier.Text)
-                        type = name.AsType(var.AsClause)
-
-                        If var.Initializer Is Nothing Then
-                            ' 默认是零
-                            init = New LiteralExpression(0, type)
-                        Else
-                            init = var.Initializer.GetInitialize(symbolTable, type)
-                        End If
-
-                        symbolTable.AddGlobal(name, type, init)
-                    Next
-                Next
+                ' 已经在函数的内部进行添加调用了
+                Call field.Declarators _
+                    .ParseDeclarator(symbolTable, isGlobal:=True) _
+                    .ToArray
             Next
         End Sub
     End Module

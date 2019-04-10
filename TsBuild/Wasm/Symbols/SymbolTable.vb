@@ -48,11 +48,17 @@ Namespace Symbols
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetAllImports() As IEnumerable(Of ImportSymbol)
-            Return functionList.OfType(Of ImportSymbol)
+            Return functionList.Values.OfType(Of ImportSymbol)
         End Function
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetAllGlobals() As IEnumerable(Of DeclareGlobal)
             Return globals.Values
+        End Function
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Public Function GetAllLocals() As IEnumerable(Of DeclareLocal)
+            Return locals.Values
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>

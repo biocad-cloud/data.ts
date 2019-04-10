@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Language
 
 Namespace Symbols
 
@@ -11,6 +12,17 @@ Namespace Symbols
         Public Property Package As String
         Public Property ImportObject As String
 
+        Public ReadOnly Property VBDeclare As String
+            Get
+                With Parameters _
+                    .Select(Function(a) $"{a.Name} As {a.Value}") _
+                    .JoinBy(", ")
+
+                    Return $"Declare Function {Name} Lib ""{Package}"" Alias ""{ImportObject}"" ({ .ByRef}) As {Result}"
+                End With
+            End Get
+        End Property
+
         Sub New()
         End Sub
 
@@ -19,9 +31,12 @@ Namespace Symbols
         End Sub
 
         Public Overrides Function ToSExpression() As String
-            Dim params$ = Parameters.Select(Function(a) a.param).JoinBy(" ")
+            Dim params$ = Parameters _
+                .Select(Function(a) a.param) _
+                .JoinBy(" ")
 
-            Return $"(func ${Name} (import ""{Package}"" ""{ImportObject}"") {params} (result {Result}))"
+            Return $";; {VBDeclare}
+(func ${Name} (import ""{Package}"" ""{ImportObject}"") {params} (result {Result}))"
         End Function
 
         Public Shared ReadOnly Property MathImports As ImportSymbol()

@@ -2,6 +2,7 @@
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Text
+Imports Wasm.Symbols.Blocks
 
 Namespace Symbols
 
@@ -37,6 +38,7 @@ Namespace Symbols
     Public Class FuncSymbol : Inherits FuncSignature
 
         Public Property Body As Expression()
+        Public Property Locals As DeclareLocal()
 
         Public ReadOnly Property VBDeclare As String
             Get
@@ -64,24 +66,18 @@ Namespace Symbols
         ''' <returns></returns>
         Private Function buildBody() As String
             ' 先声明变量，然后再逐步赋值
-            Dim declareLocals As New List(Of String)
+            Dim declareLocals$()
             Dim body As New List(Of String)
 
-            For Each line In Me.Body
-                If TypeOf line Is DeclareLocal Then
-                    declareLocals += line.ToSExpression
+            declareLocals = Locals _
+                .Select(Function(v) v.ToSExpression) _
+                .ToArray
 
-                    With DirectCast(line, DeclareLocal)
-                        If Not .init Is Nothing Then
-                            body += .SetLocal.ToSExpression
-                        End If
-                    End With
-                Else
-                    body += line.ToSExpression
-                End If
+            For Each line In Me.Body
+                body += line.ToSExpression
             Next
 
-            Return declareLocals.JoinBy(ASCII.LF) & body.JoinBy(ASCII.LF)
+            Return declareLocals.JoinBy(ASCII.LF) & ASCII.LF & body.JoinBy(ASCII.LF)
         End Function
 
         Public Overrides Function ToSExpression() As String
