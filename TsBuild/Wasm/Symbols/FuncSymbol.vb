@@ -66,29 +66,15 @@ Namespace Symbols
         ''' <returns></returns>
         Private Function buildBody() As String
             ' 先声明变量，然后再逐步赋值
-            Dim declareLocals As New List(Of String)
+            Dim declareLocals$()
             Dim body As New List(Of String)
 
+            declareLocals = Locals _
+                .Select(Function(v) v.ToSExpression) _
+                .ToArray
+
             For Each line In Me.Body
-                If TypeOf line Is DeclareLocal Then
-                    declareLocals += line.ToSExpression
-
-                    With DirectCast(line, DeclareLocal)
-                        If Not .init Is Nothing Then
-                            body += .SetLocal.ToSExpression
-                        End If
-                    End With
-                ElseIf TypeOf line Is AbstractBlock Then
-                    For Each local In DirectCast(line, AbstractBlock).GetDeclareLocals
-                        ' set local 在block的内部执行
-                        ' 在这里只需要提取出申明部分即可
-                        declareLocals += line.ToSExpression
-                    Next
-
-                    body += line.ToSExpression
-                Else
-                    body += line.ToSExpression
-                End If
+                body += line.ToSExpression
             Next
 
             Return declareLocals.JoinBy(ASCII.LF) & body.JoinBy(ASCII.LF)

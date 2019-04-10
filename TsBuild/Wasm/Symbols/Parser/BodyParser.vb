@@ -87,8 +87,14 @@ Namespace Symbols.Parser
                                                  isGlobal As Boolean) As IEnumerable(Of Expression)
 
             For Each var As VariableDeclaratorSyntax In names
-                For Each [declare] As Expression In var.ParseDeclarator(symbols, isGlobal)
-                    Yield [declare]
+                For Each [declare] As DeclareLocal In var.ParseDeclarator(symbols, isGlobal)
+                    If Not isGlobal Then
+                        If Not [declare].init Is Nothing Then
+                            Yield [declare].SetLocal
+                        End If
+
+                        Call symbols.AddLocal([declare])
+                    End If
                 Next
             Next
         End Function
@@ -96,7 +102,7 @@ Namespace Symbols.Parser
         <Extension>
         Friend Iterator Function ParseDeclarator(var As VariableDeclaratorSyntax,
                                                  symbols As SymbolTable,
-                                                 isGlobal As Boolean) As IEnumerable(Of Expression)
+                                                 isGlobal As Boolean) As IEnumerable(Of DeclareLocal)
             Dim fieldNames = var.Names
             Dim type$
             Dim init As Expression

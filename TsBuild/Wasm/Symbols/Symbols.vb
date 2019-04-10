@@ -145,6 +145,10 @@ Namespace Symbols
 
     Public Class DeclareLocal : Inherits DeclareVariable
 
+        ''' <summary>
+        ''' 对这个变量进行初始值设置
+        ''' </summary>
+        ''' <returns></returns>
         Public ReadOnly Property SetLocal As SetLocalVariable
             Get
                 Return New SetLocalVariable With {

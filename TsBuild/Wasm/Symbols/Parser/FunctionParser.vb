@@ -117,12 +117,6 @@ Namespace Symbols.Parser
                            expressionList = expression
                        End If
 
-                       For Each exp As Expression In expressionList
-                           If TypeOf exp Is DeclareLocal Then
-                               Call symbols.AddLocal(exp)
-                           End If
-                       Next
-
                        Return expressionList
                    End Function
         End Function
