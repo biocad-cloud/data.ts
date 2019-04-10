@@ -5,7 +5,7 @@ Module treeTest
 
     Sub Main()
 
-        'Call forlooptest()
+        Call forlooptest()
 
         ' Call declareTest()
         ' Call globalTest()
@@ -47,9 +47,14 @@ End Module"
     End Sub
 
     Sub forlooptest()
-        Dim moduleMain As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.vb")
+        Dim moduletest As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.vb")
 
-        Console.WriteLine(moduleMain.ToSExpression)
+        Console.WriteLine(moduletest.ToSExpression)
+        moduletest.Compile("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.wasm")
+        moduletest.ToSExpression.SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.wast")
+        moduletest.HexDump(True).SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.dmp")
+
+        Call Console.WriteLine(Global.test.ForLoopTest.forloop)
 
         Pause()
     End Sub
