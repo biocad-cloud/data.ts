@@ -174,13 +174,15 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As Expression
+        Public Iterator Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
             Dim block As New [Loop] With {
                 .Guid = $"block_{symbols.NextGuid}",
                 .LoopID = $"loop_{symbols.NextGuid}"
             }
             Dim internal As New List(Of Expression)
             Dim condition As Expression = whileBlock.whileCondition(symbols)
+
+            Yield New CommentText With {.Text = $"Start Do While Block {block.Guid}"}
 
             internal += New br_if With {
                 .BlockLabel = block.Guid,
@@ -191,7 +193,8 @@ Namespace Symbols.Parser
 
             block.Internal = internal
 
-            Return block
+            Yield block
+            Yield New CommentText With {.Text = $"End Loop {block.LoopID}"}
         End Function
 
         <Extension>

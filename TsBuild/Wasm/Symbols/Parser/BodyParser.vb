@@ -19,7 +19,7 @@ Namespace Symbols.Parser
                 Case GetType(ReturnStatementSyntax)
                     Return DirectCast(statement, ReturnStatementSyntax).ValueReturn(symbols)
                 Case GetType(WhileBlockSyntax)
-                    Return DirectCast(statement, WhileBlockSyntax).DoWhile(symbols)
+                    Return DirectCast(statement, WhileBlockSyntax).DoWhile(symbols).ToArray
                 Case GetType(MultiLineIfBlockSyntax)
                     Return DirectCast(statement, MultiLineIfBlockSyntax).IfBlock(symbols)
                 Case GetType(ForBlockSyntax)
