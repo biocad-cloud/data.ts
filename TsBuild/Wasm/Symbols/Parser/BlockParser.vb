@@ -64,6 +64,10 @@ Namespace Symbols.Parser
                     .ValueExpression(symbols)
             End If
 
+            Yield New CommentText With {
+                .Text = forBlock.ForStatement.ToString
+            }
+
             Dim block As New [Loop] With {
                 .Guid = $"block_{symbols.NextGuid}",
                 .LoopID = $"loop_{symbols.NextGuid}"

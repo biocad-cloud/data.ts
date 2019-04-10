@@ -1,7 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.Language
-Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
 Namespace Symbols.Parser
 

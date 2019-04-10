@@ -5,11 +5,11 @@ Module treeTest
 
     Sub Main()
 
-        Call forlooptest()
+        'Call forlooptest()
 
-        Call declareTest()
-        Call globalTest()
-        Call IfTest()
+        ' Call declareTest()
+        ' Call globalTest()
+        ' Call IfTest()
         Call testDemo()
 
         Dim code = "Module Main

@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Linq
@@ -76,6 +77,7 @@ Namespace Symbols.Parser
                 Call symbols.AddLocal(arg)
             Next
 
+            Dim paramIndex As Index(Of String) = parameters.Keys
             Dim runParser = symbols.runParser
             Dim bodyExpressions As Expression() = body _
                 .ExceptType(Of EndBlockStatementSyntax) _
@@ -87,7 +89,10 @@ Namespace Symbols.Parser
             Dim func As New FuncSymbol(funcVar) With {
                 .Parameters = parameters,
                 .Body = bodyExpressions,
-                .Locals = symbols.GetAllLocals.ToArray
+                .Locals = symbols _
+                    .GetAllLocals _
+                    .Where(Function(v) Not v.name Like paramIndex) _
+                    .ToArray
             }
 
             If Not TypeOf func.Body.Last Is ReturnValue Then
