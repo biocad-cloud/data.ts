@@ -77,7 +77,7 @@ Namespace Symbols
                 body += line.ToSExpression
             Next
 
-            Return declareLocals.JoinBy(ASCII.LF) & body.JoinBy(ASCII.LF)
+            Return declareLocals.JoinBy(ASCII.LF) & ASCII.LF & body.JoinBy(ASCII.LF)
         End Function
 
         Public Overrides Function ToSExpression() As String

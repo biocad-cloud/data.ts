@@ -38,11 +38,21 @@ Namespace Symbols.Parser
         ''' <param name="symbols"></param>
         ''' <returns></returns>
         <Extension>
-        Public Function ForLoop(forBlock As ForBlockSyntax, symbols As SymbolTable) As Expression
+        Public Iterator Function ForLoop(forBlock As ForBlockSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
             Dim control As Expression = forBlock.parseControlVariable(symbols)
             Dim init = forBlock.ForStatement.FromValue.ValueExpression(symbols)
             Dim final = forBlock.ForStatement.ToValue.ValueExpression(symbols)
             Dim stepValue As Expression
+
+            ' set for loop variable init value
+            If TypeOf control Is DeclareLocal Then
+                Yield New SetLocalVariable With {
+                    .var = DirectCast(control, DeclareLocal).name,
+                    .value = Types.CType(control.TypeInfer(symbols), init, symbols)
+                }
+            Else
+                Yield control
+            End If
 
             If forBlock.ForStatement.StepClause Is Nothing Then
                 ' 默认是1
@@ -62,7 +72,7 @@ Namespace Symbols.Parser
                 .BlockLabel = block.Guid,
                 .Condition = parseForLoopTest(control, stepValue, final, symbols)
             }
-            Dim [next] As New br With {.BlockLabel = Block.LoopID}
+            Dim [next] As New br With {.BlockLabel = block.LoopID}
             Dim internal As New List(Of Expression)
 
             internal += break
@@ -72,7 +82,7 @@ Namespace Symbols.Parser
 
             block.Internal = internal
 
-            Return block
+            Yield block
         End Function
 
         <Extension>
@@ -130,7 +140,11 @@ Namespace Symbols.Parser
             Dim control = forBlock.ForStatement.ControlVariable
 
             If TypeOf control Is VariableDeclaratorSyntax Then
-                Return DirectCast(control, VariableDeclaratorSyntax).ParseDeclarator(symbols, False).First
+                Dim declareCtl = DirectCast(control, VariableDeclaratorSyntax) _
+                    .ParseDeclarator(symbols, False) _
+                    .First
+
+                Return declareCtl
             Else
                 ' reference a local variable
                 Throw New NotImplementedException
