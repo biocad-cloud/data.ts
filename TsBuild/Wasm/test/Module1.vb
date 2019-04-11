@@ -5,12 +5,14 @@ Module treeTest
 
     Sub Main()
 
-        Call forlooptest()
+        ' Call forlooptest()
 
         ' Call declareTest()
         ' Call globalTest()
         ' Call IfTest()
         Call testDemo()
+
+        Pause()
 
         Dim code = "Module Main
 
@@ -68,13 +70,13 @@ End Module"
     End Sub
 
     Sub testDemo()
-        Dim moduletest = Wasm.CreateModule("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF\Math.vb")
+        Dim moduletest = Wasm.CreateModule("..\Demo\PoissonPDF\Math.vb")
 
         Console.WriteLine(moduletest.ToSExpression)
 
-        moduletest.Compile("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wasm")
-        moduletest.ToSExpression.SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wast")
-        moduletest.HexDump(True).SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.dmp")
+        moduletest.Compile("..\Demo\PoissonPDF.wasm")
+        moduletest.ToSExpression.SaveTo("..\Demo\PoissonPDF.wast")
+        moduletest.HexDump(True).SaveTo("..\Demo\PoissonPDF.dmp")
 
         Pause()
     End Sub

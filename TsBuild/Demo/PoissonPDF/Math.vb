@@ -23,4 +23,12 @@
 
         Return result
     End Function
+
+    Public Function Add10(x As Integer) As Integer
+        For i As Integer = 0 To 9
+            x += 1
+        Next
+
+        Return x
+    End Function
 End Module
