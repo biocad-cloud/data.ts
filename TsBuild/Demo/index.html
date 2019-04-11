@@ -4,10 +4,15 @@
         var PoissonPDF = math.instance.exports.PoissonPDF;		
 		var add10 = math.instance.exports.Add10;
         var FlipCoin = math.instance.exports.FlipCoin;
+		var i = math.instance.exports.GetGlobal;
 		
 		console.log(Math.random());
 		console.log(FlipCoin());
+		console.log(i());
 		console.log(add10(100))
+		console.log(i());
+		console.log(add10(0))
+		console.log(i());
         console.log(PoissonPDF(5, 2.0));
     });
 </script>

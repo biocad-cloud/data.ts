@@ -8,7 +8,7 @@
     Declare Function Exp Lib "Math" Alias "exp" (x As Double) As Double
     Declare Function Random Lib "Math" Alias "random" () As Double
 
-    Dim global_i As Integer
+    Dim global_i As Integer = 990
 
     ''' <summary>
     ''' Returns the PDF value at <paramref name="k"/> for the specified Poisson distribution.
@@ -35,6 +35,10 @@
         global_i += 10
 
         Return x + global_i * 2
+    End Function
+
+    Public Function GetGlobal() As Single
+        Return global_i
     End Function
 
     Public Function FlipCoin() As Double
