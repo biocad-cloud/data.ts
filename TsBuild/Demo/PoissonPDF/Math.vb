@@ -7,6 +7,20 @@
     ''' <returns></returns>
     Declare Function Exp Lib "Math" Alias "exp" (x As Double) As Double
     Declare Function Random Lib "Math" Alias "random" () As Double
+    ''' <summary>
+    ''' An imports javascript api:
+    ''' 
+    ''' ```javascript
+    ''' var DOM = {
+    '''     display: Function(x) {
+    '''			document.getElementById("text").innerText = x;
+    '''		}
+    '''	}
+    '''	```
+    ''' </summary>
+    ''' <param name="x"></param>
+    ''' <returns></returns>
+    Declare Function Display Lib "DOM" Alias "display" (x As Single) As Integer
 
     Dim global_i As Integer = 990
 
@@ -49,5 +63,10 @@
         Else
             Return -1 - r
         End If
+    End Function
+
+    Public Function HtmlTest(x As Single) As Double
+        Call Display(x)
+        Return Add10(x)
     End Function
 End Module

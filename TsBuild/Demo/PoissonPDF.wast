@@ -4,13 +4,16 @@
 (func $Exp (import "Math" "exp") (param $x f64) (result f64))
     ;; Declare Function Random Lib "Math" Alias "random" () As f64
 (func $Random (import "Math" "random")  (result f64))
+    ;; Declare Function Display Lib "DOM" Alias "display" (x As f32) As i32
+(func $Display (import "DOM" "display") (param $x f32) (result i32))
     
     (global $global_i (mut i32) (i32.const 990))
 
     (export "PoissonPDF" (func $PoissonPDF))
     (export "Add10" (func $Add10))
     (export "GetGlobal" (func $GetGlobal))
-    (export "FlipCoin" (func $FlipCoin)) 
+    (export "FlipCoin" (func $FlipCoin))
+    (export "HtmlTest" (func $HtmlTest)) 
 
     (func $PoissonPDF (param $k i32) (param $lambda f64) (result f64)
         ;; Public Function PoissonPDF(k As i32, lambda As f64) As f64
@@ -73,6 +76,13 @@
         )
     )
     (return (f64.const 0))
+    )
+    
+    (func $HtmlTest (param $x f32) (result f64)
+        ;; Public Function HtmlTest(x As f32) As f64
+        
+    (call $Display (get_local $x))
+    (return (f64.convert_s/i32 (call $Add10 (i32.trunc_s/f32 (get_local $x)))))
     )
 
 )

@@ -4,7 +4,7 @@
  * @param module The ``*.wasm`` module file path
  * @param run A action delegate for utilize the VB.NET assembly module
 */
-function RunAssembly(module, run) {
+function RunAssembly(module, run, imports) {
     fetch(module).then(function (response) {
             return response.arrayBuffer();
         })
@@ -13,7 +13,14 @@ function RunAssembly(module, run) {
                 "global": {},
                 "env": {}
             };
-            dependencies["Math"] = window.Math;
+            
+			// imports javascript math by default
+			dependencies["Math"] = window.Math;
+			
+			for (var itemName in imports) {
+				dependencies[itemName] = imports[itemName];				
+			}
+			
             var moduleBufferView = new Uint8Array(buffer);
             return window.WebAssembly.instantiate(moduleBufferView, dependencies);
         }).then(wasm => {

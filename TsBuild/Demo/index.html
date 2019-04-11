@@ -1,10 +1,17 @@
 <script type="text/javascript" src="wasm.js"></script>
 <script type="text/javascript">
+	var DOM = {
+		display: function(x) {
+			document.getElementById("text").innerText = x;
+		}
+	}
+
     RunAssembly("PoissonPDF.wasm", function(math) {
         var PoissonPDF = math.instance.exports.PoissonPDF;		
 		var add10 = math.instance.exports.Add10;
         var FlipCoin = math.instance.exports.FlipCoin;
 		var i = math.instance.exports.GetGlobal;
+		var HtmlTest = math.instance.exports.HtmlTest;
 		
 		console.log(Math.random());
 		console.log(FlipCoin());
@@ -14,5 +21,10 @@
 		console.log(add10(0))
 		console.log(i());
         console.log(PoissonPDF(5, 2.0));
-    });
+		
+		console.log(HtmlTest(5));
+		
+    }, {DOM: DOM});
 </script>
+
+<div id="text"></div>
