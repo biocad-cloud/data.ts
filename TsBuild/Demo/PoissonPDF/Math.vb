@@ -6,6 +6,7 @@
     ''' <param name="x"></param>
     ''' <returns></returns>
     Declare Function Exp Lib "Math" Alias "exp" (x As Double) As Double
+    Declare Function Random Lib "Math" Alias "random" () As Double
 
     ''' <summary>
     ''' Returns the PDF value at <paramref name="k"/> for the specified Poisson distribution.
@@ -30,5 +31,15 @@
         Next
 
         Return x
+    End Function
+
+    Public Function FlipCoin() As Double
+        Dim r As Double = Random()
+
+        If r >= 0.5 Then
+            Return 1 + r
+        Else
+            Return -1 - r
+        End If
     End Function
 End Module
