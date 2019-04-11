@@ -2,7 +2,9 @@
 <script type="text/javascript">
     RunAssembly("PoissonPDF.wasm", function(math) {
         var PoissonPDF = math.instance.exports.PoissonPDF;		
+		var add10 = math.instance.exports.Add10;
         
+		console.log(add10(100))
         console.log(PoissonPDF(5, 2.0));
     });
 </script>
