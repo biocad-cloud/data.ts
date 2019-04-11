@@ -1,4 +1,5 @@
-﻿Imports System.Runtime.CompilerServices
+﻿Imports System.IO
+Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ApplicationServices.Development
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
@@ -52,6 +53,7 @@ Namespace Symbols
             End If
 
             Dim wasmSummary As AssemblyInfo = GetType(ModuleSymbol).GetAssemblyDetails
+            Dim buildTime$ = File.GetLastWriteTime(GetType(ModuleSymbol).Assembly.Location)
 
             Return $"(module ;; Module {LabelName}
 
@@ -60,7 +62,7 @@ Namespace Symbols
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: {wasmSummary.AssemblyVersion}
-    ;; build: {wasmSummary.AssemblyFileVersion}
+    ;; build: {buildTime}
 
     {import}
     

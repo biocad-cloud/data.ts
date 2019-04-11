@@ -4,8 +4,8 @@
     ;;
     ;; WASM for VisualBasic.NET
     ;; 
-    ;; version: 
-    ;; build: 
+    ;; version: 1.3.0.22
+    ;; build: 4/11/2019 11:40:37 PM
 
     ;; Declare Function Exp Lib "Math" Alias "exp" (x As f64) As f64
 (func $Exp (import "Math" "exp") (param $x f64) (result f64))
