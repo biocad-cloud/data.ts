@@ -1,4 +1,5 @@
 ﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ApplicationServices.Development
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
 Imports Wasm.Symbols.Parser
@@ -50,7 +51,16 @@ Namespace Symbols
                     .JoinBy(ASCII.LF & ASCII.LF)
             End If
 
+            Dim wasmSummary As AssemblyInfo = GetType(ModuleSymbol).GetAssemblyDetails
+
             Return $"(module ;; Module {LabelName}
+
+    ;; Auto-Generated VisualBasic.NET WebAssembly Code
+    ;;
+    ;; WASM for VisualBasic.NET
+    ;; 
+    ;; version: {wasmSummary.AssemblyVersion}
+    ;; build: {wasmSummary.AssemblyFileVersion}
 
     {import}
     

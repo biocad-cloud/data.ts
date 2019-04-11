@@ -1,5 +1,12 @@
 (module ;; Module Math
 
+    ;; Auto-Generated VisualBasic.NET WebAssembly Code
+    ;;
+    ;; WASM for VisualBasic.NET
+    ;; 
+    ;; version: 
+    ;; build: 
+
     ;; Declare Function Exp Lib "Math" Alias "exp" (x As f64) As f64
 (func $Exp (import "Math" "exp") (param $x f64) (result f64))
     ;; Declare Function Random Lib "Math" Alias "random" () As f64
