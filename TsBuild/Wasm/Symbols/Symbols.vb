@@ -121,25 +121,30 @@ Namespace Symbols
 
         Public Property var As String
 
+        Sub New()
+        End Sub
+
+        Sub New(name As String)
+            var = name
+        End Sub
+
         Public Overrides Function ToSExpression() As String
             Return $"(get_global {var})"
         End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return symbolTable.GetObjectSymbol(var).type
+            Return symbolTable.GetGlobal(var)
         End Function
     End Class
 
-    Public Class SetGlobalVariable : Inherits Expression
-
-        Public Property var As String
+    Public Class SetGlobalVariable : Inherits SetLocalVariable
 
         Public Overrides Function ToSExpression() As String
-            Return $"(set_global {var})"
+            Return $"(set_global {var} {value})"
         End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return symbolTable.GetObjectSymbol(var).type
+            Return symbolTable.GetGlobal(var)
         End Function
     End Class
 

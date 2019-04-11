@@ -8,6 +8,8 @@
     Declare Function Exp Lib "Math" Alias "exp" (x As Double) As Double
     Declare Function Random Lib "Math" Alias "random" () As Double
 
+    Dim global_i As Integer
+
     ''' <summary>
     ''' Returns the PDF value at <paramref name="k"/> for the specified Poisson distribution.
     ''' </summary>
@@ -30,7 +32,9 @@
             x += 1
         Next
 
-        Return x
+        global_i += 10
+
+        Return x + global_i * 2
     End Function
 
     Public Function FlipCoin() As Double

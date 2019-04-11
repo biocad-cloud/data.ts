@@ -17,7 +17,7 @@ Namespace Symbols.Parser
                 Case GetType(LiteralExpressionSyntax)
                     Return DirectCast(value, LiteralExpressionSyntax).ConstantExpression(Nothing)
                 Case GetType(IdentifierNameSyntax)
-                    Return DirectCast(value, IdentifierNameSyntax).ReferVariable
+                    Return DirectCast(value, IdentifierNameSyntax).ReferVariable(symbols)
                 Case GetType(InvocationExpressionSyntax)
                     Return DirectCast(value, InvocationExpressionSyntax).FunctionInvoke(symbols)
                 Case GetType(UnaryExpressionSyntax)
@@ -90,10 +90,18 @@ Namespace Symbols.Parser
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         <Extension>
-        Public Function ReferVariable(name As IdentifierNameSyntax) As Expression
-            Return New GetLocalVariable With {
-                .var = name.Identifier.ValueText
-            }
+        Public Function ReferVariable(name As IdentifierNameSyntax, symbols As SymbolTable) As Expression
+            Dim var As String = name.Identifier.ValueText
+
+            If symbols.IsLocal(var) Then
+                Return New GetLocalVariable With {
+                    .var = var
+                }
+            Else
+                Return New GetGlobalVariable With {
+                    .var = var
+                }
+            End If
         End Function
 
         <Extension>

@@ -110,5 +110,13 @@ Namespace Symbols
         Public Function GetObjectSymbol(name As String) As DeclareLocal
             Return locals(name.Trim("$"c))
         End Function
+
+        Public Function GetUnderlyingType(name As String) As String
+            If IsLocal(name) Then
+                Return GetObjectSymbol(name).type
+            Else
+                Return GetGlobal(name)
+            End If
+        End Function
     End Class
 End Namespace

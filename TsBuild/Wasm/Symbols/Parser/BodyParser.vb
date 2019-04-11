@@ -44,29 +44,45 @@ Namespace Symbols.Parser
         <Extension>
         Public Function ValueAssign(assign As AssignmentStatementSyntax, symbols As SymbolTable) As Expression
             Dim var = DirectCast(assign.Left, IdentifierNameSyntax).Identifier.ValueText
+            Dim left As Expression
             Dim right = assign.Right.ValueExpression(symbols)
-            Dim typeL As String = symbols.GetObjectSymbol(var).type
+            Dim typeL As String = symbols.GetUnderlyingType(var)
             Dim op$ = assign.OperatorToken.ValueText
+
+            If symbols.IsLocal(var) Then
+                left = New GetLocalVariable(var)
+            Else
+                left = New GetGlobalVariable(var)
+            End If
 
             Select Case op
                 Case "*="
-                    right = BinaryStack(New GetLocalVariable(var), right, "*", symbols)
+                    right = BinaryStack(left, right, "*", symbols)
                 Case "+="
-                    right = BinaryStack(New GetLocalVariable(var), right, "+", symbols)
+                    right = BinaryStack(left, right, "+", symbols)
                 Case "-="
-                    right = BinaryStack(New GetLocalVariable(var), right, "-", symbols)
+                    right = BinaryStack(left, right, "-", symbols)
                 Case "/="
-                    right = BinaryStack(New GetLocalVariable(var), right, "/", symbols)
+                    right = BinaryStack(left, right, "/", symbols)
                 Case "="
                     ' do nothing
                 Case Else
                     Throw New NotImplementedException
             End Select
 
-            Return New SetLocalVariable With {
-                .var = var,
-                .value = Types.CType(typeL, right, symbols)
-            }
+            Dim valueRight = Types.CType(typeL, right, symbols)
+
+            If symbols.IsLocal(var) Then
+                Return New SetLocalVariable With {
+                    .var = var,
+                    .value = valueRight
+                }
+            Else
+                Return New SetGlobalVariable With {
+                    .var = var,
+                    .value = valueRight
+                }
+            End If
         End Function
 
         ''' <summary>
