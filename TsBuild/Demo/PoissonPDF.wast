@@ -5,7 +5,7 @@
     ;; Declare Function Random Lib "Math" Alias "random" () As f64
 (func $Random (import "Math" "random")  (result f64))
     
-    
+    (global $global_i (mut i32) (i32.const 0))
 
     (export "PoissonPDF" (func $PoissonPDF))
     (export "Add10" (func $Add10))
@@ -48,7 +48,8 @@
     
         )
     )
-    (return (get_local $x))
+    (set_global $global_i (i32.add (get_global $global_i) (i32.const 10)))
+    (return (i32.add (get_local $x) (i32.mul (get_global $global_i) (i32.const 2))))
     )
     
     (func $FlipCoin  (result f64)

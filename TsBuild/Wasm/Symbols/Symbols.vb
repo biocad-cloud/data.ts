@@ -129,7 +129,7 @@ Namespace Symbols
         End Sub
 
         Public Overrides Function ToSExpression() As String
-            Return $"(get_global {var})"
+            Return $"(get_global ${var})"
         End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
@@ -140,7 +140,7 @@ Namespace Symbols
     Public Class SetGlobalVariable : Inherits SetLocalVariable
 
         Public Overrides Function ToSExpression() As String
-            Return $"(set_global {var} {value})"
+            Return $"(set_global ${var} {value})"
         End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
