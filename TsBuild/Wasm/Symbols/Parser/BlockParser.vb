@@ -78,11 +78,16 @@ Namespace Symbols.Parser
             }
             Dim [next] As New br With {.BlockLabel = block.LoopID}
             Dim internal As New List(Of Expression)
+            Dim controlVar = control.ctlGetLocal
+            Dim doStep = ExpressionParse.BinaryStack(controlVar, stepValue, "+", symbols)
 
             internal += break
-            internal += ExpressionParse.BinaryStack(control.ctlGetLocal, stepValue, "+", symbols)
+            internal += New SetLocalVariable With {.var = controlVar.var, .value = doStep}
             internal += forBlock.Statements.ParseBlockInternal(symbols)
             internal += [next]
+            internal += New CommentText With {
+                .Text = $"For Loop Next On {[next].BlockLabel}"
+            }
 
             block.Internal = internal
 
@@ -127,9 +132,9 @@ Namespace Symbols.Parser
             If TypeOf [step] Is LiteralExpression Then
                 With DirectCast([step], LiteralExpression)
                     If Not .Sign > 0 Then
-                        ctrlTest = BooleanSymbol.BinaryCompares(ctlVar, [to], ">=", symbols)
+                        ctrlTest = BooleanSymbol.BinaryCompares(ctlVar, [to], ">", symbols)
                     Else
-                        ctrlTest = BooleanSymbol.BinaryCompares(ctlVar, [to], "<=", symbols)
+                        ctrlTest = BooleanSymbol.BinaryCompares(ctlVar, [to], "<", symbols)
                     End If
                 End With
             Else

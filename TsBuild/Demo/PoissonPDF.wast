@@ -37,10 +37,11 @@
     (block $block_9c020000 
         (loop $loop_9d020000
     
-                    (br_if $block_9c020000 (i32.ge_s (get_local $i) (i32.const 9)))
-            (i32.add (get_local $i) (i32.const 1))
+                    (br_if $block_9c020000 (i32.gt_s (get_local $i) (i32.const 9)))
+            (set_local $i (i32.add (get_local $i) (i32.const 1)))
             (set_local $x (i32.add (get_local $x) (i32.const 1)))
             (br $loop_9d020000)
+            ;; For Loop Next On loop_9d020000
     
         )
     )
