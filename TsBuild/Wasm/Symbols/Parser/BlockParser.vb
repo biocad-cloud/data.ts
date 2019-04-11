@@ -126,7 +126,7 @@ Namespace Symbols.Parser
 
             If TypeOf [step] Is LiteralExpression Then
                 With DirectCast([step], LiteralExpression)
-                    If .Sign > 0 Then
+                    If Not .Sign > 0 Then
                         ctrlTest = BooleanSymbol.BinaryCompares(ctlVar, [to], ">=", symbols)
                     Else
                         ctrlTest = BooleanSymbol.BinaryCompares(ctlVar, [to], "<=", symbols)
