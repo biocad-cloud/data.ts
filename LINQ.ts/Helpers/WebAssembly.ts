@@ -15,6 +15,20 @@
          *         
         */
         export function RunAssembly(module: string, run: Delegate.Sub, imports: {} = null): void {
+            var engine = (<any>window).WebAssembly;
+            var dependencies = {
+                "global": {},
+                "env": {}
+            };
+
+            dependencies["Math"] = (<any>window).Math;
+
+            if (typeof imports == "object") {
+                for (var key in imports) {
+                    dependencies[key] = imports[key];
+                }
+            }
+
             fetch(module)
                 .then(function (response) {
                     if (response.ok) {
@@ -23,22 +37,8 @@
                         throw `Unable to fetch Web Assembly file ${module}.`;
                     }
                 })
-                .then(buffer => (<any>window).WebAssembly.compile(buffer))
+                .then(buffer => new Uint8Array(buffer))
                 .then(function (module) {
-                    var dependencies = {
-                        "global": {},
-                        "env": {}
-                    };
-                    var engine = (<any>window).WebAssembly;
-
-                    dependencies["Math"] = (<any>window).Math;
-
-                    if (typeof imports == "object") {
-                        for (var key in imports) {
-                            dependencies[key] = imports[key];
-                        }
-                    }
-
                     return engine.instantiate(module, dependencies);
                 }).then(wasm => {
                     if (logging.outputEverything) {

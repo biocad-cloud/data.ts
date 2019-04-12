@@ -1,4 +1,4 @@
-<script type="text/javascript" src="wasm.js"></script>
+<script type="text/javascript" src="linq.js"></script>
 <script type="text/javascript">
 	var DOM = {
 		display: function(x) {
@@ -6,7 +6,7 @@
 		}
 	}
 
-    RunAssembly("PoissonPDF.wasm", function(math) {
+    TypeScript.Wasm.RunAssembly("PoissonPDF.wasm", function(math) {
         var PoissonPDF = math.instance.exports.PoissonPDF;		
 		var add10 = math.instance.exports.Add10;
         var FlipCoin = math.instance.exports.FlipCoin;
