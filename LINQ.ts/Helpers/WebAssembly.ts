@@ -50,4 +50,28 @@
                 });
         }
     }
+
+    export class stringReader {
+
+        private decoder: TextDecoder = new TextDecoder();
+        private buffer: ArrayBuffer;
+
+        /**
+         * @param memory The memory buffer
+        */
+        public constructor(memory: { buffer: ArrayBuffer }) {
+            this.buffer = memory.buffer;
+        }
+
+        /**
+         * Read text from WebAssembly memory buffer.
+        */
+        public readText(offset: number, length: number): string {
+            let str = new Uint8Array(this.buffer, offset, length);
+            let text: string = this.decoder.decode(str);
+
+            return text;
+        }
+    }
+
 }
