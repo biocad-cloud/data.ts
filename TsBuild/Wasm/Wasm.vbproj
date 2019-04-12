@@ -299,6 +299,7 @@
     <Compile Include="Symbols\Blocks\If.vb" />
     <Compile Include="Symbols\Blocks\Loop.vb" />
     <Compile Include="Symbols\Blocks\BooleanSymbol.vb" />
+    <Compile Include="Symbols\Memory\StringSymbol.vb" />
     <Compile Include="Symbols\Parser\BlockParser.vb" />
     <Compile Include="Symbols\Parser\AsTypeHandler.vb" />
     <Compile Include="Symbols\Parser\ModuleParser.vb" />
