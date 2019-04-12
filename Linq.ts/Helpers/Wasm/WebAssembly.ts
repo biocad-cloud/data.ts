@@ -5,6 +5,11 @@
     */
     export module Wasm {
 
+        /**
+         * The webassembly engine.
+        */
+        const engine: WebAssembly = (<any>window).WebAssembly;
+
         /** 
          * Run the compiled VisualBasic.NET assembly module
          * 
@@ -15,7 +20,6 @@
          *         
         */
         export function RunAssembly(module: string, run: Delegate.Sub, imports: {} = null): void {
-            var engine = (<any>window).WebAssembly;
             var dependencies = {
                 "global": {},
                 "env": {}
@@ -59,7 +63,7 @@
         /**
          * @param memory The memory buffer
         */
-        public constructor(memory: { buffer: ArrayBuffer }) {
+        public constructor(memory: WasmMemory) {
             this.buffer = memory.buffer;
         }
 

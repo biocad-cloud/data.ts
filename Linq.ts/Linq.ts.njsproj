@@ -211,7 +211,10 @@
     <TypeScriptCompile Include="Framework\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Helpers\WebAssembly.ts">
+    <TypeScriptCompile Include="Helpers\Wasm\Interface.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Helpers\Wasm\WebAssembly.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Type.ts">
@@ -251,6 +254,7 @@
     <Folder Include="DOM\" />
     <Folder Include="Collections\" />
     <Folder Include="Framework\Define\" />
+    <Folder Include="Helpers\Wasm\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\Http\Imports.ts">
