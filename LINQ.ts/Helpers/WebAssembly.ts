@@ -14,21 +14,32 @@
          * @param run A action delegate for utilize the VB.NET assembly module
          *         
         */
-        export function RunAssembly(module: string, run: Delegate.Sub): void {
-            fetch(module).then(function (response) {
-                return response.arrayBuffer();
-            })
-                .then(function (buffer) {
+        export function RunAssembly(module: string, run: Delegate.Sub, imports: {} = null): void {
+            fetch(module)
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.arrayBuffer();
+                    } else {
+                        throw `Unable to fetch Web Assembly file ${module}.`;
+                    }
+                })
+                .then(buffer => (<any>window).WebAssembly.compile(buffer))
+                .then(function (module) {
                     var dependencies = {
                         "global": {},
                         "env": {}
                     };
-                    var moduleBufferView = new Uint8Array(buffer);
                     var engine = (<any>window).WebAssembly;
 
                     dependencies["Math"] = (<any>window).Math;
 
-                    return engine.instantiate(moduleBufferView, dependencies);
+                    if (typeof imports == "object") {
+                        for (var key in imports) {
+                            dependencies[key] = imports[key];
+                        }
+                    }
+
+                    return engine.instantiate(module, dependencies);
                 }).then(wasm => {
                     if (logging.outputEverything) {
                         console.log("Load external WebAssembly module success!");
