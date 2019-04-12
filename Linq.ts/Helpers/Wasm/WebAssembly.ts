@@ -63,8 +63,14 @@
         /**
          * @param memory The memory buffer
         */
-        public constructor(memory: WasmMemory) {
-            this.buffer = memory.buffer;
+        public constructor(memory: WasmMemory | IWasm | ArrayBuffer) {
+            if (memory instanceof ArrayBuffer) {
+                this.buffer = memory;
+            } else if (Object.keys(memory).indexOf("memory") > -1) {
+                this.buffer = (<WasmMemory>memory).buffer;
+            } else {
+                this.buffer = (<IWasm>memory).instance.exports.memory.buffer;
+            }
         }
 
         /**
