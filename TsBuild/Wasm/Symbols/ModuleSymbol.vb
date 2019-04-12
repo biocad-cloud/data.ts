@@ -54,6 +54,7 @@ Namespace Symbols
 
             Dim wasmSummary As AssemblyInfo = GetType(ModuleSymbol).GetAssemblyDetails
             Dim buildTime$ = File.GetLastWriteTime(GetType(ModuleSymbol).Assembly.Location)
+            Dim memoryDev$ = App.NextTempName
 
             Return $"(module ;; Module {LabelName}
 
@@ -64,9 +65,15 @@ Namespace Symbols
     ;; version: {wasmSummary.AssemblyVersion}
     ;; build: {buildTime}
 
+    ;; Only allows one memory block in each module
+    (memory ${memoryDev} 1)  
+
     {import}
     
     {globals}
+
+    ;; Export memory block to Javascript 
+    (export ""memory"" (memory ${memoryDev})) 
 
     {Exports.JoinBy(ASCII.LF & "    ")} 
 
