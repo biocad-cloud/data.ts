@@ -29,8 +29,10 @@
 	TypeScript.Wasm.RunAssembly("string.wasm", function(str) {
 		var memory = str.instance.exports.memory;
 		var strBuf = new Uint8Array(memory.buffer, 16, 11); 
+		var strBuf2 = new Uint8Array(memory.buffer, 30, 7); 
 		
 		console.log(new TextDecoder().decode(strBuf))
+		console.log(new TextDecoder().decode(strBuf2))
 	})
 </script>
 
