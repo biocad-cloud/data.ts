@@ -25,6 +25,13 @@
 		console.log(HtmlTest(5));
 		
     }, {DOM: DOM});
+	
+	TypeScript.Wasm.RunAssembly("string.wasm", function(str) {
+		var memory = str.instance.exports.memory;
+		var strBuf = new Uint8Array(memory.buffer, 16, 11); 
+		
+		console.log(new TextDecoder().decode(strBuf))
+	})
 </script>
 
 <div id="text"></div>

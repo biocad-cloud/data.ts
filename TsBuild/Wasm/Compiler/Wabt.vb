@@ -40,7 +40,9 @@ Public Module Wabt
                     .ToSExpression _
                     .SaveTo(.ByRef)
             Else
-                Call CType([module], String).SaveTo(.ByRef)
+                Call CType([module], String) _
+                    .SolveStream _
+                    .SaveTo(.ByRef)
             End If
 
             Return .ByRef
@@ -69,7 +71,9 @@ Public Module Wabt
     ''' <returns></returns>
     Public Function CompileWast(wast As String, config As wat2wasm) As String
         With New IORedirectFile(wat2wasm, $"{saveTemp(wast).CLIPath} {config}")
+            Call config.output.ParentPath.MkDIR
             Call .Run()
+
             Return .StandardOutput
         End With
     End Function

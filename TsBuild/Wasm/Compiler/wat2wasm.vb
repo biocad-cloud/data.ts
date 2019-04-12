@@ -126,7 +126,7 @@ Public Class wat2wasm
     End Function
 
     Public Shared Widening Operator CType(output As String) As wat2wasm
-        Return New wat2wasm With {.output = output}
+        Return New wat2wasm With {.output = output.GetFullPath}
     End Operator
 
 End Class
