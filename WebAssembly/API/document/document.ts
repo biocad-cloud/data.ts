@@ -6,13 +6,8 @@
         private hashCode: number;
         private hashTable: object = {};
 
-        public constructor(private lazyWasm: () => TypeScript.IWasm) {
-        }
-
-        public hook(): Document {
-            let assembly = this.lazyWasm();
-            this.streamReader = new TypeScript.stringReader(assembly);
-            return this;
+        public constructor(bytes: TypeScript.WasmMemory) {
+            this.streamReader = new TypeScript.stringReader(bytes);
         }
 
         public getElementById(id: number): number {

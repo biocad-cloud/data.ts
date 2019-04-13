@@ -2,15 +2,17 @@
 
     export class memoryReader {
 
-        protected sizeOf: (obj: number) => number;
         protected buffer: ArrayBuffer;
 
-        public constructor(wasm: IWasm) {
-            this.sizeOf = wasm.instance.exports.MemorySizeOf;
+        public constructor(bytechunks: TypeScript.WasmMemory) {
+            this.buffer = bytechunks.buffer;
+        }
 
-            if (wasm.instance.exports.memory) {
-                this.buffer = wasm.instance.exports.memory.buffer;
-            }
+        public sizeOf(intPtr: number): number {
+            let buffer = new Uint8Array(this.buffer, intPtr);
+            let size: number = buffer.findIndex(b => b == 0);
+
+            return size;
         }
     }
 
@@ -21,12 +23,8 @@
         /**
          * @param memory The memory buffer
         */
-        public constructor(wasm: IWasm, memory: WasmMemory = null) {
-            super(wasm);
-
-            if (memory) {
-                this.buffer = memory.buffer;
-            }
+        public constructor(memory: WasmMemory) {
+            super(memory);
         }
 
         /**
