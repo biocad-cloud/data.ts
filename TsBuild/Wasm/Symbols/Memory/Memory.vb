@@ -84,6 +84,9 @@ Namespace Symbols
         End Function
     End Class
 
+    ''' <summary>
+    ''' The WebAssembly memory buffer device
+    ''' </summary>
     Public Class Memory : Implements IEnumerable(Of Expression)
 
         Dim buffer As New List(Of Expression)
@@ -111,7 +114,7 @@ Namespace Symbols
         End Function
 
         Public Function AddPointer(ptr As MemoryPtr) As Integer
-            Dim p% = offset
+            Dim p As Integer = offset
 
             buffer += ptr
             offset += 8

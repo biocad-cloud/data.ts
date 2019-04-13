@@ -72,6 +72,12 @@ Namespace Symbols
         Dim globals As New Dictionary(Of String, DeclareGlobal)
 
         ''' <summary>
+        ''' 这个内存对象是全局范围内的
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property memory As New Memory
+
+        ''' <summary>
         ''' 当前所进行解析的函数的名称
         ''' </summary>
         ''' <returns></returns>
@@ -170,5 +176,10 @@ Namespace Symbols
                 Return GetGlobal(name)
             End If
         End Function
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Public Shared Narrowing Operator CType(symbols As SymbolTable) As Memory
+            Return symbols.memory
+        End Operator
     End Class
 End Namespace

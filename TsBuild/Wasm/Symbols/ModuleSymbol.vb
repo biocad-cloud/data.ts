@@ -61,6 +61,7 @@ Namespace Symbols
         Public Property Exports As ExportSymbolExpression()
         Public Property [Imports] As ImportSymbol()
         Public Property Globals As DeclareGlobal()
+        Public Property Memory As Memory
 
         ''' <summary>
         ''' The module name label

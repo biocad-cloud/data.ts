@@ -105,7 +105,8 @@ Namespace Symbols.Parser
                 .LabelName = moduleName,
                 .Exports = exports,
                 .[Imports] = symbolTable.GetAllImports.ToArray,
-                .Globals = symbolTable.GetAllGlobals.ToArray
+                .Globals = symbolTable.GetAllGlobals.ToArray,
+                .Memory = symbolTable
             }
         End Function
 

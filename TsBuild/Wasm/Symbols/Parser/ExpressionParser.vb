@@ -61,7 +61,7 @@ Namespace Symbols.Parser
                 Case GetType(ParenthesizedExpressionSyntax)
                     Return DirectCast(value, ParenthesizedExpressionSyntax).ParenthesizedStack(symbols)
                 Case GetType(LiteralExpressionSyntax)
-                    Return DirectCast(value, LiteralExpressionSyntax).ConstantExpression(Nothing)
+                    Return DirectCast(value, LiteralExpressionSyntax).ConstantExpression(Nothing, symbols)
                 Case GetType(IdentifierNameSyntax)
                     Return DirectCast(value, IdentifierNameSyntax).ReferVariable(symbols)
                 Case GetType(InvocationExpressionSyntax)

@@ -210,7 +210,7 @@ Namespace Symbols.Parser
                     Return val.ValueExpression(symbols)
                 Else
                     With DirectCast(val, LiteralExpressionSyntax)
-                        Return .ConstantExpression(type)
+                        Return .ConstantExpression(type, symbols)
                     End With
                 End If
             ElseIf TypeOf val Is UnaryExpressionSyntax Then
@@ -220,7 +220,7 @@ Namespace Symbols.Parser
                 Dim right As LiteralExpression
 
                 With DirectCast(unary.Operand, LiteralExpressionSyntax)
-                    right = .ConstantExpression(type)
+                    right = .ConstantExpression(type, symbols)
                     right.value = op & right.value
                 End With
 
