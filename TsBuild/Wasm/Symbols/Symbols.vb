@@ -294,6 +294,9 @@ Namespace Symbols
         End Function
     End Class
 
+    ''' <summary>
+    ''' 全局变量的初始值，只能够是常数或者其他的全局变量的值，也就是说<see cref="DeclareGlobal.init"/>的值只能够是常数
+    ''' </summary>
     Public Class DeclareGlobal : Inherits DeclareVariable
 
         Public Overrides Function ToSExpression() As String

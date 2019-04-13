@@ -5,9 +5,10 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 5:19:28 PM
+    ;; build: 4/13/2019 5:25:19 PM
 
     ;; imports must occur before all non-import definitions
+
     ;; Declare Function Exp Lib "Math" Alias "exp" (x As f64) As f64
 (func $Exp (import "Math" "exp") (param $x f64) (result f64))
     ;; Declare Function Random Lib "Math" Alias "random" () As f64
@@ -16,7 +17,7 @@
 (func $Display (import "DOM" "display") (param $x f32) (result i32))
     
     ;; Only allows one memory block in each module
-    (memory $tmp00005 1)  
+    (memory $tmp0000b 1)  
 
     ;; Memory data for string constant
     
@@ -24,7 +25,7 @@
     (global $global_i (mut i32) (i32.const 990))
 
     ;; Export memory block to Javascript 
-    (export "memory" (memory $tmp00005)) 
+    (export "memory" (memory $tmp0000b)) 
 
     (export "HelloWorld" (func $HelloWorld))
     (export "PoissonPDF" (func $PoissonPDF))
