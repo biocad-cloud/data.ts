@@ -102,6 +102,8 @@ Module ModuleBuilder
             .ToArray
 
         Return $"
+(export ""{NameOf(MemorySizeOf)}"" (func ${NameOf(MemorySizeOf)}))
+
 (func ${NameOf(MemorySizeOf)} (param ${intPtr.var} i32) (result i32)
     
     {ifs.JoinBy(ASCII.LF & ASCII.LF)}
