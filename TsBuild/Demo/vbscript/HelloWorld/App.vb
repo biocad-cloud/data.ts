@@ -16,6 +16,15 @@ Public Module App
 
 #End Region
 
+#Region "Javascript console api"
+
+    Declare Function log Lib "console" Alias "log" (message As String) As Integer
+    Declare Function warn Lib "console" Alias "warn" (message As String) As Integer
+    Declare Function info Lib "console" Alias "info" (message As String) As Integer
+    Declare Function [error] Lib "console" Alias "error" (message As String) As Integer
+
+#End Region
+
     Dim helloWorld As String = "Hello World!"
     Dim note As String = "This message comes from a VisualBasic.NET application!"
     Dim note2 As String = "WebAssembly it works!"
@@ -40,6 +49,10 @@ Public Module App
         Call setAttribute(notes, "style", "background-color: lightgrey;")
         Call setAttribute(message1, "style", "font-size: 2em; color: red;")
         Call setAttribute(message2, "style", "font-size: 5em; color: green;")
+
+        ' display text message on javascript console
+        log(message1)
+        info(message2)
 
         Return 0
     End Function
