@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/14/2019 12:15:53 AM
+    ;; build: 4/14/2019 2:26:19 AM
 
     ;; imports must occur before all non-import definitions
 
@@ -19,6 +19,14 @@
 (func $setAttribute (import "document" "setAttribute") (param $node i32) (param $attr i32) (param $value i32) (result i32))
     ;; Declare Function appendChild Lib "document" Alias "appendChild" (parent As i32, node As i32) As i32
 (func $appendChild (import "document" "appendChild") (param $parent i32) (param $node i32) (result i32))
+    ;; Declare Function log Lib "console" Alias "log" (message As char*) As i32
+(func $log (import "console" "log") (param $message i32) (result i32))
+    ;; Declare Function warn Lib "console" Alias "warn" (message As char*) As i32
+(func $warn (import "console" "warn") (param $message i32) (result i32))
+    ;; Declare Function info Lib "console" Alias "info" (message As char*) As i32
+(func $info (import "console" "info") (param $message i32) (result i32))
+    ;; Declare Function error Lib "console" Alias "error" (message As char*) As i32
+(func $error (import "console" "error") (param $message i32) (result i32))
     
     ;; Only allows one memory block in each module
     (memory (import "env" "bytechunks") 1)
@@ -90,5 +98,7 @@
     (call $setAttribute (get_local $notes) (i32.const 106) (i32.const 112))
     (call $setAttribute (get_local $message1) (i32.const 141) (i32.const 147))
     (call $setAttribute (get_local $message2) (i32.const 175) (i32.const 181))
+    (call $log (get_local $message1))
+    (call $info (get_local $message2))
     (return (i32.const 0))
     ))

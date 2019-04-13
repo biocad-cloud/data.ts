@@ -72,6 +72,8 @@ Namespace Symbols.Parser
                     Return DirectCast(statement, ForBlockSyntax).ForLoop(symbols).ToArray
                 Case GetType(CallStatementSyntax)
                     Return DirectCast(statement, CallStatementSyntax).Invocation.ValueExpression(symbols)
+                Case GetType(ExpressionStatementSyntax)
+                    Return DirectCast(statement, ExpressionStatementSyntax).Expression.ValueExpression(symbols)
                 Case Else
                     Throw New NotImplementedException(statement.GetType.FullName)
             End Select
