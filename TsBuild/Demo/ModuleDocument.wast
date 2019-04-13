@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 8:01:09 PM
+    ;; build: 4/13/2019 8:08:05 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -31,7 +31,7 @@
 
     (func $sayHello  (result i32)
         ;; Public Function sayHello() As char*
-        (local $text char*)
+        (local $text i32)
     (local $node f64)
     (set_local $text (i32.const 1))
     (set_local $node (f64.convert_s/i32 (call $DOMById (get_local $text))))

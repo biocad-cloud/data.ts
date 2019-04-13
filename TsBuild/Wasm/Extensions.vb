@@ -106,6 +106,6 @@ Public Module Extensions
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     <Extension>
     Friend Function param(a As NamedValue(Of String)) As String
-        Return $"(param ${a.Name} {a.Value Or "i32".When(a.Value = Types.stringType)})"
+        Return $"(param ${a.Name} {typefit(a.Value)})"
     End Function
 End Module
