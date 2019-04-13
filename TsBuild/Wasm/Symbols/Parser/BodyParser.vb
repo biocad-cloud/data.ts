@@ -1,46 +1,46 @@
 ﻿#Region "Microsoft.VisualBasic::ef403cf74b1e9298c2e2f99e977371bc, Symbols\Parser\BodyParser.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    '     Module BodyParser
-    ' 
-    '         Function: GetInitialize, LocalDeclare, (+2 Overloads) ParseDeclarator, ParseExpression, ValueAssign
-    '                   ValueReturn
-    ' 
-    ' 
-    ' /********************************************************************************/
+'     Module BodyParser
+' 
+'         Function: GetInitialize, LocalDeclare, (+2 Overloads) ParseDeclarator, ParseExpression, ValueAssign
+'                   ValueReturn
+' 
+' 
+' /********************************************************************************/
 
 #End Region
 
@@ -170,28 +170,24 @@ Namespace Symbols.Parser
                                                  isGlobal As Boolean) As IEnumerable(Of DeclareLocal)
             Dim fieldNames = var.Names
             Dim type$
-            Dim init As Expression
+            Dim init As Expression = Nothing
 
             For Each name As String In fieldNames.Select(Function(v) v.Identifier.Text)
-                type = name.AsType(var.AsClause)
+                If Not var.Initializer Is Nothing Then
+                    init = var.Initializer.GetInitialize(symbols, Nothing)
+                    type = name.AsType(var.AsClause, init.TypeInfer(symbols))
+                Else
+                    type = name.AsType(var.AsClause)
+                End If
 
                 If isGlobal Then
-                    If var.Initializer Is Nothing Then
+                    If init Is Nothing Then
                         ' 默认是零
                         init = New LiteralExpression(0, type)
-                    Else
-                        init = var.Initializer.GetInitialize(symbols, type)
                     End If
 
                     Call symbols.AddGlobal(name, type, init)
                 Else
-                    If Not var.Initializer Is Nothing Then
-                        init = var.Initializer.GetInitialize(symbols, Nothing)
-                        init = Types.CType(type, init, symbols)
-                    Else
-                        init = Nothing
-                    End If
-
                     Yield New DeclareLocal With {
                         .name = name,
                         .type = type,
