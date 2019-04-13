@@ -60,20 +60,20 @@ Imports Wasm.Symbols
 Module treeTest
 
     Sub documentApitest()
-        Dim moduletest = Wasm.CreateModule("..\Demo\HtmlTest\ModuleDocument.vb")
+        Dim moduletest = Wasm.CreateModule("..\Demo\vbscript\HelloWorld\App.vb")
 
         Console.WriteLine(moduletest.ToSExpression)
 
-        moduletest.Compile("..\Demo\ModuleDocument.wasm")
-        moduletest.ToSExpression.SaveTo("..\Demo\ModuleDocument.wast")
-        moduletest.HexDump(True).SaveTo("..\Demo\ModuleDocument.dmp")
+        moduletest.Compile("..\Demo\vbscript\HelloWorld.wasm")
+        moduletest.ToSExpression.SaveTo("..\Demo\vbscript\HelloWorld.wast")
+        moduletest.HexDump(True).SaveTo("..\Demo\vbscript\HelloWorld.dmp")
 
         Pause()
     End Sub
 
     Sub Main()
 
-        ' Call documentApitest()
+        Call documentApitest()
 
         '  Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")
         ' Call Wasm.CompileWast("..\Demo\new_test.wast", "..\Demo\new_test.wast")
