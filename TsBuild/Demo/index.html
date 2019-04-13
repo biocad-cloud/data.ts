@@ -1,4 +1,4 @@
-<script type="text/javascript" src="linq.js"></script>
+<script type="text/javascript" src="visualbasic.wasm.js"></script>
 <script type="text/javascript">
 	var DOM = {
 		display: function(x) {
@@ -12,7 +12,13 @@
         var FlipCoin = math.instance.exports.FlipCoin;
 		var i = math.instance.exports.GetGlobal;
 		var HtmlTest = math.instance.exports.HtmlTest;
+		var HelloWorld = math.instance.exports.HelloWorld;
+		var stream = new TypeScript.stringReader(math); 
 		
+		console.log("WebAssembly string value output:");
+		console.log(stream.readText(HelloWorld()));
+		
+		console.log("WebAssembly math function test:");		
 		console.log(Math.random());
 		console.log(FlipCoin());
 		console.log(i());
@@ -24,8 +30,11 @@
 		
 		console.log(HtmlTest(5));
 		
+		console.log("=============== End =================");
+		
     }, {DOM: DOM});
 	
+	/*
 	TypeScript.Wasm.RunAssembly("string.wasm", function(str) {
 		var memory = str.instance.exports.memory;
 		var strBuf = new Uint8Array(memory.buffer, 16, 11); 
@@ -34,6 +43,7 @@
 		console.log(new TextDecoder().decode(strBuf))
 		console.log(new TextDecoder().decode(strBuf2))
 	})
+	*/
 </script>
 
 <div id="text"></div>

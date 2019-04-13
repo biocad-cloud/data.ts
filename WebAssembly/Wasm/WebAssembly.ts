@@ -25,6 +25,7 @@
                 "env": {}
             };
 
+            // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = (<any>window).Math;
 
             if (typeof imports == "object") {
@@ -45,7 +46,7 @@
                 .then(function (module) {
                     return engine.instantiate(module, dependencies);
                 }).then(wasm => {
-                    if (logging.outputEverything) {
+                    if (typeof logging == "object" && logging.outputEverything) {
                         console.log("Load external WebAssembly module success!");
                         console.log(wasm);
                     }
@@ -55,32 +56,40 @@
         }
     }
 
-    export class stringReader {
+    export class memoryReader {
+
+        protected sizeOf: (obj: number) => number;
+        protected buffer: ArrayBuffer;
+
+        public constructor(wasm: IWasm) {
+            this.sizeOf = wasm.instance.exports.MemorySizeOf;
+            this.buffer = wasm.instance.exports.memory.buffer;
+        }
+    }
+
+    export class stringReader extends memoryReader {
 
         private decoder: TextDecoder = new TextDecoder();
-        private buffer: ArrayBuffer;
 
         /**
          * @param memory The memory buffer
         */
-        public constructor(memory: WasmMemory | IWasm | ArrayBuffer) {
-            if (memory instanceof ArrayBuffer) {
-                this.buffer = memory;
-            } else if (Object.keys(memory).indexOf("memory") > -1) {
-                this.buffer = (<WasmMemory>memory).buffer;
-            } else {
-                this.buffer = (<IWasm>memory).instance.exports.memory.buffer;
-            }
+        public constructor(wasm: IWasm) {
+            super(wasm);
         }
 
         /**
          * Read text from WebAssembly memory buffer.
         */
-        public readText(offset: number, length: number): string {
+        public readTextRaw(offset: number, length: number): string {
             let str = new Uint8Array(this.buffer, offset, length);
             let text: string = this.decoder.decode(str);
 
             return text;
+        }
+
+        public readText(intPtr: number): string {
+            return this.readTextRaw(intPtr, this.sizeOf(intPtr));
         }
     }
 
