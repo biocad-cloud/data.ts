@@ -1,34 +1,34 @@
 ﻿namespace WebAssembly {
 
-    export class Document {
+    export module Document {
 
-        private streamReader: TypeScript.stringReader;
-        private hashCode: number;
-        private hashTable: object = {};
+        let streamReader: TypeScript.stringReader;
+        let hashCode: number;
+        let hashTable: object = {};
 
-        public constructor(bytes: TypeScript.WasmMemory) {
-            this.streamReader = new TypeScript.stringReader(bytes);
+        export function load(bytes: TypeScript.WasmMemory): void {
+            streamReader = new TypeScript.stringReader(bytes);
         }
 
-        public getElementById(id: number): number {
-            let idText: string = this.streamReader.readText(id);
+        export function getElementById(id: number): number {
+            let idText: string = streamReader.readText(id);
             let node = window.document.getElementById(idText);
 
-            return this.addObject(node);
+            return addObject(node);
         }
 
-        public writeElementText(key: number, text: number) {
-            let node: HTMLElement = this.hashTable[key];
-            let textVal: string = this.streamReader.readText(text);
+        export function writeElementText(key: number, text: number) {
+            let node: HTMLElement = hashTable[key];
+            let textVal: string = streamReader.readText(text);
 
             node.innerText = textVal;
         }
 
-        private addObject(o: any): number {
-            var key: number = this.hashCode;
+        function addObject(o: any): number {
+            var key: number = hashCode;
 
-            this.hashTable[this.hashCode] = o;
-            this.hashCode++;
+            hashTable[hashCode] = o;
+            hashCode++;
 
             return key;
         }

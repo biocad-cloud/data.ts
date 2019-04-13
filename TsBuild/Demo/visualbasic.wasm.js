@@ -14,30 +14,34 @@ var __extends = (this && this.__extends) || (function () {
 /// <reference path="../../build/linq.d.ts" />
 var WebAssembly;
 (function (WebAssembly) {
-    var Document = /** @class */ (function () {
-        function Document(bytes) {
-            this.hashTable = {};
-            this.streamReader = new TypeScript.stringReader(bytes);
+    var Document;
+    (function (Document) {
+        var streamReader;
+        var hashCode;
+        var hashTable = {};
+        function load(bytes) {
+            streamReader = new TypeScript.stringReader(bytes);
         }
-        Document.prototype.getElementById = function (id) {
-            var idText = this.streamReader.readText(id);
+        Document.load = load;
+        function getElementById(id) {
+            var idText = streamReader.readText(id);
             var node = window.document.getElementById(idText);
-            return this.addObject(node);
-        };
-        Document.prototype.writeElementText = function (key, text) {
-            var node = this.hashTable[key];
-            var textVal = this.streamReader.readText(text);
+            return addObject(node);
+        }
+        Document.getElementById = getElementById;
+        function writeElementText(key, text) {
+            var node = hashTable[key];
+            var textVal = streamReader.readText(text);
             node.innerText = textVal;
-        };
-        Document.prototype.addObject = function (o) {
-            var key = this.hashCode;
-            this.hashTable[this.hashCode] = o;
-            this.hashCode++;
+        }
+        Document.writeElementText = writeElementText;
+        function addObject(o) {
+            var key = hashCode;
+            hashTable[hashCode] = o;
+            hashCode++;
             return key;
-        };
-        return Document;
-    }());
-    WebAssembly.Document = Document;
+        }
+    })(Document = WebAssembly.Document || (WebAssembly.Document = {}));
 })(WebAssembly || (WebAssembly = {}));
 var TypeScript;
 (function (TypeScript) {
@@ -70,44 +74,40 @@ var TypeScript;
                 }
             })
                 .then(function (buffer) { return new Uint8Array(buffer); })
-                .then(function (module) {
-                var byteBuffer = new window.WebAssembly.Memory({ initial: 10 });
-                var dependencies = {
-                    "global": {},
-                    "env": {
-                        bytechunks: byteBuffer
-                    }
-                };
-                var api = opts.api || { document: false };
-                var host = new TypeScript.api(byteBuffer);
-                // imports the javascript math module for VisualBasic.NET module by default
-                dependencies["Math"] = window.Math;
-                if (typeof opts.imports == "object") {
-                    for (var key in opts.imports) {
-                        dependencies[key] = opts.imports[key];
-                    }
-                }
-                if (api.document) {
-                    dependencies["document"] = host.document;
-                }
-                return engine.instantiate(module, dependencies);
-            }).then(function (wasm) {
+                .then(function (module) { return ExecuteInternal(module, opts); })
+                .then(function (assembly) {
                 if (typeof TypeScript.logging == "object" && TypeScript.logging.outputEverything) {
                     console.log("Load external WebAssembly module success!");
-                    console.log(wasm);
+                    console.log(assembly);
                 }
-                opts.run(wasm);
+                opts.run(assembly);
             });
         }
         Wasm.RunAssembly = RunAssembly;
-    })(Wasm = TypeScript.Wasm || (TypeScript.Wasm = {}));
-    var api = /** @class */ (function () {
-        function api(bytechunks) {
-            this.document = new WebAssembly.Document(bytechunks);
+        function ExecuteInternal(module, opts) {
+            var byteBuffer = new window.WebAssembly.Memory({ initial: 10 });
+            var dependencies = {
+                "global": {},
+                "env": {
+                    bytechunks: byteBuffer
+                }
+            };
+            var api = opts.api || { document: false };
+            // imports the javascript math module for VisualBasic.NET module by default
+            dependencies["Math"] = window.Math;
+            if (typeof opts.imports == "object") {
+                for (var key in opts.imports) {
+                    dependencies[key] = opts.imports[key];
+                }
+            }
+            if (api.document) {
+                WebAssembly.Document.load(byteBuffer);
+                dependencies["document"] = WebAssembly.Document;
+            }
+            var assembly = engine.instantiate(module, dependencies);
+            return assembly;
         }
-        return api;
-    }());
-    TypeScript.api = api;
+    })(Wasm = TypeScript.Wasm || (TypeScript.Wasm = {}));
 })(TypeScript || (TypeScript = {}));
 var TypeScript;
 (function (TypeScript) {

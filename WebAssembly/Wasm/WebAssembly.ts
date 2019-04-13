@@ -29,10 +29,18 @@
                     }
                 })
                 .then(buffer => new Uint8Array(buffer))
-                .then(module => ExecuteInternal(module, opts));
+                .then(module => ExecuteInternal(module, opts))
+                .then(assembly => {
+                    if (typeof logging == "object" && logging.outputEverything) {
+                        console.log("Load external WebAssembly module success!");
+                        console.log(assembly);
+                    }
+
+                    opts.run(assembly);
+                });
         }
 
-        function ExecuteInternal(module: Uint8Array, opts: Config): void {
+        function ExecuteInternal(module: Uint8Array, opts: Config): IWasm {
             var byteBuffer: TypeScript.WasmMemory = new (<any>window).WebAssembly.Memory({ initial: 10 });
             var dependencies = {
                 "global": {},
@@ -41,7 +49,6 @@
                 }
             };
             var api: apiOptions = opts.api || { document: false };
-            var host = new TypeScript.api(byteBuffer);
 
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = (<any>window).Math;
@@ -53,26 +60,12 @@
             }
 
             if (api.document) {
-                dependencies["document"] = host.document;
+                WebAssembly.Document.load(byteBuffer)
+                dependencies["document"] = WebAssembly.Document;
             }
 
             let assembly = engine.instantiate(module, dependencies);
-
-            if (typeof logging == "object" && logging.outputEverything) {
-                console.log("Load external WebAssembly module success!");
-                console.log(assembly);
-            }
-
-            opts.run(assembly);
-        }
-    }
-
-    export class api {
-
-        public document: WebAssembly.Document;
-
-        public constructor(bytechunks: TypeScript.WasmMemory) {
-            this.document = new WebAssembly.Document(bytechunks);
+            return assembly;
         }
     }
 }
