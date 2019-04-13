@@ -58,6 +58,8 @@ Public Class Types
 
     Public Shared ReadOnly Property Orders As String() = {"i32", "f32", "i64", "f64"}
 
+    Public Const stringType$ = "char*"
+
     ''' <summary>
     ''' Webassembly之中，逻辑值是一个32位整型数
     ''' </summary>
@@ -68,7 +70,7 @@ Public Class Types
         {GetType(Long), "i64"},
         {GetType(Single), "f32"},
         {GetType(Double), "f64"},
-        {GetType(String), "char*"}  ' 实际上这是一个integer类型
+        {GetType(String), stringType}  ' 实际上这是一个integer类型
     }
 
     Public Shared ReadOnly Property Operators As New Dictionary(Of String, String) From {
