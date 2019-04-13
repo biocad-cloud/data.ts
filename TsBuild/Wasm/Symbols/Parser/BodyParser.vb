@@ -34,7 +34,9 @@ Namespace Symbols.Parser
         <Extension>
         Public Function ValueReturn(returnValue As ReturnStatementSyntax, symbols As SymbolTable) As Expression
             Dim value As Expression = returnValue.Expression.ValueExpression(symbols)
-            Dim returnType = symbols.GetFunctionSymbol(symbols.CurrentSymbol).Result
+            Dim returnType As String = symbols _
+                .GetFunctionSymbol(symbols.CurrentSymbol) _
+                .Result
 
             value = Types.CType(returnType, value, symbols)
 

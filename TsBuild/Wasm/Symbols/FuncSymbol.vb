@@ -2,7 +2,6 @@
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Text
-Imports Wasm.Symbols.Blocks
 
 Namespace Symbols
 
@@ -13,6 +12,11 @@ Namespace Symbols
 
         Public Property Name As String
         Public Property Parameters As NamedValue(Of String)()
+
+        ''' <summary>
+        ''' 函数的返回值类型
+        ''' </summary>
+        ''' <returns></returns>
         Public Property Result As String
 
         Friend Sub New()
