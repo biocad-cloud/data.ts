@@ -16,6 +16,13 @@
             node.innerText = textVal;
         }
 
+        export function writeElementHtml(node: number, text: number) {
+            let nodeObj: HTMLElement = ObjectManager.getObject(node);
+            let htmlVal: string = ObjectManager.readText(text);
+
+            nodeObj.innerHTML = htmlVal;
+        }
+
         export function createElement(tag: number): number {
             let tagName: string = ObjectManager.readText(tag);
             let node = document.createElement(tagName);

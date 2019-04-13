@@ -8,5 +8,6 @@
 
     export interface apiOptions {
         document?: boolean;
+        console?: boolean;
     }
 }

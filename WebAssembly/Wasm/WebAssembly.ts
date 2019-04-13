@@ -48,7 +48,7 @@
                     bytechunks: byteBuffer
                 }
             };
-            var api: apiOptions = opts.api || { document: false };
+            var api: apiOptions = opts.api || { document: false, console: true };
 
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = (<any>window).Math;
@@ -63,6 +63,9 @@
 
             if (api.document) {
                 dependencies["document"] = WebAssembly.Document;
+            }
+            if (api.console) {
+                dependencies["console"] = WebAssembly.Console;
             }
 
             let assembly = engine.instantiate(module, dependencies);
