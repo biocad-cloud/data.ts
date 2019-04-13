@@ -18,8 +18,12 @@
         /**
          * @param memory The memory buffer
         */
-        public constructor(wasm: IWasm) {
+        public constructor(wasm: IWasm, memory: WasmMemory = null) {
             super(wasm);
+
+            if (memory) {
+                this.buffer = memory.buffer;
+            }
         }
 
         /**

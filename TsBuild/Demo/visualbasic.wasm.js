@@ -69,9 +69,12 @@ var TypeScript;
          *
         */
         function RunAssembly(module, opts) {
+            var byteBuffer = new window.WebAssembly.Memory({ initial: 10 });
             var dependencies = {
                 "global": {},
-                "env": {}
+                "env": {
+                    bytechunks: byteBuffer
+                }
             };
             var api = opts.api || { document: false };
             // imports the javascript math module for VisualBasic.NET module by default

@@ -20,9 +20,12 @@
          *         
         */
         export function RunAssembly(module: string, opts: Config): void {
+            var byteBuffer: TypeScript.WasmMemory = new (<any>window).WebAssembly.Memory({ initial: 10 });
             var dependencies = {
                 "global": {},
-                "env": {}
+                "env": {
+                    bytechunks: byteBuffer
+                }
             };
             var api: apiOptions = opts.api || { document: false };
 
@@ -57,7 +60,7 @@
                     }
 
                     if (api.document) {
-                        (<WebAssembly.Document>dependencies["document"]).hook(wasm);
+                        (<WebAssembly.Document>dependencies["document"]).hook(byteBuffer, wasm);
                     }
 
                     opts.run(wasm);

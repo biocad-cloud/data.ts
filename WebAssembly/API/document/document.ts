@@ -12,8 +12,8 @@
             }
         }
 
-        public hook(assembly: TypeScript.IWasm): Document {
-            this.streamReader = new TypeScript.stringReader(assembly);
+        public hook(memory: TypeScript.WasmMemory, assembly: TypeScript.IWasm): Document {
+            this.streamReader = new TypeScript.stringReader(assembly, memory);
             this.wasm = assembly;
             return this;
         }
