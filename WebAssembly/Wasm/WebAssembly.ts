@@ -19,19 +19,24 @@
          * @param run A action delegate for utilize the VB.NET assembly module
          *         
         */
-        export function RunAssembly(module: string, run: Delegate.Sub, imports: {} = null): void {
+        export function RunAssembly(module: string, opts: Config): void {
             var dependencies = {
                 "global": {},
                 "env": {}
             };
+            var api: apiOptions = opts.api || { document: false };
 
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = (<any>window).Math;
 
-            if (typeof imports == "object") {
-                for (var key in imports) {
-                    dependencies[key] = imports[key];
+            if (typeof opts.imports == "object") {
+                for (var key in opts.imports) {
+                    dependencies[key] = opts.imports[key];
                 }
+            }
+
+            if (api.document) {
+                dependencies["document"] = new WebAssembly.document(null);
             }
 
             fetch(module)
@@ -51,46 +56,12 @@
                         console.log(wasm);
                     }
 
-                    run(wasm);
+                    if (api.document) {
+                        (<WebAssembly.document>dependencies["document"]).hook(wasm);
+                    }
+
+                    opts.run(wasm);
                 });
         }
     }
-
-    export class memoryReader {
-
-        protected sizeOf: (obj: number) => number;
-        protected buffer: ArrayBuffer;
-
-        public constructor(wasm: IWasm) {
-            this.sizeOf = wasm.instance.exports.MemorySizeOf;
-            this.buffer = wasm.instance.exports.memory.buffer;
-        }
-    }
-
-    export class stringReader extends memoryReader {
-
-        private decoder: TextDecoder = new TextDecoder();
-
-        /**
-         * @param memory The memory buffer
-        */
-        public constructor(wasm: IWasm) {
-            super(wasm);
-        }
-
-        /**
-         * Read text from WebAssembly memory buffer.
-        */
-        public readTextRaw(offset: number, length: number): string {
-            let str = new Uint8Array(this.buffer, offset, length);
-            let text: string = this.decoder.decode(str);
-
-            return text;
-        }
-
-        public readText(intPtr: number): string {
-            return this.readTextRaw(intPtr, this.sizeOf(intPtr));
-        }
-    }
-
 }

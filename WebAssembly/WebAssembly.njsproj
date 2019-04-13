@@ -40,6 +40,12 @@
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
     <TypeScriptCompile Include="Wasm\Interface.ts" />
+    <TypeScriptCompile Include="Wasm\Config.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Wasm\memoryReader.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Wasm\WebAssembly.ts" />
   </ItemGroup>
   <ItemGroup>
