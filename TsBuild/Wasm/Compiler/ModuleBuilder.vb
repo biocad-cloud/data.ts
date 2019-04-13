@@ -43,13 +43,15 @@ Module ModuleBuilder
     ;; version: {wasmSummary.AssemblyVersion}
     ;; build: {buildTime}
 
+    ;; imports must occur before all non-import definitions
+
+    {import}
+    
     ;; Only allows one memory block in each module
     (memory ${memoryDev} 1)  
 
     ;; Memory data for string constant
     {m.Memory.OfType(Of StringSymbol).Select(Function(s) s.ToSExpression).JoinBy(ASCII.LF)}
-
-    {import}
     
     {globals}
 

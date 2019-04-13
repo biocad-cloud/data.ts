@@ -165,6 +165,7 @@ Namespace Symbols.Parser
             If type Is GetType(String) Then
                 ' 是字符串类型，需要做额外的处理
                 value = memory.AddString(value)
+                wasmType = "i32"
             Else
                 If wasmType.StringEmpty Then
                     wasmType = Types.Convert2Wasm(type)

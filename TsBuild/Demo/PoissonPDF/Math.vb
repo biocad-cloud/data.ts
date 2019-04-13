@@ -24,6 +24,10 @@
 
     Dim global_i As Integer = 990
 
+    Public Function HelloWorld() As String
+        Return "Hello world!"
+    End Function
+
     ''' <summary>
     ''' Returns the PDF value at <paramref name="k"/> for the specified Poisson distribution.
     ''' </summary>
@@ -68,9 +72,5 @@
     Public Function HtmlTest(x As Single) As Double
         Call Display(x)
         Return Add10(x)
-    End Function
-
-    Public Function HelloWorld() As String
-        Return "Hello world!"
     End Function
 End Module

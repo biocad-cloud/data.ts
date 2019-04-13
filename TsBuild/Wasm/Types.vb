@@ -133,6 +133,8 @@ Public Class Types
     Public Shared Function [CType](left As String, right As Expression, symbols As SymbolTable) As Expression
         If left = right.TypeInfer(symbols) Then
             Return right
+        ElseIf left = stringType AndAlso right.TypeInfer(symbols) = "i32" Then
+            Return right
         End If
 
         Select Case left
