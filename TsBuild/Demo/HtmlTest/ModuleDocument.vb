@@ -5,7 +5,7 @@
 
     Public Function sayHello() As String
         Dim text As String = "Hello world!"
-        Dim node = DOMById(text)
+        Dim node = DOMById("text")
 
         Call WriteText(node, text)
 

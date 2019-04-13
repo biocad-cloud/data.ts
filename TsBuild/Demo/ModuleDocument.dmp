@@ -87,8 +87,8 @@
 000008b: 01                                        ; i32 literal
 000008c: 21                                        ; local.set
 000008d: 00                                        ; local index
-000008e: 20                                        ; local.get
-000008f: 00                                        ; local index
+000008e: 41                                        ; i32.const
+000008f: 0d                                        ; i32 literal
 0000090: 10                                        ; call
 0000091: 00                                        ; function index
 0000092: 21                                        ; local.set
@@ -118,25 +118,44 @@
 00000a8: 0c                                        ; i32 literal
 00000a9: 0f                                        ; return
 00000aa: 0b                                        ; end
-00000ab: 41                                        ; i32.const
-00000ac: 7f                                        ; i32 literal
-00000ad: 0f                                        ; return
-00000ae: 0b                                        ; end
-000009e: 10                                        ; FIXUP func body size
-0000084: 2a                                        ; FIXUP section size
-; section "Data" (11)
-00000af: 0b                                        ; section code
-00000b0: 00                                        ; section size (guess)
-00000b1: 01                                        ; num data segments
-; data segment header 0
-00000b2: 00                                      
-00000b3: 41                                        ; i32.const
-00000b4: 01                                        ; i32 literal
+00000ab: 20                                        ; local.get
+00000ac: 00                                        ; local index
+00000ad: 41                                        ; i32.const
+00000ae: 0d                                        ; i32 literal
+00000af: 46                                        ; i32.eq
+00000b0: 04                                        ; if
+00000b1: 40                                        ; void
+00000b2: 41                                        ; i32.const
+00000b3: 04                                        ; i32 literal
+00000b4: 0f                                        ; return
 00000b5: 0b                                        ; end
-00000b6: 0c                                        ; data segment size
+00000b6: 41                                        ; i32.const
+00000b7: 7f                                        ; i32 literal
+00000b8: 0f                                        ; return
+00000b9: 0b                                        ; end
+000009e: 1b                                        ; FIXUP func body size
+0000084: 35                                        ; FIXUP section size
+; section "Data" (11)
+00000ba: 0b                                        ; section code
+00000bb: 00                                        ; section size (guess)
+00000bc: 02                                        ; num data segments
+; data segment header 0
+00000bd: 00                                      
+00000be: 41                                        ; i32.const
+00000bf: 01                                        ; i32 literal
+00000c0: 0b                                        ; end
+00000c1: 0c                                        ; data segment size
 ; data segment data 0
-00000b7: 4865 6c6c 6f20 776f 726c 6421             ; data segment data
-00000b0: 12                                        ; FIXUP section size
+00000c2: 4865 6c6c 6f20 776f 726c 6421             ; data segment data
+; data segment header 1
+00000ce: 00                                      
+00000cf: 41                                        ; i32.const
+00000d0: 0d                                        ; i32 literal
+00000d1: 0b                                        ; end
+00000d2: 04                                        ; data segment size
+; data segment data 1
+00000d3: 7465 7874                                 ; data segment data
+00000bb: 1b                                        ; FIXUP section size
 ;; dump
 0000000: 0061 736d 0100 0000 0110 0360 017f 017f 
 0000010: 6002 7f7f 017f 6000 017f 0237 0208 646f 
@@ -146,8 +165,9 @@
 0000050: 7400 0103 0302 0200 0503 0100 0107 2403 
 0000060: 066d 656d 6f72 7902 0008 7361 7948 656c 
 0000070: 6c6f 0002 0c4d 656d 6f72 7953 697a 654f 
-0000080: 6600 030a 2a02 1701 027f 4101 2100 2000 
-0000090: 1000 2101 2001 2000 1001 2000 0f0b 1000 
-00000a0: 2000 4101 4604 4041 0c0f 0b41 7f0f 0b0b 
-00000b0: 1201 0041 010b 0c48 656c 6c6f 2077 6f72 
-00000c0: 6c64 21                                 
+0000080: 6600 030a 3502 1701 027f 4101 2100 410d 
+0000090: 1000 2101 2001 2000 1001 2000 0f0b 1b00 
+00000a0: 2000 4101 4604 4041 0c0f 0b20 0041 0d46 
+00000b0: 0440 4104 0f0b 417f 0f0b 0b1b 0200 4101 
+00000c0: 0b0c 4865 6c6c 6f20 776f 726c 6421 0041 
+00000d0: 0d0b 0474 6578 74                       

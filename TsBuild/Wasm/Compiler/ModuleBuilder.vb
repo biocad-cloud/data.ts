@@ -105,8 +105,7 @@ Module ModuleBuilder
 (export ""{NameOf(MemorySizeOf)}"" (func ${NameOf(MemorySizeOf)}))
 
 (func ${NameOf(MemorySizeOf)} (param ${intPtr.var} i32) (result i32)
-    
-    {ifs.JoinBy(ASCII.LF & ASCII.LF)}
+    {ifs.JoinBy("    ")}
 
     ;; pointer not found
     (return (i32.const -1))

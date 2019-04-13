@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 8:15:43 PM
+    ;; build: 4/13/2019 8:20:00 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -21,6 +21,9 @@
     
 ;; String from 1 with 12 bytes in memory
 (data (i32.const 1) "Hello world!")
+
+;; String from 13 with 4 bytes in memory
+(data (i32.const 13) "text")
     
     
 
@@ -34,7 +37,7 @@
         (local $text i32)
     (local $node i32)
     (set_local $text (i32.const 1))
-    (set_local $node (call $DOMById (get_local $text)))
+    (set_local $node (call $DOMById (i32.const 13)))
     (call $WriteText (get_local $node) (get_local $text))
     (return (get_local $text))
     )
@@ -44,10 +47,14 @@
 
 (func $MemorySizeOf (param $intPtr i32) (result i32)
     
-    
 (if (i32.eq (get_local $intPtr) (i32.const 1)) 
     (then
                 (return (i32.const 12))
+    ) 
+)    
+(if (i32.eq (get_local $intPtr) (i32.const 13)) 
+    (then
+                (return (i32.const 4))
     ) 
 )
 
