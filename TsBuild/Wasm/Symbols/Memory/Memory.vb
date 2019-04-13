@@ -71,7 +71,9 @@ Namespace Symbols
             }
 
             Me.buffer += buffer
-            Me.offset += buffer.Length
+            ' 因为字符串末尾会添加一个零，来表示字符串的结束
+            ' 所以在长度这里会需要添加1
+            Me.offset += buffer.Length + 1
 
             Return buffer.MemoryPtr
         End Function
