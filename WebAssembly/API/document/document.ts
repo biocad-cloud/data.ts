@@ -2,35 +2,18 @@
 
     export module Document {
 
-        let streamReader: TypeScript.stringReader;
-        let hashCode: number = 0;
-        let hashTable: object = {};
-
-        export function load(bytes: TypeScript.WasmMemory): void {
-            streamReader = new TypeScript.stringReader(bytes);
-        }
-
         export function getElementById(id: number): number {
-            let idText: string = streamReader.readText(id);
+            let idText: string = ObjectManager.readText(id);
             let node = window.document.getElementById(idText);
 
-            return addObject(node);
+            return ObjectManager.addObject(node);
         }
 
         export function writeElementText(key: number, text: number) {
-            let node: HTMLElement = hashTable[key];
-            let textVal: string = streamReader.readText(text);
+            let node: HTMLElement = ObjectManager.getObject[key];
+            let textVal: string = ObjectManager.readText(text);
 
             node.innerText = textVal;
-        }
-
-        function addObject(o: any): number {
-            var key: number = hashCode;
-
-            hashTable[hashCode] = o;
-            hashCode++;
-
-            return key;
         }
     }
 }
