@@ -3,7 +3,7 @@
     export module Document {
 
         let streamReader: TypeScript.stringReader;
-        let hashCode: number;
+        let hashCode: number = 0;
         let hashTable: object = {};
 
         export function load(bytes: TypeScript.WasmMemory): void {
