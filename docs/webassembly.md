@@ -20,7 +20,7 @@ yes! If the npm supports WebAssembly package.
 
 #### 5. Win32/.NET Framework api supports?
 
-no! Only supports the api that javascript expose to your VisualBasic.NET application. So .NET Framework is no longer available if you target your VisualBasic.NET application to WebAssembly platform.
+no! Only supports the api that javascript expose to your VisualBasic.NET application. So .NET Framework is no longer available if you target your VisualBasic.NET application to WebAssembly platform. This is a very ``Core`` version, which means almost all of the things must create from scratch if you target your VB.NET application to WebAssembly platform.
 
 #### 6. What can I do with WebAssembly
 
@@ -74,8 +74,13 @@ Add script reference to ``visualbasic.wasm.js``, and then running VB.NET applica
 let assmUrl = "vbscript/HelloWorld.wasm";
 
 TypeScript.Wasm.RunAssembly(assmUrl, {
+    // run app from a public method which its name is
+    // RunApp or something else
     run: VB => VB.instance.exports.RunApp(),
-    api: { document: true }
+    // some build-in javascript api that expose to VB.NET application
+    api: { document: true, console: true },
+    // Other javascript api expose to VB.NET application, like jquery, bootstrap, etc
+    imports: {}
 });
 ```
 
