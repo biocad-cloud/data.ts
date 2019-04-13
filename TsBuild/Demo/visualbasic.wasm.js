@@ -17,7 +17,7 @@ var WebAssembly;
     var Document;
     (function (Document) {
         var streamReader;
-        var hashCode;
+        var hashCode = 0;
         var hashTable = {};
         function load(bytes) {
             streamReader = new TypeScript.stringReader(bytes);
