@@ -51,7 +51,7 @@ End Module
 
 #### 2. Run wasm compiler
 
-Current version VB.NET wasm compiler just supports compile a single source file. A VB.NET project with multiple source file will be supported in the future.
+Current version VB.NET wasm compiler just supports compile a single source file. A VB.NET project with multiple source file will be supported in the future. For compile a VB.NET application, create a console application, and add reference to ``VisualBasic.Wasm.dll``, at last write these code for compile your VisualBasic source file:
 
 ```vbnet
 Dim vb = "/path/to/app.vb"
@@ -63,6 +63,8 @@ Dim [module] = Wasm.CreateModule(vb)
 [module].ToSExpression.SaveTo("HelloWorld.wast")
 [module].HexDump(True).SaveTo("HelloWorld.dmp")
 ```
+
+> Compiler project source file available at: https://github.com/GCModeller-Cloud/data.ts/tree/878d93e4d011f666d0dc4dbc0062a6fd1685bc9b/TsBuild/Wasm
 
 #### 3. Run VB.NET application from javascript environment
 
