@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 7:09:17 PM
+    ;; build: 4/13/2019 7:18:46 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -17,20 +17,20 @@
 (func $Display (import "DOM" "display") (param $x f32) (result i32))
     
     ;; Only allows one memory block in each module
-    (memory $tmp00009 1)  
+    (memory $Xf1010000 1)  
 
     ;; Memory data for string constant
     
-;; -3 is the string length
+;; String from 1 with 12 bytes in memory
 (data (i32.const 1) "Hello world!")
 
-;; 9 is the string length
+;; String from 13 with 21 bytes in memory
 (data (i32.const 13) "Hello VisualBasic.NET")
     
     (global $global_i (mut i32) (i32.const 990))
 
     ;; Export memory block to Javascript 
-    (export "memory" (memory $tmp00009)) 
+    (export "memory" (memory $Xf1010000)) 
 
     (export "HelloWorld" (func $HelloWorld))
     (export "TextDemo2" (func $TextDemo2))

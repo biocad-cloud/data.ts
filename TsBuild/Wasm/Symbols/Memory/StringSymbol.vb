@@ -75,7 +75,7 @@ Namespace Symbols
 
         Public Overrides Function ToSExpression() As String
             Return $"
-;; {MemoryPtr - 4} is the string length
+;; String from {MemoryPtr} with {Length} bytes in memory
 (data (i32.const {MemoryPtr}) ""{[string]}"")"
         End Function
     End Class

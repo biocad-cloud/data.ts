@@ -32,7 +32,7 @@ Module ModuleBuilder
 
         Dim wasmSummary As AssemblyInfo = GetType(ModuleSymbol).GetAssemblyDetails
         Dim buildTime$ = File.GetLastWriteTime(GetType(ModuleSymbol).Assembly.Location)
-        Dim memoryDev$ = App.NextTempName
+        Dim memoryDev$ = "X" & CInt(200 + VBMath.Rnd() * 512).ToHexString
         Dim stringsData$ = m.Memory _
             .Where(Function(oftype) TypeOf oftype Is StringSymbol) _
             .Select(Function(s) s.ToSExpression) _
