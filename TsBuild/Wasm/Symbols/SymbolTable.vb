@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::874601e48840a08a1eb384e9ef9de7cb, Symbols\SymbolTable.vb"
+﻿#Region "Microsoft.VisualBasic::23468f705220afd2e1af796fe90e7695, Symbols\SymbolTable.vb"
 
     ' Author:
     ' 
@@ -36,9 +36,9 @@
 
     '     Class SymbolTable
     ' 
-    '         Properties: CurrentSymbol, NextGuid
+    '         Properties: CurrentSymbol, memory, NextGuid
     ' 
-    '         Constructor: (+1 Overloads) Sub New
+    '         Constructor: (+2 Overloads) Sub New
     ' 
     '         Function: GetAllGlobals, GetAllImports, GetAllLocals, GetFunctionSymbol, GetGlobal
     '                   GetObjectSymbol, GetUnderlyingType, IsLocal

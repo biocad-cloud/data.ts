@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::fef188a34a4d0c1ec222492b14c08768, test\DeclareTest.vb"
+﻿#Region "Microsoft.VisualBasic::df1dd79f76ebcd588f9022589ad05acf, test\DeclareTest.vb"
 
     ' Author:
     ' 
@@ -57,4 +57,3 @@ Module DeclareTest
     End Function
 
 End Module
-

@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::829160bcae635630f5eed9351501d103, Compiler\wat2wasm.vb"
+﻿#Region "Microsoft.VisualBasic::5020c02ba4e5e26700c451b793fcebca, Compiler\wat2wasm.vb"
 
     ' Author:
     ' 
@@ -178,4 +178,3 @@ Public Class wat2wasm
     End Operator
 
 End Class
-

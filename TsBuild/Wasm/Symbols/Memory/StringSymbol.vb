@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::00935de7f987a979aa66534af977f4e5, Symbols\Memory\StringSymbol.vb"
+﻿#Region "Microsoft.VisualBasic::d7b9b381a40a493213e4fd74902cf686, Symbols\Memory\StringSymbol.vb"
 
     ' Author:
     ' 
@@ -36,9 +36,9 @@
 
     '     Class StringSymbol
     ' 
-    '         Properties: [string], Length, ptr
+    '         Properties: [string], Length, MemoryPtr
     ' 
-    '         Function: ToSExpression, TypeInfer
+    '         Function: [AddressOf], SizeOf, ToSExpression, TypeInfer
     ' 
     ' 
     ' /********************************************************************************/

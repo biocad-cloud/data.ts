@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::39774c140f7bcc8f9cc9119e3cab1566, Compiler\Wabt.vb"
+﻿#Region "Microsoft.VisualBasic::8dc1eed097323e506b40c2b882f6f06f, Compiler\Wabt.vb"
 
     ' Author:
     ' 
@@ -133,4 +133,3 @@ Public Module Wabt
         End With
     End Function
 End Module
-
