@@ -40,15 +40,32 @@
                 });
         }
 
+        function createBytes(opts: Config): TypeScript.WasmMemory {
+            let page = opts.page || { init: 10, max: 2048 };
+
+            return new (<any>window).WebAssembly.Memory({ initial: page.init });
+        }
+
         function ExecuteInternal(module: Uint8Array, opts: Config): IWasm {
-            var byteBuffer: TypeScript.WasmMemory = new (<any>window).WebAssembly.Memory({ initial: 10 });
+            var byteBuffer: TypeScript.WasmMemory = createBytes(opts);
             var dependencies = {
                 "global": {},
                 "env": {
                     bytechunks: byteBuffer
                 }
             };
-            var api: apiOptions = opts.api || { document: false, console: true };
+
+            // read/write webassembly memory
+            WebAssembly.ObjectManager.load(byteBuffer);
+            // add javascript api dependencies imports
+            handleApiDependencies(dependencies, opts);
+
+            let assembly = engine.instantiate(module, dependencies);
+            return assembly;
+        }
+
+        function handleApiDependencies(dependencies: object, opts: Config) {
+            var api: apiOptions = opts.api || { document: false, console: true, http: true };
 
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = (<any>window).Math;
@@ -59,17 +76,17 @@
                 }
             }
 
-            WebAssembly.ObjectManager.load(byteBuffer);
-
             if (api.document) {
                 dependencies["document"] = WebAssembly.Document;
             }
             if (api.console) {
                 dependencies["console"] = WebAssembly.Console;
             }
+            if (api.http) {
+                dependencies["XMLHttpRequest"] = WebAssembly.XMLHttpRequest;
+            }
 
-            let assembly = engine.instantiate(module, dependencies);
-            return assembly;
+            return dependencies;
         }
     }
 }
