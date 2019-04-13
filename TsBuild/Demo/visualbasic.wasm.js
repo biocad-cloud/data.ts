@@ -12,6 +12,41 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 /// <reference path="../../build/linq.d.ts" />
+var WebAssembly;
+(function (WebAssembly) {
+    var document = /** @class */ (function () {
+        function document(wasm) {
+            if (wasm === void 0) { wasm = null; }
+            this.wasm = wasm;
+            this.hashTable = {};
+            if (wasm && typeof wasm != "undefined") {
+                this.streamReader = new TypeScript.stringReader(wasm);
+            }
+        }
+        document.prototype.hook = function (assembly) {
+            this.streamReader = new TypeScript.stringReader(assembly);
+            return this;
+        };
+        document.prototype.getElementById = function (id) {
+            var idText = this.streamReader.readText(id);
+            var node = window.document.getElementById(idText);
+            return this.addObject(node);
+        };
+        document.prototype.writeElementText = function (key, text) {
+            var node = this.hashTable[key];
+            var textVal = this.streamReader.readText(text);
+            node.innerText = textVal;
+        };
+        document.prototype.addObject = function (o) {
+            var key = this.hashCode;
+            this.hashTable[this.hashCode] = o;
+            this.hashCode++;
+            return key;
+        };
+        return document;
+    }());
+    WebAssembly.document = document;
+})(WebAssembly || (WebAssembly = {}));
 var TypeScript;
 (function (TypeScript) {
     /**
@@ -32,18 +67,21 @@ var TypeScript;
          * @param run A action delegate for utilize the VB.NET assembly module
          *
         */
-        function RunAssembly(module, run, imports) {
-            if (imports === void 0) { imports = null; }
+        function RunAssembly(module, opts) {
             var dependencies = {
                 "global": {},
                 "env": {}
             };
+            var api = opts.api || { document: false };
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = window.Math;
-            if (typeof imports == "object") {
-                for (var key in imports) {
-                    dependencies[key] = imports[key];
+            if (typeof opts.imports == "object") {
+                for (var key in opts.imports) {
+                    dependencies[key] = opts.imports[key];
                 }
+            }
+            if (api.document) {
+                dependencies["document"] = new WebAssembly.document(null);
             }
             fetch(module)
                 .then(function (response) {
@@ -62,11 +100,17 @@ var TypeScript;
                     console.log("Load external WebAssembly module success!");
                     console.log(wasm);
                 }
-                run(wasm);
+                if (api.document) {
+                    dependencies["document"].hook(wasm);
+                }
+                opts.run(wasm);
             });
         }
         Wasm.RunAssembly = RunAssembly;
     })(Wasm = TypeScript.Wasm || (TypeScript.Wasm = {}));
+})(TypeScript || (TypeScript = {}));
+var TypeScript;
+(function (TypeScript) {
     var memoryReader = /** @class */ (function () {
         function memoryReader(wasm) {
             this.sizeOf = wasm.instance.exports.MemorySizeOf;
