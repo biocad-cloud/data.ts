@@ -42,6 +42,38 @@ var WebAssembly;
 })(WebAssembly || (WebAssembly = {}));
 var WebAssembly;
 (function (WebAssembly) {
+    var XMLHttpRequest;
+    (function (XMLHttpRequest) {
+        function get(url) {
+            throw "not implement!";
+        }
+        XMLHttpRequest.get = get;
+    })(XMLHttpRequest = WebAssembly.XMLHttpRequest || (WebAssembly.XMLHttpRequest = {}));
+})(WebAssembly || (WebAssembly = {}));
+var WebAssembly;
+(function (WebAssembly) {
+    var Console;
+    (function (Console) {
+        function log(message) {
+            console.log(WebAssembly.ObjectManager.readText(message));
+        }
+        Console.log = log;
+        function warn(message) {
+            console.warn(WebAssembly.ObjectManager.readText(message));
+        }
+        Console.warn = warn;
+        function info(message) {
+            console.info(WebAssembly.ObjectManager.readText(message));
+        }
+        Console.info = info;
+        function error(message) {
+            console.error(WebAssembly.ObjectManager.readText(message));
+        }
+        Console.error = error;
+    })(Console = WebAssembly.Console || (WebAssembly.Console = {}));
+})(WebAssembly || (WebAssembly = {}));
+var WebAssembly;
+(function (WebAssembly) {
     var Document;
     (function (Document) {
         function getElementById(id) {
@@ -56,6 +88,12 @@ var WebAssembly;
             node.innerText = textVal;
         }
         Document.writeElementText = writeElementText;
+        function writeElementHtml(node, text) {
+            var nodeObj = WebAssembly.ObjectManager.getObject(node);
+            var htmlVal = WebAssembly.ObjectManager.readText(text);
+            nodeObj.innerHTML = htmlVal;
+        }
+        Document.writeElementHtml = writeElementHtml;
         function createElement(tag) {
             var tagName = WebAssembly.ObjectManager.readText(tag);
             var node = document.createElement(tagName);
@@ -119,15 +157,27 @@ var TypeScript;
             });
         }
         Wasm.RunAssembly = RunAssembly;
+        function createBytes(opts) {
+            var page = opts.page || { init: 10, max: 2048 };
+            return new window.WebAssembly.Memory({ initial: page.init });
+        }
         function ExecuteInternal(module, opts) {
-            var byteBuffer = new window.WebAssembly.Memory({ initial: 10 });
+            var byteBuffer = createBytes(opts);
             var dependencies = {
                 "global": {},
                 "env": {
                     bytechunks: byteBuffer
                 }
             };
-            var api = opts.api || { document: false };
+            // read/write webassembly memory
+            WebAssembly.ObjectManager.load(byteBuffer);
+            // add javascript api dependencies imports
+            handleApiDependencies(dependencies, opts);
+            var assembly = engine.instantiate(module, dependencies);
+            return assembly;
+        }
+        function handleApiDependencies(dependencies, opts) {
+            var api = opts.api || { document: false, console: true, http: true };
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = window.Math;
             if (typeof opts.imports == "object") {
@@ -135,12 +185,16 @@ var TypeScript;
                     dependencies[key] = opts.imports[key];
                 }
             }
-            WebAssembly.ObjectManager.load(byteBuffer);
             if (api.document) {
                 dependencies["document"] = WebAssembly.Document;
             }
-            var assembly = engine.instantiate(module, dependencies);
-            return assembly;
+            if (api.console) {
+                dependencies["console"] = WebAssembly.Console;
+            }
+            if (api.http) {
+                dependencies["XMLHttpRequest"] = WebAssembly.XMLHttpRequest;
+            }
+            return dependencies;
         }
     })(Wasm = TypeScript.Wasm || (TypeScript.Wasm = {}));
 })(TypeScript || (TypeScript = {}));
