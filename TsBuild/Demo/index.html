@@ -5,8 +5,7 @@
 			document.getElementById("text").innerText = x;
 		}
 	}
-
-    TypeScript.Wasm.RunAssembly("PoissonPDF.wasm", function(math) {
+	var run = function(math) {
         var PoissonPDF = math.instance.exports.PoissonPDF;		
 		var add10 = math.instance.exports.Add10;
         var FlipCoin = math.instance.exports.FlipCoin;
@@ -34,18 +33,18 @@
 		
 		console.log("=============== End =================");
 		
-    }, {DOM: DOM});
+    }
+
+    TypeScript.Wasm.RunAssembly("PoissonPDF.wasm", {run : run, imports : {DOM: DOM}});
 	
-	/*
-	TypeScript.Wasm.RunAssembly("string.wasm", function(str) {
+	TypeScript.Wasm.RunAssembly("string.wasm", {run : function(str) {
 		var memory = str.instance.exports.memory;
-		var strBuf = new Uint8Array(memory.buffer, 16, 11); 
-		var strBuf2 = new Uint8Array(memory.buffer, 30, 7); 
+		var strBuf = new Uint8Array(memory.buffer, 100); 
+		var strBuf2 = new Uint8Array(memory.buffer, 300); 
 		
 		console.log(new TextDecoder().decode(strBuf))
 		console.log(new TextDecoder().decode(strBuf2))
-	})
-	*/
+	}})
 </script>
 
 <div id="text"></div>
