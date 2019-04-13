@@ -20,29 +20,6 @@
          *         
         */
         export function RunAssembly(module: string, opts: Config): void {
-            var byteBuffer: TypeScript.WasmMemory = new (<any>window).WebAssembly.Memory({ initial: 10 });
-            var dependencies = {
-                "global": {},
-                "env": {
-                    bytechunks: byteBuffer
-                }
-            };
-            var api: apiOptions = opts.api || { document: false };
-            var host = new TypeScript.api(byteBuffer);
-
-            // imports the javascript math module for VisualBasic.NET module by default
-            dependencies["Math"] = (<any>window).Math;
-
-            if (typeof opts.imports == "object") {
-                for (var key in opts.imports) {
-                    dependencies[key] = opts.imports[key];
-                }
-            }
-
-            if (api.document) {
-                dependencies["document"] = host.document;
-            }
-
             fetch(module)
                 .then(function (response) {
                     if (response.ok) {
@@ -53,6 +30,29 @@
                 })
                 .then(buffer => new Uint8Array(buffer))
                 .then(function (module) {
+                    var byteBuffer: TypeScript.WasmMemory = new (<any>window).WebAssembly.Memory({ initial: 10 });
+                    var dependencies = {
+                        "global": {},
+                        "env": {
+                            bytechunks: byteBuffer
+                        }
+                    };
+                    var api: apiOptions = opts.api || { document: false };
+                    var host = new TypeScript.api(byteBuffer);
+
+                    // imports the javascript math module for VisualBasic.NET module by default
+                    dependencies["Math"] = (<any>window).Math;
+
+                    if (typeof opts.imports == "object") {
+                        for (var key in opts.imports) {
+                            dependencies[key] = opts.imports[key];
+                        }
+                    }
+
+                    if (api.document) {
+                        dependencies["document"] = host.document;
+                    }
+
                     return engine.instantiate(module, dependencies);
                 }).then(wasm => {
                     if (typeof logging == "object" && logging.outputEverything) {

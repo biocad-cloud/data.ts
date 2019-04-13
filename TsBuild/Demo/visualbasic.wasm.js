@@ -60,25 +60,6 @@ var TypeScript;
          *
         */
         function RunAssembly(module, opts) {
-            var byteBuffer = new window.WebAssembly.Memory({ initial: 10 });
-            var dependencies = {
-                "global": {},
-                "env": {
-                    bytechunks: byteBuffer
-                }
-            };
-            var api = opts.api || { document: false };
-            var host = new TypeScript.api(byteBuffer);
-            // imports the javascript math module for VisualBasic.NET module by default
-            dependencies["Math"] = window.Math;
-            if (typeof opts.imports == "object") {
-                for (var key in opts.imports) {
-                    dependencies[key] = opts.imports[key];
-                }
-            }
-            if (api.document) {
-                dependencies["document"] = host.document;
-            }
             fetch(module)
                 .then(function (response) {
                 if (response.ok) {
@@ -90,6 +71,25 @@ var TypeScript;
             })
                 .then(function (buffer) { return new Uint8Array(buffer); })
                 .then(function (module) {
+                var byteBuffer = new window.WebAssembly.Memory({ initial: 10 });
+                var dependencies = {
+                    "global": {},
+                    "env": {
+                        bytechunks: byteBuffer
+                    }
+                };
+                var api = opts.api || { document: false };
+                var host = new TypeScript.api(byteBuffer);
+                // imports the javascript math module for VisualBasic.NET module by default
+                dependencies["Math"] = window.Math;
+                if (typeof opts.imports == "object") {
+                    for (var key in opts.imports) {
+                        dependencies[key] = opts.imports[key];
+                    }
+                }
+                if (api.document) {
+                    dependencies["document"] = host.document;
+                }
                 return engine.instantiate(module, dependencies);
             }).then(function (wasm) {
                 if (typeof TypeScript.logging == "object" && TypeScript.logging.outputEverything) {
