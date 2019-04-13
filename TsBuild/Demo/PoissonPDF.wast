@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 7:21:12 PM
+    ;; build: 4/13/2019 11:16:58 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -17,20 +17,17 @@
 (func $Display (import "DOM" "display") (param $x f32) (result i32))
     
     ;; Only allows one memory block in each module
-    (memory $Xf1010000 1)  
+    (memory (import "env" "bytechunks") 1)
 
     ;; Memory data for string constant
     
 ;; String from 1 with 12 bytes in memory
-(data (i32.const 1) "Hello world!")
+(data (i32.const 1) "Hello world!\00")
 
-;; String from 13 with 21 bytes in memory
-(data (i32.const 13) "Hello VisualBasic.NET")
+;; String from 14 with 21 bytes in memory
+(data (i32.const 14) "Hello VisualBasic.NET\00")
     
     (global $global_i (mut i32) (i32.const 990))
-
-    ;; Export memory block to Javascript 
-    (export "memory" (memory $Xf1010000)) 
 
     (export "HelloWorld" (func $HelloWorld))
     (export "TextDemo2" (func $TextDemo2))
@@ -49,7 +46,7 @@
     (func $TextDemo2  (result i32)
         ;; Public Function TextDemo2() As char*
         
-    (return (i32.const 13))
+    (return (i32.const 14))
     )
     
     (func $PoissonPDF (param $k i32) (param $lambda f64) (result f64)
@@ -119,30 +116,4 @@
         
     (call $Display (get_local $x))
     (return (f64.convert_s/i32 (call $Add10 (i32.trunc_s/f32 (get_local $x)))))
-    )
-
-    
-(export "MemorySizeOf" (func $MemorySizeOf))
-
-(func $MemorySizeOf (param $intPtr i32) (result i32)
-    
-    
-(if (i32.eq (get_local $intPtr) (i32.const 1)) 
-    (then
-                (return (i32.const 12))
-    ) 
-)
-
-
-(if (i32.eq (get_local $intPtr) (i32.const 13)) 
-    (then
-                (return (i32.const 21))
-    ) 
-)
-
-    ;; pointer not found
-    (return (i32.const -1))
-)
-
-
-)
+    ))
