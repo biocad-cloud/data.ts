@@ -11,11 +11,7 @@
 
     export interface WasmInstance {
         exports: {
-            memory: WasmMemory,
-            /**
-             * Get object bytes in memory
-            */
-            MemorySizeOf: (ptr: number) => number;
+            
         }
     }
 
