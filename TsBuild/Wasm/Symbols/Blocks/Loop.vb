@@ -70,6 +70,7 @@
 #End Region
 
 Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
 Imports Wasm.Symbols.Parser
 
@@ -99,6 +100,7 @@ Namespace Symbols.Blocks
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Shared Function InternalBlock(block As IEnumerable(Of Expression), indent As String) As String
             Return block _
+                .SafeQuery _
                 .Select(Function(line) indent & line.ToSExpression) _
                 .JoinBy(ASCII.LF)
         End Function

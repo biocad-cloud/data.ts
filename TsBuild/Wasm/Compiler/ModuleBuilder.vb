@@ -3,6 +3,7 @@ Imports Microsoft.VisualBasic.ApplicationServices.Development
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
 Imports Wasm.Symbols
+Imports Wasm.Symbols.Blocks
 Imports Wasm.Symbols.Parser
 
 Module ModuleBuilder
@@ -76,9 +77,35 @@ Module ModuleBuilder
     ''' <param name="memory"></param>
     ''' <returns></returns>
     Public Function MemorySizeOf(memory As Memory) As String
+        Dim intPtr As New GetLocalVariable With {.var = "intPtr"}
+        Dim symbols As New SymbolTable(New DeclareLocal With {.name = intPtr.var, .type = "i32"})
+        Dim isAddress = Function(s As StringSymbol) As BooleanSymbol
+                            Return New BooleanSymbol With {
+                                .Condition = BinaryStack(intPtr, s.AddressOf, "=", symbols)
+                            }
+                        End Function
+        Dim ifs As String() = memory _
+            .Select(Function(data)
+                        If TypeOf data Is StringSymbol Then
+                            Return New IfBlock With {
+                                .Guid = App.NextTempName,
+                                .Condition = isAddress(data),
+                                .[Then] = {
+                                    New ReturnValue With {.Internal = DirectCast(data, StringSymbol).SizeOf}
+                                }
+                            }
+                        Else
+                            Throw New NotImplementedException
+                        End If
+                    End Function) _
+            .Select(Function(data) data.ToSExpression) _
+            .ToArray
+
         Return $"
-(func ${NameOf(MemorySizeOf)} (param $intPtr i32) (result i32)
+(func ${NameOf(MemorySizeOf)} (param ${intPtr.var} i32) (result i32)
     
+    {ifs.JoinBy(ASCII.LF & ASCII.LF)}
+
     ;; pointer not found
     (return (i32.const -1))
 )

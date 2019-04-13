@@ -104,6 +104,12 @@ Namespace Symbols
             Next
         End Sub
 
+        Friend Sub New(ParamArray locals As DeclareLocal())
+            For Each var As DeclareLocal In locals
+                Call AddLocal(var)
+            Next
+        End Sub
+
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetAllImports() As IEnumerable(Of ImportSymbol)
             Return functionList.Values.OfType(Of ImportSymbol)
