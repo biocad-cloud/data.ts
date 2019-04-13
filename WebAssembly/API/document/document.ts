@@ -10,7 +10,7 @@
         }
 
         export function writeElementText(key: number, text: number) {
-            let node: HTMLElement = ObjectManager.getObject[key];
+            let node: HTMLElement = ObjectManager.getObject(key);
             let textVal: string = ObjectManager.readText(text);
 
             node.innerText = textVal;
