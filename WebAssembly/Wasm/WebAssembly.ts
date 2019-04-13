@@ -80,11 +80,15 @@
         /**
          * Read text from WebAssembly memory buffer.
         */
-        public readText(offset: number, length: number): string {
+        public readTextRaw(offset: number, length: number): string {
             let str = new Uint8Array(this.buffer, offset, length);
             let text: string = this.decoder.decode(str);
 
             return text;
+        }
+
+        public readText(intPtr: number): string {
+            return this.readTextRaw(intPtr, this.sizeOf(intPtr));
         }
     }
 
