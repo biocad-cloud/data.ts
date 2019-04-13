@@ -20,5 +20,8 @@
 
     Public Class Memory
 
+        Public Function AddString(str As String) As StringSymbol
+
+        End Function
     End Class
 End Namespace

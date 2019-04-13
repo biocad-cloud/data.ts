@@ -69,4 +69,8 @@
         Call Display(x)
         Return Add10(x)
     End Function
+
+    Public Function HelloWorld() As String
+        Return "Hello world!"
+    End Function
 End Module

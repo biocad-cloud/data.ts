@@ -5,7 +5,10 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/11/2019 11:40:37 PM
+    ;; build: 4/13/2019 4:31:49 PM
+
+    ;; Only allows one memory block in each module
+    (memory $tmp00005 1)  
 
     ;; Declare Function Exp Lib "Math" Alias "exp" (x As f64) As f64
 (func $Exp (import "Math" "exp") (param $x f64) (result f64))
@@ -16,11 +19,15 @@
     
     (global $global_i (mut i32) (i32.const 990))
 
+    ;; Export memory block to Javascript 
+    (export "memory" (memory $tmp00005)) 
+
     (export "PoissonPDF" (func $PoissonPDF))
     (export "Add10" (func $Add10))
     (export "GetGlobal" (func $GetGlobal))
     (export "FlipCoin" (func $FlipCoin))
-    (export "HtmlTest" (func $HtmlTest)) 
+    (export "HtmlTest" (func $HtmlTest))
+    (export "HelloWorld" (func $HelloWorld)) 
 
     (func $PoissonPDF (param $k i32) (param $lambda f64) (result f64)
         ;; Public Function PoissonPDF(k As i32, lambda As f64) As f64
@@ -90,6 +97,12 @@
         
     (call $Display (get_local $x))
     (return (f64.convert_s/i32 (call $Add10 (i32.trunc_s/f32 (get_local $x)))))
+    )
+    
+    (func $HelloWorld  (result char*)
+        ;; Public Function HelloWorld() As char*
+        
+    (return (char*.const Hello world!))
     )
 
 )

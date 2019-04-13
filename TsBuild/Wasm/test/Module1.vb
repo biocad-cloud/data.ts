@@ -6,9 +6,9 @@ Module treeTest
     Sub Main()
 
 
-        Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")
+        ' Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")
 
-        Pause()
+        ' Pause()
 
         ' Call forlooptest()
 

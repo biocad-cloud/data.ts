@@ -20,7 +20,8 @@ Public Class Types
         {GetType(Integer), "i32"},
         {GetType(Long), "i64"},
         {GetType(Single), "f32"},
-        {GetType(Double), "f64"}
+        {GetType(Double), "f64"},
+        {GetType(String), "char*"}  ' 实际上这是一个integer类型
     }
 
     Public Shared ReadOnly Property Operators As New Dictionary(Of String, String) From {
@@ -81,6 +82,10 @@ Public Class Types
     ''' <param name="left"></param>
     ''' <returns></returns>
     Public Shared Function [CType](left As String, right As Expression, symbols As SymbolTable) As Expression
+        If left = right.TypeInfer(symbols) Then
+            Return right
+        End If
+
         Select Case left
             Case "i32"
                 Return Types.CInt(right, symbols)
