@@ -14,33 +14,48 @@ var __extends = (this && this.__extends) || (function () {
 /// <reference path="../../build/linq.d.ts" />
 var WebAssembly;
 (function (WebAssembly) {
-    var Document;
-    (function (Document) {
+    var ObjectManager;
+    (function (ObjectManager) {
         var streamReader;
         var hashCode = 0;
         var hashTable = {};
         function load(bytes) {
             streamReader = new TypeScript.stringReader(bytes);
         }
-        Document.load = load;
-        function getElementById(id) {
-            var idText = streamReader.readText(id);
-            var node = window.document.getElementById(idText);
-            return addObject(node);
+        ObjectManager.load = load;
+        function readText(intptr) {
+            return streamReader.readText(intptr);
         }
-        Document.getElementById = getElementById;
-        function writeElementText(key, text) {
-            var node = hashTable[key];
-            var textVal = streamReader.readText(text);
-            node.innerText = textVal;
+        ObjectManager.readText = readText;
+        function getObject(key) {
+            return hashTable[key];
         }
-        Document.writeElementText = writeElementText;
+        ObjectManager.getObject = getObject;
         function addObject(o) {
             var key = hashCode;
             hashTable[hashCode] = o;
             hashCode++;
             return key;
         }
+        ObjectManager.addObject = addObject;
+    })(ObjectManager = WebAssembly.ObjectManager || (WebAssembly.ObjectManager = {}));
+})(WebAssembly || (WebAssembly = {}));
+var WebAssembly;
+(function (WebAssembly) {
+    var Document;
+    (function (Document) {
+        function getElementById(id) {
+            var idText = WebAssembly.ObjectManager.readText(id);
+            var node = window.document.getElementById(idText);
+            return WebAssembly.ObjectManager.addObject(node);
+        }
+        Document.getElementById = getElementById;
+        function writeElementText(key, text) {
+            var node = WebAssembly.ObjectManager.getObject[key];
+            var textVal = WebAssembly.ObjectManager.readText(text);
+            node.innerText = textVal;
+        }
+        Document.writeElementText = writeElementText;
     })(Document = WebAssembly.Document || (WebAssembly.Document = {}));
 })(WebAssembly || (WebAssembly = {}));
 var TypeScript;
@@ -100,8 +115,8 @@ var TypeScript;
                     dependencies[key] = opts.imports[key];
                 }
             }
+            WebAssembly.ObjectManager.load(byteBuffer);
             if (api.document) {
-                WebAssembly.Document.load(byteBuffer);
                 dependencies["document"] = WebAssembly.Document;
             }
             var assembly = engine.instantiate(module, dependencies);
