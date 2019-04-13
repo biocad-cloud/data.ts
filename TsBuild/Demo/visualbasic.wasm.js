@@ -14,8 +14,8 @@ var __extends = (this && this.__extends) || (function () {
 /// <reference path="../../build/linq.d.ts" />
 var WebAssembly;
 (function (WebAssembly) {
-    var document = /** @class */ (function () {
-        function document(wasm) {
+    var Document = /** @class */ (function () {
+        function Document(wasm) {
             if (wasm === void 0) { wasm = null; }
             this.wasm = wasm;
             this.hashTable = {};
@@ -23,29 +23,30 @@ var WebAssembly;
                 this.streamReader = new TypeScript.stringReader(wasm);
             }
         }
-        document.prototype.hook = function (assembly) {
+        Document.prototype.hook = function (assembly) {
             this.streamReader = new TypeScript.stringReader(assembly);
+            this.wasm = assembly;
             return this;
         };
-        document.prototype.getElementById = function (id) {
+        Document.prototype.getElementById = function (id) {
             var idText = this.streamReader.readText(id);
             var node = window.document.getElementById(idText);
             return this.addObject(node);
         };
-        document.prototype.writeElementText = function (key, text) {
+        Document.prototype.writeElementText = function (key, text) {
             var node = this.hashTable[key];
             var textVal = this.streamReader.readText(text);
             node.innerText = textVal;
         };
-        document.prototype.addObject = function (o) {
+        Document.prototype.addObject = function (o) {
             var key = this.hashCode;
             this.hashTable[this.hashCode] = o;
             this.hashCode++;
             return key;
         };
-        return document;
+        return Document;
     }());
-    WebAssembly.document = document;
+    WebAssembly.Document = Document;
 })(WebAssembly || (WebAssembly = {}));
 var TypeScript;
 (function (TypeScript) {
@@ -81,7 +82,7 @@ var TypeScript;
                 }
             }
             if (api.document) {
-                dependencies["document"] = new WebAssembly.document(null);
+                dependencies["document"] = new WebAssembly.Document(null);
             }
             fetch(module)
                 .then(function (response) {

@@ -36,7 +36,7 @@
             }
 
             if (api.document) {
-                dependencies["document"] = new WebAssembly.document(null);
+                dependencies["document"] = new WebAssembly.Document(null);
             }
 
             fetch(module)
@@ -57,7 +57,7 @@
                     }
 
                     if (api.document) {
-                        (<WebAssembly.document>dependencies["document"]).hook(wasm);
+                        (<WebAssembly.Document>dependencies["document"]).hook(wasm);
                     }
 
                     opts.run(wasm);
