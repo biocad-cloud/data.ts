@@ -336,6 +336,19 @@
 0000185: 05                                        ; FIXUP func body size
 ; move data: [c5, 18b) -> [c6, 18c)
 00000c4: c601                                      ; FIXUP section size
+; section "Data" (11)
+000018c: 0b                                        ; section code
+000018d: 00                                        ; section size (guess)
+000018e: 01                                        ; num data segments
+; data segment header 0
+000018f: 00                                      
+0000190: 41                                        ; i32.const
+0000191: 01                                        ; i32 literal
+0000192: 0b                                        ; end
+0000193: 0c                                        ; data segment size
+; data segment data 0
+0000194: 4865 6c6c 6f20 776f 726c 6421             ; data segment data
+000018d: 12                                        ; FIXUP section size
 ;; dump
 0000000: 0061 736d 0100 0000 0127 0860 017c 017c 
 0000010: 6000 017c 6001 7d01 7f60 0001 7f60 027f 
@@ -361,4 +374,5 @@
 0000150: 0000 0000 00e0 3f66 0440 4101 b720 00a0 
 0000160: 0f05 4100 4101 6bb7 2000 a10f 0b44 0000 
 0000170: 0000 0000 0000 0f0b 0d00 2000 1002 2000 
-0000180: a810 05b7 0f0b 0500 417f 0f0b           
+0000180: a810 05b7 0f0b 0500 417f 0f0b 0b12 0100 
+0000190: 4101 0b0c 4865 6c6c 6f20 776f 726c 6421 

@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 6:14:56 PM
+    ;; build: 4/13/2019 6:19:52 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -21,6 +21,8 @@
 
     ;; Memory data for string constant
     
+;; -3 is the string length
+(data (i32.const 1) "Hello world!")
     
     (global $global_i (mut i32) (i32.const 990))
 

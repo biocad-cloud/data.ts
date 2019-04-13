@@ -32,6 +32,10 @@ Module ModuleBuilder
         Dim wasmSummary As AssemblyInfo = GetType(ModuleSymbol).GetAssemblyDetails
         Dim buildTime$ = File.GetLastWriteTime(GetType(ModuleSymbol).Assembly.Location)
         Dim memoryDev$ = App.NextTempName
+        Dim stringsData$ = m.Memory _
+            .Where(Function(oftype) TypeOf oftype Is StringSymbol) _
+            .Select(Function(s) s.ToSExpression) _
+            .JoinBy(ASCII.LF)
 
         Return $"(module ;; Module {m.LabelName}
 
@@ -50,7 +54,7 @@ Module ModuleBuilder
     (memory ${memoryDev} 1)  
 
     ;; Memory data for string constant
-    {m.Memory.OfType(Of StringSymbol).Select(Function(s) s.ToSExpression).JoinBy(ASCII.LF)}
+    {stringsData}
     
     {globals}
 
