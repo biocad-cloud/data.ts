@@ -1,0 +1,72 @@
+﻿/* omitted */
+span.omitted {
+    background: #3c4e52;
+    border-radius: 5px;
+    color: #808080;
+    padding: 0px 0px 1px 0px;
+}
+
+table.pre pre {
+    padding: 0px;
+    margin: 0px;
+    border: none;
+}
+
+table.pre, pre.vbsnip, pre {
+    line-height: 13pt;
+    /* border: 1px solid #d8d8d8; */
+    border-collapse: separate;
+    white-space: pre;
+    font: 9pt consolas,monospace;
+    width: 90%;
+    /*margin: 10px 20px 20px 20px;
+    background-color: white;*/
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+}
+
+    table.pre pre {
+        padding: 0px;
+        margin: 0px;
+        border-radius: 0px;
+        width: 100%;
+    }
+
+    table.pre td {
+        padding: 0px;
+        white-space: normal;
+        margin: 0px;
+    }
+
+        table.pre td.lines {
+            width: 35px;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+pre {
+    word-wrap: inherit;
+}
+
+/* Make table headings and td.title bold */
+td.title, thead {
+    font-weight: bold;
+}
+
+#nuget {
+    margin-top: 20px;
+    font-size: 11pt;
+    padding: 20px;
+}
+
+    #nuget pre {
+        font-size: 11pt;
+        -moz-border-radius: 0px;
+        -webkit-border-radius: 0px;
+        border-radius: 0px;
+        background: #404040;
+        border-style: none;
+        color: #e0e0e0;
+        margin-top: 15px;
+    }

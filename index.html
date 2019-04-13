@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="ResourceLoaderDynamicStyles" content="" />
+	<meta name="generator" content="MediaWiki 1.30.0" />
+	<meta name="github.user" content="xieguigang" />
+	<meta name="github.repo" content="sciBASIC" />
+	<meta name="github.commits" content="700614e0c8884f9c37fe9a4f6c4eba5a2befaea1" />
+
+	<title>Visual Studio Code</title>
+
+	<link rel="shortcut icon" href="vscodeinsider.png" />
+	<link rel="search" type="application/opensearchdescription+xml" href="#" title="" />
+	<link rel="EditURI" type="application/rsd+xml" href="" />
+	<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/" />
+	<link rel="alternate" type="application/atom+xml" title="" href="" />
+
+	<script type="text/javascript" src="javascript/marked.js"></script>
+	<script type="text/javascript" src="javascript/jquery.min.js"></script>
+	<script type="text/javascript" src="javascript/jstree/jstree.min.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="styles/layout.css" />
+	<link type="text/css" rel="stylesheet" href="styles/visualstudio.css" />
+	<link type="text/css" rel="stylesheet" href="javascript/jstree/default/style.min.css" />
+</head>
+
+<body
+	class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Building_Blender_Windows rootpage-Building_Blender skin-bootstrap action-view">
+	<nav class="navbar navbar-expand flex-column flex-md-row bd-navbar">
+		<a href="/" class="navbar-brand" title="Visit the main page">
+			<img src="vscodeinsider.png" height="30" alt="Portal logo" />
+			Visual Studio Code
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+			</ul>
+			<div>
+
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a id="ca-viewsource" href="#" title="View source file" accesskey="e" class="nav-link">View
+							source</a>
+					</li>
+					<li class="nav-item">
+						<a id="ca-history" href="#" title="Past revisions of this file" accesskey="h"
+							class="nav-link">History</a>
+					</li>
+					<li class="nav-item">
+						<a id="ca-blame" href="#" title="Blame history" accesskey="h" class="nav-link">Git Blame</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div id="mw-wrapper" class="container-fluid">
+		<div class="row flex-xl-nowrap">
+			<div class="col-12 col-md-3 col-xl-2 bd-sidebar">
+				<form action="/w/index.php" role="search" class="bd-search d-flex align-items-center" id="p-search">
+					<input type="hidden" value="Special:Search" name="title" /><input type="search" name="search"
+						placeholder="Search..." title="Search Blender Developer Wiki [f]" accesskey="f" id="searchInput"
+						class="form-control ds-input" autocomplete="off" /></form>
+
+				<!-- 左侧边栏 -->
+				<div style="font-size: 12px;"><img src="images/VB_ProjectSENode_16x.png" />&nbsp;Project Tree
+				</div>
+				<div id="vbproj-tree"></div>
+				<div id="file-suggest-list" style="font-size: 0.9em;"></div>
+			</div>
+
+			<div class="d-none d-xl-block col-xl-2 bd-toc">
+				<div id="toc" class="toc">
+
+					<div id="toc-tree" style="font-size: 0.9em;"></div>
+
+				</div>
+			</div>
+
+			<div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
+				<div class="mw-indicators mw-body-content">
+				</div>
+
+				<div class="mw-body-content">
+
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr">
+						<div class="mw-parser-output">
+
+							<div id="xhr-error" style="display: none;">
+								<table class="pre" style="background-color: #bb5895; font-size: 1.125em; color:white;">
+									<tbody>
+										<tr>
+											<td>
+												Sorry, server request failure...
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div id="vbcode"></div>
+							<div id="md-text">
+								
+							</div>
+						</div>
+					</div>
+					<!--
+					<div class="clearfix"></div>
+					<div class="printfooter">Retrieved from "<a dir="ltr"
+							href="https://wiki.blender.org/w/index.php?title=Building_Blender/Windows&amp;oldid=2927">https://wiki.blender.org/w/index.php?title=Building_Blender/Windows&amp;oldid=2927</a>"
+					</div>
+					-->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer class="footer pt-4">
+
+		<!-- Footer Links -->
+		<div class="container-fluid text-md-left">
+
+			<!-- Grid row -->
+			<div class="row">
+				<div class="col-md-3 mt-md-0 mt-3">
+					<p id="footer-info-lastmod">
+						<img src="images/logo.png" style="max-width: 200px;" />
+					</p>
+					<p>&nbsp;</p>
+					<p id="footer-info-copyright">Content is available under <a class="external" rel="nofollow"
+							href="https://creativecommons.org/licenses/by-sa/4.0/">Creative
+							Commons Attribution-ShareAlike</a> unless otherwise noted.</p>
+							<p>&nbsp;</p>
+					<p id="footer-info-copyright">sciBASIC software foundation</p>
+					<p id="footer-info-lastmod">2019-03-16 01:17:23 am</p>
+				</div>
+				<div class="col-md-3 mt-md-0 mt-3">
+					<h5 class="text-uppercase">places</h5>
+					<ul id="footer-places" role="contentinfo">
+						<li id="footer-places-about"><a href="#" title="Blender Developer Wiki:About">About
+							</a></li>
+						<li id="footer-places-blog"><a href="#"
+								title="Blender Developer Wiki:General disclaimer">Developer Blog</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3 mt-md-0 mt-3">
+					<h5 class="text-uppercase">Utilities</h5>
+					<ul id="p-tb">
+
+						<li id="t-whatlinkshere"><a href="https://github.com/xieguigang/xDoc" accesskey="j">xDoc Tools</a>
+						</li>
+
+					</ul>
+				</div>
+				<div class="col-md-3 mt-md-0 mt-3">
+					<h5 class="text-uppercase">Navigation</h5>
+					<ul id="p-navigation">
+
+						<li id="n-mainpage-description"><a href="/" title="Visit the main page [z]"
+								accesskey="z">Main page</a></li>
+						<li id="n-randompage"><a id="random-file" href="javascript:void(0);" title="Load a random page [x]"
+								accesskey="x">Random page</a></li>
+						<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents"
+								title="The place to find out">Help</a></li>
+
+					</ul>
+				</div>
+			</div>
+			<!-- Grid row -->
+
+			<!-- Grid row -->
+			<div class="row pt-4 pb-4">
+				<div class="col">
+					<!-- Copyright -->
+					<div class="text-center">Microsoft VisualBasic for Scientific Computing – Power By VisualStudio
+						Online
+					</div>
+					<!-- Copyright -->
+				</div>
+			</div>
+			<!-- Grid row -->
+
+		</div>
+		<!-- Footer Links -->
+	</footer>
+	<!-- Footer -->
+</body>
+
+<script type="text/javascript" src="javascript/linq.js"></script>
+<script type="text/javascript" src="javascript/vbcode.js"></script>
+<script type="text/javascript" src="javascript/vbproj.js"></script>
+
+</html>
