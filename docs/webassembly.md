@@ -47,7 +47,7 @@ Module Demo
 End Module
 ```
 
-> Project only supports a single source file, a single module, ``Class/Structure/Enum/Array`` is not supports yet in current version of the VB.NET wasm compiler, but all this will be supportted in the future. Probably not supports generic method.
+> Project only supports a single source file, a single module, ``Class/Structure/Enum/Array`` is not supports yet in current version of the VB.NET wasm compiler, but all of this VB.NET programming feature will be supportted in future works. Probably not supports generic method.
 
 #### 2. Run wasm compiler
 
