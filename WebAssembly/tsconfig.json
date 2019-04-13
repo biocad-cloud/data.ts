@@ -6,7 +6,7 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "../dist",
-    "outFile": "../../build/vb.wasm.js",
+    "outFile": "../../build/visualbasic.wasm.js",
     "declaration": true
   },
   "exclude": [
