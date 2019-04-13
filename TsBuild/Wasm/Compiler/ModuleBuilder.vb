@@ -1,9 +1,9 @@
-﻿Imports Wasm.Symbols
-Imports System.IO
+﻿Imports System.IO
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ApplicationServices.Development
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
+Imports Wasm.Symbols
 Imports Wasm.Symbols.Parser
 
 Module ModuleBuilder
@@ -45,6 +45,9 @@ Module ModuleBuilder
 
     ;; Only allows one memory block in each module
     (memory ${memoryDev} 1)  
+
+    ;; Memory data for string constant
+    {m.Memory.OfType(Of StringSymbol).Select(Function(s) s.ToSExpression).JoinBy(ASCII.LF)}
 
     {import}
     
