@@ -42,8 +42,21 @@
 		var strBuf = new Uint8Array(memory.buffer, 100); 
 		var strBuf2 = new Uint8Array(memory.buffer, 300); 
 		
-		console.log(new TextDecoder().decode(strBuf))
-		console.log(new TextDecoder().decode(strBuf2))
+		function isPrime(element, index, array) {
+			if (element == 0) {
+				return true;
+			} else {
+				return false;
+			}			
+		}
+		
+		var endi = strBuf.findIndex(isPrime);		
+		
+		console.log(new TextDecoder().decode(new Uint8Array(memory.buffer, 100, endi)))
+		
+		endi = strBuf2.findIndex(isPrime);	
+		
+		console.log(new TextDecoder().decode(new Uint8Array(memory.buffer, 300, endi)))
 	}})
 </script>
 

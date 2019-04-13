@@ -76,7 +76,7 @@ Namespace Symbols
         Public Overrides Function ToSExpression() As String
             Return $"
 ;; String from {MemoryPtr} with {Length} bytes in memory
-(data (i32.const {MemoryPtr}) ""{[string]}"")"
+(data (i32.const {MemoryPtr}) ""{[string]}\00"")"
         End Function
     End Class
 End Namespace
