@@ -51,8 +51,10 @@ Public Module App
         Call setAttribute(message2, "style", "font-size: 5em; color: green;")
 
         ' display text message on javascript console
-        Call log(message1)
-        Call info(message2)
+        Call log("Debug text message display below:")
+
+        Call warn(note)
+        Call info(note2)
 
         Return 0
     End Function

@@ -71,6 +71,9 @@
 
 ;; String from 181 with 29 bytes in memory
 (data (i32.const 181) "font-size: 5em; color: green;\00")
+
+;; String from 211 with 33 bytes in memory
+(data (i32.const 211) "Debug text message display below:\00")
     
     (global $helloWorld (mut i32) (i32.const 1))
 
@@ -98,7 +101,8 @@
     (call $setAttribute (get_local $notes) (i32.const 106) (i32.const 112))
     (call $setAttribute (get_local $message1) (i32.const 141) (i32.const 147))
     (call $setAttribute (get_local $message2) (i32.const 175) (i32.const 181))
-    (call $log (get_local $message1))
-    (call $info (get_local $message2))
+    (call $log (i32.const 211))
+    (call $warn (get_global $note))
+    (call $info (get_global $note2))
     (return (i32.const 0))
     ))

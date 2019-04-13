@@ -12,6 +12,6 @@
 <script type="text/javascript">
 	TypeScript.Wasm.RunAssembly("vbscript/HelloWorld.wasm", {
 		run: doc => doc.instance.exports.RunApp(),
-		api: { document: true }
+		api: { document: true, console: true }
 	});
 </script>
