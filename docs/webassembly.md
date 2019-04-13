@@ -18,13 +18,13 @@ yes! If your current nodejs environment supports WebAssembly.
 
 yes! If the npm supports WebAssembly package.
 
-#### 5. Win32 api supports?
+#### 5. Win32/.NET Framework api supports?
 
 no! Only supports the api that javascript expose to your VisualBasic.NET application. So .NET Framework is no longer available if you target your VisualBasic.NET application to WebAssembly platform.
 
 #### 6. What can I do with WebAssembly
 
-WebAssembly is a kind of solution for aimed at high-density computing on WebBrowser, so the first choice is HTML5 Game development using VisualBasic.NET with Unity, or Edge computing for your business. And of course you can develop any application for every platform, so on.
+WebAssembly is a kind of solution for aimed at high-density computing on javascript environment, so the best choice is HTML5 Game development using VisualBasic.NET with Unity, or Edge computing for your business. And of course you can develop any application for every platform, so on.
 
 ## Using WebAssembly compiler for VB.NET
 
@@ -77,3 +77,4 @@ TypeScript.Wasm.RunAssembly(assmUrl, {
 });
 ```
 
+![](hello_world.png)
