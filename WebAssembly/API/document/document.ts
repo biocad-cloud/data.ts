@@ -6,15 +6,12 @@
         private hashCode: number;
         private hashTable: object = {};
 
-        public constructor(public wasm: TypeScript.IWasm = null) {
-            if (wasm && typeof wasm != "undefined") {
-                this.streamReader = new TypeScript.stringReader(wasm);
-            }
+        public constructor(private lazyWasm: () => TypeScript.IWasm) {
         }
 
-        public hook(memory: TypeScript.WasmMemory, assembly: TypeScript.IWasm): Document {
-            this.streamReader = new TypeScript.stringReader(assembly, memory);
-            this.wasm = assembly;
+        public hook(): Document {
+            let assembly = this.lazyWasm();
+            this.streamReader = new TypeScript.stringReader(assembly);
             return this;
         }
 

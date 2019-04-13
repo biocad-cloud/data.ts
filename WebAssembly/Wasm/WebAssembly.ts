@@ -28,6 +28,7 @@
                 }
             };
             var api: apiOptions = opts.api || { document: false };
+            var host = new TypeScript.api();
 
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = (<any>window).Math;
@@ -39,7 +40,7 @@
             }
 
             if (api.document) {
-                dependencies["document"] = new WebAssembly.Document(null);
+                dependencies["document"] = host.document();
             }
 
             fetch(module)
@@ -59,12 +60,26 @@
                         console.log(wasm);
                     }
 
-                    if (api.document) {
-                        (<WebAssembly.Document>dependencies["document"]).hook(byteBuffer, wasm);
-                    }
-
-                    opts.run(wasm);
+                    opts.run(host.hook(wasm));
                 });
+        }
+    }
+
+    export class api {
+
+        wasm: TypeScript.IWasm;
+
+        public document(): WebAssembly.Document {
+            let vm = this;
+
+            return new WebAssembly.Document(function () {
+                return vm.wasm;
+            });
+        }
+
+        public hook(wasm: TypeScript.IWasm): TypeScript.IWasm {
+            this.wasm = wasm;
+            return wasm;
         }
     }
 }
