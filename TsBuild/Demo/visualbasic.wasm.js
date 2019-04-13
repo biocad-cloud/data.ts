@@ -51,7 +51,7 @@ var WebAssembly;
         }
         Document.getElementById = getElementById;
         function writeElementText(key, text) {
-            var node = WebAssembly.ObjectManager.getObject[key];
+            var node = WebAssembly.ObjectManager.getObject(key);
             var textVal = WebAssembly.ObjectManager.readText(text);
             node.innerText = textVal;
         }
