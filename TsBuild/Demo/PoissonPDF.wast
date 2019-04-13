@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 7:18:46 PM
+    ;; build: 4/13/2019 7:21:12 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -107,8 +107,7 @@
     (if (f64.ge (get_local $r) (f64.const 0.5)) 
         (then
                     (return (f64.add (f64.convert_s/i32 (i32.const 1)) (get_local $r)))
-        )
-        (else
+        ) (else
                     (return (f64.sub (f64.convert_s/i32 (i32.sub (i32.const 0) (i32.const 1))) (get_local $r)))
         )
     )
@@ -131,20 +130,14 @@
 (if (i32.eq (get_local $intPtr) (i32.const 1)) 
     (then
                 (return (i32.const 12))
-    )
-    (else
-        
-    )
+    ) 
 )
 
 
 (if (i32.eq (get_local $intPtr) (i32.const 13)) 
     (then
                 (return (i32.const 21))
-    )
-    (else
-        
-    )
+    ) 
 )
 
     ;; pointer not found
