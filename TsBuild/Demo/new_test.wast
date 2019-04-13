@@ -2,6 +2,7 @@
 
   (memory $gg 1)  
   
+  (data (i32.const 10) (i32.const 100))
   (data (i32.const 100) "Hello World")
   (data (i32.const 300) "[AAAAA]")  
   
@@ -14,8 +15,8 @@
 	   
     (return (i32.const 13))
   )
-  
-  
-  (global $global_i (mut i32) (call $HelloWorld))
+    
+  ;; not working, only constant value allowed
+  ;; (global $global_i (mut i32) (call $HelloWorld))
   
 )

@@ -53,57 +53,12 @@ Imports Microsoft.VisualBasic.Language
 Namespace Symbols
 
     ''' <summary>
-    ''' 内存指针
-    ''' </summary>
-    Public Class MemoryPtr : Inherits Expression
-
-        ''' <summary>
-        ''' 这个内存指针所指向的内存块的起始地址
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Ptr As Integer
-        ''' <summary>
-        ''' 所指向的目标内存块的长度
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Length As Integer
-
-        ''' <summary>
-        ''' 这个内存指针在内存之中的起始位置
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Location As Integer
-
-        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return "void"
-        End Function
-
-        Public Overrides Function ToSExpression() As String
-            Return $";; memory pointer
-(i32.store (i32.const {Ptr}) (i32.const {Location}))
-(i32.store (i32.const {Length}) (i32.const {Location + 4}))"
-        End Function
-    End Class
-
-    ''' <summary>
     ''' The WebAssembly memory buffer device
     ''' </summary>
     Public Class Memory : Implements IEnumerable(Of Expression)
 
         Dim buffer As New List(Of Expression)
         Dim offset As Integer = 1
-
-        ''' <summary>
-        ''' [<see cref="MemoryPtr.Location"/> => <see cref="MemoryPtr"/>]
-        ''' </summary>
-        Dim pointers As New Dictionary(Of String, MemoryPtr)
-
-        Default Public ReadOnly Property GetPtr(location As Integer) As MemoryPtr
-            <MethodImpl(MethodImplOptions.AggressiveInlining)>
-            Get
-                Return pointers(location.ToString)
-            End Get
-        End Property
 
         ''' <summary>
         ''' 函数返回的是数据的内存位置
@@ -113,28 +68,13 @@ Namespace Symbols
         Public Function AddString(str As String) As Integer
             Dim buffer As New StringSymbol With {
                 .[string] = str,
-                .ptr = New MemoryPtr With {
-                    .Ptr = offset,
-                    .Length = Strings.Len(str)
-                }
+                .MemoryPtr = offset
             }
 
             Me.buffer += buffer
-            Me.offset += buffer.ptr.Length
+            Me.offset += buffer.Length
 
-            ' return memory pointer offset start
-            Return AddPointer(buffer.ptr)
-        End Function
-
-        Public Function AddPointer(ptr As MemoryPtr) As Integer
-            Dim p As Integer = offset
-
-            buffer += ptr
-            offset += 8
-            ptr.Location = p
-            pointers(p.ToString) = ptr
-
-            Return p
+            Return buffer.MemoryPtr
         End Function
 
         Public Iterator Function GetEnumerator() As IEnumerator(Of Expression) Implements IEnumerable(Of Expression).GetEnumerator

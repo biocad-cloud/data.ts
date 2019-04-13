@@ -53,7 +53,7 @@ Namespace Symbols
     Public Class StringSymbol : Inherits Expression
 
         Public Property [string] As String
-        Public Property ptr As MemoryPtr
+        Public Property MemoryPtr As Integer
 
         Public ReadOnly Property Length As Integer
             Get
@@ -66,7 +66,9 @@ Namespace Symbols
         End Function
 
         Public Overrides Function ToSExpression() As String
-            Return $"(data (i32.const {ptr.Ptr}) ""{[string]}"")"
+            Return $"
+;; {MemoryPtr - 4} is the string length
+(data (i32.const {MemoryPtr}) ""{[string]}"")"
         End Function
     End Class
 End Namespace
