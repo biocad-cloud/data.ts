@@ -13,10 +13,12 @@
 		var i = math.instance.exports.GetGlobal;
 		var HtmlTest = math.instance.exports.HtmlTest;
 		var HelloWorld = math.instance.exports.HelloWorld;
+		var TextDemo2 = math.instance.exports.TextDemo2;
 		var stream = new TypeScript.stringReader(math); 
 		
 		console.log("WebAssembly string value output:");
 		console.log(stream.readText(HelloWorld()));
+		console.log(stream.readText(TextDemo2()));
 		
 		console.log("WebAssembly math function test:");		
 		console.log(Math.random());

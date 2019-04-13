@@ -17,19 +17,23 @@
 (func $Display (import "DOM" "display") (param $x f32) (result i32))
     
     ;; Only allows one memory block in each module
-    (memory $tmp00007 1)  
+    (memory $tmp00009 1)  
 
     ;; Memory data for string constant
     
 ;; -3 is the string length
 (data (i32.const 1) "Hello world!")
+
+;; 9 is the string length
+(data (i32.const 13) "Hello VisualBasic.NET")
     
     (global $global_i (mut i32) (i32.const 990))
 
     ;; Export memory block to Javascript 
-    (export "memory" (memory $tmp00007)) 
+    (export "memory" (memory $tmp00009)) 
 
     (export "HelloWorld" (func $HelloWorld))
+    (export "TextDemo2" (func $TextDemo2))
     (export "PoissonPDF" (func $PoissonPDF))
     (export "Add10" (func $Add10))
     (export "GetGlobal" (func $GetGlobal))
@@ -40,6 +44,12 @@
         ;; Public Function HelloWorld() As char*
         
     (return (i32.const 1))
+    )
+    
+    (func $TextDemo2  (result i32)
+        ;; Public Function TextDemo2() As char*
+        
+    (return (i32.const 13))
     )
     
     (func $PoissonPDF (param $k i32) (param $lambda f64) (result f64)
@@ -121,6 +131,16 @@
 (if (i32.eq (get_local $intPtr) (i32.const 1)) 
     (then
                 (return (i32.const 12))
+    )
+    (else
+        
+    )
+)
+
+
+(if (i32.eq (get_local $intPtr) (i32.const 13)) 
+    (then
+                (return (i32.const 21))
     )
     (else
         

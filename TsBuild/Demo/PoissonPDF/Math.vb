@@ -28,6 +28,10 @@
         Return "Hello world!"
     End Function
 
+    Public Function TextDemo2() As String
+        Return "Hello VisualBasic.NET"
+    End Function
+
     ''' <summary>
     ''' Returns the PDF value at <paramref name="k"/> for the specified Poisson distribution.
     ''' </summary>
