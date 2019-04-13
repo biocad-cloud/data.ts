@@ -150,13 +150,25 @@ Namespace Symbols.Parser
             End If
         End Function
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="[const]"></param>
+        ''' <param name="wasmType"></param>
+        ''' <param name="memory">内存设备</param>
+        ''' <returns></returns>
         <Extension>
-        Public Function ConstantExpression([const] As LiteralExpressionSyntax, wasmType$) As Expression
-            Dim value = [const].Token.Value
+        Public Function ConstantExpression([const] As LiteralExpressionSyntax, wasmType$, memory As Memory) As Expression
+            Dim value As Object = [const].Token.Value
             Dim type As Type = value.GetType
 
-            If wasmType.StringEmpty Then
-                wasmType = Types.Convert2Wasm(type)
+            If type Is GetType(String) Then
+                ' 是字符串类型，需要做额外的处理
+                value = memory.AddString(value)
+            Else
+                If wasmType.StringEmpty Then
+                    wasmType = Types.Convert2Wasm(type)
+                End If
             End If
 
             Return New LiteralExpression With {
