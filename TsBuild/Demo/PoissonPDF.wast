@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 5:25:19 PM
+    ;; build: 4/13/2019 6:14:56 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -17,7 +17,7 @@
 (func $Display (import "DOM" "display") (param $x f32) (result i32))
     
     ;; Only allows one memory block in each module
-    (memory $tmp0000b 1)  
+    (memory $tmp00005 1)  
 
     ;; Memory data for string constant
     
@@ -25,7 +25,7 @@
     (global $global_i (mut i32) (i32.const 990))
 
     ;; Export memory block to Javascript 
-    (export "memory" (memory $tmp0000b)) 
+    (export "memory" (memory $tmp00005)) 
 
     (export "HelloWorld" (func $HelloWorld))
     (export "PoissonPDF" (func $PoissonPDF))
@@ -37,7 +37,7 @@
     (func $HelloWorld  (result i32)
         ;; Public Function HelloWorld() As char*
         
-    (return (i32.const 13))
+    (return (i32.const 1))
     )
     
     (func $PoissonPDF (param $k i32) (param $lambda f64) (result f64)
@@ -109,5 +109,13 @@
     (call $Display (get_local $x))
     (return (f64.convert_s/i32 (call $Add10 (i32.trunc_s/f32 (get_local $x)))))
     )
+
+    
+(func $MemorySizeOf (param $intPtr i32) (result i32)
+    
+    ;; pointer not found
+    (return (i32.const -1))
+)
+
 
 )

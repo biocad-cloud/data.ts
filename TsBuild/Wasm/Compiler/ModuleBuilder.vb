@@ -1,5 +1,4 @@
 ﻿Imports System.IO
-Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ApplicationServices.Development
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
@@ -62,6 +61,23 @@ Module ModuleBuilder
 
 {internal}
 
+    {MemorySizeOf(m.Memory)}
+
 )"
+    End Function
+
+    ''' <summary>
+    ''' The memory size helper function
+    ''' </summary>
+    ''' <param name="memory"></param>
+    ''' <returns></returns>
+    Public Function MemorySizeOf(memory As Memory) As String
+        Return $"
+(func ${NameOf(MemorySizeOf)} (param $intPtr i32) (result i32)
+    
+    ;; pointer not found
+    (return (i32.const -1))
+)
+"
     End Function
 End Module
