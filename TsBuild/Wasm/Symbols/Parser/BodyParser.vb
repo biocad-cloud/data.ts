@@ -95,7 +95,7 @@ Namespace Symbols.Parser
 
         <Extension>
         Public Function ValueAssign(assign As AssignmentStatementSyntax, symbols As SymbolTable) As Expression
-            Dim var = DirectCast(assign.Left, IdentifierNameSyntax).Identifier.ValueText
+            Dim var = DirectCast(assign.Left, IdentifierNameSyntax).objectName
             Dim left As Expression
             Dim right = assign.Right.ValueExpression(symbols)
             Dim typeL As String = symbols.GetUnderlyingType(var)

@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/14/2019 2:26:19 AM
+    ;; build: 4/14/2019 2:36:00 AM
 
     ;; imports must occur before all non-import definitions
 
@@ -74,6 +74,9 @@
 
 ;; String from 211 with 33 bytes in memory
 (data (i32.const 211) "Debug text message display below:\00")
+
+;; String from 245 with 56 bytes in memory
+(data (i32.const 245) "Try to display an error message on javascript console...\00")
     
     (global $helloWorld (mut i32) (i32.const 1))
 
@@ -104,5 +107,6 @@
     (call $log (i32.const 211))
     (call $warn (get_global $note))
     (call $info (get_global $note2))
+    (call $error (i32.const 245))
     (return (i32.const 0))
     ))

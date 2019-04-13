@@ -1,46 +1,46 @@
 ﻿#Region "Microsoft.VisualBasic::312ea86adbdb926e29f152f8b6f7eb8b, Symbols\Parser\ExpressionParser.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    '     Module ExpressionParse
-    ' 
-    '         Function: [Select], (+2 Overloads) BinaryStack, ConstantExpression, FunctionInvoke, ParenthesizedStack
-    '                   ReferVariable, UnaryExpression, ValueExpression
-    ' 
-    ' 
-    ' /********************************************************************************/
+'     Module ExpressionParse
+' 
+'         Function: [Select], (+2 Overloads) BinaryStack, ConstantExpression, FunctionInvoke, ParenthesizedStack
+'                   ReferVariable, UnaryExpression, ValueExpression
+' 
+' 
+' /********************************************************************************/
 
 #End Region
 
@@ -110,9 +110,9 @@ Namespace Symbols.Parser
             ' 得到被调用的目标函数的名称符号
             Select Case reference.GetType
                 Case GetType(SimpleNameSyntax)
-                    funcName = DirectCast(reference, SimpleNameSyntax).Identifier.Text
+                    funcName = DirectCast(reference, SimpleNameSyntax).objectName
                 Case GetType(IdentifierNameSyntax)
-                    funcName = DirectCast(reference, IdentifierNameSyntax).Identifier.Text
+                    funcName = DirectCast(reference, IdentifierNameSyntax).objectName
                 Case Else
                     Throw New NotImplementedException(reference.GetType.FullName)
             End Select
@@ -137,7 +137,7 @@ Namespace Symbols.Parser
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         <Extension>
         Public Function ReferVariable(name As IdentifierNameSyntax, symbols As SymbolTable) As Expression
-            Dim var As String = name.Identifier.ValueText
+            Dim var As String = name.objectName
 
             If symbols.IsLocal(var) Then
                 Return New GetLocalVariable With {

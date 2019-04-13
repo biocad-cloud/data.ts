@@ -167,7 +167,7 @@ Namespace Symbols
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetFunctionSymbol(name As String) As FuncSignature
-            Return functionList(name.Trim("$"c))
+            Return functionList(name.Trim("$"c, "["c, "]"c))
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>

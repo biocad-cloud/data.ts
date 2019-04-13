@@ -108,4 +108,14 @@ Public Module Extensions
     Friend Function param(a As NamedValue(Of String)) As String
         Return $"(param ${a.Name} {typefit(a.Value)})"
     End Function
+
+    <Extension>
+    Friend Function objectName(name As IdentifierNameSyntax) As String
+        Return name.Identifier.ValueText.Trim("["c, "]"c)
+    End Function
+
+    <Extension>
+    Friend Function objectName(name As SimpleNameSyntax) As String
+        Return name.Identifier.ValueText.Trim("["c, "]"c)
+    End Function
 End Module

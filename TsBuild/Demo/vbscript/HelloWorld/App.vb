@@ -55,6 +55,7 @@ Public Module App
 
         Call warn(note)
         Call info(note2)
+        Call [error]("Try to display an error message on javascript console...")
 
         Return 0
     End Function
