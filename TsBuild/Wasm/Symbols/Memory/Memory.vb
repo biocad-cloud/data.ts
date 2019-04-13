@@ -47,6 +47,7 @@
 
 #End Region
 
+Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Language
 
 Namespace Symbols
@@ -93,6 +94,18 @@ Namespace Symbols
         Dim offset As Integer = 1
 
         ''' <summary>
+        ''' [<see cref="MemoryPtr.Location"/> => <see cref="MemoryPtr"/>]
+        ''' </summary>
+        Dim pointers As New Dictionary(Of String, MemoryPtr)
+
+        Default Public ReadOnly Property GetPtr(location As Integer) As MemoryPtr
+            <MethodImpl(MethodImplOptions.AggressiveInlining)>
+            Get
+                Return pointers(location.ToString)
+            End Get
+        End Property
+
+        ''' <summary>
         ''' 函数返回的是数据的内存位置
         ''' </summary>
         ''' <param name="str"></param>
@@ -119,6 +132,7 @@ Namespace Symbols
             buffer += ptr
             offset += 8
             ptr.Location = p
+            pointers(p.ToString) = ptr
 
             Return p
         End Function
