@@ -12,7 +12,13 @@
         var FlipCoin = math.instance.exports.FlipCoin;
 		var i = math.instance.exports.GetGlobal;
 		var HtmlTest = math.instance.exports.HtmlTest;
+		var HelloWorld = math.instance.exports.HelloWorld;
+		var stream = new TypeScript.stringReader(math); 
 		
+		console.log("WebAssembly string value output:");
+		console.log(stream.readText(HelloWorld()));
+		
+		console.log("WebAssembly math function test:");		
 		console.log(Math.random());
 		console.log(FlipCoin());
 		console.log(i());
@@ -23,6 +29,8 @@
         console.log(PoissonPDF(5, 2.0));
 		
 		console.log(HtmlTest(5));
+		
+		console.log("=============== End =================");
 		
     }, {DOM: DOM});
 	
