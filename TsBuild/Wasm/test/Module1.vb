@@ -75,7 +75,7 @@ Module treeTest
 
         Call documentApitest()
 
-        Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")
+        '  Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")
         ' Call Wasm.CompileWast("..\Demo\new_test.wast", "..\Demo\new_test.wast")
 
         Pause()

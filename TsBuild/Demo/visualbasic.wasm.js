@@ -15,15 +15,10 @@ var __extends = (this && this.__extends) || (function () {
 var WebAssembly;
 (function (WebAssembly) {
     var Document = /** @class */ (function () {
-        function Document(lazyWasm) {
-            this.lazyWasm = lazyWasm;
+        function Document(bytes) {
             this.hashTable = {};
+            this.streamReader = new TypeScript.stringReader(bytes);
         }
-        Document.prototype.hook = function () {
-            var assembly = this.lazyWasm();
-            this.streamReader = new TypeScript.stringReader(assembly);
-            return this;
-        };
         Document.prototype.getElementById = function (id) {
             var idText = this.streamReader.readText(id);
             var node = window.document.getElementById(idText);
@@ -73,7 +68,7 @@ var TypeScript;
                 }
             };
             var api = opts.api || { document: false };
-            var host = new TypeScript.api();
+            var host = new TypeScript.api(byteBuffer);
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = window.Math;
             if (typeof opts.imports == "object") {
@@ -101,26 +96,15 @@ var TypeScript;
                     console.log("Load external WebAssembly module success!");
                     console.log(wasm);
                 }
-                opts.run(host.hook(wasm));
+                opts.run(wasm);
             });
         }
         Wasm.RunAssembly = RunAssembly;
     })(Wasm = TypeScript.Wasm || (TypeScript.Wasm = {}));
     var api = /** @class */ (function () {
-        function api() {
-            this.vm = this;
-            this.document = api.getDocumentApi(this.vm);
+        function api(bytechunks) {
+            this.document = new WebAssembly.Document(bytechunks);
         }
-        api.getDocumentApi = function (vm) {
-            return new WebAssembly.Document(function () {
-                return vm.wasm;
-            });
-        };
-        api.prototype.hook = function (wasm) {
-            this.wasm = wasm;
-            this.document.hook();
-            return wasm;
-        };
         return api;
     }());
     TypeScript.api = api;
@@ -128,12 +112,14 @@ var TypeScript;
 var TypeScript;
 (function (TypeScript) {
     var memoryReader = /** @class */ (function () {
-        function memoryReader(wasm) {
-            this.sizeOf = wasm.instance.exports.MemorySizeOf;
-            if (wasm.instance.exports.memory) {
-                this.buffer = wasm.instance.exports.memory.buffer;
-            }
+        function memoryReader(bytechunks) {
+            this.buffer = bytechunks.buffer;
         }
+        memoryReader.prototype.sizeOf = function (intPtr) {
+            var buffer = new Uint8Array(this.buffer, intPtr);
+            var size = buffer.findIndex(function (b) { return b == 0; });
+            return size;
+        };
         return memoryReader;
     }());
     TypeScript.memoryReader = memoryReader;
@@ -142,13 +128,9 @@ var TypeScript;
         /**
          * @param memory The memory buffer
         */
-        function stringReader(wasm, memory) {
-            if (memory === void 0) { memory = null; }
-            var _this = _super.call(this, wasm) || this;
+        function stringReader(memory) {
+            var _this = _super.call(this, memory) || this;
             _this.decoder = new TextDecoder();
-            if (memory) {
-                _this.buffer = memory.buffer;
-            }
             return _this;
         }
         /**
