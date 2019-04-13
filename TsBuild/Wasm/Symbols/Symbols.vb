@@ -301,7 +301,7 @@ Namespace Symbols
     Public Class DeclareGlobal : Inherits DeclareVariable
 
         Public Overrides Function ToSExpression() As String
-            Return $"(global ${name} (mut {type}) {init.ToSExpression})"
+            Return $"(global ${name} (mut {typefit(type)}) {init.ToSExpression})"
         End Function
     End Class
 
