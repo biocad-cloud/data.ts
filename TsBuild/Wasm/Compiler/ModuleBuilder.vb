@@ -32,7 +32,6 @@ Module ModuleBuilder
 
         Dim wasmSummary As AssemblyInfo = GetType(ModuleSymbol).GetAssemblyDetails
         Dim buildTime$ = File.GetLastWriteTime(GetType(ModuleSymbol).Assembly.Location)
-        Dim memoryDev$ = "X" & CInt(200 + VBMath.Rnd() * 512).ToHexString
         Dim stringsData$ = m.Memory _
             .Where(Function(oftype) TypeOf oftype Is StringSymbol) _
             .Select(Function(s) s.ToSExpression) _
@@ -52,15 +51,12 @@ Module ModuleBuilder
     {import}
     
     ;; Only allows one memory block in each module
-    (memory ${memoryDev} 1)  
+    (memory (import ""env"" ""bytechunks"") 1)
 
     ;; Memory data for string constant
     {stringsData}
     
     {globals}
-
-    ;; Export memory block to Javascript 
-    (export ""memory"" (memory ${memoryDev})) 
 
     {m.Exports.JoinBy(ASCII.LF & "    ")} 
 

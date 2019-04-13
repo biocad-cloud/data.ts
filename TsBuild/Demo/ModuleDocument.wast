@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 8:20:00 PM
+    ;; build: 4/13/2019 8:46:18 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -15,7 +15,7 @@
 (func $WriteText (import "document" "writeElementText") (param $dom i32) (param $text i32) (result i32))
     
     ;; Only allows one memory block in each module
-    (memory $Xf1010000 1)  
+    (memory (import "env" "bytechunks") 1)
 
     ;; Memory data for string constant
     
@@ -26,9 +26,6 @@
 (data (i32.const 13) "text")
     
     
-
-    ;; Export memory block to Javascript 
-    (export "memory" (memory $Xf1010000)) 
 
     (export "sayHello" (func $sayHello)) 
 
