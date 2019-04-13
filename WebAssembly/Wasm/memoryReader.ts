@@ -7,7 +7,10 @@
 
         public constructor(wasm: IWasm) {
             this.sizeOf = wasm.instance.exports.MemorySizeOf;
-            this.buffer = wasm.instance.exports.memory.buffer;
+
+            if (wasm.instance.exports.memory) {
+                this.buffer = wasm.instance.exports.memory.buffer;
+            }
         }
     }
 

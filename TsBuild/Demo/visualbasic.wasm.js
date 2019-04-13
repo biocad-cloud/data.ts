@@ -23,8 +23,8 @@ var WebAssembly;
                 this.streamReader = new TypeScript.stringReader(wasm);
             }
         }
-        Document.prototype.hook = function (assembly) {
-            this.streamReader = new TypeScript.stringReader(assembly);
+        Document.prototype.hook = function (memory, assembly) {
+            this.streamReader = new TypeScript.stringReader(assembly, memory);
             this.wasm = assembly;
             return this;
         };
@@ -105,7 +105,7 @@ var TypeScript;
                     console.log(wasm);
                 }
                 if (api.document) {
-                    dependencies["document"].hook(wasm);
+                    dependencies["document"].hook(byteBuffer, wasm);
                 }
                 opts.run(wasm);
             });
@@ -118,7 +118,9 @@ var TypeScript;
     var memoryReader = /** @class */ (function () {
         function memoryReader(wasm) {
             this.sizeOf = wasm.instance.exports.MemorySizeOf;
-            this.buffer = wasm.instance.exports.memory.buffer;
+            if (wasm.instance.exports.memory) {
+                this.buffer = wasm.instance.exports.memory.buffer;
+            }
         }
         return memoryReader;
     }());
@@ -128,9 +130,13 @@ var TypeScript;
         /**
          * @param memory The memory buffer
         */
-        function stringReader(wasm) {
+        function stringReader(wasm, memory) {
+            if (memory === void 0) { memory = null; }
             var _this = _super.call(this, wasm) || this;
             _this.decoder = new TextDecoder();
+            if (memory) {
+                _this.buffer = memory.buffer;
+            }
             return _this;
         }
         /**
