@@ -1,4 +1,56 @@
-﻿Imports System.Runtime.CompilerServices
+﻿#Region "Microsoft.VisualBasic::874601e48840a08a1eb384e9ef9de7cb, Symbols\SymbolTable.vb"
+
+    ' Author:
+    ' 
+    '       xieguigang (I@xieguigang.me)
+    ' 
+    ' Copyright (c) 2019 GCModeller Cloud Platform
+    ' 
+    ' 
+    ' MIT License
+    ' 
+    ' 
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy
+    ' of this software and associated documentation files (the "Software"), to deal
+    ' in the Software without restriction, including without limitation the rights
+    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    ' copies of the Software, and to permit persons to whom the Software is
+    ' furnished to do so, subject to the following conditions:
+    ' 
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
+    ' 
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    ' SOFTWARE.
+
+
+
+    ' /********************************************************************************/
+
+    ' Summaries:
+
+    '     Class SymbolTable
+    ' 
+    '         Properties: CurrentSymbol, NextGuid
+    ' 
+    '         Constructor: (+1 Overloads) Sub New
+    ' 
+    '         Function: GetAllGlobals, GetAllImports, GetAllLocals, GetFunctionSymbol, GetGlobal
+    '                   GetObjectSymbol, GetUnderlyingType, IsLocal
+    ' 
+    '         Sub: AddGlobal, AddImports, (+2 Overloads) AddLocal, ClearLocals
+    ' 
+    ' 
+    ' /********************************************************************************/
+
+#End Region
+
+Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
@@ -18,6 +70,12 @@ Namespace Symbols
         ''' [name => type]
         ''' </summary>
         Dim globals As New Dictionary(Of String, DeclareGlobal)
+
+        ''' <summary>
+        ''' 这个内存对象是全局范围内的
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property memory As New Memory
 
         ''' <summary>
         ''' 当前所进行解析的函数的名称
@@ -43,6 +101,12 @@ Namespace Symbols
                         .Parameters = method.ParseParameters
                     }
                 End With
+            Next
+        End Sub
+
+        Friend Sub New(ParamArray locals As DeclareLocal())
+            For Each var As DeclareLocal In locals
+                Call AddLocal(var)
             Next
         End Sub
 
@@ -110,5 +174,18 @@ Namespace Symbols
         Public Function GetObjectSymbol(name As String) As DeclareLocal
             Return locals(name.Trim("$"c))
         End Function
+
+        Public Function GetUnderlyingType(name As String) As String
+            If IsLocal(name) Then
+                Return GetObjectSymbol(name).type
+            Else
+                Return GetGlobal(name)
+            End If
+        End Function
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Public Shared Narrowing Operator CType(symbols As SymbolTable) As Memory
+            Return symbols.memory
+        End Operator
     End Class
 End Namespace

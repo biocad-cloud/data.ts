@@ -1,16 +1,80 @@
-﻿Imports Wasm
+﻿#Region "Microsoft.VisualBasic::2939c2bb7491e2b771c3c0e54dbc9ba6, test\Module1.vb"
+
+    ' Author:
+    ' 
+    '       xieguigang (I@xieguigang.me)
+    ' 
+    ' Copyright (c) 2019 GCModeller Cloud Platform
+    ' 
+    ' 
+    ' MIT License
+    ' 
+    ' 
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy
+    ' of this software and associated documentation files (the "Software"), to deal
+    ' in the Software without restriction, including without limitation the rights
+    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    ' copies of the Software, and to permit persons to whom the Software is
+    ' furnished to do so, subject to the following conditions:
+    ' 
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
+    ' 
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    ' SOFTWARE.
+
+
+
+    ' /********************************************************************************/
+
+    ' Summaries:
+
+    ' Module treeTest
+    ' 
+    '     Sub: Main
+    ' 
+    ' Module Test
+    ' 
+    '     Sub: declareTest, forlooptest, globalTest, testDemo
+    ' 
+    '  
+    ' 
+    '     Sub: IfTest
+    ' 
+    '  
+    ' 
+    ' 
+    ' 
+    ' /********************************************************************************/
+
+#End Region
+
+Imports Wasm
 Imports Wasm.Symbols
 
 Module treeTest
 
     Sub Main()
 
-        'Call forlooptest()
+
+        ' Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")
+        ' Call Wasm.CompileWast("..\Demo\new_test.wast", "..\Demo\new_test.wast")
+
+        ' Pause()
+
+        ' Call forlooptest()
 
         ' Call declareTest()
         ' Call globalTest()
         ' Call IfTest()
         Call testDemo()
+
+        Pause()
 
         Dim code = "Module Main
 
@@ -47,9 +111,14 @@ End Module"
     End Sub
 
     Sub forlooptest()
-        Dim moduleMain As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.vb")
+        Dim moduletest As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.vb")
 
-        Console.WriteLine(moduleMain.ToSExpression)
+        Console.WriteLine(moduletest.ToSExpression)
+        moduletest.Compile("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.wasm")
+        moduletest.ToSExpression.SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.wast")
+        moduletest.HexDump(True).SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.dmp")
+
+        Call Console.WriteLine(Global.test.ForLoopTest.forloop)
 
         Pause()
     End Sub
@@ -63,13 +132,13 @@ End Module"
     End Sub
 
     Sub testDemo()
-        Dim moduletest = Wasm.CreateModule("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF\Math.vb")
+        Dim moduletest = Wasm.CreateModule("..\Demo\PoissonPDF\Math.vb")
 
         Console.WriteLine(moduletest.ToSExpression)
 
-        moduletest.Compile("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wasm")
-        moduletest.ToSExpression.SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.wast")
-        moduletest.HexDump(True).SaveTo("D:\GCModeller-Cloud\php\modules\Linq\TsBuild\Demo\PoissonPDF.dmp")
+        moduletest.Compile("..\Demo\PoissonPDF.wasm")
+        moduletest.ToSExpression.SaveTo("..\Demo\PoissonPDF.wast")
+        moduletest.HexDump(True).SaveTo("..\Demo\PoissonPDF.dmp")
 
         Pause()
     End Sub
@@ -130,3 +199,4 @@ End Module"
     End Sub
 
 End Module
+

@@ -1,4 +1,50 @@
-﻿Imports System.Runtime.CompilerServices
+﻿#Region "Microsoft.VisualBasic::ef403cf74b1e9298c2e2f99e977371bc, Symbols\Parser\BodyParser.vb"
+
+    ' Author:
+    ' 
+    '       xieguigang (I@xieguigang.me)
+    ' 
+    ' Copyright (c) 2019 GCModeller Cloud Platform
+    ' 
+    ' 
+    ' MIT License
+    ' 
+    ' 
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy
+    ' of this software and associated documentation files (the "Software"), to deal
+    ' in the Software without restriction, including without limitation the rights
+    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    ' copies of the Software, and to permit persons to whom the Software is
+    ' furnished to do so, subject to the following conditions:
+    ' 
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
+    ' 
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    ' SOFTWARE.
+
+
+
+    ' /********************************************************************************/
+
+    ' Summaries:
+
+    '     Module BodyParser
+    ' 
+    '         Function: GetInitialize, LocalDeclare, (+2 Overloads) ParseDeclarator, ParseExpression, ValueAssign
+    '                   ValueReturn
+    ' 
+    ' 
+    ' /********************************************************************************/
+
+#End Region
+
+Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.Language
 
@@ -24,6 +70,8 @@ Namespace Symbols.Parser
                     Return DirectCast(statement, MultiLineIfBlockSyntax).IfBlock(symbols)
                 Case GetType(ForBlockSyntax)
                     Return DirectCast(statement, ForBlockSyntax).ForLoop(symbols).ToArray
+                Case GetType(CallStatementSyntax)
+                    Return DirectCast(statement, CallStatementSyntax).Invocation.ValueExpression(symbols)
                 Case Else
                     Throw New NotImplementedException(statement.GetType.FullName)
             End Select
@@ -32,7 +80,9 @@ Namespace Symbols.Parser
         <Extension>
         Public Function ValueReturn(returnValue As ReturnStatementSyntax, symbols As SymbolTable) As Expression
             Dim value As Expression = returnValue.Expression.ValueExpression(symbols)
-            Dim returnType = symbols.GetFunctionSymbol(symbols.CurrentSymbol).Result
+            Dim returnType As String = symbols _
+                .GetFunctionSymbol(symbols.CurrentSymbol) _
+                .Result
 
             value = Types.CType(returnType, value, symbols)
 
@@ -44,29 +94,45 @@ Namespace Symbols.Parser
         <Extension>
         Public Function ValueAssign(assign As AssignmentStatementSyntax, symbols As SymbolTable) As Expression
             Dim var = DirectCast(assign.Left, IdentifierNameSyntax).Identifier.ValueText
+            Dim left As Expression
             Dim right = assign.Right.ValueExpression(symbols)
-            Dim typeL As String = symbols.GetObjectSymbol(var).type
+            Dim typeL As String = symbols.GetUnderlyingType(var)
             Dim op$ = assign.OperatorToken.ValueText
+
+            If symbols.IsLocal(var) Then
+                left = New GetLocalVariable(var)
+            Else
+                left = New GetGlobalVariable(var)
+            End If
 
             Select Case op
                 Case "*="
-                    right = BinaryStack(New GetLocalVariable(var), right, "*", symbols)
+                    right = BinaryStack(left, right, "*", symbols)
                 Case "+="
-                    right = BinaryStack(New GetLocalVariable(var), right, "+", symbols)
+                    right = BinaryStack(left, right, "+", symbols)
                 Case "-="
-                    right = BinaryStack(New GetLocalVariable(var), right, "-", symbols)
+                    right = BinaryStack(left, right, "-", symbols)
                 Case "/="
-                    right = BinaryStack(New GetLocalVariable(var), right, "/", symbols)
+                    right = BinaryStack(left, right, "/", symbols)
                 Case "="
                     ' do nothing
                 Case Else
                     Throw New NotImplementedException
             End Select
 
-            Return New SetLocalVariable With {
-                .var = var,
-                .value = Types.CType(typeL, right, symbols)
-            }
+            Dim valueRight = Types.CType(typeL, right, symbols)
+
+            If symbols.IsLocal(var) Then
+                Return New SetLocalVariable With {
+                    .var = var,
+                    .value = valueRight
+                }
+            Else
+                Return New SetGlobalVariable With {
+                    .var = var,
+                    .value = valueRight
+                }
+            End If
         End Function
 
         ''' <summary>
@@ -144,7 +210,7 @@ Namespace Symbols.Parser
                     Return val.ValueExpression(symbols)
                 Else
                     With DirectCast(val, LiteralExpressionSyntax)
-                        Return .ConstantExpression(type)
+                        Return .ConstantExpression(type, symbols)
                     End With
                 End If
             ElseIf TypeOf val Is UnaryExpressionSyntax Then
@@ -154,7 +220,7 @@ Namespace Symbols.Parser
                 Dim right As LiteralExpression
 
                 With DirectCast(unary.Operand, LiteralExpressionSyntax)
-                    right = .ConstantExpression(type)
+                    right = .ConstantExpression(type, symbols)
                     right.value = op & right.value
                 End With
 

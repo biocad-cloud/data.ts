@@ -1,4 +1,50 @@
-﻿Imports System.Runtime.CompilerServices
+﻿#Region "Microsoft.VisualBasic::a4ea6539548463815243aa5327fdf126, Symbols\Parser\ExpressionParser.vb"
+
+    ' Author:
+    ' 
+    '       xieguigang (I@xieguigang.me)
+    ' 
+    ' Copyright (c) 2019 GCModeller Cloud Platform
+    ' 
+    ' 
+    ' MIT License
+    ' 
+    ' 
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy
+    ' of this software and associated documentation files (the "Software"), to deal
+    ' in the Software without restriction, including without limitation the rights
+    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    ' copies of the Software, and to permit persons to whom the Software is
+    ' furnished to do so, subject to the following conditions:
+    ' 
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
+    ' 
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    ' SOFTWARE.
+
+
+
+    ' /********************************************************************************/
+
+    ' Summaries:
+
+    '     Module ExpressionParse
+    ' 
+    '         Function: [Select], (+2 Overloads) BinaryStack, ConstantExpression, FunctionInvoke, ParenthesizedStack
+    '                   ReferVariable, UnaryExpression, ValueExpression
+    ' 
+    ' 
+    ' /********************************************************************************/
+
+#End Region
+
+Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
@@ -15,9 +61,9 @@ Namespace Symbols.Parser
                 Case GetType(ParenthesizedExpressionSyntax)
                     Return DirectCast(value, ParenthesizedExpressionSyntax).ParenthesizedStack(symbols)
                 Case GetType(LiteralExpressionSyntax)
-                    Return DirectCast(value, LiteralExpressionSyntax).ConstantExpression(Nothing)
+                    Return DirectCast(value, LiteralExpressionSyntax).ConstantExpression(Nothing, symbols)
                 Case GetType(IdentifierNameSyntax)
-                    Return DirectCast(value, IdentifierNameSyntax).ReferVariable
+                    Return DirectCast(value, IdentifierNameSyntax).ReferVariable(symbols)
                 Case GetType(InvocationExpressionSyntax)
                     Return DirectCast(value, InvocationExpressionSyntax).FunctionInvoke(symbols)
                 Case GetType(UnaryExpressionSyntax)
@@ -90,19 +136,40 @@ Namespace Symbols.Parser
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         <Extension>
-        Public Function ReferVariable(name As IdentifierNameSyntax) As Expression
-            Return New GetLocalVariable With {
-                .var = name.Identifier.ValueText
-            }
+        Public Function ReferVariable(name As IdentifierNameSyntax, symbols As SymbolTable) As Expression
+            Dim var As String = name.Identifier.ValueText
+
+            If symbols.IsLocal(var) Then
+                Return New GetLocalVariable With {
+                    .var = var
+                }
+            Else
+                Return New GetGlobalVariable With {
+                    .var = var
+                }
+            End If
         End Function
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="[const]"></param>
+        ''' <param name="wasmType"></param>
+        ''' <param name="memory">内存设备</param>
+        ''' <returns></returns>
         <Extension>
-        Public Function ConstantExpression([const] As LiteralExpressionSyntax, wasmType$) As Expression
-            Dim value = [const].Token.Value
+        Public Function ConstantExpression([const] As LiteralExpressionSyntax, wasmType$, memory As Memory) As Expression
+            Dim value As Object = [const].Token.Value
             Dim type As Type = value.GetType
 
-            If wasmType.StringEmpty Then
-                wasmType = Types.Convert2Wasm(type)
+            If type Is GetType(String) Then
+                ' 是字符串类型，需要做额外的处理
+                value = memory.AddString(value)
+                wasmType = "i32"
+            Else
+                If wasmType.StringEmpty Then
+                    wasmType = Types.Convert2Wasm(type)
+                End If
             End If
 
             Return New LiteralExpression With {

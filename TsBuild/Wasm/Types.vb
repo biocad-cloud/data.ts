@@ -1,4 +1,51 @@
-﻿Imports System.Runtime.CompilerServices
+﻿#Region "Microsoft.VisualBasic::952b5203f4913262be47794cda2350ae, Types.vb"
+
+    ' Author:
+    ' 
+    '       xieguigang (I@xieguigang.me)
+    ' 
+    ' Copyright (c) 2019 GCModeller Cloud Platform
+    ' 
+    ' 
+    ' MIT License
+    ' 
+    ' 
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy
+    ' of this software and associated documentation files (the "Software"), to deal
+    ' in the Software without restriction, including without limitation the rights
+    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    ' copies of the Software, and to permit persons to whom the Software is
+    ' furnished to do so, subject to the following conditions:
+    ' 
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
+    ' 
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    ' SOFTWARE.
+
+
+
+    ' /********************************************************************************/
+
+    ' Summaries:
+
+    ' Class Types
+    ' 
+    '     Properties: Convert2Wasm, Operators, Orders
+    ' 
+    '     Function: [CDbl], [CInt], [CLng], [CSng], [CType]
+    '               Compares, CTypeInvoke, IsInteger, TypeCharWasm
+    ' 
+    ' /********************************************************************************/
+
+#End Region
+
+Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 Imports Wasm.Symbols
@@ -11,6 +58,8 @@ Public Class Types
 
     Public Shared ReadOnly Property Orders As String() = {"i32", "f32", "i64", "f64"}
 
+    Public Const stringType$ = "char*"
+
     ''' <summary>
     ''' Webassembly之中，逻辑值是一个32位整型数
     ''' </summary>
@@ -20,7 +69,8 @@ Public Class Types
         {GetType(Integer), "i32"},
         {GetType(Long), "i64"},
         {GetType(Single), "f32"},
-        {GetType(Double), "f64"}
+        {GetType(Double), "f64"},
+        {GetType(String), stringType}  ' 实际上这是一个integer类型
     }
 
     Public Shared ReadOnly Property Operators As New Dictionary(Of String, String) From {
@@ -81,6 +131,12 @@ Public Class Types
     ''' <param name="left"></param>
     ''' <returns></returns>
     Public Shared Function [CType](left As String, right As Expression, symbols As SymbolTable) As Expression
+        If left = right.TypeInfer(symbols) Then
+            Return right
+        ElseIf left = stringType AndAlso right.TypeInfer(symbols) = "i32" Then
+            Return right
+        End If
+
         Select Case left
             Case "i32"
                 Return Types.CInt(right, symbols)

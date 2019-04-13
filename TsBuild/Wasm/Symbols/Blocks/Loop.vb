@@ -1,4 +1,76 @@
-﻿Imports System.Runtime.CompilerServices
+﻿#Region "Microsoft.VisualBasic::9f6a4a82f9bb5aaf1b41065521847d9c, Symbols\Blocks\Loop.vb"
+
+    ' Author:
+    ' 
+    '       xieguigang (I@xieguigang.me)
+    ' 
+    ' Copyright (c) 2019 GCModeller Cloud Platform
+    ' 
+    ' 
+    ' MIT License
+    ' 
+    ' 
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy
+    ' of this software and associated documentation files (the "Software"), to deal
+    ' in the Software without restriction, including without limitation the rights
+    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    ' copies of the Software, and to permit persons to whom the Software is
+    ' furnished to do so, subject to the following conditions:
+    ' 
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
+    ' 
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    ' SOFTWARE.
+
+
+
+    ' /********************************************************************************/
+
+    ' Summaries:
+
+    '     Class AbstractBlock
+    ' 
+    '         Properties: Guid
+    ' 
+    '         Function: GetDeclareLocals
+    ' 
+    '     Class Block
+    ' 
+    '         Properties: Internal
+    ' 
+    '         Function: InternalBlock
+    ' 
+    '     Class [Loop]
+    ' 
+    '         Properties: LoopID
+    ' 
+    '         Function: ToSExpression, TypeInfer
+    ' 
+    '     Class br
+    ' 
+    '         Properties: BlockLabel
+    ' 
+    '         Function: ToSExpression, TypeInfer
+    ' 
+    '     Class br_if
+    ' 
+    '         Properties: Condition
+    ' 
+    '         Function: ToSExpression, TypeInfer
+    ' 
+    ' 
+    ' /********************************************************************************/
+
+#End Region
+
+Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
 Imports Wasm.Symbols.Parser
 
@@ -28,6 +100,7 @@ Namespace Symbols.Blocks
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Shared Function InternalBlock(block As IEnumerable(Of Expression), indent As String) As String
             Return block _
+                .SafeQuery _
                 .Select(Function(line) indent & line.ToSExpression) _
                 .JoinBy(ASCII.LF)
         End Function

@@ -8,14 +8,14 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("ConsoleApp1")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("ConsoleApp1")>
-<Assembly: AssemblyCopyright("Copyright ©  2019")>
-<Assembly: AssemblyTrademark("")>
+<Assembly: AssemblyTitle("WebAssembly Compiler for Microsoft VisualBasic.NET")>
+<Assembly: AssemblyDescription("WebAssembly Compiler for Microsoft VisualBasic.NET")>
+<Assembly: AssemblyCompany("sciBASIC.NET")>
+<Assembly: AssemblyProduct("WASM.NET")>
+<Assembly: AssemblyCopyright("Copyright © sciBASIC.NET 2019")>
+<Assembly: AssemblyTrademark("sciBASIC.NET")>
 
-<Assembly: ComVisible(False)>
+<Assembly: ComVisible(True)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("94e68c2f-c19e-4803-a470-37275003a439")>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("1.0.7867.33")>
+<Assembly: AssemblyFileVersion("1.3.0.22")>

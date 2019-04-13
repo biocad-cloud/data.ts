@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::54148defd0aac2e0930e76e34fe1f9de, Symbols\Blocks\If.vb"
+﻿#Region "Microsoft.VisualBasic::c229a398fa00d971d863478d6921fa1f, Symbols\Memory\ArraySymbol.vb"
 
     ' Author:
     ' 
@@ -34,39 +34,18 @@
 
     ' Summaries:
 
-    '     Class IfBlock
+    '     Class ArraySymbol
     ' 
-    '         Properties: [Else], [Then], Condition
     ' 
-    '         Function: ToSExpression, TypeInfer
     ' 
     ' 
     ' /********************************************************************************/
 
 #End Region
 
-Namespace Symbols.Blocks
+Namespace Symbols
 
-    Public Class IfBlock : Inherits AbstractBlock
+    Public MustInherit Class ArraySymbol : Inherits Expression
 
-        Public Property Condition As BooleanSymbol
-        Public Property [Then] As Expression()
-        Public Property [Else] As Expression()
-
-        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return "void"
-        End Function
-
-        Public Overrides Function ToSExpression() As String
-            Return $"
-(if {Condition} 
-    (then
-        {Block.InternalBlock([Then], "        ")}
-    )
-    (else
-        {Block.InternalBlock([Else], "        ")}
-    )
-)"
-        End Function
     End Class
 End Namespace

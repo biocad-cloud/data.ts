@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::54148defd0aac2e0930e76e34fe1f9de, Symbols\Blocks\If.vb"
+﻿#Region "Microsoft.VisualBasic::00935de7f987a979aa66534af977f4e5, Symbols\Memory\StringSymbol.vb"
 
     ' Author:
     ' 
@@ -34,9 +34,9 @@
 
     ' Summaries:
 
-    '     Class IfBlock
+    '     Class StringSymbol
     ' 
-    '         Properties: [Else], [Then], Condition
+    '         Properties: [string], Length, ptr
     ' 
     '         Function: ToSExpression, TypeInfer
     ' 
@@ -45,28 +45,38 @@
 
 #End Region
 
-Namespace Symbols.Blocks
+Namespace Symbols
 
-    Public Class IfBlock : Inherits AbstractBlock
+    ''' <summary>
+    ''' 因为wasm不支持字符串，但是支持内存对象，所以字符串使用的是一个i32类型的内存地址来表示
+    ''' </summary>
+    Public Class StringSymbol : Inherits Expression
 
-        Public Property Condition As BooleanSymbol
-        Public Property [Then] As Expression()
-        Public Property [Else] As Expression()
+        Public Property [string] As String
+        Public Property MemoryPtr As Integer
+
+        Public ReadOnly Property Length As Integer
+            Get
+                Return Strings.Len([string])
+            End Get
+        End Property
+
+        Public Function SizeOf() As Expression
+            Return New LiteralExpression With {.type = "i32", .value = Length}
+        End Function
+
+        Public Function [AddressOf]() As Expression
+            Return New LiteralExpression With {.type = "i32", .value = MemoryPtr}
+        End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return "void"
+            Return "i32"
         End Function
 
         Public Overrides Function ToSExpression() As String
             Return $"
-(if {Condition} 
-    (then
-        {Block.InternalBlock([Then], "        ")}
-    )
-    (else
-        {Block.InternalBlock([Else], "        ")}
-    )
-)"
+;; {MemoryPtr - 4} is the string length
+(data (i32.const {MemoryPtr}) ""{[string]}"")"
         End Function
     End Class
 End Namespace
