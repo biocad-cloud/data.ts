@@ -15,17 +15,13 @@ var __extends = (this && this.__extends) || (function () {
 var WebAssembly;
 (function (WebAssembly) {
     var Document = /** @class */ (function () {
-        function Document(wasm) {
-            if (wasm === void 0) { wasm = null; }
-            this.wasm = wasm;
+        function Document(lazyWasm) {
+            this.lazyWasm = lazyWasm;
             this.hashTable = {};
-            if (wasm && typeof wasm != "undefined") {
-                this.streamReader = new TypeScript.stringReader(wasm);
-            }
         }
-        Document.prototype.hook = function (memory, assembly) {
-            this.streamReader = new TypeScript.stringReader(assembly, memory);
-            this.wasm = assembly;
+        Document.prototype.hook = function () {
+            var assembly = this.lazyWasm();
+            this.streamReader = new TypeScript.stringReader(assembly);
             return this;
         };
         Document.prototype.getElementById = function (id) {
@@ -77,6 +73,7 @@ var TypeScript;
                 }
             };
             var api = opts.api || { document: false };
+            var host = new TypeScript.api();
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = window.Math;
             if (typeof opts.imports == "object") {
@@ -85,7 +82,7 @@ var TypeScript;
                 }
             }
             if (api.document) {
-                dependencies["document"] = new WebAssembly.Document(null);
+                dependencies["document"] = host.document;
             }
             fetch(module)
                 .then(function (response) {
@@ -104,14 +101,29 @@ var TypeScript;
                     console.log("Load external WebAssembly module success!");
                     console.log(wasm);
                 }
-                if (api.document) {
-                    dependencies["document"].hook(byteBuffer, wasm);
-                }
-                opts.run(wasm);
+                opts.run(host.hook(wasm));
             });
         }
         Wasm.RunAssembly = RunAssembly;
     })(Wasm = TypeScript.Wasm || (TypeScript.Wasm = {}));
+    var api = /** @class */ (function () {
+        function api() {
+            this.vm = this;
+            this.document = api.getDocumentApi(this.vm);
+        }
+        api.getDocumentApi = function (vm) {
+            return new WebAssembly.Document(function () {
+                return vm.wasm;
+            });
+        };
+        api.prototype.hook = function (wasm) {
+            this.wasm = wasm;
+            this.document.hook();
+            return wasm;
+        };
+        return api;
+    }());
+    TypeScript.api = api;
 })(TypeScript || (TypeScript = {}));
 var TypeScript;
 (function (TypeScript) {

@@ -40,7 +40,7 @@
             }
 
             if (api.document) {
-                dependencies["document"] = host.document();
+                dependencies["document"] = host.document;
             }
 
             fetch(module)
@@ -68,10 +68,16 @@
     export class api {
 
         wasm: TypeScript.IWasm;
+        vm: api;
 
-        public document(): WebAssembly.Document {
-            let vm = this;
+        public constructor() {
+            this.vm = this;
+            this.document = api.getDocumentApi(this.vm);
+        }
 
+        public document: WebAssembly.Document;
+
+        private static getDocumentApi(vm: api): WebAssembly.Document {
             return new WebAssembly.Document(function () {
                 return vm.wasm;
             });
@@ -79,6 +85,8 @@
 
         public hook(wasm: TypeScript.IWasm): TypeScript.IWasm {
             this.wasm = wasm;
+            this.document.hook();
+
             return wasm;
         }
     }
