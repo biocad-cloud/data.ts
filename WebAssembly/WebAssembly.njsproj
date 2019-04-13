@@ -32,6 +32,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="API\document\document.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app.ts" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -40,6 +43,8 @@
     <TypeScriptCompile Include="Wasm\WebAssembly.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="API\document\" />
+    <Folder Include="API\" />
     <Folder Include="Wasm\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
