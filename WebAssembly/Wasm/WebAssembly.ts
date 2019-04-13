@@ -59,8 +59,9 @@
                 }
             }
 
+            WebAssembly.ObjectManager.load(byteBuffer);
+
             if (api.document) {
-                WebAssembly.Document.load(byteBuffer)
                 dependencies["document"] = WebAssembly.Document;
             }
 
