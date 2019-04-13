@@ -25,6 +25,7 @@
                 "env": {}
             };
 
+            // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = (<any>window).Math;
 
             if (typeof imports == "object") {
