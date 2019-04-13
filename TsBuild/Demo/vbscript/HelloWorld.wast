@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/13/2019 11:16:58 PM
+    ;; build: 4/14/2019 12:15:53 AM
 
     ;; imports must occur before all non-import definitions
 
@@ -64,11 +64,11 @@
 ;; String from 181 with 29 bytes in memory
 (data (i32.const 181) "font-size: 5em; color: green;\00")
     
-    (global $helloWorld (mut char*) (i32.const 1))
+    (global $helloWorld (mut i32) (i32.const 1))
 
-(global $note (mut char*) (i32.const 14))
+(global $note (mut i32) (i32.const 14))
 
-(global $note2 (mut char*) (i32.const 69))
+(global $note2 (mut i32) (i32.const 69))
 
     (export "RunApp" (func $RunApp)) 
 
