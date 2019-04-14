@@ -60,7 +60,7 @@ Namespace Symbols.Parser
         ''' <returns></returns>
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function typefit(type As String) As String
-            Return type Or "i32".When(type = Types.stringType)
+            Return type Or "i32".When((type Like Types.stringType) OrElse type = Types.booleanType)
         End Function
     End Module
 End Namespace
