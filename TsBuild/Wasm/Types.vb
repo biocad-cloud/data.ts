@@ -67,14 +67,13 @@ Public Class Types
     ''' </summary>
     ''' <returns></returns>
     Public Shared ReadOnly Property Convert2Wasm As New Dictionary(Of Type, String) From {
-        {GetType(Boolean), "i32"},   ' True = 1, False = 0
+        {GetType(Boolean), booleanType},   ' True = 1, False = 0, 逻辑值在webassembly之中也是一个i32整形数
         {GetType(Integer), "i32"},
         {GetType(Long), "i64"},
         {GetType(Single), "f32"},
         {GetType(Double), "f64"},
         {GetType(String), "char*"}, ' 实际上这是一个integer类型
-        {GetType(Char), "char"},
-        {GetType(Boolean), booleanType}  ' 逻辑值在webassembly之中也是一个i32整形数
+        {GetType(Char), "char"}
     }
 
     Public Shared ReadOnly Property Operators As New Dictionary(Of String, String) From {

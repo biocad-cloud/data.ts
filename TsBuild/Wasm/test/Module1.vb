@@ -80,6 +80,7 @@ Module treeTest
 
         ' Pause()
 
+        Call boolTest()
         ' Call forlooptest()
         Call enumTest()
         ' Call declareTest()
@@ -119,6 +120,17 @@ End Module"
         Dim hex = moduleMain.HexDump(verbose:=True)
 
         Call hex.SaveTo("X:\test.dmp")
+
+        Pause()
+    End Sub
+
+    Sub boolTest()
+        Dim moduletest As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.vb")
+
+        Console.WriteLine(moduletest.ToSExpression)
+        moduletest.Compile("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.wasm")
+        moduletest.ToSExpression.SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.wast")
+        moduletest.HexDump(True).SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.dmp")
 
         Pause()
     End Sub

@@ -144,6 +144,7 @@
     <Compile Include="DeclareTest.vb" />
     <Compile Include="ForLoopTest.vb" />
     <Compile Include="EnumTest.vb" />
+    <Compile Include="boolTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
