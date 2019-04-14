@@ -42,8 +42,9 @@
 
         function createBytes(opts: Config): TypeScript.WasmMemory {
             let page = opts.page || { init: 10, max: 2048 };
+            let config = { initial: page.init };
 
-            return new (<any>window).WebAssembly.Memory({ initial: page.init });
+            return new (<any>window).WebAssembly.Memory(config);
         }
 
         function ExecuteInternal(module: Uint8Array, opts: Config): IWasm {
@@ -72,7 +73,8 @@
                 text: true
             };
 
-            // imports the javascript math module for VisualBasic.NET module by default
+            // imports the javascript math module for VisualBasic.NET 
+            // module by default
             dependencies["Math"] = (<any>window).Math;
 
             if (typeof opts.imports == "object") {
