@@ -150,6 +150,8 @@ Namespace Symbols.Parser
             End If
         End Function
 
+
+
         ''' <summary>
         ''' 
         ''' </summary>
@@ -162,10 +164,13 @@ Namespace Symbols.Parser
             Dim value As Object = [const].Token.Value
             Dim type As Type = value.GetType
 
-            If type Is GetType(String) Then
+            If type Is GetType(String) OrElse type Is GetType(Char) Then
                 ' 是字符串类型，需要做额外的处理
                 value = memory.AddString(value)
                 wasmType = "i32"
+            ElseIf type Is GetType(Boolean) Then
+                wasmType = "i32"
+                value = If(DirectCast(value, Boolean), 1, 0)
             Else
                 If wasmType.StringEmpty Then
                     wasmType = Types.Convert2Wasm(type)
