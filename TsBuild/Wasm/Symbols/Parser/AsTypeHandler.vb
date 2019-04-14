@@ -84,10 +84,17 @@ Namespace Symbols.Parser
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetAsType([as] As SimpleAsClauseSyntax) As Type
-            Dim type = DirectCast([as].Type, PredefinedTypeSyntax)
-            Dim token$ = type.Keyword.ValueText
+            If TypeOf [as].Type Is PredefinedTypeSyntax Then
+                Dim type = DirectCast([as].Type, PredefinedTypeSyntax)
+                Dim token$ = type.Keyword.ValueText
 
-            Return Scripting.GetType(token)
+                Return Scripting.GetType(token)
+            Else
+                Dim type = DirectCast([as].Type, IdentifierNameSyntax)
+                Dim token$ = type.Identifier.Text
+
+                Throw New NotImplementedException(token)
+            End If
         End Function
     End Module
 End Namespace

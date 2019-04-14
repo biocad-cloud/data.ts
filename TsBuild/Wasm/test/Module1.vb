@@ -73,7 +73,7 @@ Module treeTest
 
     Sub Main()
 
-        Call documentApitest()
+        ' Call documentApitest()
 
         '  Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")
         ' Call Wasm.CompileWast("..\Demo\new_test.wast", "..\Demo\new_test.wast")
@@ -81,7 +81,7 @@ Module treeTest
         ' Pause()
 
         ' Call forlooptest()
-
+        Call enumTest()
         ' Call declareTest()
         ' Call globalTest()
         ' Call IfTest()
@@ -119,6 +119,19 @@ End Module"
         Dim hex = moduleMain.HexDump(verbose:=True)
 
         Call hex.SaveTo("X:\test.dmp")
+
+        Pause()
+    End Sub
+
+    Sub enumTest()
+        Dim moduletest As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.vb")
+
+        Console.WriteLine(moduletest.ToSExpression)
+        moduletest.Compile("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.wasm")
+        moduletest.ToSExpression.SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.wast")
+        moduletest.HexDump(True).SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.dmp")
+
+        Call Console.WriteLine(Global.test.ForLoopTest.forloop)
 
         Pause()
     End Sub
