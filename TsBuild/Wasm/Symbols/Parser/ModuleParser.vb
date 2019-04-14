@@ -60,6 +60,23 @@ Namespace Symbols.Parser
     Public Module ModuleParser
 
         ''' <summary>
+        ''' Only join module members functions
+        ''' </summary>
+        ''' <param name="symbols"></param>
+        ''' <param name="main"></param>
+        ''' <returns></returns>
+        <Extension>
+        Private Function Join(symbols As SymbolTable, main As ModuleBlockSyntax) As SymbolTable
+            Dim members = main.Members.OfType(Of MethodBlockSyntax)
+
+            If symbols Is Nothing Then
+                Return New SymbolTable(members)
+            Else
+                Return symbols.AddFunctionDeclares(members)
+            End If
+        End Function
+
+        ''' <summary>
         ''' This function have some limitations: 
         ''' 
         ''' 1. <paramref name="vbcode"/> should only have 1 module define in it and no class/strucutre was allowed.
@@ -68,13 +85,13 @@ Namespace Symbols.Parser
         ''' </summary>
         ''' <param name="vbcode">This parameter can be file path or file text content.</param>
         ''' <returns></returns>
-        Public Function CreateModule(vbcode As [Variant](Of FileInfo, String)) As ModuleSymbol
+        Public Function CreateModule(vbcode As [Variant](Of FileInfo, String), Optional symbols As SymbolTable = Nothing) As ModuleSymbol
             Dim tree As SyntaxTree = VisualBasicSyntaxTree.ParseText(vbcode.SolveStream)
             Dim root As CompilationUnitSyntax = tree.GetRoot
             Dim main As ModuleBlockSyntax = root.Members(Scan0)
             Dim functions As New List(Of FuncSymbol)
             Dim exports As New List(Of ExportSymbolExpression)
-            Dim symbolTable As New SymbolTable(main.Members.OfType(Of MethodBlockSyntax))
+            Dim symbolTable As SymbolTable = symbols.Join(main)
             Dim moduleName$ = main.ModuleStatement.Identifier.Text
 
             ' 添加declare导入

@@ -1,52 +1,52 @@
 ﻿#Region "Microsoft.VisualBasic::23468f705220afd2e1af796fe90e7695, Symbols\SymbolTable.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    '     Class SymbolTable
-    ' 
-    '         Properties: CurrentSymbol, memory, NextGuid
-    ' 
-    '         Constructor: (+2 Overloads) Sub New
-    ' 
-    '         Function: GetAllGlobals, GetAllImports, GetAllLocals, GetFunctionSymbol, GetGlobal
-    '                   GetObjectSymbol, GetUnderlyingType, IsLocal
-    ' 
-    '         Sub: AddGlobal, AddImports, (+2 Overloads) AddLocal, ClearLocals
-    ' 
-    ' 
-    ' /********************************************************************************/
+'     Class SymbolTable
+' 
+'         Properties: CurrentSymbol, memory, NextGuid
+' 
+'         Constructor: (+2 Overloads) Sub New
+' 
+'         Function: GetAllGlobals, GetAllImports, GetAllLocals, GetFunctionSymbol, GetGlobal
+'                   GetObjectSymbol, GetUnderlyingType, IsLocal
+' 
+'         Sub: AddGlobal, AddImports, (+2 Overloads) AddLocal, ClearLocals
+' 
+' 
+' /********************************************************************************/
 
 #End Region
 
@@ -94,14 +94,9 @@ Namespace Symbols
             End Get
         End Property
 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Sub New(methods As IEnumerable(Of MethodBlockSyntax))
-            For Each method In methods
-                With method.FuncVariable
-                    functionList(.Name) = New FuncSignature(.ByRef) With {
-                        .Parameters = method.ParseParameters
-                    }
-                End With
-            Next
+            Call AddFunctionDeclares(methods)
         End Sub
 
         Friend Sub New(ParamArray locals As DeclareLocal())
@@ -109,6 +104,18 @@ Namespace Symbols
                 Call AddLocal(var)
             Next
         End Sub
+
+        Public Function AddFunctionDeclares(methods As IEnumerable(Of MethodBlockSyntax)) As SymbolTable
+            For Each method In methods
+                With method.FuncVariable
+                    functionList(.Name) = New FuncSignature(.ByRef) With {
+                        .Parameters = method.ParseParameters
+                    }
+                End With
+            Next
+
+            Return Me
+        End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetAllImports() As IEnumerable(Of ImportSymbol)
