@@ -41,7 +41,13 @@
     <TypeScriptCompile Include="API\console.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="API\regexp.ts">
+    <TypeScriptCompile Include="API\text\regexp.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="API\text\Strings.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="API\text\string.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="API\XMLHttpRequest.ts">
@@ -63,6 +69,7 @@
   <ItemGroup>
     <Folder Include="API\document\" />
     <Folder Include="API\" />
+    <Folder Include="API\text\" />
     <Folder Include="Wasm\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->

@@ -65,7 +65,12 @@
         }
 
         function handleApiDependencies(dependencies: object, opts: Config) {
-            var api: apiOptions = opts.api || { document: false, console: true, http: true };
+            var api: apiOptions = opts.api || {
+                document: false,
+                console: true,
+                http: false,
+                text: true
+            };
 
             // imports the javascript math module for VisualBasic.NET module by default
             dependencies["Math"] = (<any>window).Math;
@@ -84,6 +89,11 @@
             }
             if (api.http) {
                 dependencies["XMLHttpRequest"] = WebAssembly.XMLHttpRequest;
+            }
+            if (api.text) {
+                dependencies["RegExp"] = WebAssembly.RegularExpression;
+                dependencies["Strings"] = WebAssembly.Strings;
+                dependencies["string"] = WebAssembly.JsString;
             }
 
             return dependencies;
