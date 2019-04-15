@@ -92,8 +92,9 @@ Namespace Symbols.Parser
             Else
                 Dim type = DirectCast([as].Type, IdentifierNameSyntax)
                 Dim token$ = type.Identifier.Text
+                Dim [const] As EnumSymbol = symbols.GetEnumType(token)
 
-                Throw New NotImplementedException(token)
+                Return [const].UnderlyingType
             End If
         End Function
     End Module

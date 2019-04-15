@@ -121,6 +121,10 @@ Namespace Symbols
             Call enumConstants.Add(type.Name, type)
         End Sub
 
+        Public Function GetEnumType(type As String) As EnumSymbol
+            Return enumConstants(type)
+        End Function
+
         Public Function AddFunctionDeclares(methods As IEnumerable(Of MethodBlockSyntax)) As SymbolTable
             For Each method In methods
                 With method.FuncVariable(Me)

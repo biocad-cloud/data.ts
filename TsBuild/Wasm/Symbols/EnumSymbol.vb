@@ -26,6 +26,16 @@ Namespace Symbols
         ''' <returns></returns>
         Public Property Members As New Dictionary(Of String, String)
 
+        Public ReadOnly Property UnderlyingType As Type
+            Get
+                If type = "i32" Then
+                    Return GetType(Integer)
+                Else
+                    Return GetType(Long)
+                End If
+            End Get
+        End Property
+
         Sub New(constants As EnumBlockSyntax)
             With constants.EnumStatement
                 Name = .Identifier.objectName
