@@ -49,5 +49,6 @@
          * Add string and text api from javascript, like String and RegExp imports for VB.NET?
         */
         text?: boolean;
+        array?: boolean;
     }
 }

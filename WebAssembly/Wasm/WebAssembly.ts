@@ -70,7 +70,8 @@
                 document: false,
                 console: true,
                 http: false,
-                text: true
+                text: true,
+                array: true
             };
 
             // imports the javascript math module for VisualBasic.NET 
@@ -96,6 +97,9 @@
                 dependencies["RegExp"] = WebAssembly.RegularExpression;
                 dependencies["Strings"] = WebAssembly.Strings;
                 dependencies["string"] = WebAssembly.JsString;
+            }
+            if (api.array) {
+                dependencies["Array"] = WebAssembly.JsArray;
             }
 
             return dependencies;
