@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/15/2019 9:25:18 PM
+    ;; build: 4/15/2019 9:43:48 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -48,7 +48,7 @@
     (local $Z i64)
     (local $E i32)
     (local $F i64)
-    (set_local $MN (i32.const -99))
-    (set_local $L (i32.const 90))
+    (set_local $MN (i64.extend_s/i32 (i32.const -99)))
+    (set_local $L (f32.convert_s/i32 (i32.const 90)))
     (return (f32.demote/f64 (f64.mul (f64.mul (f64.div (f64.mul (f64.add (f64.add (f64.add (f64.convert_s/i64 (i64.add (get_local $MN) (i64.trunc_s/f32 (get_local $L)))) (get_local $A)) (get_local $B)) (get_local $C)) (f64.promote/f32 (get_local $GG))) (f64.convert_s/i64 (get_local $Z))) (f64.convert_s/i32 (get_local $E))) (f64.convert_s/i64 (get_local $F)))))
     ))

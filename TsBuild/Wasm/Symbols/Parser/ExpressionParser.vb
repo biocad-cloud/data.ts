@@ -245,18 +245,10 @@ Namespace Symbols.Parser
             End If
 
             Dim funcOpName$
-            Dim callImports As Boolean = False
 
             If Types.Operators.ContainsKey(op) Then
                 funcOpName = Types.Operators(op)
-
-                If funcOpName.First = "$"c Then
-                    ' 当前的VB.NET的运算符是webassembly之中没有原生支持的
-                    ' 需要从外部导入
-                    callImports = True
-                Else
-                    funcOpName = $"{type}.{funcOpName}"
-                End If
+                funcOpName = $"{type}.{funcOpName}"
             Else
                 funcOpName = Types.Compares(type, op)
             End If
@@ -265,7 +257,7 @@ Namespace Symbols.Parser
             Return New FuncInvoke With {
                 .Parameters = {left, right},
                 .Reference = funcOpName,
-                .[operator] = Not callImports
+                .[operator] = True
             }
         End Function
 

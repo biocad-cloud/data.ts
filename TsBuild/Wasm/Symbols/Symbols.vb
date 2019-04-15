@@ -142,7 +142,12 @@ Namespace Symbols
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             If [operator] Then
-                Return Reference.Split("."c).First
+                If Reference Like Types.Comparison Then
+                    ' WebAssembly comparison operator produce integer value
+                    Return "i32"
+                Else
+                    Return Reference.Split("."c).First
+                End If
             Else
                 Return symbolTable.GetFunctionSymbol(Reference).Result
             End If

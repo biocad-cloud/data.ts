@@ -47,6 +47,7 @@
 
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ComponentModel.Collection
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 Imports Wasm.Symbols
 
@@ -89,6 +90,19 @@ Public Class Types
     Shared ReadOnly integerType As Index(Of String) = {"i32", "i64"}
     Shared ReadOnly floatType As Index(Of String) = {"f32", "f64"}
 
+    Public Shared ReadOnly Property Comparison As Index(Of String) = {"f32", "f64", "i32", "i64"} _
+        .Select(Function(type)
+                    Return {">", ">=", "<", "<="}.Select(Function(op) Compares(type, op))
+                End Function) _
+        .IteratesALL _
+        .ToArray
+
+    ''' <summary>
+    ''' 值比较函数返回的是一个整型数
+    ''' </summary>
+    ''' <param name="type"></param>
+    ''' <param name="op"></param>
+    ''' <returns></returns>
     Public Shared Function Compares(type$, op$) As String
         Select Case op
             Case ">"
