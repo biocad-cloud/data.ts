@@ -71,6 +71,7 @@ Namespace Symbols
         ''' [name => type]
         ''' </summary>
         Dim globals As New Dictionary(Of String, DeclareGlobal)
+        Dim enumConstants As New Dictionary(Of String, EnumSymbol)
 
         ''' <summary>
         ''' 这个内存对象是全局范围内的
@@ -110,6 +111,10 @@ Namespace Symbols
             For Each var As DeclareLocal In locals
                 Call AddLocal(var)
             Next
+        End Sub
+
+        Public Sub AddEnumType(type As EnumSymbol)
+            Call enumConstants.Add(type.Name, type)
         End Sub
 
         Public Function AddFunctionDeclares(methods As IEnumerable(Of MethodBlockSyntax)) As SymbolTable

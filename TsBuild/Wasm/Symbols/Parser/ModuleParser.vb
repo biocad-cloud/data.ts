@@ -66,7 +66,7 @@ Namespace Symbols.Parser
         ''' <param name="main"></param>
         ''' <returns></returns>
         <Extension>
-        Private Function Join(symbols As SymbolTable, main As ModuleBlockSyntax) As SymbolTable
+        Private Function Join(symbols As SymbolTable, main As ModuleBlockSyntax, enumConstants As EnumSymbol()) As SymbolTable
             Dim members = main.Members.OfType(Of MethodBlockSyntax)
 
             If symbols Is Nothing Then
@@ -74,6 +74,15 @@ Namespace Symbols.Parser
             Else
                 Return symbols.AddFunctionDeclares(members)
             End If
+        End Function
+
+        <Extension>
+        Public Function ParseEnums(root As CompilationUnitSyntax) As EnumSymbol()
+            ' 添加常数申明
+            Return root.Members _
+                .OfType(Of EnumBlockSyntax) _
+                .parseEnums() _
+                .ToArray
         End Function
 
         ''' <summary>
@@ -88,17 +97,16 @@ Namespace Symbols.Parser
         Public Function CreateModule(vbcode As [Variant](Of FileInfo, String), Optional symbols As SymbolTable = Nothing) As ModuleSymbol
             Dim tree As SyntaxTree = VisualBasicSyntaxTree.ParseText(vbcode.SolveStream)
             Dim root As CompilationUnitSyntax = tree.GetRoot
-            Dim main As ModuleBlockSyntax = root.Members(Scan0)
+            Dim main As ModuleBlockSyntax = root.Members.OfType(Of ModuleBlockSyntax).ElementAt(Scan0)
             Dim functions As New List(Of FuncSymbol)
             Dim exports As New List(Of ExportSymbolExpression)
-            Dim symbolTable As SymbolTable = symbols.Join(main)
+            Dim symbolTable As SymbolTable = symbols.Join(main, root.ParseEnums)
             Dim moduleName$ = main.ModuleStatement.Identifier.Text
 
             ' 添加declare导入
             Call main.Members _
                 .OfType(Of DeclareStatementSyntax) _
                 .parseImports(symbolTable)
-
             ' 添加内部模块变量
             Call main.Members _
                 .OfType(Of FieldDeclarationSyntax) _
@@ -125,6 +133,13 @@ Namespace Symbols.Parser
                 .Globals = symbolTable.GetAllGlobals.ToArray,
                 .Memory = symbolTable
             }
+        End Function
+
+        <Extension>
+        Private Iterator Function parseEnums(declares As IEnumerable(Of EnumBlockSyntax)) As IEnumerable(Of EnumSymbol)
+            For Each type As EnumBlockSyntax In declares
+                Yield New EnumSymbol(type)
+            Next
         End Function
 
         <Extension>
