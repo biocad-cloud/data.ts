@@ -5,28 +5,28 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/15/2019 8:29:21 PM
+    ;; build: 4/15/2019 8:33:31 PM
 
     ;; imports must occur before all non-import definitions
 
     ;; Declare Function Print Lib "console" Alias "log" (text As char*) As i32
-(func $Print (import "console" "log") (param $text i32) (result i32))
+    (func $Print (import "console" "log") (param $text i32) (result i32))
     ;; Declare Function string.add Lib "string" Alias "add" (a As char*, b As char*) As char*
-(func $string.add (import "string" "add") (param $a i32) (param $b i32) (result char*))
+    (func $string.add (import "string" "add") (param $a i32) (param $b i32) (result i32))
     
     ;; Only allows one memory block in each module
     (memory (import "env" "bytechunks") 1)
 
     ;; Memory data for string constant
     
-;; String from 1 with 1 bytes in memory
-(data (i32.const 1) " \00")
+    ;; String from 1 with 1 bytes in memory
+    (data (i32.const 1) " \00")
 
-;; String from 3 with 5 bytes in memory
-(data (i32.const 3) "Hello\00")
+    ;; String from 3 with 5 bytes in memory
+    (data (i32.const 3) "Hello\00")
 
-;; String from 9 with 5 bytes in memory
-(data (i32.const 9) "World\00")
+    ;; String from 9 with 5 bytes in memory
+    (data (i32.const 9) "World\00")
     
     
 
@@ -37,7 +37,7 @@
     (func $Main  (result i32)
         ;; Public Function Main() As char*
         (local $str i32)
-    (set_local $str (call_import $string.add (call_import $string.add (call $Hello ) (char*.const 1)) (call $World )))
+    (set_local $str (call_import $string.add (call_import $string.add (call $Hello ) (i32.const 1)) (call $World )))
     (call $Print (get_local $str))
     (return (get_local $str))
     )
@@ -45,11 +45,11 @@
     (func $Hello  (result i32)
         ;; Public Function Hello() As char*
         
-    (return (char*.const 3))
+    (return (i32.const 3))
     )
     
     (func $World  (result i32)
         ;; Public Function World() As char*
         
-    (return (char*.const 9))
+    (return (i32.const 9))
     ))

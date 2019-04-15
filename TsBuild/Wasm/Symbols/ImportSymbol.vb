@@ -49,6 +49,7 @@
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
+Imports Wasm.Symbols.Parser
 
 Namespace Symbols
 
@@ -98,7 +99,7 @@ Namespace Symbols
                 .JoinBy(" ")
 
             Return $";; {VBDeclare}
-(func ${Name} (import ""{Package}"" ""{ImportObject}"") {params} (result {Result}))"
+    (func ${Name} (import ""{Package}"" ""{ImportObject}"") {params} (result {typefit(Result)}))"
         End Function
 
         Public Overrides Function ToString() As String
