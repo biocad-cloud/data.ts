@@ -488,13 +488,13 @@ module Strings {
     /**
      * @param charsPerLine 每一行文本之中的字符数量的最大值
     */
-    export function WrappingLines(text: string, charsPerLine: number = 200): string {
+    export function WrappingLines(text: string, charsPerLine: number = 200, lineTrim: boolean = false): string {
         var sb: string = "";
         var lines: string[] = Strings.lineTokens(text);
         var p: number;
 
         for (var i: number = 0; i < lines.length; i++) {
-            var line: string = Strings.Trim(lines[i]);
+            var line: string = lineTrim ? Strings.Trim(lines[i]) : lines[i];
 
             if (line.length < charsPerLine) {
                 sb = sb + line + "\n";
