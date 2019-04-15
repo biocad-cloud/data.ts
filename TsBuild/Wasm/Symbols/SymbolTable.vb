@@ -104,6 +104,10 @@ Namespace Symbols
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Sub New(methods As IEnumerable(Of MethodBlockSyntax), enums As EnumSymbol())
+            For Each constant In enums
+                Call AddEnumType(constant)
+            Next
+
             Call AddFunctionDeclares(methods)
         End Sub
 
