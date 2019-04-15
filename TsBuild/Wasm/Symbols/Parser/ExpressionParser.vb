@@ -70,9 +70,29 @@ Namespace Symbols.Parser
                     Return DirectCast(value, UnaryExpressionSyntax).UnaryExpression(symbols)
                 Case GetType(CTypeExpressionSyntax)
                     Return DirectCast(value, CTypeExpressionSyntax).ValueCType(symbols)
+                Case GetType(MemberAccessExpressionSyntax)
+                    Return DirectCast(value, MemberAccessExpressionSyntax).MemberExpression(symbols)
                 Case Else
                     Throw New NotImplementedException(value.GetType.FullName)
             End Select
+        End Function
+
+        <Extension>
+        Public Function MemberExpression(ref As MemberAccessExpressionSyntax, symbols As SymbolTable) As Expression
+            Dim objName = ref.Expression.ToString
+            Dim memberName = ref.Name.objectName
+            Dim [const] As EnumSymbol
+
+            If symbols.HaveEnumType(objName) Then
+                [const] = symbols.GetEnumType(objName)
+
+                Return New LiteralExpression With {
+                    .type = [const].type,
+                    .value = [const].Members(memberName)
+                }
+            Else
+                Throw New NotImplementedException(ref.ToString)
+            End If
         End Function
 
         <Extension>

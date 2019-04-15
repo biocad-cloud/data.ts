@@ -26,6 +26,10 @@ End Enum
 
 Module EnumTest
 
+    Public Function DoAdd() As Integer
+        Return Add1(asInteger.C + asLong.E + defaultIsInteger.X)
+    End Function
+
     Public Function Add1(i As asInteger) As asLong
         Dim x = i + 1
         Dim a = CType(x, asLong)

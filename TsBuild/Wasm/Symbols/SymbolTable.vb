@@ -121,6 +121,10 @@ Namespace Symbols
             Call enumConstants.Add(type.Name, type)
         End Sub
 
+        Public Function HaveEnumType(type As String) As Boolean
+            Return enumConstants.ContainsKey(type)
+        End Function
+
         Public Function GetEnumType(type As String) As EnumSymbol
             Return enumConstants(type)
         End Function
