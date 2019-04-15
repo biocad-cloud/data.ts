@@ -51,6 +51,9 @@
     <TypeScriptCompile Include="API\text\string.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="API\Array.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="API\XMLHttpRequest.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
