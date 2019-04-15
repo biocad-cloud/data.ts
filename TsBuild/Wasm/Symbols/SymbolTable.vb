@@ -103,7 +103,7 @@ Namespace Symbols
         End Property
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Sub New(methods As IEnumerable(Of MethodBlockSyntax))
+        Sub New(methods As IEnumerable(Of MethodBlockSyntax), enums As EnumSymbol())
             Call AddFunctionDeclares(methods)
         End Sub
 

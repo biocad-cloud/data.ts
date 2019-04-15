@@ -70,8 +70,12 @@ Namespace Symbols.Parser
             Dim members = main.Members.OfType(Of MethodBlockSyntax)
 
             If symbols Is Nothing Then
-                Return New SymbolTable(members)
+                Return New SymbolTable(members, enumConstants)
             Else
+                For Each [const] As EnumSymbol In enumConstants
+                    Call symbols.AddEnumType([const])
+                Next
+
                 Return symbols.AddFunctionDeclares(members)
             End If
         End Function
