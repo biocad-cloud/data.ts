@@ -265,8 +265,7 @@ Namespace Symbols.Parser
             Return New FuncInvoke With {
                 .Parameters = {left, right},
                 .Reference = funcOpName,
-                .[operator] = Not callImports,
-                .callImports = False
+                .[operator] = Not callImports
             }
         End Function
 
@@ -274,7 +273,6 @@ Namespace Symbols.Parser
             Return New FuncInvoke With {
                 .Parameters = {left, right},
                 .Reference = ImportSymbol.JsStringConcatenation.Name,
-                .callImports = False,
                 .[operator] = False
             }
         End Function
