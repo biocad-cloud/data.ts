@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/15/2019 8:33:31 PM
+    ;; build: 4/15/2019 8:35:06 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -37,7 +37,7 @@
     (func $Main  (result i32)
         ;; Public Function Main() As char*
         (local $str i32)
-    (set_local $str (call_import $string.add (call_import $string.add (call $Hello ) (i32.const 1)) (call $World )))
+    (set_local $str (call $string.add (call $string.add (call $Hello ) (i32.const 1)) (call $World )))
     (call $Print (get_local $str))
     (return (get_local $str))
     )

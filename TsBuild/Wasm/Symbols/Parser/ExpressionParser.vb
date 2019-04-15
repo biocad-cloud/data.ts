@@ -274,7 +274,7 @@ Namespace Symbols.Parser
             Return New FuncInvoke With {
                 .Parameters = {left, right},
                 .Reference = ImportSymbol.JsStringConcatenation.Name,
-                .callImports = True,
+                .callImports = False,
                 .[operator] = False
             }
         End Function
