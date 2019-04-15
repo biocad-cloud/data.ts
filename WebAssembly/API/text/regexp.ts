@@ -17,5 +17,32 @@
 
             return ObjectManager.addObject(result);
         }
+
+        /**
+         * Returns a Boolean value that indicates whether or not a pattern exists in a 
+         * searched string.
+         * 
+         * @param string String on which to perform the search.
+        */
+        export function test(pattern: number, string: number): number {
+            let patternObj: RegExp = ObjectManager.getObject(pattern);
+            let text: string = ObjectManager.readText(string);
+
+            return patternObj.test(text) ? 1 : 0;
+        }
+
+        /**
+         * Executes a search on a string using a regular expression pattern, and returns an array 
+         * containing the results of that search.
+         * 
+         * @param string The String object or string literal on which to perform the search.
+        */
+        export function exec(pattern: number, string: number): number {
+            let patternObj: RegExp = ObjectManager.getObject(pattern);
+            let text: string = ObjectManager.readText(string);
+            let match = patternObj.exec(text);
+
+            return ObjectManager.addObject(match);
+        }
     }
 }

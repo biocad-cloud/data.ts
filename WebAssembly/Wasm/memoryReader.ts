@@ -16,6 +16,9 @@
         }
     }
 
+    /**
+     * Read string helper from WebAssembly memory.
+    */
     export class stringReader extends memoryReader {
 
         private decoder: TextDecoder = new TextDecoder();

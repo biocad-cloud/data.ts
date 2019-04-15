@@ -22,7 +22,11 @@
          * @param intptr The memory pointer
         */
         export function readText(intptr: number): string {
-            return streamReader.readText(intptr);
+            if ((intptr in hashTable) && typeof hashTable[intptr] == "string") {
+                return hashTable[intptr];
+            } else {
+                return streamReader.readText(intptr);
+            }
         }
 
         /**
@@ -35,6 +39,25 @@
                 return hashTable[key];
             } else {
                 return null;
+            }
+        }
+
+        export function getType(hashCode: number): string {
+            if (hashCode in hashTable) {
+                let type: string;
+                let obj: any = hashTable[hashCode];
+
+                if (Array.isArray(obj)) {
+                    return "array"
+                }
+
+                if ((type = typeof obj) == "object") {
+                    return obj.constructor.name;
+                } else {
+                    return type;
+                }
+            } else {
+                return "void";
             }
         }
 
