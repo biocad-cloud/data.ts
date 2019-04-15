@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/15/2019 8:36:56 PM
+    ;; build: 4/15/2019 9:25:18 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -17,9 +17,13 @@
     ;; Memory data for string constant
     
     
-    (global $MN (mut i64) (i32.const -99))
+    (global $E (mut i32) (i32.const 0))
 
-(global $L (mut f32) (i32.const 90))
+(global $F (mut i64) (i64.const 0))
+
+(global $MN (mut i64) (i64.const -99))
+
+(global $L (mut f32) (f32.const 90))
 
 (global $A (mut f64) (f64.const 0))
 
@@ -30,10 +34,6 @@
 (global $GG (mut f32) (f32.const 0))
 
 (global $Z (mut i64) (i64.const 0))
-
-(global $E (mut i32) (i32.const 0))
-
-(global $F (mut i64) (i32.const 0))
 
      
 

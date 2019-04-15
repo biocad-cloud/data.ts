@@ -179,6 +179,7 @@ Namespace Symbols.Parser
                     init = var.Initializer.GetInitialize(symbols, Nothing)
                     type = name.AsType(var.AsClause, init.TypeInfer(symbols))
                 Else
+                    init = Nothing
                     type = name.AsType(var.AsClause)
                 End If
 
@@ -186,6 +187,12 @@ Namespace Symbols.Parser
                     If init Is Nothing Then
                         ' 默认是零
                         init = New LiteralExpression(0, type)
+                    ElseIf type <> init.TypeInfer(symbols) Then
+                        If TypeOf init Is LiteralExpression Then
+                            DirectCast(init, LiteralExpression).type = type
+                        Else
+                            Throw New InvalidExpressionException("Global variable its initialize value only supports constant value!")
+                        End If
                     End If
 
                     Call symbols.AddGlobal(name, type, init)

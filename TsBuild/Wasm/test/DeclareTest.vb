@@ -44,9 +44,9 @@
 
 Module DeclareTest
 
+    Dim E%, F&
     Dim MN As Long = -99, L As Single = 90
     Dim A, B, C As Double, GG As Single, Z&
-    Dim E%, F&
 
     Private Function localDeclareTest() As Single
         Dim MN As Long = -99, L As Single = 90
