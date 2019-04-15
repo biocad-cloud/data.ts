@@ -17,5 +17,14 @@
 
             return ObjectManager.addObject(result);
         }
+
+        /**
+         * Returns a Boolean value that indicates whether or not a pattern exists in a searched string.
+         * @param string String on which to perform the search.
+        */
+        export function test(pattern: number, string: number): number {
+            let patternObj: RegExp = ObjectManager.getObject(pattern);
+            let text: string = ObjectManager.readText()
+        }
     }
 }
