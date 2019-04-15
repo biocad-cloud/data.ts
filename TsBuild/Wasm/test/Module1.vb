@@ -79,6 +79,7 @@ Module treeTest
         ' Call Wasm.CompileWast("..\Demo\new_test.wast", "..\Demo\new_test.wast")
 
         ' Pause()
+        Call stringTest()
 
         Call boolTest()
         ' Call forlooptest()
@@ -120,6 +121,17 @@ End Module"
         Dim hex = moduleMain.HexDump(verbose:=True)
 
         Call hex.SaveTo("X:\test.dmp")
+
+        Pause()
+    End Sub
+
+    Sub stringTest()
+        Dim moduletest As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb")
+
+        Console.WriteLine(moduletest.ToSExpression)
+        moduletest.Compile("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb.wasm")
+        moduletest.ToSExpression.SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb.wast")
+        moduletest.HexDump(True).SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb.dmp")
 
         Pause()
     End Sub
