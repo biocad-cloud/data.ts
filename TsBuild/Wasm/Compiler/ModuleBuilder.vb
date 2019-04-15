@@ -47,7 +47,6 @@ Imports Microsoft.VisualBasic.ApplicationServices.Development
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
 Imports Wasm.Symbols
-Imports Wasm.Symbols.Blocks
 Imports Wasm.Symbols.Parser
 
 Module ModuleBuilder
