@@ -52,6 +52,7 @@
 
 Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Wasm.Symbols.Parser
@@ -82,6 +83,12 @@ Namespace Symbols
         ''' </summary>
         ''' <returns></returns>
         Public Property CurrentSymbol As String
+
+        ''' <summary>
+        ''' 为了满足基本的变成需求而自动添加的引用符号列表
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Requires As New Index(Of String)
 
         ''' <summary>
         ''' Generate a guid for loop controls

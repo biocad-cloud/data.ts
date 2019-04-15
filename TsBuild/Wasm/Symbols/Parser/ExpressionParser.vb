@@ -165,7 +165,7 @@ Namespace Symbols.Parser
             If type Is GetType(String) OrElse type Is GetType(Char) Then
                 ' 是字符串类型，需要做额外的处理
                 value = memory.AddString(value)
-                wasmType = "i32"
+                wasmType = "char*"
             ElseIf type Is GetType(Boolean) Then
                 wasmType = "i32"
                 value = If(DirectCast(value, Boolean), 1, 0)
@@ -195,7 +195,7 @@ Namespace Symbols.Parser
         ''' <param name="symbols"></param>
         ''' <returns></returns>
         <Extension>
-        Public Function BinaryStack(expression As BinaryExpressionSyntax, symbols As SymbolTable) As FuncInvoke
+        Public Function BinaryStack(expression As BinaryExpressionSyntax, symbols As SymbolTable) As Expression
             Dim left = expression.Left.ValueExpression(symbols)
             Dim right = expression.Right.ValueExpression(symbols)
             Dim op$ = expression.OperatorToken.ValueText
@@ -208,7 +208,7 @@ Namespace Symbols.Parser
         ''' </summary>
         ''' <param name="symbols"></param>
         ''' <returns></returns>
-        Public Function BinaryStack(left As Expression, right As Expression, op$, symbols As SymbolTable) As FuncInvoke
+        Public Function BinaryStack(left As Expression, right As Expression, op$, symbols As SymbolTable) As Expression
             Dim type$
 
             If op = "/" Then
@@ -217,6 +217,14 @@ Namespace Symbols.Parser
                 left = Types.CDbl(left, symbols)
                 right = Types.CDbl(right, symbols)
                 type = "f64"
+            ElseIf op = "&" Then
+                ' vb string concatenation
+                If Not ImportSymbol.JsStringConcatenation.Ref Like symbols.Requires Then
+                    symbols.Requires.Add(ImportSymbol.JsStringConcatenation.Ref)
+                    symbols.AddImports(ImportSymbol.JsStringConcatenation)
+                End If
+
+                Return stringConcatenation(left, right)
             Else
                 ' 其他的运算符则需要两边的类型保持一致
                 ' 往高位转换
@@ -259,6 +267,15 @@ Namespace Symbols.Parser
                 .Reference = funcOpName,
                 .[operator] = Not callImports,
                 .callImports = False
+            }
+        End Function
+
+        Private Function stringConcatenation(left As Expression, right As Expression) As Expression
+            Return New FuncInvoke With {
+                .Parameters = {left, right},
+                .Reference = ImportSymbol.JsStringConcatenation.Name,
+                .callImports = True,
+                .[operator] = False
             }
         End Function
     End Module

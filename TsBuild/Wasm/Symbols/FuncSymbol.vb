@@ -65,6 +65,10 @@ Namespace Symbols
     ''' </summary>
     Public Class FuncSignature : Inherits Expression
 
+        ''' <summary>
+        ''' 函数在WebAssembly模块内部的引用名称字符串
+        ''' </summary>
+        ''' <returns></returns>
         Public Property Name As String
         Public Property Parameters As NamedValue(Of String)()
 
@@ -89,6 +93,15 @@ Namespace Symbols
         Public Overrides Function ToSExpression() As String
             Throw New NotImplementedException()
         End Function
+
+        Public Overrides Function ToString() As String
+            With Parameters _
+                    .Select(Function(a) $"{a.Name} As {a.Value}") _
+                    .JoinBy(", ")
+
+                Return $"Public Function {Name}({ .ByRef}) As {Result}"
+            End With
+        End Function
     End Class
 
     ''' <summary>
@@ -101,12 +114,7 @@ Namespace Symbols
 
         Public ReadOnly Property VBDeclare As String
             Get
-                With Parameters _
-                    .Select(Function(a) $"{a.Name} As {a.Value}") _
-                    .JoinBy(", ")
-
-                    Return $"Public Function {Name}({ .ByRef}) As {Result}"
-                End With
+                Return MyBase.ToString
             End Get
         End Property
 
@@ -147,6 +155,10 @@ Namespace Symbols
     ;; {VBDeclare}
     {buildBody()}
 )"
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return ToSExpression()
         End Function
     End Class
 End Namespace
