@@ -5,12 +5,12 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/14/2019 5:26:15 PM
+    ;; build: 4/15/2019 8:36:56 PM
 
     ;; imports must occur before all non-import definitions
 
     ;; Declare Function Random Lib "Math" Alias "random" () As f64
-(func $Random (import "Math" "random")  (result f64))
+    (func $Random (import "Math" "random")  (result f64))
     
     ;; Only allows one memory block in each module
     (memory (import "env" "bytechunks") 1)

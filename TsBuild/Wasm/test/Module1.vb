@@ -79,15 +79,7 @@ Module treeTest
         ' Call Wasm.CompileWast("..\Demo\new_test.wast", "..\Demo\new_test.wast")
 
         ' Pause()
-        Call stringTest()
-
-        Call boolTest()
-        ' Call forlooptest()
-        Call enumTest()
-        ' Call declareTest()
-        ' Call globalTest()
-        ' Call IfTest()
-        Call testDemo()
+        Call FileTest()
 
         Pause()
 
@@ -125,60 +117,24 @@ End Module"
         Pause()
     End Sub
 
-    Sub stringTest()
-        Dim moduletest As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb")
+    Sub FileTest()
+        For Each file As String In {"E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb",
+"E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.vb",
+"E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\DeclareTest.vb",
+"E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.vb",
+"E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.vb"}
 
-        Console.WriteLine(moduletest.ToSExpression)
-        moduletest.Compile("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb.wasm")
-        moduletest.ToSExpression.SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb.wast")
-        moduletest.HexDump(True).SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb.dmp")
-
-        Pause()
+            Call filetest(file)
+        Next
     End Sub
 
-    Sub boolTest()
-        Dim moduletest As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.vb")
+    Sub filetest(file As String)
+        Dim moduletest As ModuleSymbol = Wasm.CreateModule(file)
 
         Console.WriteLine(moduletest.ToSExpression)
-        moduletest.Compile("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.wasm")
-        moduletest.ToSExpression.SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.wast")
-        moduletest.HexDump(True).SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.dmp")
-
-        Pause()
-    End Sub
-
-    Sub enumTest()
-        Dim moduletest As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.vb")
-
-        Console.WriteLine(moduletest.ToSExpression)
-        moduletest.Compile("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.wasm")
-        moduletest.ToSExpression.SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.wast")
-        moduletest.HexDump(True).SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.dmp")
-
-        Call Console.WriteLine(Global.test.ForLoopTest.forloop)
-
-        Pause()
-    End Sub
-
-    Sub forlooptest()
-        Dim moduletest As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.vb")
-
-        Console.WriteLine(moduletest.ToSExpression)
-        moduletest.Compile("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.wasm")
-        moduletest.ToSExpression.SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.wast")
-        moduletest.HexDump(True).SaveTo("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.dmp")
-
-        Call Console.WriteLine(Global.test.ForLoopTest.forloop)
-
-        Pause()
-    End Sub
-
-    Sub declareTest()
-        Dim moduleMain As ModuleSymbol = Wasm.CreateModule("E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\DeclareTest.vb")
-
-        Console.WriteLine(moduleMain.ToSExpression)
-
-        Pause()
+        moduletest.Compile(file.ChangeSuffix("wasm"))
+        moduletest.ToSExpression.SaveTo(file.ChangeSuffix("wast"))
+        moduletest.HexDump(True).SaveTo(file.ChangeSuffix("dmp"))
     End Sub
 
     Sub testDemo()
