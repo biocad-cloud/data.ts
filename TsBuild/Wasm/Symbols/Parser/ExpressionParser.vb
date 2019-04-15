@@ -68,9 +68,19 @@ Namespace Symbols.Parser
                     Return DirectCast(value, InvocationExpressionSyntax).FunctionInvoke(symbols)
                 Case GetType(UnaryExpressionSyntax)
                     Return DirectCast(value, UnaryExpressionSyntax).UnaryExpression(symbols)
+                Case GetType(CTypeExpressionSyntax)
+                    Return DirectCast(value, CTypeExpressionSyntax).ValueCType(symbols)
                 Case Else
                     Throw New NotImplementedException(value.GetType.FullName)
             End Select
+        End Function
+
+        <Extension>
+        Public Function ValueCType(cast As CTypeExpressionSyntax, symbols As SymbolTable) As Expression
+            Dim value As Expression = cast.Expression.ValueExpression(symbols)
+            Dim castToType As String = Types.Convert2Wasm(cast.Type.GetType(symbols))
+
+            Return Types.CType(castToType, value, symbols)
         End Function
 
         <Extension>

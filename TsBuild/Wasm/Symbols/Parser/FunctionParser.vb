@@ -85,8 +85,8 @@ Namespace Symbols.Parser
         ''' 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         <Extension>
-        Public Function ParseParameters(api As DeclarationStatementSyntax) As NamedValue(Of String)()
-            Return DirectCast(api, MethodBaseSyntax).ParseParameters.ToArray
+        Public Function ParseParameters(api As DeclarationStatementSyntax, symbols As SymbolTable) As NamedValue(Of String)()
+            Return DirectCast(api, MethodBaseSyntax).ParseParameters(symbols:=symbols).ToArray
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -105,13 +105,13 @@ Namespace Symbols.Parser
         ''' 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         <Extension>
-        Public Function ParseParameters(method As MethodBlockSyntax) As NamedValue(Of String)()
-            Return method.BlockStatement.ParseParameters.ToArray
+        Public Function ParseParameters(method As MethodBlockSyntax, symbols As SymbolTable) As NamedValue(Of String)()
+            Return method.BlockStatement.ParseParameters(symbols).ToArray
         End Function
 
         <Extension>
         Public Function Parse(method As MethodBlockSyntax, symbols As SymbolTable) As FuncSymbol
-            Dim parameters = method.ParseParameters
+            Dim parameters = method.ParseParameters(symbols)
             Dim body As StatementSyntax() = method.Statements.ToArray
             Dim funcVar = method.FuncVariable(symbols)
 

@@ -129,7 +129,7 @@ Namespace Symbols
             For Each method In methods
                 With method.FuncVariable(Me)
                     functionList(.Name) = New FuncSignature(.ByRef) With {
-                        .Parameters = method.ParseParameters
+                        .Parameters = method.ParseParameters(Me)
                     }
                 End With
             Next
