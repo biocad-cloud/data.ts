@@ -324,6 +324,7 @@
     <Compile Include="Symbols\Memory\ArraySymbol.vb" />
     <Compile Include="Symbols\Memory\Memory.vb" />
     <Compile Include="Symbols\Memory\StringSymbol.vb" />
+    <Compile Include="Symbols\EnumSymbol.vb" />
     <Compile Include="Symbols\Parser\BlockParser.vb" />
     <Compile Include="Symbols\Parser\AsTypeHandler.vb" />
     <Compile Include="Symbols\Parser\ModuleParser.vb" />
