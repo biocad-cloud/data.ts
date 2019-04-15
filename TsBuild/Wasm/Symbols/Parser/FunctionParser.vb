@@ -56,9 +56,9 @@ Namespace Symbols.Parser
     Module FunctionParser
 
         <Extension>
-        Public Function FuncVariable(method As MethodBlockSyntax) As NamedValue(Of String)
-            Dim name As String = method.SubOrFunctionStatement.Identifier.ValueText
-            Dim returns As Type = GetAsType(method.SubOrFunctionStatement.AsClause)
+        Public Function FuncVariable(method As MethodBlockSyntax, symbols As SymbolTable) As NamedValue(Of String)
+            Dim name As String = method.SubOrFunctionStatement.Identifier.objectName
+            Dim returns As Type = GetAsType(method.SubOrFunctionStatement.AsClause, symbols)
 
             Return New NamedValue(Of String) With {
                 .Name = name,
@@ -67,9 +67,9 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Function FuncVariable(api As DeclareStatementSyntax) As NamedValue(Of String)
-            Dim name As String = api.Identifier.ValueText
-            Dim returns As Type = GetAsType(api.AsClause)
+        Public Function FuncVariable(api As DeclareStatementSyntax, symbols As SymbolTable) As NamedValue(Of String)
+            Dim name As String = api.Identifier.objectName
+            Dim returns As Type = GetAsType(api.AsClause, symbols)
 
             Return New NamedValue(Of String) With {
                 .Name = name,
@@ -91,10 +91,10 @@ Namespace Symbols.Parser
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         <Extension>
-        Private Function ParseParameters(method As MethodBaseSyntax) As IEnumerable(Of NamedValue(Of String))
+        Private Function ParseParameters(method As MethodBaseSyntax, symbols As SymbolTable) As IEnumerable(Of NamedValue(Of String))
             Return method.ParameterList _
                 .Parameters _
-                .Select(AddressOf ParseParameter)
+                .Select(Function(p) ParseParameter(p, symbols))
         End Function
 
         ''' <summary>
@@ -113,7 +113,7 @@ Namespace Symbols.Parser
         Public Function Parse(method As MethodBlockSyntax, symbols As SymbolTable) As FuncSymbol
             Dim parameters = method.ParseParameters
             Dim body As StatementSyntax() = method.Statements.ToArray
-            Dim funcVar = method.FuncVariable
+            Dim funcVar = method.FuncVariable(symbols)
 
             ' using for return value ctype operation
             symbols.CurrentSymbol = funcVar.Name
@@ -171,7 +171,7 @@ Namespace Symbols.Parser
                    End Function
         End Function
 
-        Public Function ParseParameter(parameter As ParameterSyntax) As NamedValue(Of String)
+        Public Function ParseParameter(parameter As ParameterSyntax, symbols As SymbolTable) As NamedValue(Of String)
             Dim name = parameter.Identifier.Identifier.Text
             Dim type As Type
             Dim default$ = Nothing
@@ -180,7 +180,7 @@ Namespace Symbols.Parser
                 type = Scripting.GetType(Patterns.TypeCharName(name.Last))
                 name = name.Substring(0, name.Length - 1)
             Else
-                type = GetAsType(parameter.AsClause)
+                type = GetAsType(parameter.AsClause, symbols)
             End If
 
             If Not parameter.Default Is Nothing Then

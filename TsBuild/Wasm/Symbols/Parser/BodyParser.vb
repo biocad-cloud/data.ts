@@ -177,10 +177,10 @@ Namespace Symbols.Parser
             For Each name As String In fieldNames.Select(Function(v) v.Identifier.Text)
                 If Not var.Initializer Is Nothing Then
                     init = var.Initializer.GetInitialize(symbols, Nothing)
-                    type = name.AsType(var.AsClause, init.TypeInfer(symbols))
+                    type = name.AsType(var.AsClause, symbols, init.TypeInfer(symbols))
                 Else
                     init = Nothing
-                    type = name.AsType(var.AsClause)
+                    type = name.AsType(var.AsClause, symbols)
                 End If
 
                 If isGlobal Then

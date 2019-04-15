@@ -119,7 +119,7 @@ Namespace Symbols
 
         Public Function AddFunctionDeclares(methods As IEnumerable(Of MethodBlockSyntax)) As SymbolTable
             For Each method In methods
-                With method.FuncVariable
+                With method.FuncVariable(Me)
                     functionList(.Name) = New FuncSignature(.ByRef) With {
                         .Parameters = method.ParseParameters
                     }

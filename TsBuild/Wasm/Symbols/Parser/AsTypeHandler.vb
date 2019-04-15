@@ -65,11 +65,11 @@ Namespace Symbols.Parser
         ''' 当类型申明是空的时候，应该是从其初始化值得类型来推断申明的
         ''' </remarks>
         <Extension>
-        Public Function AsType(ByRef name$, [asClause] As AsClauseSyntax, Optional initType$ = "f32") As String
+        Public Function AsType(ByRef name$, [asClause] As AsClauseSyntax, symbols As SymbolTable, Optional initType$ = "f32") As String
             Dim type$
 
             If Not asClause Is Nothing Then
-                type = Types.Convert2Wasm(GetAsType(asClause))
+                type = Types.Convert2Wasm(GetAsType(asClause, symbols))
             ElseIf name.Last Like Patterns.TypeChar Then
                 type = Types.TypeCharWasm(name.Last)
                 name = name.Substring(0, name.Length - 1)
@@ -83,7 +83,7 @@ Namespace Symbols.Parser
 
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Public Function GetAsType([as] As SimpleAsClauseSyntax) As Type
+        Public Function GetAsType([as] As SimpleAsClauseSyntax, symbols As SymbolTable) As Type
             If TypeOf [as].Type Is PredefinedTypeSyntax Then
                 Dim type = DirectCast([as].Type, PredefinedTypeSyntax)
                 Dim token$ = type.Keyword.ValueText
