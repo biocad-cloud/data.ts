@@ -94,7 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Symbols.vb" />
-    <Compile Include="ModuleBuilder.vb" />
+    <Compile Include="ModuleBuilder\ModuleBuilder.vb" />
     <Compile Include="tsconfig.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
