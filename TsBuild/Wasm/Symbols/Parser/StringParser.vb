@@ -5,24 +5,36 @@ Namespace Symbols.Parser
 
     Module StringParser
 
+        ''' <summary>
+        ''' VB string concatenation
+        ''' </summary>
+        ''' <param name="symbols"></param>
+        ''' <param name="left"></param>
+        ''' <param name="right"></param>
+        ''' <returns></returns>
         <Extension>
         Public Function StringAppend(symbols As SymbolTable, left As Expression, right As Expression) As Expression
-            ' vb string concatenation
-            If Not ImportSymbol.JsStringConcatenation.Ref Like symbols.Requires Then
-                symbols.Requires.Add(ImportSymbol.JsStringConcatenation.Ref)
-                symbols.AddImports(ImportSymbol.JsStringConcatenation)
-            End If
+            Dim append = ImportSymbol.JsStringConcatenation
 
-            Return stringConcatenation(left, right)
-        End Function
+            ' try add required imports symbol
+            Call symbols.addRequired(append)
 
-        Private Function stringConcatenation(left As Expression, right As Expression) As Expression
             Return New FuncInvoke With {
                 .Parameters = {left, right},
-                .Reference = ImportSymbol.JsStringConcatenation.Name,
+                .Reference = append.Name,
                 .[operator] = False
             }
         End Function
+
+        <Extension>
+        Public Sub addRequired(symbols As SymbolTable, symbol As ImportSymbol)
+            Dim ref$ = symbol.Name
+
+            If Not ref Like symbols.Requires Then
+                symbols.Requires.Add(ref)
+                symbols.AddImports(symbol)
+            End If
+        End Sub
 
         <Extension>
         Friend Sub stringValue(memory As Memory, ByRef value As Object, ByRef type$)
@@ -59,11 +71,12 @@ Namespace Symbols.Parser
                 Dim value = DirectCast(str, InterpolationSyntax) _
                     .Expression _
                     .ValueExpression(symbols)
-                Dim toString$ = ImportSymbol.JsObjectToString(value.TypeInfer(symbols)).Name
+                Dim toString = ImportSymbol.JsObjectToString(value.TypeInfer(symbols))
 
+                symbols.addRequired(toString)
                 value = New FuncInvoke With {
                     .[operator] = False,
-                    .Reference = toString,
+                    .Reference = toString.Name,
                     .Parameters = {value}
                 }
 

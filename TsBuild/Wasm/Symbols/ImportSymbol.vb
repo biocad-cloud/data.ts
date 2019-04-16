@@ -80,12 +80,6 @@ Namespace Symbols
             End Get
         End Property
 
-        Public ReadOnly Property Ref As String
-            Get
-                Return $"{Package}::{ImportObject}"
-            End Get
-        End Property
-
         Sub New()
         End Sub
 
