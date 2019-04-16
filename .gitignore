@@ -85,3 +85,4 @@ obj/
 
 Apps/
 *.sqlite-journal
+*.user
