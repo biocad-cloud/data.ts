@@ -1,7 +1,15 @@
-﻿''' <summary>
+﻿Imports System.ComponentModel.Composition
+
+''' <summary>
 ''' This code running in webbrowser, working with javascript, not server side.
 ''' </summary>
-Public Module App
+''' <remarks>
+''' 1. Module marked a ``Export`` attribute means this module is the main module
+''' Only the public method in this module will be exports
+''' 
+''' 2. One project just allowed one module marked as ``Export``
+''' </remarks>
+<Export> Public Module App
 
     Dim helloWorld As String = "Hello World!"
     Dim note As String = "This message comes from a VisualBasic.NET application!"
