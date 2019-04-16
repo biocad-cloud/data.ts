@@ -64,13 +64,7 @@ Public Class ModuleBuilder
                 Return TypeScriptTokens.comment
             End If
         Else
-            If c = "/"c Then
-                buffer += "/"c
-
-                If bufferStartWith("//") Then
-                    escape.SingleLineComment = True
-                End If
-            ElseIf c = " "c Then
+            If c = " "c Then
                 ' a string delimiter
                 If bufferEndWith(":") Then
                     Return TypeScriptTokens.identifier
@@ -83,6 +77,14 @@ Public Class ModuleBuilder
                 End If
             Else
                 buffer += c
+
+                If bufferStartWith("//") Then
+                    escape.SingleLineComment = True
+                ElseIf bufferStartWith("/*") Then
+                    escape.BlockTextComment = True
+                Else
+
+                End If
             End If
         End If
 
