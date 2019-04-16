@@ -124,6 +124,25 @@ Namespace Symbols
             }
         }
 
+        ''' <summary>
+        ''' 因为WebAssembly没有自动类型转换，所以在这里会需要对每一种数据类型都imports一个相同的函数来完成
+        ''' </summary>
+        ''' <param name="type"></param>
+        ''' <returns></returns>
+        Public Shared ReadOnly Property JsObjectToString(Optional type As String = "i32") As ImportSymbol
+            Get
+                Return New ImportSymbol With {
+                    .ImportObject = "toString",
+                    .Name = $"{type}.toString",
+                    .Package = "string",
+                    .Result = "char*",
+                    .Parameters = {
+                        New NamedValue(Of String)("s", type)
+                    }
+                }
+            End Get
+        End Property
+
         Private Shared Iterator Function mathImport() As IEnumerable(Of ImportSymbol)
             Const Math$ = NameOf(Math)
 
