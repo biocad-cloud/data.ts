@@ -45,7 +45,7 @@ Public Class ModuleBuilder
             If c = ASCII.CR OrElse c = ASCII.LF Then
                 ' 单行注释在遇到换行符之后结束
                 escape.SingleLineComment = False
-                Return "comment"
+                Return TypeScriptTokens.comment
             Else
                 buffer += c
             End If
@@ -54,7 +54,7 @@ Public Class ModuleBuilder
 
             If bufferEndWith("*/") Then
                 escape.BlockTextComment = False
-                Return "comment"
+                Return TypeScriptTokens.comment
             End If
         End If
 
@@ -69,9 +69,9 @@ Public Class ModuleBuilder
         ElseIf c = " "c Then
             ' a string delimiter
             If bufferEndWith(":") Then
-                Return "identifier"
+                Return TypeScriptTokens.parameterName
             ElseIf bufferEndWith("(") Then
-                Return "funcName"
+                Return TypeScriptTokens.functionName
             End If
         End If
 
