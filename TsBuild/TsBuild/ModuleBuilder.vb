@@ -13,10 +13,10 @@ Public Class ModuleBuilder
     Public Iterator Function ParseIndex(text As String) As IEnumerable(Of Token)
         Dim code As New Pointer(Of Char)(text.SolveStream)
         Dim c As Value(Of Char) = ""
-        Dim type As Value(Of String) = ""
+        Dim type As Value(Of TypeScriptTokens) = TypeScriptTokens.undefined
 
         Do While (c = ++code) <> ASCII.NUL
-            If Not String.IsNullOrEmpty(type = walkChar(c)) AndAlso buffer > 0 Then
+            If (type = walkChar(c)) <> TypeScriptTokens.undefined AndAlso buffer > 0 Then
                 Yield New Token With {
                     .Text = buffer.CharString,
                     .Type = type
@@ -40,7 +40,7 @@ Public Class ModuleBuilder
         Return buffer.Skip(buffer.Count - test.Length).SequenceEqual(test)
     End Function
 
-    Private Function walkChar(c As Char) As String
+    Private Function walkChar(c As Char) As TypeScriptTokens
         If escape.SingleLineComment Then
             If c = ASCII.CR OrElse c = ASCII.LF Then
                 ' 单行注释在遇到换行符之后结束
@@ -75,14 +75,26 @@ Public Class ModuleBuilder
             End If
         End If
 
-        Return Nothing
+        Return TypeScriptTokens.undefined
     End Function
 End Class
+
+Public Enum TypeScriptTokens
+    undefined = 0
+    [declare]
+    keyword
+    [function]
+    functionName
+    parameterName
+    typeName
+    comment
+    constructor
+End Enum
 
 Public Class Token
 
     Public Property Text As String
-    Public Property Type As String
+    Public Property Type As TypeScriptTokens
 
 End Class
 
