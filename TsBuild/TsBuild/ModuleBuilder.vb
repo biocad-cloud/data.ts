@@ -73,13 +73,13 @@ Public Class ModuleBuilder
             ElseIf c = " "c Then
                 ' a string delimiter
                 If bufferEndWith(":") Then
-                    Return TypeScriptTokens.parameterName
+                    Return TypeScriptTokens.identifier
                 ElseIf bufferEndWith("(") Then
                     Return TypeScriptTokens.functionName
                 ElseIf buffer.CharString Like Symbols.Keywords Then
                     Return TypeScriptTokens.keyword
                 Else
-                    Throw New NotImplementedException
+                    Return TypeScriptTokens.identifier
                 End If
             Else
                 buffer += c
@@ -96,7 +96,7 @@ Public Enum TypeScriptTokens
     keyword
     [function]
     functionName
-    parameterName
+    identifier
     typeName
     comment
     constructor
