@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::d5e3bd829fc19162facafe20c058b7d9, Symbols\Parser\FunctionParser.vb"
+﻿#Region "Microsoft.VisualBasic::0082c6d114e0d15609e98fe5a51d1915, Symbols\Parser\FunctionParser.vb"
 
     ' Author:
     ' 
     '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
     ' 
     ' Copyright (c) 2019 GCModeller Cloud Platform
     ' 

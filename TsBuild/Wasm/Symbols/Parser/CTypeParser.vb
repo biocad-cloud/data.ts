@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::b2cf6f476ffa2c13446c67d067696331, Symbols\Parser\CTypeParser.vb"
+﻿#Region "Microsoft.VisualBasic::2174debf0f01809a644f8b81e677339d, Symbols\Parser\CTypeParser.vb"
 
     ' Author:
     ' 
     '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
     ' 
     ' Copyright (c) 2019 GCModeller Cloud Platform
     ' 

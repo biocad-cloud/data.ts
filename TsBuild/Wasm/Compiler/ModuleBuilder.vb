@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::7523549c959cf05e2becb251e0746431, Compiler\ModuleBuilder.vb"
+﻿#Region "Microsoft.VisualBasic::5502a564927b3f0c0903878c60a963ab, Compiler\ModuleBuilder.vb"
 
     ' Author:
     ' 
     '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
     ' 
     ' Copyright (c) 2019 GCModeller Cloud Platform
     ' 
@@ -106,4 +107,3 @@ Module ModuleBuilder
 {internal})"
     End Function
 End Module
-

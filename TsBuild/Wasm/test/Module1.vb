@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::ca6afdce686f02e8abb0f33cbf4cf5a2, test\Module1.vb"
+﻿#Region "Microsoft.VisualBasic::0fe2e92c53581ab36f132638f9d45b79, test\Module1.vb"
 
     ' Author:
     ' 
     '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
     ' 
     ' Copyright (c) 2019 GCModeller Cloud Platform
     ' 
@@ -40,7 +41,7 @@
     ' 
     ' Module Test
     ' 
-    '     Sub: declareTest, forlooptest, globalTest, testDemo
+    '     Sub: filetest, FileTest, globalTest, testDemo
     ' 
     '  
     ' 

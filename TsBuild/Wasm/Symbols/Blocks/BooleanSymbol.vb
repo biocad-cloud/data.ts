@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::b3046e893631f7454f8c62bbf0eb0252, Symbols\Blocks\BooleanSymbol.vb"
+﻿#Region "Microsoft.VisualBasic::f092648918183d2cb2f12135d171e695, Symbols\Blocks\BooleanSymbol.vb"
 
     ' Author:
     ' 
     '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
     ' 
     ' Copyright (c) 2019 GCModeller Cloud Platform
     ' 
