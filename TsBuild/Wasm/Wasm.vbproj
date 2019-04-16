@@ -324,6 +324,7 @@
     <Compile Include="Symbols\DeclaredObject\IDeclaredObject.vb" />
     <Compile Include="Symbols\DeclaredObject\FuncSymbol.vb" />
     <Compile Include="Symbols\DeclaredObject\GlobalVariable.vb" />
+    <Compile Include="Symbols\DeclaredObject\JavaScriptImports.vb" />
     <Compile Include="Symbols\Memory\ArraySymbol.vb" />
     <Compile Include="Symbols\Memory\Memory.vb" />
     <Compile Include="Symbols\Memory\StringSymbol.vb" />

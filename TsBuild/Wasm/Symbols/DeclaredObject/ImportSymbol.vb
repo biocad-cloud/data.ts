@@ -46,7 +46,6 @@
 
 #End Region
 
-Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Wasm.Symbols.Parser
@@ -99,55 +98,6 @@ Namespace Symbols
 
         Public Overrides Function ToString() As String
             Return ToSExpression()
-        End Function
-
-        Public Shared ReadOnly Property MathImports As ImportSymbol()
-            <MethodImpl(MethodImplOptions.AggressiveInlining)>
-            Get
-                Return mathImport().ToArray
-            End Get
-        End Property
-
-        Public Shared ReadOnly Property JsStringConcatenation As New ImportSymbol With {
-            .ImportObject = "add",
-            .Name = "string.add",
-            .Package = "string",
-            .Result = "char*",
-            .Parameters = {
-                New NamedValue(Of String)("a", "char*"),
-                New NamedValue(Of String)("b", "char*")
-            }
-        }
-
-        ''' <summary>
-        ''' 因为WebAssembly没有自动类型转换，所以在这里会需要对每一种数据类型都imports一个相同的函数来完成
-        ''' </summary>
-        ''' <param name="type"></param>
-        ''' <returns></returns>
-        Public Shared ReadOnly Property JsObjectToString(Optional type As String = "i32") As ImportSymbol
-            Get
-                Return New ImportSymbol With {
-                    .ImportObject = "toString",
-                    .Name = $"{type}.toString",
-                    .Package = "string",
-                    .Result = "char*",
-                    .Parameters = {
-                        New NamedValue(Of String)("s", type)
-                    }
-                }
-            End Get
-        End Property
-
-        Private Shared Iterator Function mathImport() As IEnumerable(Of ImportSymbol)
-            Const Math$ = NameOf(Math)
-
-            Yield New ImportSymbol With {
-                .Package = Math,
-                .ImportObject = "",
-                .Name = "",
-                .Parameters = {},
-                .Result = ""
-            }
         End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String

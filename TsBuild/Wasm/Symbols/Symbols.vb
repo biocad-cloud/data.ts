@@ -110,7 +110,6 @@
 
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ComponentModel.Collection.Generic
-Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel.Repository
 Imports Wasm.Symbols.Parser
 
 Namespace Symbols
