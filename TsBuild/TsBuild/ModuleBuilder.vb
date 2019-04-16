@@ -72,6 +72,10 @@ Public Class ModuleBuilder
                 Return TypeScriptTokens.parameterName
             ElseIf bufferEndWith("(") Then
                 Return TypeScriptTokens.functionName
+            ElseIf buffer.CharString Like Symbols.Keywords Then
+                Return TypeScriptTokens.keyword
+            Else
+                Throw New NotImplementedException
             End If
         End If
 
