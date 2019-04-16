@@ -64,7 +64,7 @@ Public Class ModuleBuilder
                 Return TypeScriptTokens.comment
             End If
         Else
-            If c = " "c Then
+            If c = " "c OrElse c = ASCII.LF Then
                 ' a string delimiter
                 If bufferEndWith(":") Then
                     Return TypeScriptTokens.identifier
@@ -72,9 +72,19 @@ Public Class ModuleBuilder
                     Return TypeScriptTokens.functionName
                 ElseIf buffer.CharString Like Symbols.Keywords Then
                     Return TypeScriptTokens.keyword
+                ElseIf bufferEquals("{") Then
+                    Return TypeScriptTokens.openStack
+                ElseIf bufferEquals("}") Then
+                    Return TypeScriptTokens.closeStack
                 Else
                     Return TypeScriptTokens.identifier
                 End If
+            ElseIf c = "("c Then
+                Return TypeScriptTokens.functionName
+            ElseIf c = ")"c OrElse c = ";"c OrElse c = ","c Then
+                Return TypeScriptTokens.typeName
+            ElseIf c = ":"c Then
+                Return TypeScriptTokens.identifier
             Else
                 buffer += c
 
@@ -102,6 +112,8 @@ Public Enum TypeScriptTokens
     typeName
     comment
     constructor
+    openStack
+    closeStack
 End Enum
 
 Public Class Token
