@@ -17,7 +17,7 @@ Module Program
     <Usage("/declare /ts <*.d.ts> [/out <module.vb>]")>
     Public Function ModuleBuilder(args As CommandLine) As Integer
         Using output As StreamWriter = args.OpenStreamOutput("/out")
-            Dim tokens = New ModuleBuilder() _
+            Dim tokens = New ModuleParser() _
                 .ParseIndex(args.ReadInput("/ts")) _
                 .ToArray
 
