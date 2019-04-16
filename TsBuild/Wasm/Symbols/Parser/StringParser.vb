@@ -14,7 +14,7 @@ Namespace Symbols.Parser
         ''' <returns></returns>
         <Extension>
         Public Function StringAppend(symbols As SymbolTable, left As Expression, right As Expression) As Expression
-            Dim append = ImportSymbol.JsStringConcatenation
+            Dim append = JavaScriptImports.String.Concatenation
 
             ' try add required imports symbol
             Call symbols.addRequired(append)
@@ -71,7 +71,7 @@ Namespace Symbols.Parser
                 Dim value = DirectCast(str, InterpolationSyntax) _
                     .Expression _
                     .ValueExpression(symbols)
-                Dim toString = ImportSymbol.JsObjectToString(value.TypeInfer(symbols))
+                Dim toString = JavaScriptImports.String.ToString(value.TypeInfer(symbols))
 
                 symbols.addRequired(toString)
                 value = New FuncInvoke With {

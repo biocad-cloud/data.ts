@@ -32,18 +32,16 @@ Namespace Symbols.JavaScriptImports
         ''' </summary>
         ''' <param name="type"></param>
         ''' <returns></returns>
-        Public ReadOnly Property JsObjectToString(Optional type As String = "i32") As ImportSymbol
-            Get
-                Return New ImportSymbol With {
-                    .ImportObject = "toString",
-                    .Name = $"{type}.toString",
-                    .Package = "string",
-                    .Result = "char*",
-                    .Parameters = {
-                        New NamedValue(Of String)("s", type)
-                    }
+        Public Function ToString(Optional type As String = "i32") As ImportSymbol
+            Return New ImportSymbol With {
+                .ImportObject = "toString",
+                .Name = $"{type}.toString",
+                .Package = "string",
+                .Result = "char*",
+                .Parameters = {
+                    New NamedValue(Of String)("s", type)
                 }
-            End Get
-        End Property
+            }
+        End Function
     End Module
 End Namespace
