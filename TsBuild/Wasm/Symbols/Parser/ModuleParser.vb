@@ -98,13 +98,28 @@ Namespace Symbols.Parser
         ''' </summary>
         ''' <param name="vbcode">This parameter can be file path or file text content.</param>
         ''' <returns></returns>
+        ''' 
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function CreateModule(vbcode As [Variant](Of FileInfo, String), Optional symbols As SymbolTable = Nothing) As ModuleSymbol
-            Dim tree As SyntaxTree = VisualBasicSyntaxTree.ParseText(vbcode.SolveStream)
-            Dim root As CompilationUnitSyntax = tree.GetRoot
-            Dim main As ModuleBlockSyntax = root.Members.OfType(Of ModuleBlockSyntax).ElementAt(Scan0)
+            Return CreateModule(VisualBasicSyntaxTree.ParseText(vbcode.SolveStream).GetRoot, symbols)
+        End Function
+
+        ''' <summary>
+        ''' This function have some limitations: 
+        ''' 
+        ''' 1. <paramref name="vbcode"/> should only have 1 module define in it and no class/strucutre was allowed.
+        ''' 2. Only allows numeric algorithm code in the modules
+        ''' 3. Not supports string and other non-primitive type.
+        ''' </summary>
+        ''' <param name="vbcode">This parameter can be file path or file text content.</param>
+        ''' <returns></returns>
+        ''' 
+        <Extension>
+        Public Function CreateModule(vbcode As CompilationUnitSyntax, Optional symbols As SymbolTable = Nothing) As ModuleSymbol
+            Dim main As ModuleBlockSyntax = vbcode.Members.OfType(Of ModuleBlockSyntax).ElementAt(Scan0)
             Dim functions As New List(Of FuncSymbol)
             Dim exports As New List(Of ExportSymbolExpression)
-            Dim symbolTable As SymbolTable = symbols.Join(main, root.ParseEnums)
+            Dim symbolTable As SymbolTable = symbols.Join(main, vbcode.ParseEnums)
             Dim moduleName$ = main.ModuleStatement.Identifier.Text
 
             ' 添加declare导入

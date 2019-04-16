@@ -46,6 +46,7 @@ Imports System.IO
 Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Wasm.Symbols
@@ -67,7 +68,7 @@ Public Module Extensions
 
     <Extension>
     Public Function CreateModuleFromProject(vbproj As Vbproj) As ModuleSymbol
-
+        Dim sourcefiles = vbproj.EnumerateSourceFiles
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
