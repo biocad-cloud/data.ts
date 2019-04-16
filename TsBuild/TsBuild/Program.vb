@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.IO
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio
 Imports Microsoft.VisualBasic.CommandLine
@@ -10,6 +11,19 @@ Module Program
 
     Public Function Main() As Integer
         Return GetType(Program).RunCLI(App.CommandLine)
+    End Function
+
+    <ExportAPI("/declare")>
+    <Usage("/declare /ts <*.d.ts> [/out <module.vb>]")>
+    Public Function ModuleBuilder(args As CommandLine) As Integer
+        Using output As StreamWriter = args.OpenStreamOutput("/out")
+            Dim tokens = New ModuleBuilder() _
+                .ParseIndex(args.ReadInput("/ts")) _
+                .ToArray
+
+        End Using
+
+        Return 0
     End Function
 
     <ExportAPI("/compile")>
