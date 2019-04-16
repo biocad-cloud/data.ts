@@ -8,7 +8,8 @@
 
     Public Function Main() As String
         Dim str As String = Hello() & " " & World()
-        Dim format$ = $"let {a} + {b} = {a + b}"
+        Dim C# = 8888888888888
+        Dim format$ = $"let {a} + {b} / {C} = {a + b / C}"
 
         Call Print(str)
         Call Print(format)
