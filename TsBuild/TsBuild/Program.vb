@@ -21,6 +21,7 @@ Module Program
                 .ParseIndex(args.ReadInput("/ts")) _
                 .ToArray
 
+            Pause()
         End Using
 
         Return 0

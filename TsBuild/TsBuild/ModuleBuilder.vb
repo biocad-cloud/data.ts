@@ -10,8 +10,15 @@ Public Class ModuleBuilder
     Dim escape As New Escapes
     Dim buffer As New List(Of Char)
 
+    Private Function getTextCode(text As String) As Pointer(Of Char)
+        text = text.SolveStream
+        text = text.LineTokens.JoinBy(ASCII.LF)
+
+        Return New Pointer(Of Char)(text)
+    End Function
+
     Public Iterator Function ParseIndex(text As String) As IEnumerable(Of Token)
-        Dim code As New Pointer(Of Char)(text.SolveStream)
+        Dim code As Pointer(Of Char) = getTextCode(text)
         Dim c As Value(Of Char) = ""
         Dim type As Value(Of TypeScriptTokens) = TypeScriptTokens.undefined
 
@@ -42,7 +49,7 @@ Public Class ModuleBuilder
 
     Private Function walkChar(c As Char) As TypeScriptTokens
         If escape.SingleLineComment Then
-            If c = ASCII.CR OrElse c = ASCII.LF Then
+            If c = ASCII.LF Then
                 ' 单行注释在遇到换行符之后结束
                 escape.SingleLineComment = False
                 Return TypeScriptTokens.comment
@@ -56,26 +63,26 @@ Public Class ModuleBuilder
                 escape.BlockTextComment = False
                 Return TypeScriptTokens.comment
             End If
-        End If
+        Else
+            If c = "/"c Then
+                buffer += "/"c
 
-        If c = "/"c Then
-            buffer += "/"c
-
-            If bufferEquals("//") Then
-                escape.SingleLineComment = True
+                If bufferStartWith("//") Then
+                    escape.SingleLineComment = True
+                End If
+            ElseIf c = " "c Then
+                ' a string delimiter
+                If bufferEndWith(":") Then
+                    Return TypeScriptTokens.parameterName
+                ElseIf bufferEndWith("(") Then
+                    Return TypeScriptTokens.functionName
+                ElseIf buffer.CharString Like Symbols.Keywords Then
+                    Return TypeScriptTokens.keyword
+                Else
+                    Throw New NotImplementedException
+                End If
             Else
-                Throw New SyntaxErrorException
-            End If
-        ElseIf c = " "c Then
-            ' a string delimiter
-            If bufferEndWith(":") Then
-                Return TypeScriptTokens.parameterName
-            ElseIf bufferEndWith("(") Then
-                Return TypeScriptTokens.functionName
-            ElseIf buffer.CharString Like Symbols.Keywords Then
-                Return TypeScriptTokens.keyword
-            Else
-                Throw New NotImplementedException
+                buffer += c
             End If
         End If
 
