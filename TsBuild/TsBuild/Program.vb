@@ -20,8 +20,9 @@ Module Program
             Dim tokens = New ModuleParser() _
                 .ParseIndex(args.ReadInput("/ts")) _
                 .ToArray
+            Dim vb$ = tokens.BuildVisualBasicModule
 
-            Pause()
+            Call output.WriteLine(vb)
         End Using
 
         Return 0
