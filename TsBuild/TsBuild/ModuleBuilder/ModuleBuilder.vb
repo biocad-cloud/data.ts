@@ -18,8 +18,18 @@ Module ModuleBuilder
                     Call stack.Push(moduleKey)
                 Case TypeScriptTokens.typeName
                     Call vb.Append("As " & t.Text)
-                Case TypeScriptTokens.identifier
+                Case TypeScriptTokens.funcType
+                    Call vb.Append("As " & t.Text)
+                    Call vb.AppendLine()
+                Case TypeScriptTokens.identifier, TypeScriptTokens.functionName
                     Call vb.Append(t.Text)
+                Case TypeScriptTokens.comment
+                    Dim comment$ = t.Text _
+                        .LineTokens _
+                        .Select(Function(s) "' " & s.Trim("/"c, "*"c)) _
+                        .JoinBy(vbCrLf)
+
+                    Call vb.AppendLine(comment)
                 Case TypeScriptTokens.keyword
                     Select Case t.Text
                         Case "function"
@@ -48,7 +58,11 @@ Module ModuleBuilder
                         Case Else
                             Throw New NotImplementedException
                     End Select
+                Case Else
+                    Throw New NotImplementedException
             End Select
+
+            Call vb.Append(" ")
         Next
 
         Return vb.ToString

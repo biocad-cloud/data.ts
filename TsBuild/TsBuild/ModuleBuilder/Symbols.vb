@@ -6,6 +6,7 @@
     functionName
     identifier
     typeName
+    funcType
     comment
     constructor
     openStack

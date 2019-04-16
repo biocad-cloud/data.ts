@@ -81,8 +81,10 @@ Public Class ModuleParser
                 End If
             ElseIf c = "("c Then
                 Return TypeScriptTokens.functionName
-            ElseIf c = ")"c OrElse c = ";"c OrElse c = ","c Then
+            ElseIf c = ")"c OrElse c = ","c Then
                 Return TypeScriptTokens.typeName
+            ElseIf c = ";"c Then
+                Return TypeScriptTokens.funcType
             ElseIf c = ":"c Then
                 Return TypeScriptTokens.identifier
             Else
