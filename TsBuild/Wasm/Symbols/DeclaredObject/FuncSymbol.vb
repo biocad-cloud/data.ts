@@ -1,0 +1,73 @@
+﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Text
+Imports Wasm.Symbols.Parser
+
+Namespace Symbols
+
+    ''' <summary>
+    ''' Contains function body declare
+    ''' </summary>
+    Public Class FuncSymbol : Inherits FuncSignature
+        Implements IDeclaredObject
+
+        Public Property Body As Expression()
+        Public Property Locals As DeclareLocal()
+
+        Public ReadOnly Property VBDeclare As String
+            Get
+                Return MyBase.ToString
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' The VB module name
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property [Module] As String Implements IDeclaredObject.Module
+
+        Sub New()
+        End Sub
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Friend Sub New(funcVar As NamedValue(Of String))
+            Call MyBase.New(funcVar)
+        End Sub
+
+        ''' <summary>
+        ''' 因为webassembly只允许变量必须要定义在最开始的位置
+        ''' 所以构建函数体的时候流程会有些复杂
+        ''' </summary>
+        ''' <returns></returns>
+        Private Function buildBody() As String
+            ' 先声明变量，然后再逐步赋值
+            Dim declareLocals$()
+            Dim body As New List(Of String)
+
+            declareLocals = Locals _
+                .Select(Function(v) v.ToSExpression) _
+                .ToArray
+
+            For Each line In Me.Body
+                body += line.ToSExpression
+            Next
+
+            Return declareLocals.JoinBy(ASCII.LF) & ASCII.LF & body.JoinBy(ASCII.LF)
+        End Function
+
+        Public Overrides Function ToSExpression() As String
+            Dim params$ = Parameters.Select(Function(a) a.param).JoinBy(" ")
+            Dim result$ = CTypeParser.typefit(Me.Result)
+
+            Return $"(func ${Name} {params} (result {result})
+    ;; {VBDeclare}
+    {buildBody()}
+)"
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return ToSExpression()
+        End Function
+    End Class
+End Namespace

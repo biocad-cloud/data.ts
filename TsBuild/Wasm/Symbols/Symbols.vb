@@ -109,6 +109,8 @@
 #End Region
 
 Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ComponentModel.Collection.Generic
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel.Repository
 Imports Wasm.Symbols.Parser
 
 Namespace Symbols
@@ -283,8 +285,9 @@ Namespace Symbols
     End Class
 
     Public MustInherit Class DeclareVariable : Inherits Expression
+        Implements INamedValue
 
-        Public Property name As String
+        Public Property name As String Implements INamedValue.Key
         Public Property type As String
         ''' <summary>
         ''' 初始值，对于全局变量而言，则必须要有一个初始值，全局变量默认的初始值为零
@@ -294,16 +297,6 @@ Namespace Symbols
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             Return type
-        End Function
-    End Class
-
-    ''' <summary>
-    ''' 全局变量的初始值，只能够是常数或者其他的全局变量的值，也就是说<see cref="DeclareGlobal.init"/>的值只能够是常数
-    ''' </summary>
-    Public Class DeclareGlobal : Inherits DeclareVariable
-
-        Public Overrides Function ToSExpression() As String
-            Return $"(global ${name} (mut {typefit(type)}) {init.ToSExpression})"
         End Function
     End Class
 

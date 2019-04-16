@@ -57,12 +57,13 @@ Namespace Symbols
     ''' Imports object can be parse from the VB.NET ``Declare`` statement
     ''' </summary>
     Public Class ImportSymbol : Inherits FuncSignature
+        Implements IDeclaredObject
 
         ''' <summary>
         ''' 外部的模块对象引用名称
         ''' </summary>
         ''' <returns></returns>
-        Public Property Package As String
+        Public Property Package As String Implements IDeclaredObject.Module
         ''' <summary>
         ''' 这个函数对象在外部模块之中的名称字符串
         ''' </summary>

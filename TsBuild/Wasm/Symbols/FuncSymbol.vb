@@ -53,10 +53,10 @@
 
 #End Region
 
-Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ComponentModel.Collection.Generic
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel.Repository
 Imports Microsoft.VisualBasic.Language
-Imports Microsoft.VisualBasic.Text
 
 Namespace Symbols
 
@@ -64,12 +64,13 @@ Namespace Symbols
     ''' The abstract of the function object, only have function name, parameter and result type definition.
     ''' </summary>
     Public Class FuncSignature : Inherits Expression
+        Implements INamedValue
 
         ''' <summary>
         ''' 函数在WebAssembly模块内部的引用名称字符串
         ''' </summary>
         ''' <returns></returns>
-        Public Property Name As String
+        Public Property Name As String Implements IKeyedEntity(Of String).Key
         Public Property Parameters As NamedValue(Of String)()
 
         ''' <summary>
@@ -101,64 +102,6 @@ Namespace Symbols
 
                 Return $"Public Function {Name}({ .ByRef}) As {Result}"
             End With
-        End Function
-    End Class
-
-    ''' <summary>
-    ''' Contains function body declare
-    ''' </summary>
-    Public Class FuncSymbol : Inherits FuncSignature
-
-        Public Property Body As Expression()
-        Public Property Locals As DeclareLocal()
-
-        Public ReadOnly Property VBDeclare As String
-            Get
-                Return MyBase.ToString
-            End Get
-        End Property
-
-        Sub New()
-        End Sub
-
-        <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Friend Sub New(funcVar As NamedValue(Of String))
-            Call MyBase.New(funcVar)
-        End Sub
-
-        ''' <summary>
-        ''' 因为webassembly只允许变量必须要定义在最开始的位置
-        ''' 所以构建函数体的时候流程会有些复杂
-        ''' </summary>
-        ''' <returns></returns>
-        Private Function buildBody() As String
-            ' 先声明变量，然后再逐步赋值
-            Dim declareLocals$()
-            Dim body As New List(Of String)
-
-            declareLocals = Locals _
-                .Select(Function(v) v.ToSExpression) _
-                .ToArray
-
-            For Each line In Me.Body
-                body += line.ToSExpression
-            Next
-
-            Return declareLocals.JoinBy(ASCII.LF) & ASCII.LF & body.JoinBy(ASCII.LF)
-        End Function
-
-        Public Overrides Function ToSExpression() As String
-            Dim params$ = Parameters.Select(Function(a) a.param).JoinBy(" ")
-            Dim result$ = Me.Result Or "i32".When(Me.Result Like Types.stringType)
-
-            Return $"(func ${Name} {params} (result {result})
-    ;; {VBDeclare}
-    {buildBody()}
-)"
-        End Function
-
-        Public Overrides Function ToString() As String
-            Return ToSExpression()
         End Function
     End Class
 End Namespace
