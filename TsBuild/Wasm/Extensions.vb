@@ -74,8 +74,15 @@ Public Module Extensions
         Dim sourcefiles = vbproj _
             .EnumerateSourceFiles(skipAssmInfo:=True) _
             .ToArray
-        Dim symbols As New SymbolTable
         Dim assemblyInfo As AssemblyInfo = vbproj.AssemblyInfo
+        Dim symbols As New SymbolTable
+        Dim project As New ModuleSymbol
+
+        For Each file As String In sourcefiles
+            project = project
+        Next
+
+        Return project
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
