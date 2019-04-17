@@ -116,20 +116,25 @@ Namespace Symbols.Parser
                     .value = value
                 }
             Else
-                Dim value = DirectCast(str, InterpolationSyntax) _
+                Return DirectCast(str, InterpolationSyntax) _
                     .Expression _
-                    .ValueExpression(symbols)
-                Dim toString = JavaScriptImports.String.ToString(value.TypeInfer(symbols))
-
-                symbols.addRequired(toString)
-                value = New FuncInvoke With {
-                    .[operator] = False,
-                    .Reference = toString.Name,
-                    .Parameters = {value}
-                }
-
-                Return value
+                    .ValueExpression(symbols) _
+                    .AnyToString(symbols)
             End If
+        End Function
+
+        <Extension>
+        Public Function AnyToString(value As Expression, symbols As SymbolTable) As Expression
+            Dim toString = JavaScriptImports.String.ToString(value.TypeInfer(symbols))
+
+            symbols.addRequired(toString)
+            value = New FuncInvoke With {
+                .[operator] = False,
+                .Reference = toString.Name,
+                .Parameters = {value}
+            }
+
+            Return value
         End Function
     End Module
 End Namespace
