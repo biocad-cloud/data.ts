@@ -61,6 +61,9 @@ Namespace Symbols
 
         ''' <summary>
         ''' 外部的模块对象引用名称
+        ''' 
+        ''' 请注意，这个是外部模块的名称，对于在VB之中申明的这个API，
+        ''' 其还存在一个<see cref="[Module]"/>标记其在VB工程项目之中的模块名称
         ''' </summary>
         ''' <returns></returns>
         Public Property Package As String Implements IDeclaredObject.Module

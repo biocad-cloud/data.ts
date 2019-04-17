@@ -59,6 +59,7 @@ Namespace Symbols
     ''' </summary>
     Public Class FuncSignature : Inherits Expression
         Implements INamedValue
+        Implements IDeclaredObject
 
         ''' <summary>
         ''' 函数在WebAssembly模块内部的引用名称字符串
@@ -72,6 +73,12 @@ Namespace Symbols
         ''' </summary>
         ''' <returns></returns>
         Public Property Result As String
+
+        ''' <summary>
+        ''' VB module name
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property [Module] As String Implements IDeclaredObject.Module
 
         Friend Sub New()
         End Sub

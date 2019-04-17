@@ -146,17 +146,24 @@ Namespace Symbols.Parser
         ''' <returns>May be contains multiple local variables</returns>
         <Extension>
         Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
-            Return statement.Declarators.ParseDeclarator(symbols, False)
+            Return statement.Declarators.ParseDeclarator(symbols, Nothing)
         End Function
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="names"></param>
+        ''' <param name="symbols"></param>
+        ''' <param name="moduleName">这个参数是空值表示局部变量，反之表示为模块全局变量</param>
+        ''' <returns></returns>
         <Extension>
         Friend Iterator Function ParseDeclarator(names As IEnumerable(Of VariableDeclaratorSyntax),
                                                  symbols As SymbolTable,
-                                                 isGlobal As Boolean) As IEnumerable(Of Expression)
+                                                 moduleName$) As IEnumerable(Of Expression)
 
             For Each var As VariableDeclaratorSyntax In names
-                For Each [declare] As DeclareLocal In var.ParseDeclarator(symbols, isGlobal)
-                    If Not isGlobal Then
+                For Each [declare] As DeclareLocal In var.ParseDeclarator(symbols, moduleName)
+                    If moduleName.StringEmpty Then
                         If Not [declare].init Is Nothing Then
                             Yield [declare].SetLocal
                         End If
@@ -170,7 +177,7 @@ Namespace Symbols.Parser
         <Extension>
         Friend Iterator Function ParseDeclarator(var As VariableDeclaratorSyntax,
                                                  symbols As SymbolTable,
-                                                 isGlobal As Boolean) As IEnumerable(Of DeclareLocal)
+                                                 moduleName As String) As IEnumerable(Of DeclareLocal)
             Dim fieldNames = var.Names
             Dim type$
             Dim init As Expression = Nothing
@@ -184,7 +191,7 @@ Namespace Symbols.Parser
                     type = name.AsType(var.AsClause, symbols)
                 End If
 
-                If isGlobal Then
+                If Not moduleName.StringEmpty Then
                     If init Is Nothing Then
                         ' 默认是零
                         init = New LiteralExpression(0, type)
@@ -196,7 +203,7 @@ Namespace Symbols.Parser
                         End If
                     End If
 
-                    Call symbols.AddGlobal(name, type, init)
+                    Call symbols.AddGlobal(name, type, moduleName, init)
                 Else
                     If Not init Is Nothing Then
                         init = Types.CType(type, init, symbols)

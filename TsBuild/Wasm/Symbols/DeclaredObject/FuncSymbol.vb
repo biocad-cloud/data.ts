@@ -70,12 +70,6 @@ Namespace Symbols
             End Get
         End Property
 
-        ''' <summary>
-        ''' The VB module name
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property [Module] As String Implements IDeclaredObject.Module
-
         Sub New()
         End Sub
 

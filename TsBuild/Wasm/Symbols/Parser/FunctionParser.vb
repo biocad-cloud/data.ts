@@ -110,8 +110,14 @@ Namespace Symbols.Parser
             Return method.BlockStatement.ParseParameters(symbols).ToArray
         End Function
 
+        ''' <summary>
+        ''' 解析一个执行函数
+        ''' </summary>
+        ''' <param name="method"></param>
+        ''' <param name="symbols"></param>
+        ''' <returns></returns>
         <Extension>
-        Public Function Parse(method As MethodBlockSyntax, symbols As SymbolTable) As FuncSymbol
+        Public Function ParseFunction(method As MethodBlockSyntax, moduleName$, symbols As SymbolTable) As FuncSymbol
             Dim parameters = method.ParseParameters(symbols)
             Dim body As StatementSyntax() = method.Statements.ToArray
             Dim funcVar = method.FuncVariable(symbols)
@@ -135,6 +141,7 @@ Namespace Symbols.Parser
             Dim func As New FuncSymbol(funcVar) With {
                 .Parameters = parameters,
                 .Body = bodyExpressions,
+                .[Module] = moduleName,
                 .Locals = symbols _
                     .GetAllLocals _
                     .Where(Function(v) Not v.name Like paramIndex) _
