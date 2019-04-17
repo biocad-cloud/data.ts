@@ -92,5 +92,9 @@ Namespace Symbols
         Public Shared Function CreateModule(vbcode As String) As ModuleSymbol
             Return ModuleParser.CreateModule(vbcode)
         End Function
+
+        Public Function Join(part As ModuleSymbol) As ModuleSymbol
+            Return Me
+        End Function
     End Class
 End Namespace

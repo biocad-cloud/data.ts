@@ -79,7 +79,7 @@ Public Module Extensions
         Dim project As New ModuleSymbol
 
         For Each file As String In sourcefiles
-            project = project
+            project = project.Join(ModuleParser.CreateModule(file, symbols))
         Next
 
         Return project
