@@ -74,6 +74,7 @@ Module treeTest
 
     Sub Main()
 
+        Call projectTest()
         ' Call documentApitest()
 
         '  Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")
@@ -114,6 +115,18 @@ End Module"
         Dim hex = moduleMain.HexDump(verbose:=True)
 
         Call hex.SaveTo("X:\test.dmp")
+
+        Pause()
+    End Sub
+
+    Sub projectTest()
+        Dim proj$ = "E:\repo\xDoc\ts\Linq.ts\TsBuild\Demo\vbscript\HelloWorld\HelloWorld.vbproj"
+        Dim [moduletest] As ModuleSymbol = Wasm.CreateModuleFromProject(proj)
+
+        Console.WriteLine(moduletest.ToSExpression)
+        moduletest.Compile(proj.ChangeSuffix("wasm"))
+        moduletest.ToSExpression.SaveTo(proj.ChangeSuffix("wast"))
+        moduletest.HexDump(True).SaveTo(proj.ChangeSuffix("dmp"))
 
         Pause()
     End Sub
