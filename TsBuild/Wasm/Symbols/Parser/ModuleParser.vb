@@ -104,22 +104,20 @@ Namespace Symbols.Parser
             Return CreateModule(VisualBasicSyntaxTree.ParseText(vbcode.SolveStream).GetRoot, symbols)
         End Function
 
-        ''' <summary>
-        ''' This function have some limitations: 
-        ''' 
-        ''' 1. <paramref name="vbcode"/> should only have 1 module define in it and no class/strucutre was allowed.
-        ''' 2. Only allows numeric algorithm code in the modules
-        ''' 3. Not supports string and other non-primitive type.
-        ''' </summary>
-        ''' <param name="vbcode">This parameter can be file path or file text content.</param>
-        ''' <returns></returns>
-        ''' 
         <Extension>
         Public Function CreateModule(vbcode As CompilationUnitSyntax, Optional symbols As SymbolTable = Nothing) As ModuleSymbol
-            Dim main As ModuleBlockSyntax = vbcode.Members.OfType(Of ModuleBlockSyntax).ElementAt(Scan0)
-            Dim functions As New List(Of FuncSymbol)
-            Dim exports As New List(Of ExportSymbolExpression)
-            Dim symbolTable As SymbolTable = symbols.Join(main, vbcode.ParseEnums)
+            Dim main As ModuleBlockSyntax = vbcode.Members _
+                .OfType(Of ModuleBlockSyntax) _
+                .ElementAt(Scan0)
+            Dim symbolTable As SymbolTable = main.ParseDeclares(symbols, vbcode.ParseEnums)
+
+            ' 解析成员函数的具体定义内容
+            Return main.CreateModuleInternal(symbolTable)
+        End Function
+
+        <Extension>
+        Public Function ParseDeclares(main As ModuleBlockSyntax, symbols As SymbolTable, enums As EnumSymbol()) As SymbolTable
+            Dim symbolTable As SymbolTable = symbols.Join(main, enums)
             Dim moduleName$ = main.ModuleStatement.Identifier.objectName
 
             ' 添加declare导入
@@ -130,6 +128,24 @@ Namespace Symbols.Parser
             Call main.Members _
                 .OfType(Of FieldDeclarationSyntax) _
                 .parseGlobals(moduleName, symbolTable)
+
+            Return symbolTable
+        End Function
+
+        ''' <summary>
+        ''' This function have some limitations: 
+        ''' 
+        ''' 1. <paramref name="main"/> should only have 1 module define in it and no class/strucutre was allowed.
+        ''' 2. Only allows numeric algorithm code in the modules
+        ''' 3. Not supports string and other non-primitive type.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' 
+        <Extension>
+        Friend Function CreateModuleInternal(main As ModuleBlockSyntax, symbolTable As SymbolTable) As ModuleSymbol
+            Dim functions As New List(Of FuncSymbol)
+            Dim exports As New List(Of ExportSymbolExpression)
+            Dim moduleName$ = main.ModuleStatement.Identifier.objectName
 
             For Each method In main.Members.OfType(Of MethodBlockSyntax)
                 functions += method.ParseFunction(moduleName, symbolTable)

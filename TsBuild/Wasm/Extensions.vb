@@ -47,6 +47,7 @@
 Imports System.IO
 Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
+Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ApplicationServices.Development
 Imports Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio
@@ -76,16 +77,30 @@ Public Module Extensions
             .EnumerateSourceFiles(skipAssmInfo:=True) _
             .ToArray
         Dim assemblyInfo As AssemblyInfo = vbproj.AssemblyInfo
-        Dim symbols As New SymbolTable
+        Dim symbols As SymbolTable = Nothing
         Dim project As New ModuleSymbol
         Dim dir As String = DirectCast(vbproj, IFileReference) _
             .FilePath _
             .ParentPath
         Dim part As ModuleSymbol
+        Dim vbcodes As New List(Of ModuleBlockSyntax)
+        Dim vbcode As CompilationUnitSyntax
 
+        ' 在刚开始的时候应该将函数的申明全部进行解析
+        ' 然后再解析函数体的时候才不会出现没有找到符号的问题
         For Each file As String In sourcefiles
             file = $"{dir}/{file}"
-            part = ModuleParser.CreateModule(file, symbols)
+            vbcode = VisualBasicSyntaxTree.ParseText(file.SolveStream).GetRoot
+
+            For Each modulePart As ModuleBlockSyntax In vbcode.Members.OfType(Of ModuleBlockSyntax)
+                vbcodes += modulePart
+                symbols = modulePart.ParseDeclares(symbols, vbcode.ParseEnums)
+            Next
+        Next
+
+        ' 然后再进行具体的函数解析就不出错了
+        For Each [module] As ModuleBlockSyntax In vbcodes
+            part = ModuleParser.CreateModuleInternal([module], symbols)
             project = project.Join(part)
         Next
 

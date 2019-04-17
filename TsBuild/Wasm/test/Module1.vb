@@ -74,7 +74,7 @@ Module treeTest
 
     Sub Main()
 
-        ' Call projectTest()
+        Call projectTest()
         ' Call documentApitest()
 
         '  Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")

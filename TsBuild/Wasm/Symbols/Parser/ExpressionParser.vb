@@ -146,6 +146,12 @@ Namespace Symbols.Parser
                     funcName = DirectCast(reference, SimpleNameSyntax).objectName
                 Case GetType(IdentifierNameSyntax)
                     funcName = DirectCast(reference, IdentifierNameSyntax).objectName
+                Case GetType(MemberAccessExpressionSyntax)
+                    Dim acc = DirectCast(reference, MemberAccessExpressionSyntax)
+                    ' 模块或者变量名称
+                    Dim target = acc.Expression
+                    ' 目标函数名称
+                    funcName$ = acc.Name.objectName
                 Case Else
                     Throw New NotImplementedException(reference.GetType.FullName)
             End Select
