@@ -1,47 +1,47 @@
 ﻿#Region "Microsoft.VisualBasic::7ed39b9ca9f45ac692d89ff404ded7be, Symbols\Parser\ExpressionParser.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    '       asuka (evia@lilithaf.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    '     Module ExpressionParse
-    ' 
-    '         Function: [Select], (+2 Overloads) BinaryStack, ConstantExpression, FunctionInvoke, MemberExpression
-    '                   ParenthesizedStack, ReferVariable, UnaryExpression, ValueCType, ValueExpression
-    ' 
-    ' 
-    ' /********************************************************************************/
+'     Module ExpressionParse
+' 
+'         Function: [Select], (+2 Overloads) BinaryStack, ConstantExpression, FunctionInvoke, MemberExpression
+'                   ParenthesizedStack, ReferVariable, UnaryExpression, ValueCType, ValueExpression
+' 
+' 
+' /********************************************************************************/
 
 #End Region
 
@@ -193,7 +193,15 @@ Namespace Symbols.Parser
         <Extension>
         Public Function ConstantExpression([const] As LiteralExpressionSyntax, wasmType$, memory As Memory) As Expression
             Dim value As Object = [const].Token.Value
-            Dim type As Type = value.GetType
+            Dim type As Type
+
+            If value Is Nothing Then
+                ' 是空值常量，则直接返回整形数0表示空指针
+                value = 0
+                type = GetType(Integer)
+            Else
+                type = value.GetType
+            End If
 
             If type Is GetType(String) OrElse type Is GetType(Char) Then
                 Call memory.stringValue(value, wasmType)
