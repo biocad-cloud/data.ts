@@ -54,6 +54,7 @@ Imports Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio
 Imports Microsoft.VisualBasic.ComponentModel
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Linq
 Imports Wasm.Symbols
 Imports Wasm.Symbols.Parser
 Imports Vbproj = Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio.Project
@@ -77,34 +78,51 @@ Public Module Extensions
             .EnumerateSourceFiles(skipAssmInfo:=True) _
             .ToArray
         Dim assemblyInfo As AssemblyInfo = vbproj.AssemblyInfo
-        Dim symbols As SymbolTable = Nothing
-        Dim project As New ModuleSymbol
         Dim dir As String = DirectCast(vbproj, IFileReference) _
             .FilePath _
             .ParentPath
-        Dim part As ModuleSymbol
-        Dim vbcodes As New List(Of ModuleBlockSyntax)
-        Dim vbcode As CompilationUnitSyntax
+        Dim symbols As SymbolTable = Nothing
+        Dim vbcodes As ModuleBlockSyntax()
 
-        ' 在刚开始的时候应该将函数的申明全部进行解析
-        ' 然后再解析函数体的时候才不会出现没有找到符号的问题
-        For Each file As String In sourcefiles
-            file = $"{dir}/{file}"
-            vbcode = VisualBasicSyntaxTree.ParseText(file.SolveStream).GetRoot
+        With sourcefiles _
+            .Select(Function(file) $"{dir}/{file}") _
+            .getModules _
+            .ToArray
 
-            For Each modulePart As ModuleBlockSyntax In vbcode.Members.OfType(Of ModuleBlockSyntax)
-                vbcodes += modulePart
-                symbols = modulePart.ParseDeclares(symbols, vbcode.ParseEnums)
+            vbcodes = .OfType(Of ModuleBlockSyntax()).IteratesALL.ToArray
+
+            ' 在刚开始的时候应该将函数的申明全部进行解析
+            ' 然后再解析函数体的时候才不会出现没有找到符号的问题
+            For Each modulePart As ModuleBlockSyntax In vbcodes
+                symbols = modulePart.ParseDeclares(symbols, {})
             Next
-        Next
 
-        ' 然后再进行具体的函数解析就不出错了
-        For Each [module] As ModuleBlockSyntax In vbcodes
-            part = ModuleParser.CreateModuleInternal([module], symbols)
-            project = project.Join(part)
-        Next
+            For Each [const] As EnumSymbol In .OfType(Of EnumSymbol()).IteratesALL
+                Call symbols.AddEnumType([const])
+            Next
+        End With
 
-        Return project
+        Return vbcodes.CreateModule(symbols)
+    End Function
+
+    <Extension>
+    Private Iterator Function getModules(files As IEnumerable(Of String)) As IEnumerable(Of [Variant](Of EnumSymbol(), ModuleBlockSyntax()))
+        Dim vbcode As CompilationUnitSyntax
+        Dim modules As ModuleBlockSyntax()
+        Dim enums As EnumSymbol()
+
+        For Each file As String In files
+            vbcode = VisualBasicSyntaxTree.ParseText(file.SolveStream).GetRoot
+            modules = vbcode.Members.OfType(Of ModuleBlockSyntax).ToArray
+            enums = vbcode.ParseEnums
+
+            If modules.Length > 0 Then
+                Yield modules
+            End If
+            If enums.Length > 0 Then
+                Yield enums
+            End If
+        Next
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>

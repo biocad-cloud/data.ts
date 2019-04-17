@@ -101,18 +101,36 @@ Namespace Symbols.Parser
         ''' 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function CreateModule(vbcode As [Variant](Of FileInfo, String), Optional symbols As SymbolTable = Nothing) As ModuleSymbol
-            Return CreateModule(VisualBasicSyntaxTree.ParseText(vbcode.SolveStream).GetRoot, symbols)
+            Return CreateUnitModule(VisualBasicSyntaxTree.ParseText(vbcode.SolveStream).GetRoot, symbols)
         End Function
 
         <Extension>
-        Public Function CreateModule(vbcode As CompilationUnitSyntax, Optional symbols As SymbolTable = Nothing) As ModuleSymbol
-            Dim main As ModuleBlockSyntax = vbcode.Members _
+        Public Function CreateUnitModule(vbcode As CompilationUnitSyntax, Optional symbols As SymbolTable = Nothing) As ModuleSymbol
+            Dim project As ModuleBlockSyntax() = vbcode.Members _
                 .OfType(Of ModuleBlockSyntax) _
-                .ElementAt(Scan0)
-            Dim symbolTable As SymbolTable = main.ParseDeclares(symbols, vbcode.ParseEnums)
+                .ToArray
+            Dim symbolTable As SymbolTable = Nothing
+
+            For Each main As ModuleBlockSyntax In project
+                symbolTable = main.ParseDeclares(symbols, vbcode.ParseEnums)
+            Next
 
             ' 解析成员函数的具体定义内容
-            Return main.CreateModuleInternal(symbolTable)
+            Return project.CreateModule(symbolTable)
+        End Function
+
+        <Extension>
+        Friend Function CreateModule(modules As IEnumerable(Of ModuleBlockSyntax), symbols As SymbolTable) As ModuleSymbol
+            Dim project As New ModuleSymbol
+            Dim part As ModuleSymbol
+
+            ' 然后再进行具体的函数解析就不出错了
+            For Each [module] As ModuleBlockSyntax In modules
+                part = ModuleParser.CreateModuleInternal([module], symbols)
+                project = project.Join(part)
+            Next
+
+            Return project
         End Function
 
         <Extension>
