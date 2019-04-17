@@ -89,7 +89,9 @@ Public Module Extensions
             .getModules _
             .ToArray
 
-            vbcodes = .OfType(Of ModuleBlockSyntax()).IteratesALL.ToArray
+            vbcodes = .OfType(Of ModuleBlockSyntax()) _
+                      .IteratesALL _
+                      .ToArray
 
             ' 在刚开始的时候应该将函数的申明全部进行解析
             ' 然后再解析函数体的时候才不会出现没有找到符号的问题
@@ -102,7 +104,15 @@ Public Module Extensions
             Next
         End With
 
-        Return vbcodes.CreateModule(symbols)
+        Dim project = vbcodes.CreateModule(symbols)
+        Dim info = assemblyInfo.assmInfoModule(project.Memory)
+
+        Return project.Join(info)
+    End Function
+
+    <Extension>
+    Private Function assmInfoModule(AssemblyInfo As AssemblyInfo, memory As Memory) As ModuleSymbol
+
     End Function
 
     <Extension>

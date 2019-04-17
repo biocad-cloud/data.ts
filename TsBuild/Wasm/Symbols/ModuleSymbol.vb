@@ -71,9 +71,16 @@ Namespace Symbols
         Public Function Join(part As ModuleSymbol) As ModuleSymbol
             InternalFunctions = InternalFunctions.Join(part.InternalFunctions).ToArray
             Exports = Exports.Join(part.Exports).ToArray
-            [Imports] = part.Imports
-            Globals = part.Globals
-            Memory = part.Memory
+
+            If Not part.Imports.IsNullOrEmpty Then
+                [Imports] = part.Imports
+            End If
+            If Not part.Globals.IsNullOrEmpty Then
+                Globals = part.Globals
+            End If
+            If Not part.Memory Is Nothing Then
+                Memory = part.Memory
+            End If
 
             Return Me
         End Function

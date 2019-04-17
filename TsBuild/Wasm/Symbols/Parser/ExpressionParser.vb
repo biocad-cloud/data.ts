@@ -210,7 +210,7 @@ Namespace Symbols.Parser
             End If
 
             If type Is GetType(String) OrElse type Is GetType(Char) Then
-                Call memory.stringValue(value, wasmType)
+                Return memory.StringConstant(value)
             ElseIf type Is GetType(Boolean) Then
                 wasmType = "i32"
                 value = If(DirectCast(value, Boolean), 1, 0)
@@ -223,6 +223,19 @@ Namespace Symbols.Parser
             Return New LiteralExpression With {
                 .type = wasmType,
                 .value = value
+            }
+        End Function
+
+        <Extension>
+        Public Function StringConstant(memory As Memory, str As String) As LiteralExpression
+            Dim intPtr As Object = str
+            Dim wasmType$ = Nothing
+
+            Call memory.stringValue(intPtr, wasmType)
+
+            Return New LiteralExpression With {
+               .type = wasmType,
+               .value = intPtr
             }
         End Function
 
