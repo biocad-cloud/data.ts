@@ -103,7 +103,13 @@ Namespace Symbols
             Dim params$ = Parameters.Select(Function(a) a.param).JoinBy(" ")
             Dim result$ = CTypeParser.typefit(Me.Result)
 
-            Return $"(func ${Name} {params} (result {result})
+            If result = "void" Then
+                result = ""
+            Else
+                result = $"(result {result})"
+            End If
+
+            Return $"(func ${Name} {params} {result}
     ;; {VBDeclare}
     {buildBody()}
 )"
