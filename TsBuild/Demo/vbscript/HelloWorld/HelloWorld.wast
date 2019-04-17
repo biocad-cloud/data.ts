@@ -29,8 +29,14 @@
     (func $appendChild (import "document" "appendChild") (param $parent i32) (param $node i32) (result i32))
     ;; Declare Function Exp Lib "Math" Alias "exp" (x As f64) As f64
     (func $Exp (import "Math" "exp") (param $x f64) (result f64))
+    ;; Declare Function i32.toString Lib "string" Alias "toString" (s As i32) As char*
+    (func $i32.toString (import "string" "toString") (param $s i32) (result i32))
+    ;; Declare Function string.add Lib "string" Alias "add" (a As char*, b As char*) As char*
+    (func $string.add (import "string" "add") (param $a i32) (param $b i32) (result i32))
     ;; Declare Function f64.toString Lib "string" Alias "toString" (s As f64) As char*
     (func $f64.toString (import "string" "toString") (param $s f64) (result i32))
+    ;; Declare Function char*.toString Lib "string" Alias "toString" (s As char*) As char*
+    (func $char*.toString (import "string" "toString") (param $s i32) (result i32))
     
     ;; Only allows one memory block in each module
     (memory (import "env" "bytechunks") 1)
@@ -84,6 +90,27 @@
 
     ;; String from 302 with 6 bytes in memory
     (data (i32.const 302) "result\00")
+
+    ;; String from 309 with 37 bytes in memory
+    (data (i32.const 309) "The calculation result of PoissonPDF(\00")
+
+    ;; String from 347 with 2 bytes in memory
+    (data (i32.const 347) ", \00")
+
+    ;; String from 350 with 5 bytes in memory
+    (data (i32.const 350) ") is \00")
+
+    ;; String from 356 with 1 bytes in memory
+    (data (i32.const 356) "!\00")
+
+    ;; String from 358 with 6 bytes in memory
+    (data (i32.const 358) "result\00")
+
+    ;; String from 365 with 5 bytes in memory
+    (data (i32.const 365) "style\00")
+
+    ;; String from 371 with 25 bytes in memory
+    (data (i32.const 371) "color: green; font-size: \00")
     
     (global $helloWorld (mut i32) (i32.const 1))
 
@@ -144,11 +171,12 @@
     ;; End Loop loop_9b020000
     (return (get_local $result))
     )
-    (func $DisplayResult (param $k i32) (param $lambda f64) (result i32)
-        ;; Public Function DisplayResult(k As i32, lambda As f64) As i32
+    (func $DisplayResult (param $k i32) (param $lambda f64) (param $fontsize i32) (result i32)
+        ;; Public Function DisplayResult(k As i32, lambda As f64, fontsize As char*) As i32
         (local $pdf f64)
     (set_local $pdf (call $PoissonPDF (get_local $k) (get_local $lambda)))
-    (call $setText (call $DOMById (i32.const 302)) (call $f64.toString (get_local $pdf)))
+    (call $setText (call $DOMById (i32.const 302)) (call $string.add (call $string.add (call $string.add (call $string.add (call $string.add (call $string.add (i32.const 309) (call $i32.toString (get_local $k))) (i32.const 347)) (call $f64.toString (get_local $lambda))) (i32.const 350)) (call $f64.toString (get_local $pdf))) (i32.const 356)))
+    (call $setAttribute (call $DOMById (i32.const 358)) (i32.const 365) (call $string.add (i32.const 371) (call $char*.toString (get_local $fontsize))))
     (return (i32.const 0))
     )
     )
