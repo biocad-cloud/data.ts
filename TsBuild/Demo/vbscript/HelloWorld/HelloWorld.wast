@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/17/2019 10:20:26 PM
+    ;; build: 4/17/2019 10:30:16 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -86,8 +86,10 @@
 
     (export "RunApp" (func $RunApp)) 
 
-    (func $RunApp  
-        ;; Public Function RunApp() As void
+    ;; functions in [App]
+    
+    (func $RunApp  (result i32)
+        ;; Public Function RunApp() As i32
         (local $textNode i32)
     (local $notes i32)
     (local $message1 i32)
@@ -108,4 +110,6 @@
     (call $warn (get_global $note))
     (call $info (get_global $note2))
     (call $error (i32.const 245))
-    ))
+    (return (i32.const 0))
+    )
+    )

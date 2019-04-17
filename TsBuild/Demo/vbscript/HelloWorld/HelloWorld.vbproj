@@ -71,6 +71,7 @@
     <Compile Include="App.vb" />
     <Compile Include="console.vb" />
     <Compile Include="document.vb" />
+    <Compile Include="Math.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
