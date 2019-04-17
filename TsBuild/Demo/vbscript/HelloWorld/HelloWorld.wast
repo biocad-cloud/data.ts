@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/17/2019 11:38:24 PM
+    ;; build: 4/17/2019 11:42:23 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -112,32 +112,32 @@
     ;; String from 371 with 25 bytes in memory
     (data (i32.const 371) "color: green; font-size: \00")
 
-    ;; String from 397 with 10 bytes in memory
-    (data (i32.const 397) "HelloWorld\00")
+    ;; String from 397 with 11 bytes in memory
+    (data (i32.const 397) "HelloWorld!\00")
 
-    ;; String from 408 with 0 bytes in memory
-    (data (i32.const 408) "\00")
+    ;; String from 409 with 80 bytes in memory
+    (data (i32.const 409) "A hello world demo project for VisualBasic.NET WebAssembly compiler and runtime.\00")
 
-    ;; String from 409 with 0 bytes in memory
-    (data (i32.const 409) "\00")
+    ;; String from 490 with 10 bytes in memory
+    (data (i32.const 490) "xieguigang\00")
 
-    ;; String from 410 with 10 bytes in memory
-    (data (i32.const 410) "HelloWorld\00")
+    ;; String from 501 with 10 bytes in memory
+    (data (i32.const 501) "HelloWorld\00")
 
-    ;; String from 421 with 17 bytes in memory
-    (data (i32.const 421) "Copyright ©  2019\00")
+    ;; String from 512 with 20 bytes in memory
+    (data (i32.const 512) "Copyright © MIT 2019\00")
 
-    ;; String from 439 with 0 bytes in memory
-    (data (i32.const 439) "\00")
+    ;; String from 533 with 11 bytes in memory
+    (data (i32.const 533) "HelloWorld!\00")
 
-    ;; String from 440 with 36 bytes in memory
-    (data (i32.const 440) "8750377f-b6e7-4fb5-886b-4c3fa451ec4c\00")
+    ;; String from 545 with 36 bytes in memory
+    (data (i32.const 545) "8750377f-b6e7-4fb5-886b-4c3fa451ec4c\00")
 
-    ;; String from 477 with 7 bytes in memory
-    (data (i32.const 477) "1.0.0.0\00")
+    ;; String from 582 with 13 bytes in memory
+    (data (i32.const 582) "123.34.0.5466\00")
 
-    ;; String from 485 with 7 bytes in memory
-    (data (i32.const 485) "1.0.0.0\00")
+    ;; String from 596 with 9 bytes in memory
+    (data (i32.const 596) "1.0.99.78\00")
     
     (global $helloWorld (mut i32) (i32.const 1))
 
@@ -226,41 +226,41 @@
     (func $AssemblyDescription  (result i32)
         ;; Public Function AssemblyDescription() As char*
         
-    (return (i32.const 408))
+    (return (i32.const 409))
     )
     (func $AssemblyCompany  (result i32)
         ;; Public Function AssemblyCompany() As char*
         
-    (return (i32.const 409))
+    (return (i32.const 490))
     )
     (func $AssemblyProduct  (result i32)
         ;; Public Function AssemblyProduct() As char*
         
-    (return (i32.const 410))
+    (return (i32.const 501))
     )
     (func $AssemblyCopyright  (result i32)
         ;; Public Function AssemblyCopyright() As char*
         
-    (return (i32.const 421))
+    (return (i32.const 512))
     )
     (func $AssemblyTrademark  (result i32)
         ;; Public Function AssemblyTrademark() As char*
         
-    (return (i32.const 439))
+    (return (i32.const 533))
     )
     (func $Guid  (result i32)
         ;; Public Function Guid() As char*
         
-    (return (i32.const 440))
+    (return (i32.const 545))
     )
     (func $AssemblyVersion  (result i32)
         ;; Public Function AssemblyVersion() As char*
         
-    (return (i32.const 477))
+    (return (i32.const 582))
     )
     (func $AssemblyFileVersion  (result i32)
         ;; Public Function AssemblyFileVersion() As char*
         
-    (return (i32.const 485))
+    (return (i32.const 596))
     )
     )
