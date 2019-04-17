@@ -45,6 +45,7 @@
 #End Region
 
 Imports System.IO
+Imports System.Reflection
 Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic
@@ -112,7 +113,40 @@ Public Module Extensions
 
     <Extension>
     Private Function assmInfoModule(AssemblyInfo As AssemblyInfo, memory As Memory) As ModuleSymbol
+        Dim schema As PropertyInfo() = DataFramework _
+            .Schema(Of AssemblyInfo)(PropertyAccess.Readable, True, True) _
+            .Values _
+            .Where(Function(p) p.PropertyType Is GetType(String)) _
+            .ToArray
+        Dim getStrings As FuncSymbol() = schema _
+            .Select(Function(val)
+                        Dim name = val.Name
+                        Dim string$ = val.GetValue(AssemblyInfo)
 
+                        ' readonly function() as string
+                        Return memory.getString(name, [string])
+                    End Function) _
+            .ToArray
+
+        Return New ModuleSymbol With {
+            .Memory = memory,
+            .InternalFunctions = getStrings
+        }
+    End Function
+
+    <Extension>
+    Private Function getString(memory As Memory, name$, string$) As FuncSymbol
+        Return New FuncSymbol() With {
+            .Name = name,
+            .Parameters = {},
+            .[Module] = NameOf(AssemblyInfo),
+            .Result = "char*",
+            .Body = {
+                New ReturnValue With {
+                    .Internal = memory.StringConstant([string])
+                }
+            }
+        }
     End Function
 
     <Extension>
