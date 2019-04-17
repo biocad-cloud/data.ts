@@ -18,7 +18,7 @@
     ''' <summary>
     ''' VB.NET Web frontend programming demo
     ''' </summary>
-    Public Sub RunApp()
+    Public Function RunApp() As Integer
         Dim textNode = document.DOMById("text")
         Dim notes = document.DOMById("notes")
         Dim message1 = document.createElement("p")
@@ -41,5 +41,7 @@
         Call console.warn(note)
         Call console.info(note2)
         Call console.[error]("Try to display an error message on javascript console...")
-    End Sub
+
+        Return 0
+    End Function
 End Module

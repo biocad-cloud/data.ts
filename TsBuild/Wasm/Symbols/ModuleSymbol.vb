@@ -68,6 +68,16 @@ Namespace Symbols
         ''' <returns></returns>
         Public Property LabelName As String
 
+        Public Function Join(part As ModuleSymbol) As ModuleSymbol
+            InternalFunctions = InternalFunctions.Join(part.InternalFunctions).ToArray
+            Exports = Exports.Join(part.Exports).ToArray
+            [Imports] = part.Imports
+            Globals = part.Globals
+            Memory = part.Memory
+
+            Return Me
+        End Function
+
         Public Iterator Function GenericEnumerator() As IEnumerator(Of Expression) Implements Enumeration(Of Expression).GenericEnumerator
             For Each func As FuncSymbol In InternalFunctions
                 Yield func
@@ -91,10 +101,6 @@ Namespace Symbols
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Shared Function CreateModule(vbcode As String) As ModuleSymbol
             Return ModuleParser.CreateModule(vbcode)
-        End Function
-
-        Public Function Join(part As ModuleSymbol) As ModuleSymbol
-            Return Me
         End Function
     End Class
 End Namespace
