@@ -75,7 +75,8 @@ Public Class Types
         {GetType(Single), "f32"},
         {GetType(Double), "f64"},
         {GetType(String), "char*"}, ' 实际上这是一个integer类型
-        {GetType(Char), "char"}
+        {GetType(Char), "char"},
+        {GetType(System.Void), "void"}
     }
 
     Public Shared ReadOnly Property Operators As New Dictionary(Of String, String) From {

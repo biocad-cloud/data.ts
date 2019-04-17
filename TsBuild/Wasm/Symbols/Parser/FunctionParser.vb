@@ -59,7 +59,13 @@ Namespace Symbols.Parser
         <Extension>
         Public Function FuncVariable(method As MethodBlockSyntax, symbols As SymbolTable) As NamedValue(Of String)
             Dim name As String = method.SubOrFunctionStatement.Identifier.objectName
-            Dim returns As Type = GetAsType(method.SubOrFunctionStatement.AsClause, symbols)
+            Dim returns As Type
+
+            If method.SubOrFunctionStatement.SubOrFunctionKeyword.Text = "Sub" Then
+                returns = GetType(System.Void)
+            Else
+                returns = GetAsType(method.SubOrFunctionStatement.AsClause, symbols)
+            End If
 
             Return New NamedValue(Of String) With {
                 .Name = name,
@@ -148,20 +154,32 @@ Namespace Symbols.Parser
                     .ToArray
             }
 
-            If Not TypeOf func.Body.Last Is ReturnValue Then
-                Dim implicitReturn As New ReturnValue With {
-                    .Internal = New LiteralExpression With {
-                        .type = funcVar.Value,
-                        .value = 0
-                    }
-                }
-
-                ' 自动添加一个返回语句，如果最后一行没有返回表达式的话？
-                Call func.Body.Add(implicitReturn)
+            If func.Result <> "void" Then
+                If func.Body.Length > 0 Then
+                    If Not TypeOf func.Body.Last Is ReturnValue Then
+                        Call func.addImplicitReturns
+                    End If
+                Else
+                    ' VB之中的空函数这是自动返回零
+                    Call func.addImplicitReturns
+                End If
             End If
 
             Return func
         End Function
+
+        <Extension>
+        Private Sub addImplicitReturns(func As FuncSymbol)
+            Dim implicitReturn As New ReturnValue With {
+                .Internal = New LiteralExpression With {
+                    .type = func.Result,
+                    .value = 0
+                }
+            }
+
+            ' 自动添加一个返回语句，如果最后一行没有返回表达式的话？
+            Call func.Body.Add(implicitReturn)
+        End Sub
 
         <Extension>
         Private Function runParser(symbols As SymbolTable) As Func(Of StatementSyntax, Expression())

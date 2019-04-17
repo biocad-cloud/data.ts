@@ -50,6 +50,7 @@ Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ApplicationServices.Development
 Imports Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio
+Imports Microsoft.VisualBasic.ComponentModel
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Wasm.Symbols
@@ -77,9 +78,15 @@ Public Module Extensions
         Dim assemblyInfo As AssemblyInfo = vbproj.AssemblyInfo
         Dim symbols As New SymbolTable
         Dim project As New ModuleSymbol
+        Dim dir As String = DirectCast(vbproj, IFileReference) _
+            .FilePath _
+            .ParentPath
+        Dim part As ModuleSymbol
 
         For Each file As String In sourcefiles
-            project = project.Join(ModuleParser.CreateModule(file, symbols))
+            file = $"{dir}/{file}"
+            part = ModuleParser.CreateModule(file, symbols)
+            project = project.Join(part)
         Next
 
         Return project
