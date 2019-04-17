@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/17/2019 10:38:28 PM
+    ;; build: 4/17/2019 10:47:56 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -118,9 +118,17 @@
 
 (global $note2 (mut i32) (i32.const 69))
 
+    ;; export from [App]
+    
     (export "RunApp" (func $RunApp))
+    
+    
+    ;; export from [Math]
+    
     (export "PoissonPDF" (func $PoissonPDF))
-    (export "DisplayResult" (func $DisplayResult)) 
+    (export "DisplayResult" (func $DisplayResult))
+    
+     
 
     ;; functions in [App]
     

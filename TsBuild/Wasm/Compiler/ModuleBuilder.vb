@@ -104,9 +104,26 @@ Module ModuleBuilder
     
     {globals}
 
-    {m.Exports.JoinBy(ASCII.LF & "    ")} 
+    {m.Exports.exportGroup.JoinBy(ASCII.LF & "    ")} 
 
 {internal})"
+    End Function
+
+    <Extension>
+    Private Iterator Function exportGroup(exports As ExportSymbolExpression()) As IEnumerable(Of String)
+        Dim moduleGroup = exports.GroupBy(Function(api) api.Module).ToArray
+
+        For Each [module] In moduleGroup
+            Yield $";; export from [{[module].Key}]"
+            Yield ""
+
+            For Each func As ExportSymbolExpression In [module]
+                Yield func.ToSExpression
+            Next
+
+            Yield ""
+            Yield ""
+        Next
     End Function
 
     <Extension>

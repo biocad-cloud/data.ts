@@ -155,7 +155,8 @@ Namespace Symbols.Parser
                     exports += New ExportSymbolExpression With {
                         .Name = functions.Last.Name.Trim("$"c),
                         .target = functions.Last.Name,
-                        .type = "func"
+                        .type = "func",
+                        .[Module] = moduleName
                     }
                 End If
             Next
