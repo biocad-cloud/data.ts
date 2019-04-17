@@ -68,7 +68,7 @@ Namespace Symbols
         ''' <returns></returns>
         Public Property LabelName As String
 
-        Public Function Join(part As ModuleSymbol) As ModuleSymbol
+        Friend Function Join(part As ModuleSymbol) As ModuleSymbol
             InternalFunctions = InternalFunctions.Join(part.InternalFunctions).ToArray
             Exports = Exports.Join(part.Exports).ToArray
 

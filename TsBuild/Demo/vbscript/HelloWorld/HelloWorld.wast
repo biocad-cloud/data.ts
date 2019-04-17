@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/17/2019 11:42:23 PM
+    ;; build: 4/17/2019 11:48:58 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -154,6 +154,19 @@
     
     (export "PoissonPDF" (func $PoissonPDF))
     (export "DisplayResult" (func $DisplayResult))
+    
+    
+    ;; export from [AssemblyInfo]
+    
+    (export "AssemblyTitle" (func $AssemblyTitle))
+    (export "AssemblyDescription" (func $AssemblyDescription))
+    (export "AssemblyCompany" (func $AssemblyCompany))
+    (export "AssemblyProduct" (func $AssemblyProduct))
+    (export "AssemblyCopyright" (func $AssemblyCopyright))
+    (export "AssemblyTrademark" (func $AssemblyTrademark))
+    (export "Guid" (func $Guid))
+    (export "AssemblyVersion" (func $AssemblyVersion))
+    (export "AssemblyFileVersion" (func $AssemblyFileVersion))
     
      
 

@@ -130,7 +130,17 @@ Public Module Extensions
 
         Return New ModuleSymbol With {
             .Memory = memory,
-            .InternalFunctions = getStrings
+            .InternalFunctions = getStrings,
+            .Exports = getStrings _
+                .Select(Function(func)
+                            Return New ExportSymbolExpression With {
+                                .[Module] = func.Module,
+                                .Name = func.Name,
+                                .target = func.Name,
+                                .type = "func"
+                            }
+                        End Function) _
+                .ToArray
         }
     End Function
 
