@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/17/2019 10:30:16 PM
+    ;; build: 4/17/2019 10:38:28 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -27,6 +27,10 @@
     (func $setAttribute (import "document" "setAttribute") (param $node i32) (param $attr i32) (param $value i32) (result i32))
     ;; Declare Function appendChild Lib "document" Alias "appendChild" (parent As i32, node As i32) As i32
     (func $appendChild (import "document" "appendChild") (param $parent i32) (param $node i32) (result i32))
+    ;; Declare Function Exp Lib "Math" Alias "exp" (x As f64) As f64
+    (func $Exp (import "Math" "exp") (param $x f64) (result f64))
+    ;; Declare Function f64.toString Lib "string" Alias "toString" (s As f64) As char*
+    (func $f64.toString (import "string" "toString") (param $s f64) (result i32))
     
     ;; Only allows one memory block in each module
     (memory (import "env" "bytechunks") 1)
@@ -77,6 +81,9 @@
 
     ;; String from 245 with 56 bytes in memory
     (data (i32.const 245) "Try to display an error message on javascript console...\00")
+
+    ;; String from 302 with 6 bytes in memory
+    (data (i32.const 302) "result\00")
     
     (global $helloWorld (mut i32) (i32.const 1))
 
@@ -84,7 +91,9 @@
 
 (global $note2 (mut i32) (i32.const 69))
 
-    (export "RunApp" (func $RunApp)) 
+    (export "RunApp" (func $RunApp))
+    (export "PoissonPDF" (func $PoissonPDF))
+    (export "DisplayResult" (func $DisplayResult)) 
 
     ;; functions in [App]
     
@@ -110,6 +119,36 @@
     (call $warn (get_global $note))
     (call $info (get_global $note2))
     (call $error (i32.const 245))
+    (return (i32.const 0))
+    )
+    
+    
+    ;; functions in [Math]
+    
+    (func $PoissonPDF (param $k i32) (param $lambda f64) (result f64)
+        ;; Public Function PoissonPDF(k As i32, lambda As f64) As f64
+        (local $result f64)
+    (set_local $result (call $Exp (f64.sub (f64.const 0) (get_local $lambda))))
+    ;; Start Do While Block block_9a020000
+    
+    (block $block_9a020000 
+        (loop $loop_9b020000
+    
+                    (br_if $block_9a020000 (i32.eqz (i32.ge_s (get_local $k) (i32.const 1))))
+            (set_local $result (f64.mul (get_local $result) (f64.div (get_local $lambda) (f64.convert_s/i32 (get_local $k)))))
+            (set_local $k (i32.sub (get_local $k) (i32.const 1)))
+            (br $loop_9b020000)
+    
+        )
+    )
+    ;; End Loop loop_9b020000
+    (return (get_local $result))
+    )
+    (func $DisplayResult (param $k i32) (param $lambda f64) (result i32)
+        ;; Public Function DisplayResult(k As i32, lambda As f64) As i32
+        (local $pdf f64)
+    (set_local $pdf (call $PoissonPDF (get_local $k) (get_local $lambda)))
+    (call $setText (call $DOMById (i32.const 302)) (call $f64.toString (get_local $pdf)))
     (return (i32.const 0))
     )
     )
