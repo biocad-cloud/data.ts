@@ -27,6 +27,8 @@
     Public Function DisplayResult(k%, lambda#, fontsize As String) As Integer
         Dim pdf As Double = PoissonPDF(k, lambda)
 
+        Call console.warn(fontsize)
+
         Call document.setText(document.DOMById("result"), $"The calculation result of PoissonPDF({k}, {lambda}) is {pdf}!")
         Call document.setAttribute(document.DOMById("result"), "style", $"color: green; font-size: {fontsize}")
 
