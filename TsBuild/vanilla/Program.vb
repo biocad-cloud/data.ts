@@ -34,7 +34,7 @@ Module Program
             moduleSymbol = Wasm.CreateModule(file)
             out = args("/out") Or file.ChangeSuffix("wasm")
         Else
-            Dim profile$ = args("/profile")
+            Dim profile$ = args("/profile") Or "Release|AnyCPU"
             Dim vbproj As Project = file.LoadXml(Of Project)
 
             moduleSymbol = Wasm.CreateModuleFromProject(vbproj:=file)
