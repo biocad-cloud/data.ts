@@ -325,10 +325,49 @@ var TypeScript;
                     console.log("Load external WebAssembly module success!");
                     console.log(assembly);
                 }
-                opts.run(assembly);
+                opts.run(exportWasmApi(assembly));
             });
         }
         Wasm.RunAssembly = RunAssembly;
+        function exportWasmApi(assm) {
+            let exports = assm.instance.exports;
+            let api = {};
+            for (let name in exports) {
+                let obj = exports[name];
+                if (typeof obj == "function") {
+                    obj = buildFunc(obj);
+                }
+                else {
+                    // do nothing
+                }
+                api[name] = obj;
+            }
+            return api;
+        }
+        function buildFunc(func) {
+            return function () {
+                let params = [];
+                let value;
+                for (var i = 0; i < arguments.length; i++) {
+                    value = arguments[i];
+                    if (!value || typeof value == "undefined") {
+                        // zero intptr means nothing or value 0
+                        value = 0;
+                    }
+                    else if (typeof value == "string" || typeof value == "object") {
+                        value = WebAssembly.ObjectManager.addObject(value);
+                    }
+                    else if (typeof value == "boolean") {
+                        value = value ? 1 : 0;
+                    }
+                    else {
+                        // do nothing
+                    }
+                    params.push(value);
+                }
+                return func.apply(this, Array.prototype.slice.call(params, 1));
+            };
+        }
         function createBytes(opts) {
             let page = opts.page || { init: 10, max: 2048 };
             let config = { initial: page.init };
