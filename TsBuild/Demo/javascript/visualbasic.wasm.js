@@ -1,36 +1,96 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 /// <reference path="../../build/linq.d.ts" />
 var WebAssembly;
 (function (WebAssembly) {
-    var ObjectManager;
+    /**
+     * 在这个模块之中，所有的obj都是指针类型
+    */
+    let JsArray;
+    (function (JsArray) {
+        function push(array, obj) {
+            let a = WebAssembly.ObjectManager.getObject(array);
+            a.push(obj);
+            return a.length;
+        }
+        JsArray.push = push;
+        function pop(array) {
+            let a = WebAssembly.ObjectManager.getObject(array);
+            return a.pop();
+        }
+        JsArray.pop = pop;
+        function indexOf(array, obj) {
+            let a = WebAssembly.ObjectManager.getObject(array);
+            return a.indexOf(obj);
+        }
+        JsArray.indexOf = indexOf;
+    })(JsArray = WebAssembly.JsArray || (WebAssembly.JsArray = {}));
+})(WebAssembly || (WebAssembly = {}));
+var WebAssembly;
+(function (WebAssembly) {
+    /**
+     * Object manager for VB.NET webassembly application.
+    */
+    let ObjectManager;
     (function (ObjectManager) {
-        var streamReader;
-        var hashCode = 0;
-        var hashTable = {};
+        let streamReader;
+        let hashCode = 0;
+        let hashTable = {};
+        /**
+         * Load WebAssembly memory buffer into Javascript runtime.
+        */
         function load(bytes) {
             streamReader = new TypeScript.stringReader(bytes);
         }
         ObjectManager.load = load;
+        /**
+         * Read text data from WebAssembly runtime its memory block
+         *
+         * @param intptr The memory pointer
+        */
         function readText(intptr) {
-            return streamReader.readText(intptr);
+            if ((intptr in hashTable) && typeof hashTable[intptr] == "string") {
+                return hashTable[intptr];
+            }
+            else {
+                return streamReader.readText(intptr);
+            }
         }
         ObjectManager.readText = readText;
+        /**
+         * Get a object using its hash code
+         *
+         * @returns If object not found, null will be returns
+        */
         function getObject(key) {
-            return hashTable[key];
+            if (key in hashTable) {
+                return hashTable[key];
+            }
+            else {
+                return null;
+            }
         }
         ObjectManager.getObject = getObject;
+        function getType(hashCode) {
+            if (hashCode in hashTable) {
+                let type;
+                let obj = hashTable[hashCode];
+                if (Array.isArray(obj)) {
+                    return "array";
+                }
+                if ((type = typeof obj) == "object") {
+                    return obj.constructor.name;
+                }
+                else {
+                    return type;
+                }
+            }
+            else {
+                return "void";
+            }
+        }
+        ObjectManager.getType = getType;
+        /**
+         * Add any object to a internal hashTable and then returns its hash code.
+        */
         function addObject(o) {
             var key = hashCode;
             hashTable[hashCode] = o;
@@ -42,7 +102,7 @@ var WebAssembly;
 })(WebAssembly || (WebAssembly = {}));
 var WebAssembly;
 (function (WebAssembly) {
-    var XMLHttpRequest;
+    let XMLHttpRequest;
     (function (XMLHttpRequest) {
         function get(url) {
             throw "not implement!";
@@ -52,7 +112,7 @@ var WebAssembly;
 })(WebAssembly || (WebAssembly = {}));
 var WebAssembly;
 (function (WebAssembly) {
-    var Console;
+    let Console;
     (function (Console) {
         function log(message) {
             console.log(WebAssembly.ObjectManager.readText(message));
@@ -74,59 +134,171 @@ var WebAssembly;
 })(WebAssembly || (WebAssembly = {}));
 var WebAssembly;
 (function (WebAssembly) {
-    var Document;
+    let Document;
     (function (Document) {
         function getElementById(id) {
-            var idText = WebAssembly.ObjectManager.readText(id);
-            var node = document.getElementById(idText);
+            let idText = WebAssembly.ObjectManager.readText(id);
+            let node = document.getElementById(idText);
             return WebAssembly.ObjectManager.addObject(node);
         }
         Document.getElementById = getElementById;
         function writeElementText(nodeObj, text) {
-            var node = WebAssembly.ObjectManager.getObject(nodeObj);
-            var textVal = WebAssembly.ObjectManager.readText(text);
+            let node = WebAssembly.ObjectManager.getObject(nodeObj);
+            let textVal = WebAssembly.ObjectManager.readText(text);
             node.innerText = textVal;
         }
         Document.writeElementText = writeElementText;
         function writeElementHtml(node, text) {
-            var nodeObj = WebAssembly.ObjectManager.getObject(node);
-            var htmlVal = WebAssembly.ObjectManager.readText(text);
+            let nodeObj = WebAssembly.ObjectManager.getObject(node);
+            let htmlVal = WebAssembly.ObjectManager.readText(text);
             nodeObj.innerHTML = htmlVal;
         }
         Document.writeElementHtml = writeElementHtml;
         function createElement(tag) {
-            var tagName = WebAssembly.ObjectManager.readText(tag);
-            var node = document.createElement(tagName);
+            let tagName = WebAssembly.ObjectManager.readText(tag);
+            let node = document.createElement(tagName);
             return WebAssembly.ObjectManager.addObject(node);
         }
         Document.createElement = createElement;
         ;
         function setAttribute(node, attr, value) {
-            var nodeObj = WebAssembly.ObjectManager.getObject(node);
-            var name = WebAssembly.ObjectManager.readText(attr);
-            var attrVal = WebAssembly.ObjectManager.readText(value);
+            let nodeObj = WebAssembly.ObjectManager.getObject(node);
+            let name = WebAssembly.ObjectManager.readText(attr);
+            let attrVal = WebAssembly.ObjectManager.readText(value);
             nodeObj.setAttribute(name, attrVal);
         }
         Document.setAttribute = setAttribute;
         function appendChild(parent, node) {
-            var parentObj = WebAssembly.ObjectManager.getObject(parent);
-            var child = WebAssembly.ObjectManager.getObject(node);
+            let parentObj = WebAssembly.ObjectManager.getObject(parent);
+            let child = WebAssembly.ObjectManager.getObject(node);
             parentObj.appendChild(child);
         }
         Document.appendChild = appendChild;
     })(Document = WebAssembly.Document || (WebAssembly.Document = {}));
+})(WebAssembly || (WebAssembly = {}));
+var WebAssembly;
+(function (WebAssembly) {
+    /**
+     * A module contains string related api for simulate
+     * ``Microsoft.VisualBasic.Strings`` module.
+    */
+    let Strings;
+    (function (Strings) {
+        function Mid(text, from, length) {
+            let string = WebAssembly.ObjectManager.readText(text);
+            let substr = string.substr(from - 1, length);
+            return WebAssembly.ObjectManager.addObject(substr);
+        }
+        Strings.Mid = Mid;
+        function Len(text) {
+            return WebAssembly.ObjectManager.readText(text).length;
+        }
+        Strings.Len = Len;
+        function UCase(text) {
+            let string = WebAssembly.ObjectManager.readText(text);
+            if (string) {
+                string = string.toUpperCase();
+            }
+            else {
+                string = "";
+            }
+            return WebAssembly.ObjectManager.addObject(string);
+        }
+        Strings.UCase = UCase;
+        function LCase(text) {
+            let string = WebAssembly.ObjectManager.readText(text);
+            if (string) {
+                string = string.toLowerCase();
+            }
+            else {
+                string = "";
+            }
+            return WebAssembly.ObjectManager.addObject(string);
+        }
+        Strings.LCase = LCase;
+    })(Strings = WebAssembly.Strings || (WebAssembly.Strings = {}));
+})(WebAssembly || (WebAssembly = {}));
+var WebAssembly;
+(function (WebAssembly) {
+    let RegularExpression;
+    (function (RegularExpression) {
+        function regexp(pattern, flags) {
+            let patternText = WebAssembly.ObjectManager.readText(pattern);
+            let r = new RegExp(patternText, WebAssembly.ObjectManager.readText(flags));
+            return WebAssembly.ObjectManager.addObject(r);
+        }
+        RegularExpression.regexp = regexp;
+        function replace(text, pattern, replacement) {
+            let input = WebAssembly.ObjectManager.readText(text);
+            let patternObj = WebAssembly.ObjectManager.getObject(pattern);
+            let replaceAs = WebAssembly.ObjectManager.readText(replacement);
+            let result = input.replace(patternObj, replaceAs);
+            return WebAssembly.ObjectManager.addObject(result);
+        }
+        RegularExpression.replace = replace;
+        /**
+         * Returns a Boolean value that indicates whether or not a pattern exists in a
+         * searched string.
+         *
+         * @param string String on which to perform the search.
+        */
+        function test(pattern, string) {
+            let patternObj = WebAssembly.ObjectManager.getObject(pattern);
+            let text = WebAssembly.ObjectManager.readText(string);
+            return patternObj.test(text) ? 1 : 0;
+        }
+        RegularExpression.test = test;
+        /**
+         * Executes a search on a string using a regular expression pattern, and returns an array
+         * containing the results of that search.
+         *
+         * @param string The String object or string literal on which to perform the search.
+        */
+        function exec(pattern, string) {
+            let patternObj = WebAssembly.ObjectManager.getObject(pattern);
+            let text = WebAssembly.ObjectManager.readText(string);
+            let match = patternObj.exec(text);
+            return WebAssembly.ObjectManager.addObject(match);
+        }
+        RegularExpression.exec = exec;
+    })(RegularExpression = WebAssembly.RegularExpression || (WebAssembly.RegularExpression = {}));
+})(WebAssembly || (WebAssembly = {}));
+var WebAssembly;
+(function (WebAssembly) {
+    /**
+     * String api from javascript.
+    */
+    let JsString;
+    (function (JsString) {
+        function fromCharCode(n) {
+            let s = String.fromCharCode(n);
+            return WebAssembly.ObjectManager.addObject(s);
+        }
+        JsString.fromCharCode = fromCharCode;
+        function toString(obj) {
+            let s = obj.toString();
+            return WebAssembly.ObjectManager.addObject(s);
+        }
+        JsString.toString = toString;
+        function add(a, b) {
+            let str1 = WebAssembly.ObjectManager.readText(a);
+            let str2 = WebAssembly.ObjectManager.readText(b);
+            return WebAssembly.ObjectManager.addObject(str1 + str2);
+        }
+        JsString.add = add;
+    })(JsString = WebAssembly.JsString || (WebAssembly.JsString = {}));
 })(WebAssembly || (WebAssembly = {}));
 var TypeScript;
 (function (TypeScript) {
     /**
      * The web assembly helper
     */
-    var Wasm;
+    let Wasm;
     (function (Wasm) {
         /**
          * The webassembly engine.
         */
-        var engine = window.WebAssembly;
+        const engine = window.WebAssembly;
         /**
          * Run the compiled VisualBasic.NET assembly module
          *
@@ -143,12 +315,12 @@ var TypeScript;
                     return response.arrayBuffer();
                 }
                 else {
-                    throw "Unable to fetch Web Assembly file " + module + ".";
+                    throw `Unable to fetch Web Assembly file ${module}.`;
                 }
             })
-                .then(function (buffer) { return new Uint8Array(buffer); })
-                .then(function (module) { return ExecuteInternal(module, opts); })
-                .then(function (assembly) {
+                .then(buffer => new Uint8Array(buffer))
+                .then(module => ExecuteInternal(module, opts))
+                .then(assembly => {
                 if (typeof TypeScript.logging == "object" && TypeScript.logging.outputEverything) {
                     console.log("Load external WebAssembly module success!");
                     console.log(assembly);
@@ -158,8 +330,9 @@ var TypeScript;
         }
         Wasm.RunAssembly = RunAssembly;
         function createBytes(opts) {
-            var page = opts.page || { init: 10, max: 2048 };
-            return new window.WebAssembly.Memory({ initial: page.init });
+            let page = opts.page || { init: 10, max: 2048 };
+            let config = { initial: page.init };
+            return new window.WebAssembly.Memory(config);
         }
         function ExecuteInternal(module, opts) {
             var byteBuffer = createBytes(opts);
@@ -173,12 +346,19 @@ var TypeScript;
             WebAssembly.ObjectManager.load(byteBuffer);
             // add javascript api dependencies imports
             handleApiDependencies(dependencies, opts);
-            var assembly = engine.instantiate(module, dependencies);
+            let assembly = engine.instantiate(module, dependencies);
             return assembly;
         }
         function handleApiDependencies(dependencies, opts) {
-            var api = opts.api || { document: false, console: true, http: true };
-            // imports the javascript math module for VisualBasic.NET module by default
+            var api = opts.api || {
+                document: false,
+                console: true,
+                http: false,
+                text: true,
+                array: true
+            };
+            // imports the javascript math module for VisualBasic.NET 
+            // module by default
             dependencies["Math"] = window.Math;
             if (typeof opts.imports == "object") {
                 for (var key in opts.imports) {
@@ -194,47 +374,118 @@ var TypeScript;
             if (api.http) {
                 dependencies["XMLHttpRequest"] = WebAssembly.XMLHttpRequest;
             }
+            if (api.text) {
+                dependencies["RegExp"] = WebAssembly.RegularExpression;
+                dependencies["Strings"] = WebAssembly.Strings;
+                dependencies["string"] = WebAssembly.JsString;
+            }
+            if (api.array) {
+                dependencies["Array"] = WebAssembly.JsArray;
+            }
             return dependencies;
         }
     })(Wasm = TypeScript.Wasm || (TypeScript.Wasm = {}));
 })(TypeScript || (TypeScript = {}));
 var TypeScript;
 (function (TypeScript) {
-    var memoryReader = /** @class */ (function () {
-        function memoryReader(bytechunks) {
+    class memoryReader {
+        constructor(bytechunks) {
             this.buffer = bytechunks.buffer;
         }
-        memoryReader.prototype.sizeOf = function (intPtr) {
-            var buffer = new Uint8Array(this.buffer, intPtr);
-            var size = buffer.findIndex(function (b) { return b == 0; });
+        sizeOf(intPtr) {
+            let buffer = new Uint8Array(this.buffer, intPtr);
+            let size = buffer.findIndex(b => b == 0);
             return size;
-        };
-        return memoryReader;
-    }());
+        }
+    }
     TypeScript.memoryReader = memoryReader;
-    var stringReader = /** @class */ (function (_super) {
-        __extends(stringReader, _super);
+    /**
+     * Read string helper from WebAssembly memory.
+    */
+    class stringReader extends memoryReader {
         /**
          * @param memory The memory buffer
         */
-        function stringReader(memory) {
-            var _this = _super.call(this, memory) || this;
-            _this.decoder = new TextDecoder();
-            return _this;
+        constructor(memory) {
+            super(memory);
+            this.decoder = new TextDecoder();
         }
         /**
          * Read text from WebAssembly memory buffer.
         */
-        stringReader.prototype.readTextRaw = function (offset, length) {
-            var str = new Uint8Array(this.buffer, offset, length);
-            var text = this.decoder.decode(str);
+        readTextRaw(offset, length) {
+            let str = new Uint8Array(this.buffer, offset, length);
+            let text = this.decoder.decode(str);
             return text;
-        };
-        stringReader.prototype.readText = function (intPtr) {
+        }
+        readText(intPtr) {
             return this.readTextRaw(intPtr, this.sizeOf(intPtr));
-        };
-        return stringReader;
-    }(memoryReader));
+        }
+    }
     TypeScript.stringReader = stringReader;
+    class arrayReader extends memoryReader {
+        /**
+         * @param memory The memory buffer
+        */
+        constructor(memory) {
+            super(memory);
+        }
+        array(intPtr, type) {
+            // 数组的起始前4个字节是数组长度
+            let length = this.toInt32(intPtr);
+            let uint8s = new Uint8Array(this.buffer, intPtr + 4);
+            let buffer = new DataView(uint8s);
+            // The output data buffer
+            let data = [];
+            let load = arrayReader.getReader(buffer, type);
+            let offset = arrayReader.sizeOf(type);
+            intPtr = 0;
+            for (var i = 0; i < length; i++) {
+                data.push(load(intPtr));
+                intPtr = intPtr + offset;
+            }
+            return data;
+        }
+        static sizeOf(type) {
+            if (type == "i32" || type == "f32") {
+                return 4;
+            }
+            else if (type == "i64" || type == "f64") {
+                return 8;
+            }
+            else {
+                throw `Unavailable for ${type}`;
+            }
+        }
+        static getReader(buffer, type) {
+            if (type == "i32") {
+                return function (offset) {
+                    return buffer.getInt32(offset);
+                };
+            }
+            else if (type == "i64") {
+                throw "not implements";
+            }
+            else if (type == "f32") {
+                return function (offset) {
+                    return buffer.getFloat32(offset);
+                };
+            }
+            else if (type == "f64") {
+                return function (offset) {
+                    return buffer.getFloat64(offset);
+                };
+            }
+            else {
+                throw `Unavailable for ${type}`;
+            }
+        }
+        toInt32(intPtr) {
+            let uint8s = new Uint8Array(this.buffer, intPtr, 4);
+            let view = new DataView(uint8s);
+            return view.getInt32(0);
+        }
+    }
+    TypeScript.arrayReader = arrayReader;
 })(TypeScript || (TypeScript = {}));
 //# sourceMappingURL=visualbasic.wasm.js.map
