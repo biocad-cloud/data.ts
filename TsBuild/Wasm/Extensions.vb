@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::481fe447ee6b04030d7e63bf71298ea6, Extensions.vb"
+﻿#Region "Microsoft.VisualBasic::8c7d39059562fbc46e19e5547d638e2f, Extensions.vb"
 
 ' Author:
 ' 
 '       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
 ' 
 ' Copyright (c) 2019 GCModeller Cloud Platform
 ' 
@@ -36,18 +37,25 @@
 
 ' Module Extensions
 ' 
-'     Function: CreateModule, (+2 Overloads) CreateModuleFromProject, isExportObject, param, SolveStream
+'     Function: CreateModule, (+2 Overloads) CreateModuleFromProject, isExportObject, (+3 Overloads) objectName, param
+'               SolveStream
 ' 
 ' /********************************************************************************/
 
 #End Region
 
 Imports System.IO
+Imports System.Reflection
 Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
+Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.ApplicationServices.Development
+Imports Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio
+Imports Microsoft.VisualBasic.ComponentModel
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Linq
 Imports Wasm.Symbols
 Imports Wasm.Symbols.Parser
 Imports Vbproj = Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio.Project
@@ -67,7 +75,108 @@ Public Module Extensions
 
     <Extension>
     Public Function CreateModuleFromProject(vbproj As Vbproj) As ModuleSymbol
+        Dim sourcefiles = vbproj _
+            .EnumerateSourceFiles(skipAssmInfo:=True) _
+            .ToArray
+        Dim assemblyInfo As AssemblyInfo = vbproj.AssemblyInfo
+        Dim dir As String = DirectCast(vbproj, IFileReference) _
+            .FilePath _
+            .ParentPath
+        Dim symbols As SymbolTable = Nothing
+        Dim vbcodes As ModuleBlockSyntax()
 
+        With sourcefiles _
+            .Select(Function(file) $"{dir}/{file}") _
+            .getModules _
+            .ToArray
+
+            vbcodes = .OfType(Of ModuleBlockSyntax()) _
+                      .IteratesALL _
+                      .ToArray
+
+            ' 在刚开始的时候应该将函数的申明全部进行解析
+            ' 然后再解析函数体的时候才不会出现没有找到符号的问题
+            For Each modulePart As ModuleBlockSyntax In vbcodes
+                symbols = modulePart.ParseDeclares(symbols, {})
+            Next
+
+            For Each [const] As EnumSymbol In .OfType(Of EnumSymbol()).IteratesALL
+                Call symbols.AddEnumType([const])
+            Next
+        End With
+
+        Dim project = vbcodes.CreateModule(symbols)
+        Dim info = assemblyInfo.assmInfoModule(project.Memory)
+
+        Return project.Join(info)
+    End Function
+
+    <Extension>
+    Private Function assmInfoModule(AssemblyInfo As AssemblyInfo, memory As Memory) As ModuleSymbol
+        Dim schema As PropertyInfo() = DataFramework _
+            .Schema(Of AssemblyInfo)(PropertyAccess.Readable, True, True) _
+            .Values _
+            .Where(Function(p) p.PropertyType Is GetType(String)) _
+            .ToArray
+        Dim getStrings As FuncSymbol() = schema _
+            .Select(Function(val)
+                        Dim name = val.Name
+                        Dim string$ = val.GetValue(AssemblyInfo)
+
+                        ' readonly function() as string
+                        Return memory.getString(name, [string])
+                    End Function) _
+            .ToArray
+
+        Return New ModuleSymbol With {
+            .Memory = memory,
+            .InternalFunctions = getStrings,
+            .Exports = getStrings _
+                .Select(Function(func)
+                            Return New ExportSymbolExpression With {
+                                .[Module] = func.Module,
+                                .Name = func.Name,
+                                .target = func.Name,
+                                .type = "func"
+                            }
+                        End Function) _
+                .ToArray
+        }
+    End Function
+
+    <Extension>
+    Private Function getString(memory As Memory, name$, string$) As FuncSymbol
+        Return New FuncSymbol() With {
+            .Name = name,
+            .Parameters = {},
+            .[Module] = NameOf(AssemblyInfo),
+            .Result = "char*",
+            .Body = {
+                New ReturnValue With {
+                    .Internal = memory.StringConstant([string])
+                }
+            }
+        }
+    End Function
+
+    <Extension>
+    Private Iterator Function getModules(files As IEnumerable(Of String)) As IEnumerable(Of [Variant](Of EnumSymbol(), ModuleBlockSyntax()))
+        Dim vbcode As CompilationUnitSyntax
+        Dim modules As ModuleBlockSyntax()
+        Dim enums As EnumSymbol()
+
+        For Each file As String In files
+            vbcode = VisualBasicSyntaxTree.ParseText(file.SolveStream).GetRoot
+            modules = vbcode.Members.OfType(Of ModuleBlockSyntax).ToArray
+            enums = vbcode.ParseEnums
+
+            If modules.Length > 0 Then
+                Yield modules
+            End If
+            If enums.Length > 0 Then
+                Yield enums
+            End If
+        Next
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>

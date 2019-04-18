@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::c229a398fa00d971d863478d6921fa1f, Symbols\Memory\ArraySymbol.vb"
+﻿#Region "Microsoft.VisualBasic::03f7690d3d8f8df8261241c26d371688, Symbols\DeclaredObject\IDeclaredObject.vb"
 
     ' Author:
     ' 
@@ -35,18 +35,29 @@
 
     ' Summaries:
 
-    '     Class ArraySymbol
+    '     Interface IDeclaredObject
     ' 
-    ' 
+    '         Properties: [Module]
     ' 
     ' 
     ' /********************************************************************************/
 
 #End Region
 
+Imports Microsoft.VisualBasic.ComponentModel.Collection.Generic
+
 Namespace Symbols
 
-    Public MustInherit Class ArraySymbol : Inherits Expression
+    ''' <summary>
+    ''' 这个接口对象主要是为构建多个模块组成的应用程序所使用的
+    ''' </summary>
+    Public Interface IDeclaredObject : Inherits INamedValue
 
-    End Class
+        ''' <summary>
+        ''' The package/module name
+        ''' </summary>
+        ''' <returns></returns>
+        Property [Module] As String
+
+    End Interface
 End Namespace

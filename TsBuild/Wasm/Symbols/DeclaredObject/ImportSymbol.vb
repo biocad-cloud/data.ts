@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::7cf3ce0bbbf561c83b1b17e3fc24a13c, Symbols\FuncSymbol.vb"
+﻿#Region "Microsoft.VisualBasic::8f516b5c2d212efd15431ad84fd8abec, Symbols\DeclaredObject\ImportSymbol.vb"
 
     ' Author:
     ' 
@@ -35,9 +35,9 @@
 
     ' Summaries:
 
-    '     Class FuncSignature
+    '     Class ImportSymbol
     ' 
-    '         Properties: Name, Parameters, Result
+    '         Properties: ImportObject, Package, VBDeclare
     ' 
     '         Constructor: (+2 Overloads) Sub New
     '         Function: ToSExpression, ToString, TypeInfer
@@ -47,62 +47,65 @@
 
 #End Region
 
-Imports Microsoft.VisualBasic.ComponentModel.Collection.Generic
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
-Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel.Repository
 Imports Microsoft.VisualBasic.Language
+Imports Wasm.Symbols.Parser
 
 Namespace Symbols
 
     ''' <summary>
-    ''' The abstract of the function object, only have function name, parameter and result type definition.
+    ''' Imports object can be parse from the VB.NET ``Declare`` statement
     ''' </summary>
-    Public Class FuncSignature : Inherits Expression
-        Implements INamedValue
+    Public Class ImportSymbol : Inherits FuncSignature
         Implements IDeclaredObject
 
         ''' <summary>
-        ''' 函数在WebAssembly模块内部的引用名称字符串
+        ''' 外部的模块对象引用名称
+        ''' 
+        ''' 请注意，这个是外部模块的名称，对于在VB之中申明的这个API，
+        ''' 其还存在一个<see cref="[Module]"/>标记其在VB工程项目之中的模块名称
         ''' </summary>
         ''' <returns></returns>
-        Public Property Name As String Implements IKeyedEntity(Of String).Key
-        Public Property Parameters As NamedValue(Of String)()
-
+        Public Property Package As String Implements IDeclaredObject.Module
         ''' <summary>
-        ''' 函数的返回值类型
+        ''' 这个函数对象在外部模块之中的名称字符串
         ''' </summary>
         ''' <returns></returns>
-        Public Property Result As String
+        Public Property ImportObject As String
 
-        ''' <summary>
-        ''' VB module name
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property [Module] As String Implements IDeclaredObject.Module
-
-        Friend Sub New()
-        End Sub
-
-        Friend Sub New(var As NamedValue(Of String))
-            Name = var.Name
-            Result = var.Value
-        End Sub
-
-        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return Result
-        End Function
-
-        Public Overrides Function ToSExpression() As String
-            Throw New NotImplementedException()
-        End Function
-
-        Public Overrides Function ToString() As String
-            With Parameters _
+        Public ReadOnly Property VBDeclare As String
+            Get
+                With Parameters _
                     .Select(Function(a) $"{a.Name} As {a.Value}") _
                     .JoinBy(", ")
 
-                Return $"Public Function {Name}({ .ByRef}) As {Result}"
-            End With
+                    Return $"Declare Function {Name} Lib ""{Package}"" Alias ""{ImportObject}"" ({ .ByRef}) As {Result}"
+                End With
+            End Get
+        End Property
+
+        Sub New()
+        End Sub
+
+        Sub New(ParamArray args As NamedValue(Of String)())
+            Parameters = args
+        End Sub
+
+        Public Overrides Function ToSExpression() As String
+            Dim params$ = Parameters _
+                .Select(Function(a) a.param) _
+                .JoinBy(" ")
+
+            Return $";; {VBDeclare}
+    (func ${Name} (import ""{Package}"" ""{ImportObject}"") {params} (result {typefit(Result)}))"
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return ToSExpression()
+        End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return Result
         End Function
     End Class
 End Namespace

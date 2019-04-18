@@ -3,6 +3,7 @@
     ' Author:
     ' 
     '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
     ' 
     ' Copyright (c) 2019 GCModeller Cloud Platform
     ' 
@@ -66,6 +67,23 @@ Namespace Symbols
         ''' </summary>
         ''' <returns></returns>
         Public Property LabelName As String
+
+        Friend Function Join(part As ModuleSymbol) As ModuleSymbol
+            InternalFunctions = InternalFunctions.Join(part.InternalFunctions).ToArray
+            Exports = Exports.Join(part.Exports).ToArray
+
+            If Not part.Imports.IsNullOrEmpty Then
+                [Imports] = part.Imports
+            End If
+            If Not part.Globals.IsNullOrEmpty Then
+                Globals = part.Globals
+            End If
+            If Not part.Memory Is Nothing Then
+                Memory = part.Memory
+            End If
+
+            Return Me
+        End Function
 
         Public Iterator Function GenericEnumerator() As IEnumerator(Of Expression) Implements Enumeration(Of Expression).GenericEnumerator
             For Each func As FuncSymbol In InternalFunctions

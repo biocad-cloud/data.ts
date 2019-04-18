@@ -1,46 +1,47 @@
-﻿#Region "Microsoft.VisualBasic::88e51d00e2c03086cc75add521873419, Symbols\Parser\BodyParser.vb"
+﻿#Region "Microsoft.VisualBasic::aac1a1d3c776e7fd6d76c3230dc7a66b, Symbols\Parser\BodyParser.vb"
 
-' Author:
-' 
-'       xieguigang (I@xieguigang.me)
-' 
-' Copyright (c) 2019 GCModeller Cloud Platform
-' 
-' 
-' MIT License
-' 
-' 
-' Permission is hereby granted, free of charge, to any person obtaining a copy
-' of this software and associated documentation files (the "Software"), to deal
-' in the Software without restriction, including without limitation the rights
-' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-' copies of the Software, and to permit persons to whom the Software is
-' furnished to do so, subject to the following conditions:
-' 
-' The above copyright notice and this permission notice shall be included in all
-' copies or substantial portions of the Software.
-' 
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-' SOFTWARE.
+    ' Author:
+    ' 
+    '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
+    ' 
+    ' Copyright (c) 2019 GCModeller Cloud Platform
+    ' 
+    ' 
+    ' MIT License
+    ' 
+    ' 
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy
+    ' of this software and associated documentation files (the "Software"), to deal
+    ' in the Software without restriction, including without limitation the rights
+    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    ' copies of the Software, and to permit persons to whom the Software is
+    ' furnished to do so, subject to the following conditions:
+    ' 
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
+    ' 
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    ' SOFTWARE.
 
 
 
-' /********************************************************************************/
+    ' /********************************************************************************/
 
-' Summaries:
+    ' Summaries:
 
-'     Module BodyParser
-' 
-'         Function: GetInitialize, LocalDeclare, (+2 Overloads) ParseDeclarator, ParseExpression, ValueAssign
-'                   ValueReturn
-' 
-' 
-' /********************************************************************************/
+    '     Module BodyParser
+    ' 
+    '         Function: GetInitialize, LocalDeclare, (+2 Overloads) ParseDeclarator, ParseExpression, ValueAssign
+    '                   ValueReturn
+    ' 
+    ' 
+    ' /********************************************************************************/
 
 #End Region
 
@@ -145,17 +146,24 @@ Namespace Symbols.Parser
         ''' <returns>May be contains multiple local variables</returns>
         <Extension>
         Public Function LocalDeclare(statement As LocalDeclarationStatementSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
-            Return statement.Declarators.ParseDeclarator(symbols, False)
+            Return statement.Declarators.ParseDeclarator(symbols, Nothing)
         End Function
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="names"></param>
+        ''' <param name="symbols"></param>
+        ''' <param name="moduleName">这个参数是空值表示局部变量，反之表示为模块全局变量</param>
+        ''' <returns></returns>
         <Extension>
         Friend Iterator Function ParseDeclarator(names As IEnumerable(Of VariableDeclaratorSyntax),
                                                  symbols As SymbolTable,
-                                                 isGlobal As Boolean) As IEnumerable(Of Expression)
+                                                 moduleName$) As IEnumerable(Of Expression)
 
             For Each var As VariableDeclaratorSyntax In names
-                For Each [declare] As DeclareLocal In var.ParseDeclarator(symbols, isGlobal)
-                    If Not isGlobal Then
+                For Each [declare] As DeclareLocal In var.ParseDeclarator(symbols, moduleName)
+                    If moduleName.StringEmpty Then
                         If Not [declare].init Is Nothing Then
                             Yield [declare].SetLocal
                         End If
@@ -169,7 +177,7 @@ Namespace Symbols.Parser
         <Extension>
         Friend Iterator Function ParseDeclarator(var As VariableDeclaratorSyntax,
                                                  symbols As SymbolTable,
-                                                 isGlobal As Boolean) As IEnumerable(Of DeclareLocal)
+                                                 moduleName As String) As IEnumerable(Of DeclareLocal)
             Dim fieldNames = var.Names
             Dim type$
             Dim init As Expression = Nothing
@@ -183,7 +191,7 @@ Namespace Symbols.Parser
                     type = name.AsType(var.AsClause, symbols)
                 End If
 
-                If isGlobal Then
+                If Not moduleName.StringEmpty Then
                     If init Is Nothing Then
                         ' 默认是零
                         init = New LiteralExpression(0, type)
@@ -195,7 +203,7 @@ Namespace Symbols.Parser
                         End If
                     End If
 
-                    Call symbols.AddGlobal(name, type, init)
+                    Call symbols.AddGlobal(name, type, moduleName, init)
                 Else
                     If Not init Is Nothing Then
                         init = Types.CType(type, init, symbols)

@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::d7b9b381a40a493213e4fd74902cf686, Symbols\Memory\StringSymbol.vb"
+﻿#Region "Microsoft.VisualBasic::0520c103b6eb86734d5daf1db6b9d03d, Symbols\Memory\StringSymbol.vb"
 
     ' Author:
     ' 
     '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
     ' 
     ' Copyright (c) 2019 GCModeller Cloud Platform
     ' 

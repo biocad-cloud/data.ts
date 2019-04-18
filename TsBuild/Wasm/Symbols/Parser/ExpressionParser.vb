@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::312ea86adbdb926e29f152f8b6f7eb8b, Symbols\Parser\ExpressionParser.vb"
+﻿#Region "Microsoft.VisualBasic::7ed39b9ca9f45ac692d89ff404ded7be, Symbols\Parser\ExpressionParser.vb"
 
 ' Author:
 ' 
 '       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
 ' 
 ' Copyright (c) 2019 GCModeller Cloud Platform
 ' 
@@ -36,8 +37,8 @@
 
 '     Module ExpressionParse
 ' 
-'         Function: [Select], (+2 Overloads) BinaryStack, ConstantExpression, FunctionInvoke, ParenthesizedStack
-'                   ReferVariable, UnaryExpression, ValueExpression
+'         Function: [Select], (+2 Overloads) BinaryStack, ConstantExpression, FunctionInvoke, MemberExpression
+'                   ParenthesizedStack, ReferVariable, UnaryExpression, ValueCType, ValueExpression
 ' 
 ' 
 ' /********************************************************************************/
@@ -72,6 +73,8 @@ Namespace Symbols.Parser
                     Return DirectCast(value, CTypeExpressionSyntax).ValueCType(symbols)
                 Case GetType(MemberAccessExpressionSyntax)
                     Return DirectCast(value, MemberAccessExpressionSyntax).MemberExpression(symbols)
+                Case GetType(InterpolatedStringExpressionSyntax)
+                    Return DirectCast(value, InterpolatedStringExpressionSyntax).StringExpression(symbols)
                 Case Else
                     Throw New NotImplementedException(value.GetType.FullName)
             End Select
@@ -143,6 +146,12 @@ Namespace Symbols.Parser
                     funcName = DirectCast(reference, SimpleNameSyntax).objectName
                 Case GetType(IdentifierNameSyntax)
                     funcName = DirectCast(reference, IdentifierNameSyntax).objectName
+                Case GetType(MemberAccessExpressionSyntax)
+                    Dim acc = DirectCast(reference, MemberAccessExpressionSyntax)
+                    ' 模块或者变量名称
+                    Dim target = acc.Expression
+                    ' 目标函数名称
+                    funcName$ = acc.Name.objectName
                 Case Else
                     Throw New NotImplementedException(reference.GetType.FullName)
             End Select
@@ -190,12 +199,18 @@ Namespace Symbols.Parser
         <Extension>
         Public Function ConstantExpression([const] As LiteralExpressionSyntax, wasmType$, memory As Memory) As Expression
             Dim value As Object = [const].Token.Value
-            Dim type As Type = value.GetType
+            Dim type As Type
+
+            If value Is Nothing Then
+                ' 是空值常量，则直接返回整形数0表示空指针
+                value = 0
+                type = GetType(Integer)
+            Else
+                type = value.GetType
+            End If
 
             If type Is GetType(String) OrElse type Is GetType(Char) Then
-                ' 是字符串类型，需要做额外的处理
-                value = memory.AddString(value)
-                wasmType = "char*"
+                Return memory.StringConstant(value)
             ElseIf type Is GetType(Boolean) Then
                 wasmType = "i32"
                 value = If(DirectCast(value, Boolean), 1, 0)
@@ -208,6 +223,19 @@ Namespace Symbols.Parser
             Return New LiteralExpression With {
                 .type = wasmType,
                 .value = value
+            }
+        End Function
+
+        <Extension>
+        Public Function StringConstant(memory As Memory, str As String) As LiteralExpression
+            Dim intPtr As Object = str
+            Dim wasmType$ = Nothing
+
+            Call memory.stringValue(intPtr, wasmType)
+
+            Return New LiteralExpression With {
+               .type = wasmType,
+               .value = intPtr
             }
         End Function
 
@@ -248,13 +276,7 @@ Namespace Symbols.Parser
                 right = Types.CDbl(right, symbols)
                 type = "f64"
             ElseIf op = "&" Then
-                ' vb string concatenation
-                If Not ImportSymbol.JsStringConcatenation.Ref Like symbols.Requires Then
-                    symbols.Requires.Add(ImportSymbol.JsStringConcatenation.Ref)
-                    symbols.AddImports(ImportSymbol.JsStringConcatenation)
-                End If
-
-                Return stringConcatenation(left, right)
+                Return symbols.StringAppend(left, right)
             Else
                 ' 其他的运算符则需要两边的类型保持一致
                 ' 往高位转换
@@ -288,14 +310,6 @@ Namespace Symbols.Parser
                 .Parameters = {left, right},
                 .Reference = funcOpName,
                 .[operator] = True
-            }
-        End Function
-
-        Private Function stringConcatenation(left As Expression, right As Expression) As Expression
-            Return New FuncInvoke With {
-                .Parameters = {left, right},
-                .Reference = ImportSymbol.JsStringConcatenation.Name,
-                .[operator] = False
             }
         End Function
     End Module

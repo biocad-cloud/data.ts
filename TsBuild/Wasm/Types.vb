@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::36d765948b133b9097b5cb0a24e4944f, Types.vb"
+﻿#Region "Microsoft.VisualBasic::479d4bdf1a8e3f12d972b921971e9789, Types.vb"
 
 ' Author:
 ' 
 '       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
 ' 
 ' Copyright (c) 2019 GCModeller Cloud Platform
 ' 
@@ -36,7 +37,7 @@
 
 ' Class Types
 ' 
-'     Properties: Convert2Wasm, Operators, Orders
+'     Properties: Comparison, Convert2Wasm, Operators, Orders, stringType
 ' 
 '     Function: [CDbl], [CInt], [CLng], [CSng], [CType]
 '               Compares, CTypeInvoke, IsInteger, TypeCharWasm
@@ -50,6 +51,7 @@ Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 Imports Wasm.Symbols
+Imports Wasm.Symbols.Parser
 
 ' how it works
 ' 
@@ -74,7 +76,8 @@ Public Class Types
         {GetType(Single), "f32"},
         {GetType(Double), "f64"},
         {GetType(String), "char*"}, ' 实际上这是一个integer类型
-        {GetType(Char), "char"}
+        {GetType(Char), "char"},
+        {GetType(System.Void), "void"}
     }
 
     Public Shared ReadOnly Property Operators As New Dictionary(Of String, String) From {
@@ -168,6 +171,10 @@ Public Class Types
                 Return Types.CSng(right, symbols)
             Case "f64"
                 Return Types.CDbl(right, symbols)
+            Case "char*"
+                ' 左边是字符串类型，但是右边不是字符串或者整形数
+                ' 则说明是一个需要将目标转换为字符串的操作
+                Return right.AnyToString(symbols)
             Case Else
                 Throw New NotImplementedException
         End Select

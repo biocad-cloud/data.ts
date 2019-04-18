@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::df1dd79f76ebcd588f9022589ad05acf, test\DeclareTest.vb"
+﻿#Region "Microsoft.VisualBasic::47470b12bac6bbfd3c35ca22caabab11, test\DeclareTest.vb"
 
     ' Author:
     ' 
     '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
     ' 
     ' Copyright (c) 2019 GCModeller Cloud Platform
     ' 

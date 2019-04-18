@@ -1,8 +1,9 @@
-﻿#Region "Microsoft.VisualBasic::ca6afdce686f02e8abb0f33cbf4cf5a2, test\Module1.vb"
+﻿#Region "Microsoft.VisualBasic::0fe2e92c53581ab36f132638f9d45b79, test\Module1.vb"
 
     ' Author:
     ' 
     '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
     ' 
     ' Copyright (c) 2019 GCModeller Cloud Platform
     ' 
@@ -40,7 +41,7 @@
     ' 
     ' Module Test
     ' 
-    '     Sub: declareTest, forlooptest, globalTest, testDemo
+    '     Sub: filetest, FileTest, globalTest, testDemo
     ' 
     '  
     ' 
@@ -73,6 +74,7 @@ Module treeTest
 
     Sub Main()
 
+        Call projectTest()
         ' Call documentApitest()
 
         '  Call Wasm.CompileWast("..\Demo\string.wast", "..\Demo\string.wasm")
@@ -117,14 +119,30 @@ End Module"
         Pause()
     End Sub
 
+    Sub projectTest()
+        Dim proj$ = "E:\repo\xDoc\ts\Linq.ts\TsBuild\Demo\vbscript\HelloWorld\HelloWorld.vbproj"
+        Dim [moduletest] As ModuleSymbol = Wasm.CreateModuleFromProject(proj)
+
+        Console.WriteLine(moduletest.ToSExpression)
+        moduletest.Compile(proj.ChangeSuffix("wasm"))
+        moduletest.ToSExpression.SaveTo(proj.ChangeSuffix("wast"))
+        moduletest.HexDump(True).SaveTo(proj.ChangeSuffix("dmp"))
+
+        Pause()
+    End Sub
+
     Sub FileTest()
-        For Each file As String In {"E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.vb",
-            "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\DeclareTest.vb",
+        For Each file As String In {
+            "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\nullreferenceTest.vb",
             "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb",
+            "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.vb",
+            "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\DeclareTest.vb",
 "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\boolTest.vb",
 "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\ForLoopTest.vb"}
 
             Call filetest(file)
+
+            Pause()
         Next
     End Sub
 

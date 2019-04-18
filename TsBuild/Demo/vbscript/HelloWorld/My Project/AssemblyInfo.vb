@@ -1,4 +1,5 @@
-﻿Imports System
+﻿Imports System.Resources
+Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -8,12 +9,12 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("HelloWorld")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyTitle("HelloWorld!")>
+<Assembly: AssemblyDescription("A hello world demo project for VisualBasic.NET WebAssembly compiler and runtime.")>
+<Assembly: AssemblyCompany("xieguigang")>
 <Assembly: AssemblyProduct("HelloWorld")>
-<Assembly: AssemblyCopyright("Copyright ©  2019")>
-<Assembly: AssemblyTrademark("")>
+<Assembly: AssemblyCopyright("Copyright © MIT 2019")>
+<Assembly: AssemblyTrademark("HelloWorld!")>
 
 <Assembly: ComVisible(False)>
 
@@ -31,5 +32,6 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("123.34.0.5466")>
+<Assembly: AssemblyFileVersion("1.0.99.78")>
+<Assembly: NeutralResourcesLanguage("en-GB")>

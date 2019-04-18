@@ -1,48 +1,50 @@
-﻿#Region "Microsoft.VisualBasic::7523549c959cf05e2becb251e0746431, Compiler\ModuleBuilder.vb"
+﻿#Region "Microsoft.VisualBasic::5502a564927b3f0c0903878c60a963ab, Compiler\ModuleBuilder.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    ' Module ModuleBuilder
-    ' 
-    '     Function: ToSExpression
-    ' 
-    ' /********************************************************************************/
+' Module ModuleBuilder
+' 
+'     Function: ToSExpression
+' 
+' /********************************************************************************/
 
 #End Region
 
 Imports System.IO
+Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ApplicationServices.Development
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
@@ -56,7 +58,8 @@ Module ModuleBuilder
         Dim globals$ = ""
         Dim internal$ = m _
             .InternalFunctions _
-            .JoinBy(ASCII.LF & ASCII.LF) _
+            .funcGroup _
+            .JoinBy(vbCrLf) _
             .LineTokens _
             .Select(Function(line) "    " & line) _
             .JoinBy(ASCII.LF)
@@ -101,9 +104,42 @@ Module ModuleBuilder
     
     {globals}
 
-    {m.Exports.JoinBy(ASCII.LF & "    ")} 
+    {m.Exports.exportGroup.JoinBy(ASCII.LF & "    ")} 
 
 {internal})"
     End Function
-End Module
 
+    <Extension>
+    Private Iterator Function exportGroup(exports As ExportSymbolExpression()) As IEnumerable(Of String)
+        Dim moduleGroup = exports.GroupBy(Function(api) api.Module).ToArray
+
+        For Each [module] In moduleGroup
+            Yield $";; export from [{[module].Key}]"
+            Yield ""
+
+            For Each func As ExportSymbolExpression In [module]
+                Yield func.ToSExpression
+            Next
+
+            Yield ""
+            Yield ""
+        Next
+    End Function
+
+    <Extension>
+    Private Iterator Function funcGroup(internal As FuncSymbol()) As IEnumerable(Of String)
+        Dim moduleGroups = internal.GroupBy(Function(f) f.Module).ToArray
+
+        For Each [module] In moduleGroups
+            Yield $";; functions in [{[module].Key}]"
+            Yield ""
+
+            For Each func As FuncSymbol In [module]
+                Yield func.ToSExpression
+            Next
+
+            Yield ""
+            Yield ""
+        Next
+    End Function
+End Module

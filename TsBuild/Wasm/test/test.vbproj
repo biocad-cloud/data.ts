@@ -145,6 +145,7 @@
     <Compile Include="ForLoopTest.vb" />
     <Compile Include="EnumTest.vb" />
     <Compile Include="boolTest.vb" />
+    <Compile Include="nullreferenceTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -187,6 +188,10 @@
     <ProjectReference Include="..\..\runtime\Microsoft.VisualBasic.Core\47-dotnet_Microsoft.VisualBasic.vbproj">
       <Project>{fecce1fd-e1d4-49e3-a668-60bb5e7aed99}</Project>
       <Name>47-dotnet_Microsoft.VisualBasic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\runtime\vs_solutions\dev-kit\VisualStudio\VisualStudio.vbproj">
+      <Project>{3A65D811-FC5C-4AD9-8456-8F720FF14C16}</Project>
+      <Name>VisualStudio</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wasm.vbproj">
       <Project>{22f458ac-2f9a-4350-8f35-0f2d9cc57a96}</Project>

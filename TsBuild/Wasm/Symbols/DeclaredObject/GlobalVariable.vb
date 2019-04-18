@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::c229a398fa00d971d863478d6921fa1f, Symbols\Memory\ArraySymbol.vb"
+﻿#Region "Microsoft.VisualBasic::c519d9535a18423459ae556e2082e3da, Symbols\DeclaredObject\GlobalVariable.vb"
 
     ' Author:
     ' 
@@ -35,18 +35,35 @@
 
     ' Summaries:
 
-    '     Class ArraySymbol
+    '     Class DeclareGlobal
     ' 
+    '         Properties: [Module]
     ' 
+    '         Function: ToSExpression
     ' 
     ' 
     ' /********************************************************************************/
 
 #End Region
 
+Imports Wasm.Symbols.Parser
+
 Namespace Symbols
 
-    Public MustInherit Class ArraySymbol : Inherits Expression
+    ''' <summary>
+    ''' 全局变量的初始值，只能够是常数或者其他的全局变量的值，也就是说<see cref="DeclareGlobal.init"/>的值只能够是常数
+    ''' </summary>
+    Public Class DeclareGlobal : Inherits DeclareVariable
+        Implements IDeclaredObject
 
+        ''' <summary>
+        ''' The VB module name
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property [Module] As String Implements IDeclaredObject.Module
+
+        Public Overrides Function ToSExpression() As String
+            Return $"(global ${name} (mut {CTypeParser.typefit(type)}) {init.ToSExpression})"
+        End Function
     End Class
 End Namespace
