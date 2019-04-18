@@ -119,24 +119,46 @@ var WebAssembly;
 })(WebAssembly || (WebAssembly = {}));
 var WebAssembly;
 (function (WebAssembly) {
+    /**
+     * Javascript debug console
+    */
     let Console;
     (function (Console) {
+        // 因为message可能是任意的JavaScript对象
+        // 所以在这里不进行直接文本字符串的读取
+        // 需要做一些额外的处理操作
         function log(message) {
-            console.log(WebAssembly.ObjectManager.readText(message));
+            console.log(Any(message));
         }
         Console.log = log;
         function warn(message) {
-            console.warn(WebAssembly.ObjectManager.readText(message));
+            console.warn(Any(message));
         }
         Console.warn = warn;
         function info(message) {
-            console.info(WebAssembly.ObjectManager.readText(message));
+            console.info(Any(message));
         }
         Console.info = info;
         function error(message) {
-            console.error(WebAssembly.ObjectManager.readText(message));
+            console.error(Any(message));
         }
         Console.error = error;
+        function Any(intPtr) {
+            if (intPtr < 0) {
+                // 可能是一个指针，因为在这里指针都是小于零的
+                if (WebAssembly.ObjectManager.isNull(intPtr)) {
+                    // 是一个负数
+                    return intPtr;
+                }
+                else {
+                    return WebAssembly.ObjectManager.getObject(intPtr);
+                }
+            }
+            else {
+                // 如何处理正实数？
+                return WebAssembly.ObjectManager.readText(intPtr);
+            }
+        }
     })(Console = WebAssembly.Console || (WebAssembly.Console = {}));
 })(WebAssembly || (WebAssembly = {}));
 var WebAssembly;

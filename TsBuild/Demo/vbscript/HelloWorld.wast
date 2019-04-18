@@ -91,59 +91,62 @@
     ;; String from 302 with 6 bytes in memory
     (data (i32.const 302) "result\00")
 
-    ;; String from 309 with 37 bytes in memory
-    (data (i32.const 309) "The calculation result of PoissonPDF(\00")
+    ;; String from 309 with 6 bytes in memory
+    (data (i32.const 309) "result\00")
 
-    ;; String from 347 with 2 bytes in memory
-    (data (i32.const 347) ", \00")
+    ;; String from 316 with 37 bytes in memory
+    (data (i32.const 316) "The calculation result of PoissonPDF(\00")
 
-    ;; String from 350 with 5 bytes in memory
-    (data (i32.const 350) ") is \00")
+    ;; String from 354 with 2 bytes in memory
+    (data (i32.const 354) ", \00")
 
-    ;; String from 356 with 1 bytes in memory
-    (data (i32.const 356) "!\00")
+    ;; String from 357 with 5 bytes in memory
+    (data (i32.const 357) ") is \00")
 
-    ;; String from 358 with 6 bytes in memory
-    (data (i32.const 358) "result\00")
+    ;; String from 363 with 1 bytes in memory
+    (data (i32.const 363) "!\00")
 
-    ;; String from 365 with 5 bytes in memory
-    (data (i32.const 365) "style\00")
+    ;; String from 365 with 6 bytes in memory
+    (data (i32.const 365) "result\00")
 
-    ;; String from 371 with 24 bytes in memory
-    (data (i32.const 371) "color: blue; font-size: \00")
+    ;; String from 372 with 5 bytes in memory
+    (data (i32.const 372) "style\00")
 
-    ;; String from 396 with 20 bytes in memory
-    (data (i32.const 396) "; background-color: \00")
+    ;; String from 378 with 24 bytes in memory
+    (data (i32.const 378) "color: blue; font-size: \00")
 
-    ;; String from 417 with 1 bytes in memory
-    (data (i32.const 417) ";\00")
+    ;; String from 403 with 20 bytes in memory
+    (data (i32.const 403) "; background-color: \00")
 
-    ;; String from 419 with 11 bytes in memory
-    (data (i32.const 419) "HelloWorld!\00")
+    ;; String from 424 with 1 bytes in memory
+    (data (i32.const 424) ";\00")
 
-    ;; String from 431 with 80 bytes in memory
-    (data (i32.const 431) "A hello world demo project for VisualBasic.NET WebAssembly compiler and runtime.\00")
+    ;; String from 426 with 11 bytes in memory
+    (data (i32.const 426) "HelloWorld!\00")
 
-    ;; String from 512 with 10 bytes in memory
-    (data (i32.const 512) "xieguigang\00")
+    ;; String from 438 with 80 bytes in memory
+    (data (i32.const 438) "A hello world demo project for VisualBasic.NET WebAssembly compiler and runtime.\00")
 
-    ;; String from 523 with 10 bytes in memory
-    (data (i32.const 523) "HelloWorld\00")
+    ;; String from 519 with 10 bytes in memory
+    (data (i32.const 519) "xieguigang\00")
 
-    ;; String from 534 with 20 bytes in memory
-    (data (i32.const 534) "Copyright © MIT 2019\00")
+    ;; String from 530 with 10 bytes in memory
+    (data (i32.const 530) "HelloWorld\00")
 
-    ;; String from 555 with 11 bytes in memory
-    (data (i32.const 555) "HelloWorld!\00")
+    ;; String from 541 with 20 bytes in memory
+    (data (i32.const 541) "Copyright © MIT 2019\00")
 
-    ;; String from 567 with 36 bytes in memory
-    (data (i32.const 567) "8750377f-b6e7-4fb5-886b-4c3fa451ec4c\00")
+    ;; String from 562 with 11 bytes in memory
+    (data (i32.const 562) "HelloWorld!\00")
 
-    ;; String from 604 with 13 bytes in memory
-    (data (i32.const 604) "123.34.0.5466\00")
+    ;; String from 574 with 36 bytes in memory
+    (data (i32.const 574) "8750377f-b6e7-4fb5-886b-4c3fa451ec4c\00")
 
-    ;; String from 618 with 9 bytes in memory
-    (data (i32.const 618) "1.0.99.78\00")
+    ;; String from 611 with 13 bytes in memory
+    (data (i32.const 611) "123.34.0.5466\00")
+
+    ;; String from 625 with 9 bytes in memory
+    (data (i32.const 625) "1.0.99.78\00")
     
     (global $helloWorld (mut i32) (i32.const 1))
 
@@ -230,8 +233,9 @@
         (local $pdf f64)
     (set_local $pdf (call $PoissonPDF (get_local $k) (get_local $lambda)))
     (call $warn (get_local $fontsize))
-    (call $setText (call $DOMById (i32.const 302)) (call $string.add (call $string.add (call $string.add (call $string.add (call $string.add (call $string.add (i32.const 309) (call $i32.toString (get_local $k))) (i32.const 347)) (call $f64.toString (get_local $lambda))) (i32.const 350)) (call $f64.toString (get_local $pdf))) (i32.const 356)))
-    (call $setAttribute (call $DOMById (i32.const 358)) (i32.const 365) (call $string.add (call $string.add (call $string.add (call $string.add (i32.const 371) (call $char*.toString (get_local $fontsize))) (i32.const 396)) (call $char*.toString (get_local $background))) (i32.const 417)))
+    (call $log (call $DOMById (i32.const 302)))
+    (call $setText (call $DOMById (i32.const 309)) (call $string.add (call $string.add (call $string.add (call $string.add (call $string.add (call $string.add (i32.const 316) (call $i32.toString (get_local $k))) (i32.const 354)) (call $f64.toString (get_local $lambda))) (i32.const 357)) (call $f64.toString (get_local $pdf))) (i32.const 363)))
+    (call $setAttribute (call $DOMById (i32.const 365)) (i32.const 372) (call $string.add (call $string.add (call $string.add (call $string.add (i32.const 378) (call $char*.toString (get_local $fontsize))) (i32.const 403)) (call $char*.toString (get_local $background))) (i32.const 424)))
     (return (i32.const 0))
     )
     
@@ -241,46 +245,46 @@
     (func $AssemblyTitle  (result i32)
         ;; Public Function AssemblyTitle() As char*
         
-    (return (i32.const 419))
+    (return (i32.const 426))
     )
     (func $AssemblyDescription  (result i32)
         ;; Public Function AssemblyDescription() As char*
         
-    (return (i32.const 431))
+    (return (i32.const 438))
     )
     (func $AssemblyCompany  (result i32)
         ;; Public Function AssemblyCompany() As char*
         
-    (return (i32.const 512))
+    (return (i32.const 519))
     )
     (func $AssemblyProduct  (result i32)
         ;; Public Function AssemblyProduct() As char*
         
-    (return (i32.const 523))
+    (return (i32.const 530))
     )
     (func $AssemblyCopyright  (result i32)
         ;; Public Function AssemblyCopyright() As char*
         
-    (return (i32.const 534))
+    (return (i32.const 541))
     )
     (func $AssemblyTrademark  (result i32)
         ;; Public Function AssemblyTrademark() As char*
         
-    (return (i32.const 555))
+    (return (i32.const 562))
     )
     (func $Guid  (result i32)
         ;; Public Function Guid() As char*
         
-    (return (i32.const 567))
+    (return (i32.const 574))
     )
     (func $AssemblyVersion  (result i32)
         ;; Public Function AssemblyVersion() As char*
         
-    (return (i32.const 604))
+    (return (i32.const 611))
     )
     (func $AssemblyFileVersion  (result i32)
         ;; Public Function AssemblyFileVersion() As char*
         
-    (return (i32.const 618))
+    (return (i32.const 625))
     )
     )

@@ -29,6 +29,9 @@
 
         Call console.warn(fontsize)
 
+        ' display javascript object in debug console 
+        Call console.log(document.DOMById("result"))
+
         Call document.setText(document.DOMById("result"), $"The calculation result of PoissonPDF({k}, {lambda}) is {pdf}!")
         Call document.setAttribute(document.DOMById("result"), "style", $"color: blue; font-size: {fontsize}; background-color: {background};")
 
