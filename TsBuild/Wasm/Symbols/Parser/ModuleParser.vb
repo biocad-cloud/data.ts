@@ -116,11 +116,11 @@ Namespace Symbols.Parser
             Next
 
             ' 解析成员函数的具体定义内容
-            Return project.CreateModule(symbolTable)
+            Return project.CreateModule(symbolTable, Nothing)
         End Function
 
         <Extension>
-        Friend Function CreateModule(modules As IEnumerable(Of ModuleBlockSyntax), symbols As SymbolTable) As ModuleSymbol
+        Friend Function CreateModule(modules As IEnumerable(Of ModuleBlockSyntax), symbols As SymbolTable, label$) As ModuleSymbol
             Dim project As New ModuleSymbol
             Dim part As ModuleSymbol
 
@@ -129,6 +129,10 @@ Namespace Symbols.Parser
                 part = ModuleParser.CreateModuleInternal([module], symbols)
                 project = project.Join(part)
             Next
+
+            If Not label.StringEmpty Then
+                project.LabelName = label
+            End If
 
             Return project
         End Function
