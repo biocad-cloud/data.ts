@@ -2,6 +2,7 @@
 Imports Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio
 Imports Microsoft.VisualBasic.CommandLine
 Imports Microsoft.VisualBasic.CommandLine.Reflection
+Imports Wasm
 Imports Wasm.Symbols
 
 ''' <summary>
@@ -20,20 +21,28 @@ Module Program
     End Function
 
     ''' <summary>
-    ''' ``vbw &lt;file> [...args]``
+    ''' ``vanilla &lt;file> [...args]``
     ''' </summary>
     ''' <param name="file"></param>
     ''' <param name="args"></param>
     ''' <returns></returns>
     Private Function CompileTargetFileRoutine(file As String, args As CommandLine) As Integer
         Dim moduleSymbol As ModuleSymbol
-        Dim out$ = args("/out") Or file.ChangeSuffix("wasm")
+        Dim out$
 
         If file.ExtensionSuffix.TextEquals("vb") Then
             moduleSymbol = Wasm.CreateModule(file)
+            out = args("/out") Or file.ChangeSuffix("wasm")
         Else
+            Dim profile$ = args("/profile")
+            Dim vbproj As Project = file.LoadXml(Of Project)
+
             moduleSymbol = Wasm.CreateModuleFromProject(vbproj:=file)
+            out = args("/out") Or $"{vbproj.GetOutputDirectory(profile)}/{vbproj.GetOutputName}.wasm"
         End If
+
+        Call moduleSymbol.ToSExpression.SaveTo(out.ChangeSuffix("wast"))
+        Call moduleSymbol.HexDump(verbose:=True).SaveTo(out.ChangeSuffix("dmp"))
 
         Return Wasm.Compile(moduleSymbol, out) _
             .SaveTo(out.ChangeSuffix("log")) _
@@ -53,12 +62,5 @@ Module Program
 
             Next
         End If
-    End Function
-
-    <ExportAPI("/wast")>
-    <Usage("/wast /target <vbproj/vb> [/out <*.wast>]")>
-    <Description("Dumping VB.NET source file as WebAssembly S-Expression code.")>
-    Public Function DumpWast(args As CommandLine) As Integer
-
     End Function
 End Module
