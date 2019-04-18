@@ -32,7 +32,10 @@ var WebAssembly;
     let ObjectManager;
     (function (ObjectManager) {
         let streamReader;
-        let hashCode = 0;
+        /**
+         * 在这里主要是为了避免和内部的数值产生冲突
+        */
+        let hashCode = -9999999;
         let hashTable = {};
         /**
          * Load WebAssembly memory buffer into Javascript runtime.
