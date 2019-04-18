@@ -10,8 +10,17 @@
             return ObjectManager.addObject(s);
         }
 
-        export function toString(obj: object): number {
-            let s: string = obj.toString();
+        export function toString(obj: number): number {
+            let s: string;
+
+            if (ObjectManager.isNull(obj)) {
+                // 没有目标，说明是一个数字
+                s = obj.toString();
+            } else {
+                // 不是空的，说明是一个对象
+                s = ObjectManager.getObject(obj).toString();
+            }
+
             return ObjectManager.addObject(s);
         }
 

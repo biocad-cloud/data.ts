@@ -42,6 +42,10 @@
             }
         }
 
+        export function isNull(intPtr: number): boolean {
+            return intPtr in hashTable;
+        }
+
         export function getType(hashCode: number): string {
             if (hashCode in hashTable) {
                 let type: string;
