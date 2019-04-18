@@ -360,6 +360,9 @@ var TypeScript;
             // imports the javascript math module for VisualBasic.NET 
             // module by default
             dependencies["Math"] = window.Math;
+            // Andalso imports some basically string api for VisualBasic.NET
+            // as well
+            dependencies["string"] = WebAssembly.JsString;
             if (typeof opts.imports == "object") {
                 for (var key in opts.imports) {
                     dependencies[key] = opts.imports[key];
@@ -377,7 +380,6 @@ var TypeScript;
             if (api.text) {
                 dependencies["RegExp"] = WebAssembly.RegularExpression;
                 dependencies["Strings"] = WebAssembly.Strings;
-                dependencies["string"] = WebAssembly.JsString;
             }
             if (api.array) {
                 dependencies["Array"] = WebAssembly.JsArray;
