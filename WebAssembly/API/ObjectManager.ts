@@ -43,7 +43,7 @@
         }
 
         export function isNull(intPtr: number): boolean {
-            return intPtr in hashTable;
+            return !(intPtr in hashTable);
         }
 
         export function getType(hashCode: number): string {

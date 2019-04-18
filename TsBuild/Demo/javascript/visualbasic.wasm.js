@@ -69,6 +69,10 @@ var WebAssembly;
             }
         }
         ObjectManager.getObject = getObject;
+        function isNull(intPtr) {
+            return !(intPtr in hashTable);
+        }
+        ObjectManager.isNull = isNull;
         function getType(hashCode) {
             if (hashCode in hashTable) {
                 let type;
@@ -276,7 +280,15 @@ var WebAssembly;
         }
         JsString.fromCharCode = fromCharCode;
         function toString(obj) {
-            let s = obj.toString();
+            let s;
+            if (WebAssembly.ObjectManager.isNull(obj)) {
+                // 没有目标，说明是一个数字
+                s = obj.toString();
+            }
+            else {
+                // 不是空的，说明是一个对象
+                s = WebAssembly.ObjectManager.getObject(obj).toString();
+            }
             return WebAssembly.ObjectManager.addObject(s);
         }
         JsString.toString = toString;
