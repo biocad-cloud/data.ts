@@ -223,6 +223,7 @@
         ;; Public Function DisplayResult(k As i32, lambda As f64, fontsize As char*) As i32
         (local $pdf f64)
     (set_local $pdf (call $PoissonPDF (get_local $k) (get_local $lambda)))
+    (call $warn (get_local $fontsize))
     (call $setText (call $DOMById (i32.const 302)) (call $string.add (call $string.add (call $string.add (call $string.add (call $string.add (call $string.add (i32.const 309) (call $i32.toString (get_local $k))) (i32.const 347)) (call $f64.toString (get_local $lambda))) (i32.const 350)) (call $f64.toString (get_local $pdf))) (i32.const 356)))
     (call $setAttribute (call $DOMById (i32.const 358)) (i32.const 365) (call $string.add (i32.const 371) (call $char*.toString (get_local $fontsize))))
     (return (i32.const 0))
