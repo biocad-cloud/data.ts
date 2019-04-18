@@ -81,7 +81,7 @@
                     params.push(value);
                 }
 
-                return (<any>func).apply(this, Array.prototype.slice.call(params, 1));
+                return (<any>func).apply(this, params);
             }
         }
 

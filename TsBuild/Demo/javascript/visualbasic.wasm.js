@@ -365,7 +365,7 @@ var TypeScript;
                     }
                     params.push(value);
                 }
-                return func.apply(this, Array.prototype.slice.call(params, 1));
+                return func.apply(this, params);
             };
         }
         function createBytes(opts) {
