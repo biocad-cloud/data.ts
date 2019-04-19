@@ -10,8 +10,8 @@
 
     End Function
 
-    Public Sub Main(Optional args As String = "This is the optional parameter value", Optional obj As Integer = -100)
+    Public Function Main(Optional args As String = "This is the optional parameter value", Optional obj As Integer = -100)
         Call print(args)
-    End Sub
+    End Function
 
 End Module

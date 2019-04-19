@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/19/2019 10:52:31 PM
+    ;; build: 4/19/2019 10:55:38 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -41,9 +41,10 @@
     (call $Main (i32.const 22) (i32.const -100))
     (return (i32.const 0))
     )
-    (func $Main (param $args i32) (param $obj i32) 
-        ;; Public Function Main(args As char*, obj As i32) As void
+    (func $Main (param $args i32) (param $obj i32) (result i32)
+        ;; Public Function Main(args As char*, obj As i32) As i32
         
     (call $print (get_local $args))
+    (return (i32.const 0))
     )
     )
