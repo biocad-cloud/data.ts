@@ -45,6 +45,7 @@
         ;; Public Function Main(args As char*, obj As i32) As i32
         
     (call $print (get_local $args))
+    (call $print (get_local $obj))
     (return (i32.const 0))
     )
     )

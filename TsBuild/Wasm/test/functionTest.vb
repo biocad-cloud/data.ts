@@ -12,6 +12,7 @@
 
     Public Function Main(Optional args As String = "This is the optional parameter value", Optional obj As Integer = -100)
         Call print(args)
+        Call print(obj)
     End Function
 
 End Module
