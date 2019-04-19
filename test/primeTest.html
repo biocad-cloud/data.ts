@@ -5,12 +5,14 @@
     var clock = new TypeScript.Benchmark();
     var upbound = 1000;
     var isPrime2 = WebAssembly.ObjectManager.hashCodeHelper.isPrime;
+    var stack1 = [];
+    var stack2 = [];
 
     console.warn(clock.Tick());
 
     for (var i = 0; i < upbound; i++) {
         if (isPrime2(i)) {
-            console.log(i);
+            stack1.push(i);
         }
     }
 
@@ -22,7 +24,7 @@
 
     for (var i = 0; i < upbound; i++) {
         if (isPrime(i)) {
-            console.log(i);
+            stack2.push(i);
         }
     }
 
