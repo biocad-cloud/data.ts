@@ -2,5 +2,44 @@
 <script src="../../build/visualbasic.wasm.js"></script>
 
 <script type="text/javascript">
+    var clock = new TypeScript.Benchmark();
+    var upbound = 1000;
+    var isPrime2 = WebAssembly.ObjectManager.hashCodeHelper.isPrime;
 
+    console.warn(clock.Tick());
+
+    for (var i = 0; i < upbound; i++) {
+        if (isPrime2(i)) {
+            console.log(i);
+        }
+    }
+
+    console.warn(clock.Tick());
+
+    console.log("==========================================");
+
+    console.warn(clock.Tick());
+
+    for (var i = 0; i < upbound; i++) {
+        if (isPrime(i)) {
+            console.log(i);
+        }
+    }
+
+    console.warn(clock.Tick());
+
+    function isPrime(value) {
+        if (value <= 3) {
+            return value >= 2;
+        }
+        if (value % 2 == 0 || value % 3 == 0) {
+            return false
+        }
+        for (var i = 5; i * i <= value; i += 6) {
+            if (value % i == 0 || value % (i + 2) == 0) {
+                return false
+            }
+        }
+        return true
+    }
 </script>
