@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/19/2019 8:11:38 PM
+    ;; build: 4/19/2019 10:52:31 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -19,28 +19,31 @@
     
     ;; String from 1 with 20 bytes in memory
     (data (i32.const 1) "Another string value\00")
+
+    ;; String from 22 with 36 bytes in memory
+    (data (i32.const 22) "This is the optional parameter value\00")
     
     
 
     ;; export from [functionTest]
     
-    (export "Main" (func $Main))
     (export "calls" (func $calls))
+    (export "Main" (func $Main))
     
      
 
     ;; functions in [functionTest]
     
-    (func $Main (param $args i32) 
-        ;; Public Function Main(args As char*) As void
-        
-    (call $print (get_local $args))
-    )
     (func $calls  (result i32)
         ;; Public Function calls() As i32
         
-    (call $Main )
-    (call $Main (i32.const 1))
+    (call $Main (i32.const 1) (i32.const 999999))
+    (call $Main (i32.const 22) (i32.const -100))
     (return (i32.const 0))
+    )
+    (func $Main (param $args i32) (param $obj i32) 
+        ;; Public Function Main(args As char*, obj As i32) As void
+        
+    (call $print (get_local $args))
     )
     )

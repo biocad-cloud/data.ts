@@ -219,9 +219,18 @@ Namespace Symbols.Parser
             End If
 
             If Not parameter.Default Is Nothing Then
-                With DirectCast(parameter.Default.Value, LiteralExpressionSyntax)
-                    [default] = .Token.Value
-                End With
+                Select Case parameter.Default.Value.GetType
+                    Case GetType(LiteralExpressionSyntax)
+                        With DirectCast(parameter.Default.Value, LiteralExpressionSyntax)
+                            [default] = .Token.Value
+                        End With
+                    Case GetType(UnaryExpressionSyntax)
+                        With DirectCast(parameter.Default.Value, UnaryExpressionSyntax)
+                            [default] = .UnaryValue
+                        End With
+                    Case Else
+                        Throw New NotImplementedException
+                End Select
             End If
 
             Return New NamedValue(Of String) With {

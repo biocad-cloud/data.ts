@@ -49,6 +49,7 @@ Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Language
 
 Namespace Symbols.Parser
 
@@ -106,6 +107,12 @@ Namespace Symbols.Parser
             Return Types.CType(castToType, value, symbols)
         End Function
 
+        ''' <summary>
+        ''' 可能是常量，也可能是一个变量引用
+        ''' </summary>
+        ''' <param name="unary"></param>
+        ''' <param name="symbols"></param>
+        ''' <returns></returns>
         <Extension>
         Public Function UnaryExpression(unary As UnaryExpressionSyntax, symbols As SymbolTable) As FuncInvoke
             Dim op$ = unary.OperatorToken.ValueText
@@ -122,22 +129,34 @@ Namespace Symbols.Parser
             }
         End Function
 
+        ''' <summary>
+        ''' 常量表达式
+        ''' </summary>
+        ''' <param name="unary"></param>
+        ''' <returns></returns>
         <Extension>
-        Public Iterator Function [Select](args As SeparatedSyntaxList(Of ArgumentSyntax), symbols As SymbolTable, params As NamedValue(Of String)()) As IEnumerable(Of Expression)
-            For i As Integer = 0 To args.Count - 1
-                Dim value As Expression = args.Item(i) _
-                    .GetExpression _
-                    .ValueExpression(symbols)
-                Dim left$ = params(i).Value
+        Public Function UnaryValue(unary As UnaryExpressionSyntax) As String
+            Dim op$ = unary.OperatorToken.ValueText
+            Dim valueToken = DirectCast(unary.Operand, LiteralExpressionSyntax)
+            Dim value$ = valueToken.Token.ValueText
 
-                Yield Types.CType(left, value, symbols)
-            Next
+            Return op & value
+        End Function
+
+        <Extension>
+        Public Function Argument(arg As ArgumentSyntax, symbols As SymbolTable, param As NamedValue(Of String)) As Expression
+            Dim value As Expression = arg _
+                .GetExpression _
+                .ValueExpression(symbols)
+            Dim left$ = param.Value
+
+            Return Types.CType(left, value, symbols)
         End Function
 
         <Extension>
         Public Function FunctionInvoke(invoke As InvocationExpressionSyntax, symbols As SymbolTable) As FuncInvoke
             Dim reference = invoke.Expression
-            Dim arguments As Expression()
+            Dim arguments As New List(Of Expression)
             Dim funcName$
 
             ' 得到被调用的目标函数的名称符号
@@ -157,22 +176,81 @@ Namespace Symbols.Parser
             End Select
 
             Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
-
-
+            Dim arg As NamedValue(Of String)
+            Dim invokeInputs As ArgumentSyntax()
+            Dim input As ArgumentSyntax = Nothing
 
             If invoke.ArgumentList Is Nothing Then
-                arguments = {}
+                invokeInputs = {}
             Else
-                arguments = invoke.ArgumentList _
-                    .Arguments _
-                    .Select(symbols, funcDeclare.Parameters) _
+                invokeInputs = invoke _
+                    .ArgumentList _
+                    .ArgumentSequence(funcDeclare.Parameters) _
                     .ToArray
             End If
+
+            For i As Integer = 0 To funcDeclare.Parameters.Length - 1
+                arg = funcDeclare.Parameters(i)
+                input = invokeInputs.ElementAtOrNull(i)
+
+                If input Is Nothing Then
+                    ' 可选参数的默认值是一个常量
+                    If arg.Value = "char*" Then
+                        arguments += symbols.memory.StringConstant(arg.Description)
+                    Else
+                        arguments += New LiteralExpression With {
+                            .type = arg.Value,
+                            .value = arg.Description
+                        }
+                    End If
+                Else
+                    arguments += input.Argument(symbols, arg)
+                End If
+            Next
 
             Return New FuncInvoke With {
                 .Reference = funcName,
                 .Parameters = arguments
             }
+        End Function
+
+        <Extension>
+        Private Iterator Function ArgumentSequence(arguments As ArgumentListSyntax, define As NamedValue(Of String)()) As IEnumerable(Of ArgumentSyntax)
+            Dim input = arguments.Arguments.ToArray
+            Dim a As ArgumentSyntax
+            Dim check As NamedValue(Of String)
+
+            For i As Integer = 0 To define.Length - 1
+                a = input.ElementAtOrNull(i)
+                check = define(i)
+
+                If a Is Nothing Then
+                    ' 可能是一个a:=...，并且出现在前面或者后面
+                    a = input _
+                        .FirstOrDefault(Function(arg)
+                                            Return arg.IsNamed AndAlso DirectCast(arg, SimpleArgumentSyntax) _
+                                                .NameColonEquals _
+                                                .Name _
+                                                .objectName _
+                                                .TextEquals(check.Name)
+                                        End Function)
+                    Yield a
+                Else
+                    If DirectCast(a, SimpleArgumentSyntax).NameColonEquals Is Nothing Then
+                        Yield a
+                    Else
+                        a = input _
+                            .FirstOrDefault(Function(arg)
+                                                Return arg.IsNamed AndAlso DirectCast(arg, SimpleArgumentSyntax) _
+                                                    .NameColonEquals _
+                                                    .Name _
+                                                    .objectName _
+                                                    .TextEquals(check.Name)
+                                            End Function)
+                        Yield a
+                    End If
+                End If
+            Next
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
