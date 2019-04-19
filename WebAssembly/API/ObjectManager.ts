@@ -9,7 +9,7 @@
         /**
          * 在这里主要是为了避免和内部的数值产生冲突
         */
-        let hashCode: number = -9999999;
+        let hashCode: number = 2;
         let hashTable: object = {};
 
         /**
@@ -72,10 +72,10 @@
          * Add any object to a internal hashTable and then returns its hash code.
         */
         export function addObject(o: any): number {
-            var key: number = hashCode;
+            var key: number = -hashCode;
 
-            hashTable[hashCode] = o;
-            hashCode++;
+            hashTable[key] = o;
+            hashCode = PrimeHashCode.getNextPrime(hashCode);
 
             return key;
         }
