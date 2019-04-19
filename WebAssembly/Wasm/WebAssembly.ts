@@ -1,5 +1,14 @@
 ﻿namespace TypeScript {
 
+    export interface IWasmFunc {
+        (): void;
+
+        /**
+         * 当前的这个函数在WebAssembly导出来的函数的申明原型
+        */
+        WasmPrototype: () => any;
+    }
+
     /**
      * The web assembly helper
     */
@@ -59,30 +68,43 @@
             return api;
         }
 
-        function buildFunc(func: object): object {
-            return function () {
-                let params: any[] = [];
-                let value: any;
+        /**
+         * 主要是创建一个对参数的封装函数，因为WebAssembly之中只有4中基础的数值类型
+         * 所以字符串，对象之类的都需要在这里进行封装之后才能够被传递进入WebAssembly
+         * 运行时环境之中
+        */
+        function buildFunc(func: object): IWasmFunc {
+            let api: IWasmFunc = <any>function () {
+                return (<any>func).apply(this, buildArguments(<any>arguments));
+            }
 
-                for (var i = 0; i < arguments.length; i++) {
-                    value = arguments[i];
+            api.WasmPrototype = <any>func;
 
-                    if (!value || typeof value == "undefined") {
-                        // zero intptr means nothing or value 0
-                        value = 0;
-                    } else if (typeof value == "string" || typeof value == "object") {
-                        value = WebAssembly.ObjectManager.addObject(value);
-                    } else if (typeof value == "boolean") {
-                        value = value ? 1 : 0;
-                    } else {
-                        // do nothing
-                    }
+            return api;
+        }
 
-                    params.push(value);
+        function buildArguments(args: any[]): any[] {
+            let params: any[] = [];
+            let value: any;
+
+            for (var i = 0; i < args.length; i++) {
+                value = args[i];
+
+                if (!value || typeof value == "undefined") {
+                    // zero intptr means nothing or value 0
+                    value = 0;
+                } else if (typeof value == "string" || typeof value == "object") {
+                    value = WebAssembly.ObjectManager.addObject(value);
+                } else if (typeof value == "boolean") {
+                    value = value ? 1 : 0;
+                } else {
+                    // do nothing
                 }
 
-                return (<any>func).apply(this, params);
+                params.push(value);
             }
+
+            return params;
         }
 
         function createBytes(opts: Config): TypeScript.WasmMemory {
