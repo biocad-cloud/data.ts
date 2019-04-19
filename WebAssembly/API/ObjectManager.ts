@@ -6,7 +6,10 @@
     export module ObjectManager {
 
         let streamReader: TypeScript.stringReader;
-        let hashCode: number = 0;
+        /**
+         * 在这里主要是为了避免和内部的数值产生冲突
+        */
+        let hashCode: number = -9999999;
         let hashTable: object = {};
 
         /**
@@ -40,6 +43,10 @@
             } else {
                 return null;
             }
+        }
+
+        export function isNull(intPtr: number): boolean {
+            return !(intPtr in hashTable);
         }
 
         export function getType(hashCode: number): string {

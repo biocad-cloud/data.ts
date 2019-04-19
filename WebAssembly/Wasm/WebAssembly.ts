@@ -36,8 +36,53 @@
                         console.log(assembly);
                     }
 
-                    opts.run(assembly);
+                    opts.run(exportWasmApi(assembly));
                 });
+        }
+
+        function exportWasmApi(assm: IWasm): object {
+            let exports = assm.instance.exports;
+            let api: object = {};
+
+            for (let name in exports) {
+                let obj = exports[name];
+
+                if (typeof obj == "function") {
+                    obj = buildFunc(obj);
+                } else {
+                    // do nothing
+                }
+
+                api[name] = obj;
+            }
+
+            return api;
+        }
+
+        function buildFunc(func: object): object {
+            return function () {
+                let params: any[] = [];
+                let value: any;
+
+                for (var i = 0; i < arguments.length; i++) {
+                    value = arguments[i];
+
+                    if (!value || typeof value == "undefined") {
+                        // zero intptr means nothing or value 0
+                        value = 0;
+                    } else if (typeof value == "string" || typeof value == "object") {
+                        value = WebAssembly.ObjectManager.addObject(value);
+                    } else if (typeof value == "boolean") {
+                        value = value ? 1 : 0;
+                    } else {
+                        // do nothing
+                    }
+
+                    params.push(value);
+                }
+
+                return (<any>func).apply(this, params);
+            }
         }
 
         function createBytes(opts: Config): TypeScript.WasmMemory {
@@ -77,6 +122,9 @@
             // imports the javascript math module for VisualBasic.NET 
             // module by default
             dependencies["Math"] = (<any>window).Math;
+            // Andalso imports some basically string api for VisualBasic.NET
+            // as well
+            dependencies["string"] = WebAssembly.JsString;
 
             if (typeof opts.imports == "object") {
                 for (var key in opts.imports) {
@@ -96,7 +144,6 @@
             if (api.text) {
                 dependencies["RegExp"] = WebAssembly.RegularExpression;
                 dependencies["Strings"] = WebAssembly.Strings;
-                dependencies["string"] = WebAssembly.JsString;
             }
             if (api.array) {
                 dependencies["Array"] = WebAssembly.JsArray;

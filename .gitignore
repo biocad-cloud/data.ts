@@ -86,3 +86,4 @@ obj/
 Apps/
 *.sqlite-journal
 *.user
+*.pdb

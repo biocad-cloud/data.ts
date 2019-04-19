@@ -8,10 +8,17 @@
 
 </div>
 
+<div>
+<p><span id="result"></span></p>
+</div>
+
 <script type="text/javascript" src="javascript/visualbasic.wasm.js"></script>
 <script type="text/javascript">
 	TypeScript.Wasm.RunAssembly("vbscript/HelloWorld.wasm", {
-		run: doc => doc.instance.exports.RunApp(),
+		run: doc => {
+			doc.RunApp();
+			doc.DisplayResult(15, 10.99, "3em", "yellow")
+		},
 		api: { document: true, console: true }
 	});
 </script>

@@ -105,7 +105,7 @@ Public Module Extensions
             Next
         End With
 
-        Dim project = vbcodes.CreateModule(symbols)
+        Dim project = vbcodes.CreateModule(symbols, vbproj.RootNamespace)
         Dim info = assemblyInfo.assmInfoModule(project.Memory)
 
         Return project.Join(info)
