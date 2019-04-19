@@ -3,12 +3,13 @@
 
 <script type="text/javascript">
     var clock = new TypeScript.Benchmark();
-    var upbound = 1000;
+    var upbound = 2000000;
     var isPrime2 = WebAssembly.ObjectManager.hashCodeHelper.isPrime;
     var stack1 = [];
     var stack2 = [];
+    var a, b;
 
-    console.warn(clock.Tick());
+    console.warn(a = clock.Tick());
 
     for (var i = 0; i < upbound; i++) {
         if (isPrime2(i)) {
@@ -16,11 +17,12 @@
         }
     }
 
-    console.warn(clock.Tick());
+    console.warn(b = clock.Tick());
+    console.warn(b.sinceLastCheck);    
 
     console.log("==========================================");
 
-    console.warn(clock.Tick());
+    console.warn(a = clock.Tick());
 
     for (var i = 0; i < upbound; i++) {
         if (isPrime(i)) {
@@ -28,7 +30,12 @@
         }
     }
 
-    console.warn(clock.Tick());
+    console.warn(b = clock.Tick());
+    console.warn(b.sinceLastCheck);
+
+    console.log(stack1);
+    console.log(stack2);
+
 
     function isPrime(value) {
         if (value <= 3) {
