@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "target": "es6",
+    "lib": [ "dom", "es6", "dom.iterable", "scripthost" ],
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "../dist",
+    "outFile": "../../build/visualbasic.wasm.js",
+    "declaration": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,63 @@
+<script type="text/javascript" src="visualbasic.wasm.js"></script>
+<script type="text/javascript">
+	var DOM = {
+		display: function(x) {
+			document.getElementById("text").innerText = x;
+		}
+	}
+	var run = function(math) {
+        var PoissonPDF = math.instance.exports.PoissonPDF;		
+		var add10 = math.instance.exports.Add10;
+        var FlipCoin = math.instance.exports.FlipCoin;
+		var i = math.instance.exports.GetGlobal;
+		var HtmlTest = math.instance.exports.HtmlTest;
+		var HelloWorld = math.instance.exports.HelloWorld;
+		var TextDemo2 = math.instance.exports.TextDemo2;
+		var stream = new TypeScript.stringReader(math); 
+		
+		console.log("WebAssembly string value output:");
+		console.log(stream.readText(HelloWorld()));
+		console.log(stream.readText(TextDemo2()));
+		
+		console.log("WebAssembly math function test:");		
+		console.log(Math.random());
+		console.log(FlipCoin());
+		console.log(i());
+		console.log(add10(100))
+		console.log(i());
+		console.log(add10(0))
+		console.log(i());
+        console.log(PoissonPDF(5, 2.0));
+		
+		console.log(HtmlTest(5));
+		
+		console.log("=============== End =================");
+		
+    }
+
+    TypeScript.Wasm.RunAssembly("PoissonPDF.wasm", {run : run, imports : {DOM: DOM}});
+	
+	TypeScript.Wasm.RunAssembly("string.wasm", {run : function(str) {
+		var memory = str.instance.exports.memory;
+		var strBuf = new Uint8Array(memory.buffer, 100); 
+		var strBuf2 = new Uint8Array(memory.buffer, 300); 
+		
+		function isPrime(element, index, array) {
+			if (element == 0) {
+				return true;
+			} else {
+				return false;
+			}			
+		}
+		
+		var endi = strBuf.findIndex(isPrime);		
+		
+		console.log(new TextDecoder().decode(new Uint8Array(memory.buffer, 100, endi)))
+		
+		endi = strBuf2.findIndex(isPrime);	
+		
+		console.log(new TextDecoder().decode(new Uint8Array(memory.buffer, 300, endi)))
+	}})
+</script>
+
+<div id="text"></div>

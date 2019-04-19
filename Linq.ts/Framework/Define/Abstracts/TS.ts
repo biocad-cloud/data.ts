@@ -19,6 +19,10 @@
         /**
          * Create a new node or query a node by its id.
          * (创建或者查询节点)
+         * 
+         * @param query + ``#xxxx`` query a node element by id
+         *              + ``<xxx>`` create a new node element by a given tag name 
+         *              + ``<svg:xx>`` create a svg node.
         */
         <T extends HTMLElement>(query: string, args?: TypeScriptArgument): IHTMLElement;
 
@@ -72,6 +76,14 @@
         imports(jsURL: string | string[], callback?: () => void, onErrorResumeNext?: boolean, echo?: boolean): void;
 
         /**
+         * 将函数注入给定id编号的iframe之中
+         * 
+         * @param iframe ``#xxx``编号查询表达式
+         * @param fun 目标函数，请注意，这个函数应该是尽量不引用依赖其他对象的
+        */
+        inject(iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>): void;
+
+        /**
          * 动态加载脚本
          * 
          * @param script 脚本的文本内容
@@ -85,8 +97,9 @@
         loadJSON(id: string): any;
         /**
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
+         * @param htmlText 主要是针对``<pre>``标签之中的VB.NET代码
         */
-        loadText(id: string): string;
+        text(id: string, htmlText?: boolean): string;
 
         /**
          * isNullOrUndefined
@@ -117,6 +130,8 @@
          * @param url 目标数据源，这个参数也支持meta标签查询语法
         */
         get<T>(url: string, callback?: ((response: IMsg<T>) => void)): void;
+        getText(url: string, callback: (text: string) => void): void;
+
         /**
          * File upload helper
          * 
@@ -125,17 +140,19 @@
         upload<T>(url: string, file: File, callback?: ((response: IMsg<T>) => void)): void;
 
         /**
-         * 获取当前的页面的URL字符串解析模型
+         * Get the url location of current window page.
+         * (获取当前的页面的URL字符串解析模型，这个只读属性可以接受一个变量名参数来获取得到对应的GET参数值)
         */
-        windowLocation(): TsLinq.URL;
+        readonly location: IURL;
+
         /**
          * 解析一个给定的URL字符串
         */
-        parseURL(url: string): TsLinq.URL;
+        parseURL(url: string): TypeScript.URL;
         /**
          * 从当前页面跳转到给定的链接页面
          * 
-         * @param url 链接，也支持meta查询表达式
+         * @param url 链接，也支持meta查询表达式，如果是以``#``起始的文档节点id表达式，则会在文档内跳转到目标节点位置
          * @param currentFrame 如果当前页面为iframe的话，则只跳转iframe的显示，当这个参数为真的话；
          *      如果这个参数为false，则从父页面进行跳转
         */
@@ -172,82 +189,6 @@
          * @param ext 不带有小数点的文件拓展名字符串
         */
         withExtensionName(path: string, ext: string): boolean;
-    }
-
-    export interface GotoOptions {
-        currentFrame?: boolean;
-        lambda?: boolean;
-    }
-
-    export interface IquerySelector {
-        <T extends HTMLElement>(query: string, context?: Window): DOMEnumerator<T>;
-
-        /**
-         * query参数应该是节点id查询表达式
-        */
-        getSelectedOptions(query: string, context?: Window): DOMEnumerator<HTMLOptionElement>;
-        /**
-         * 获取得到select控件的选中的选项值，没做选择则返回null
-         * 
-         * @param query id查询表达式，这个函数只支持单选模式的结果，例如select控件以及radio控件
-         * @returns 返回被选中的项目的value属性值
-        */
-        getOption(query: string, context?: Window): string;
-    }
-
-    export interface IcsvHelperApi {
-
-        /**
-         * 将csv文档文本进行解析，然后反序列化为js对象的集合
-        */
-        toObjects<T>(data: string): IEnumerator<T>;
-        /**
-         * 将js的对象序列进行序列化，构建出csv格式的文本文档字符串数据
-        */
-        toText<T>(data: IEnumerator<T> | T[]): string;
-    }
-
-    /**
-     * 这个参数对象模型主要是针对创建HTML对象的
-    */
-    export interface TypeScriptArgument {
-        /**
-         * HTML节点对象的编号（通用属性）
-        */
-        id?: string;
-        /**
-         * HTML节点对象的CSS样式字符串（通用属性）
-        */
-        style?: string;
-        /**
-         * HTML节点对象的class类型（通用属性）
-        */
-        class?: string | string[];
-        type?: string;
-        href?: string;
-        target?: string;
-        src?: string;
-        width?: string | number;
-        height?: string | number;
-        /**
-         * 进行查询操作的上下文环境，这个主要是针对iframe环境之中的操作的
-        */
-        context?: Window;
-        title?: string;
-        name?: string;
-        /**
-         * HTML的输入控件的预设值
-        */
-        value?: string | number | boolean;
-        for?: string;
-
-        /**
-         * 处理HTML节点对象的点击事件，这个属性值应该是一个无参数的函数来的
-        */
-        onclick?: () => void;
-
-        "data-toggle"?: string;
-        "data-target"?: string;
-        "aria-hidden"?: boolean;
+        doubleRange(x: number[] | IEnumerator<number>): data.NumericRange;
     }
 }

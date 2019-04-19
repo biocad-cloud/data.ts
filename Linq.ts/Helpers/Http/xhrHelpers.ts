@@ -19,6 +19,10 @@
         www: "application/x-www-form-urlencoded"
     }
 
+    export interface httpCallback {
+        (response: string, code: number, contentType: string): void;
+    }
+
     export function measureContentType(obj: any): string {
         if (obj instanceof FormData) {
             return contentTypes.form;
@@ -39,7 +43,6 @@
 
         // `false` makes the request synchronous
         request.open('GET', url, false);
-        setheaders(request);
         request.send(null);
 
         if (request.status === 200) {
@@ -54,23 +57,22 @@
      * 
      * @param callback ``callback(http.responseText, http.status)``
     */
-    export function GetAsyn(url: string, callback: (response: string, code: number) => void) {
+    export function GetAsyn(url: string, callback: httpCallback) {
         var http = new XMLHttpRequest();
 
         http.open("GET", url, true);
-        setheaders(http);
         http.onreadystatechange = function () {
+            let contentType: string = this.getResponseHeader('content-type');
+
+            if (isNullOrUndefined(contentType)) {
+                contentType = this.getResponseHeader('Content-Type');
+            }
+
             if (http.readyState == 4) {
-                callback(http.response || http.responseText, http.status);
+                callback(http.response || http.responseText, http.status, contentType);
             }
         }
         http.send(null);
-    }
-
-    function setheaders(http: XMLHttpRequest, contentType: string = null) {
-        // http.setRequestHeader("Cookie", document.cookie);
-        // http.setRequestHeader("Referer", window.location.href);
-        // http.withCredentials = true;
     }
 
     export function POST(

@@ -1,4 +1,5 @@
 /// <reference path="Iterator.ts" />
+/// <reference path="Enumerable.ts" />
 
 /**
  * Provides a set of static (Shared in Visual Basic) methods for querying 

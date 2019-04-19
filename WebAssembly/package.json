@@ -1,0 +1,12 @@
+{
+  "name": "web-assembly",
+  "version": "0.0.0",
+  "description": "WebAssembly",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.14"
+  }
+}

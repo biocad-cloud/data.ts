@@ -1,11 +1,20 @@
 ﻿/// <reference path="./sprintf.ts" />
+/// <reference path="../../Collections/DictionaryMaps.ts" />
 
-namespace TsLinq {
+namespace TypeScript {
 
     export module URLPatterns {
 
         export const hostNamePattern: RegExp = /:\/\/(www[0-9]?\.)?(.[^/:]+)/i;
+
+        /**
+         * Regexp pattern for data uri string
+        */
         export const uriPattern: RegExp = /data[:]\S+[/]\S+;base64,[a-zA-Z0-9/=+]/ig;
+        /**
+         * Regexp pattern for web browser url string
+        */
+        export const urlPattern: RegExp = /((https?)|(ftp))[:]\/{2}\S+\.[a-z]+[^ >"]*/ig;
 
     }
 
@@ -54,7 +63,7 @@ namespace TsLinq {
             this.protocol = token.name; token = Strings.GetTagValue(token.value, "/");
             this.origin = token.name; token = Strings.GetTagValue(token.value, "?");
             this.path = token.name;
-            this.fileName = Strings.Empty(this.path) ? "" : PathHelper.basename(this.path);
+            this.fileName = Strings.Empty(this.path) ? "" : TsLinq.PathHelper.basename(this.path);
             this.hash = From(url.split("#")).Last;
 
             if (url.indexOf("#") < 0) {
@@ -93,26 +102,32 @@ namespace TsLinq {
         }
 
         /**
+         * 跳转到url之中的hash编号的文档位置处
+         * 
+         * @param hash ``#xxx``文档节点编号表达式
+        */
+        public static JumpToHash(hash: string) {
+            // Getting Y of target element
+            // Go there directly or some transition
+            window.scrollTo(0, $ts(hash).offsetTop);
+        }
+
+        /**
+         * Set url hash without url jump in document
+        */
+        public static SetHash(hash: string) {
+            if (history.pushState) {
+                history.pushState(null, null, hash);
+            } else {
+                location.hash = hash;
+            }
+        }
+
+        /**
          * 获取得到当前的url
         */
         public static WindowLocation(): URL {
             return new URL(window.location.href);
-        }
-
-        /**
-         * 对bytes数值进行格式自动优化显示
-         * 
-         * @param bytes 
-         * 
-         * @return 经过自动格式优化过后的大小显示字符串
-        */
-        public static Lanudry(bytes: number): string {
-            var symbols = ["B", "KB", "MB", "GB", "TB"];
-            var exp = Math.floor(Math.log(bytes) / Math.log(1000));
-            var symbol: string = symbols[exp];
-            var val = (bytes / Math.pow(1000, Math.floor(exp)));
-
-            return sprintf(`%.2f ${symbol}`, val);
         }
 
         public toString(): string {
@@ -146,6 +161,19 @@ namespace TsLinq {
             } else {
                 return null;
             }
+        }
+
+        /** 
+         * 将目标文本之中的所有的url字符串匹配出来
+        */
+        public static ParseAllUrlStrings(text: string): string[] {
+            let urls: string[] = [];
+
+            for (let url of Strings.getAllMatches(text, URLPatterns.urlPattern)) {
+                urls.push(url[0]);
+            }
+
+            return urls;
         }
 
         public static IsWellFormedUriString(uri: string): boolean {

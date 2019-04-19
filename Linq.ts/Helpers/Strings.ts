@@ -1,4 +1,6 @@
-﻿/**
+﻿/// <reference path="../Collections/Map.ts" />
+
+/**
  * TypeScript string helpers.
  * (这个模块之中的大部分的字符串处理函数的行为是和VisualBasic之中的字符串函数的行为是相似的)
 */
@@ -21,6 +23,39 @@ module Strings {
     */
     export function isNumericPattern(text: string): boolean {
         return IsPattern(text, Strings.numericPattern);
+    }
+
+    /**
+     * 对bytes数值进行格式自动优化显示
+     * 
+     * @param bytes 
+     * 
+     * @return 经过自动格式优化过后的大小显示字符串
+    */
+    export function Lanudry(bytes: number): string {
+        var symbols = ["B", "KB", "MB", "GB", "TB"];
+        var exp = Math.floor(Math.log(bytes) / Math.log(1000));
+        var symbol: string = symbols[exp];
+        var val = (bytes / Math.pow(1000, Math.floor(exp)));
+
+        return sprintf(`%.2f ${symbol}`, val);
+    }
+
+    /**
+     * how to escape xml entities in javascript?
+     * 
+     * > https://stackoverflow.com/questions/7918868/how-to-escape-xml-entities-in-javascript
+    */
+    export function escapeXml(unsafe: string): string {
+        return unsafe.replace(/[<>&'"]/g, function (c) {
+            switch (c) {
+                case '<': return '&lt;';
+                case '>': return '&gt;';
+                case '&': return '&amp;';
+                case '\'': return '&apos;';
+                case '"': return '&quot;';
+            }
+        });
     }
 
     /**
@@ -62,6 +97,8 @@ module Strings {
     }
 
     /**
+     * Create new string value by repeats a given char n times.
+     * 
      * @param c A single char
      * @param n n chars
     */
@@ -82,14 +119,16 @@ module Strings {
     }
 
     /**
-     * 默认是保留3位有效数字的
+     * Round the number value or number text in given decimals.
+     * 
+     * @param decimals 默认是保留3位有效数字的
     */
     export function round(x: number | string, decimals: number = 3) {
         var floatX = typeof x == "number" ? x : parseFloat(x);
-        var n = Math.pow(10, decimals);
+        var n: number = Math.pow(10, decimals);
 
         if (isNaN(floatX)) {
-            if (Internal.outputWarning()) {
+            if (TypeScript.logging.outputWarning) {
                 console.warn(`Invalid number value: '${x}'`);
             }
             return false;
@@ -172,6 +211,52 @@ module Strings {
     }
 
     /**
+     * 取出大文本之中指定的前n行文本
+    */
+    export function PeekLines(text: string, n: number): string[] {
+        let p: number = 0;
+        let out: string[] = [];
+
+        for (var i: number = 0; i < n; i++) {
+            let pn = text.indexOf("\n", p);
+
+            if (pn > -1) {
+                out.push(text.substr(p, pn - p));
+                p = pn;
+            } else {
+                // 已经到头了
+                break;
+            }
+        }
+
+        return out;
+    }
+
+    /**
+     * Get all regex pattern matches in target text value.
+    */
+    export function getAllMatches(text: string, pattern: string | RegExp) {
+        let match: RegExpExecArray = null;
+        let out: RegExpExecArray[] = [];
+
+        if (typeof pattern == "string") {
+            pattern = new RegExp(pattern);
+        }
+
+        if (pattern.global) {
+            while (match = pattern.exec(text)) {
+                out.push(match);
+            }
+        } else {
+            if (match = pattern.exec(text)) {
+                out.push(match);
+            }
+        }
+
+        return out;
+    }
+
+    /**
      * Removes the given chars from the begining of the given 
      * string and the end of the given string.
      * 
@@ -188,13 +273,13 @@ module Strings {
         }
 
         if (typeof chars == "string") {
-            chars = From(Strings.ToCharArray(chars))
+            chars = From(<string[]>Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
                 .ToArray(false);
         }
 
         return function (chars: number[]) {
-            return From(Strings.ToCharArray(str))
+            return From(<string[]>Strings.ToCharArray(str))
                 .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
                 .Reverse()
                 .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
@@ -209,13 +294,13 @@ module Strings {
         }
 
         if (typeof chars == "string") {
-            chars = From(Strings.ToCharArray(chars))
+            chars = From(<string[]>Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
                 .ToArray(false);
         }
 
         return function (chars: number[]) {
-            return From(Strings.ToCharArray(str))
+            return From(<string[]>Strings.ToCharArray(str))
                 .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
                 .JoinBy("");
         }(<number[]>chars);
@@ -227,12 +312,12 @@ module Strings {
         }
 
         if (typeof chars == "string") {
-            chars = From(Strings.ToCharArray(chars))
+            chars = From(<string[]>Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
                 .ToArray(false);
         }
 
-        var strChars: string[] = Strings.ToCharArray(str);
+        var strChars: string[] = <string[]>Strings.ToCharArray(str);
         var lefts: number = 0;
 
         for (var i: number = strChars.length - 1; i > 0; i--) {
@@ -275,7 +360,7 @@ module Strings {
      * @param stringAsFactor 如果这个参数为真，则``\t``和``\s``等也会被当作为空白
     */
     export function Blank(str: string, stringAsFactor = false): boolean {
-        if (!str) {
+        if (!str || IsPattern(str, /\s+/g)) {
             return true;
         } else if (str == undefined || typeof str == "undefined") {
             return true;
@@ -336,15 +421,23 @@ module Strings {
      * @description > https://jsperf.com/convert-string-to-char-code-array/9
      *    经过测试，使用数组push的效率最高
      *    
+     * @param charCode 返回来的数组是否应该是一组字符的ASCII值而非字符本身？默认是返回字符数组的。 
+     *    
      * @returns A character array, all of the string element in the array 
      *      is one character length.
     */
-    export function ToCharArray(str: string): string[] {
-        var cc: string[] = [];
+    export function ToCharArray(str: string, charCode: boolean = false): string[] | number[] {
+        var cc: string[] | number[] = [];
         var strLen: number = str.length;
 
-        for (var i = 0; i < strLen; ++i) {
-            cc.push(str.charAt(i));
+        if (charCode) {
+            for (var i = 0; i < strLen; ++i) {
+                (<number[]>cc).push(str.charCodeAt(i));
+            }
+        } else {
+            for (var i = 0; i < strLen; ++i) {
+                (<string[]>cc).push(str.charAt(i));
+            }
         }
 
         return cc;
@@ -395,13 +488,13 @@ module Strings {
     /**
      * @param charsPerLine 每一行文本之中的字符数量的最大值
     */
-    export function WrappingLines(text: string, charsPerLine: number = 200): string {
+    export function WrappingLines(text: string, charsPerLine: number = 200, lineTrim: boolean = false): string {
         var sb: string = "";
         var lines: string[] = Strings.lineTokens(text);
         var p: number;
 
         for (var i: number = 0; i < lines.length; i++) {
-            var line: string = Strings.Trim(lines[i]);
+            var line: string = lineTrim ? Strings.Trim(lines[i]) : lines[i];
 
             if (line.length < charsPerLine) {
                 sb = sb + line + "\n";

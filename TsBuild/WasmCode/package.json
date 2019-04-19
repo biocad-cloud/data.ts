@@ -1,0 +1,12 @@
+{
+  "name": "wasm-code",
+  "version": "0.0.0",
+  "description": "WasmCode",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.14"
+  }
+}

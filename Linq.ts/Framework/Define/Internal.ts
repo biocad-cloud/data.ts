@@ -1,8 +1,9 @@
-﻿/// <reference path="TS.ts" />
+﻿/// <reference path="./Abstracts/TS.ts" />
 /// <reference path="../../Data/StringHelpers/URL.ts" />
 /// <reference path="../../Data/StringHelpers/PathHelper.ts" />
 /// <reference path="../Modes.ts" />
 /// <reference path="../../DOM/Document.ts" />
+/// <reference path="../../Data/Range.ts" />
 
 /**
  * The internal implementation of the ``$ts`` object.
@@ -10,31 +11,6 @@
 namespace Internal {
 
     export const StringEval = new Handlers.stringEval();
-
-    const warningLevel: number = Modes.development;
-    const anyoutputLevel: number = Modes.debug;
-    const errorOnly: number = Modes.production;
-
-    /**
-     * 应用程序的开发模式：只会输出框架的警告信息
-    */
-    export function outputWarning(): boolean {
-        return $ts.mode <= warningLevel;
-    }
-
-    /**
-     * 框架开发调试模式：会输出所有的调试信息到终端之上
-    */
-    export function outputEverything(): boolean {
-        return $ts.mode == anyoutputLevel;
-    }
-
-    /**
-     * 生产模式：只会输出错误信息
-    */
-    export function outputError(): boolean {
-        return $ts.mode == errorOnly;
-    }
 
     /**
      * 对``$ts``对象的内部实现过程在这里
@@ -75,6 +51,9 @@ namespace Internal {
                 }
             });
         };
+        ts.getText = function (url: string, callback: (text: string) => void) {
+            HttpHelpers.GetAsyn(urlSolver(url), callback);
+        }
         ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
             HttpHelpers.GetAsyn(urlSolver(url), function (response) {
                 if (callback) {
@@ -90,10 +69,13 @@ namespace Internal {
             });
         };
 
-        ts.windowLocation = TsLinq.URL.WindowLocation;
-        ts.parseURL = (url => new TsLinq.URL(url));
+        ts.location = buildURLHelper();
+        ts.parseURL = (url => new TypeScript.URL(url));
         ts.goto = function (url: string, opt: GotoOptions = { currentFrame: false, lambda: false }) {
-            if (opt.lambda) {
+            if (url.charAt(0) == "#") {
+                // url是一个文档节点id表达式，则执行文档内跳转
+                TypeScript.URL.JumpToHash(url);
+            } else if (opt.lambda) {
                 return function () {
                     Goto(url, opt.currentFrame);
                 }
@@ -103,6 +85,47 @@ namespace Internal {
         }
 
         return ts;
+    }
+
+    function buildURLHelper() {
+        var url = TypeScript.URL.WindowLocation();
+        var location: any = function (
+            arg: string,
+            caseSensitive: boolean = true,
+            Default: string = "") {
+
+            return url.getArgument(arg, caseSensitive, Default);
+        }
+
+        location.path = url.path || "/";
+        location.fileName = url.fileName;
+        location.hash = function (arg: hashArgument | boolean = { trimprefix: true, doJump: false }, urlhash: string = null) {
+            if (!isNullOrUndefined(urlhash)) {
+                if (((typeof arg == "boolean") && (arg === true)) || (<hashArgument>arg).doJump) {
+                    window.location.hash = urlhash;
+                } else {
+                    TypeScript.URL.SetHash(urlhash);
+                }
+            } else {
+                // 获取当前url字符串之中hash标签值
+                var tag = window.location.hash;
+                var trimprefix: boolean;
+
+                if (typeof arg == "boolean") {
+                    trimprefix = arg;
+                } else {
+                    trimprefix = arg.trimprefix;
+                }
+
+                if (tag && trimprefix && (tag.length > 1)) {
+                    return tag.substr(1);
+                } else {
+                    return isNullOrUndefined(tag) ? "" : tag;
+                }
+            }
+        }
+
+        return location;
     }
 
     const querySymbols: string[] = [":", "_"];
@@ -189,14 +212,34 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
-        ts.loadText = function (id: string) {
+        ts.inject = function (iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>) {
+            var frame: HTMLIFrameElement = <any>$ts(iframe);
+            var envir: {
+                eval: Delegate.Func<any>
+            } = <any>frame.contentWindow;
+
+            if (TypeScript.logging.outputEverything) {
+                console.log(fun);
+            }
+
+            if (Array.isArray(fun)) {
+                for (let p of fun) {
+                    envir.eval(p.toString());
+                }
+            } else if (typeof fun == "string") {
+                envir.eval(fun);
+            } else {
+                envir.eval(fun.toString());
+            }
+        };
+        ts.text = function (id: string, htmlText: boolean = false) {
             var nodeID: string = Handlers.EnsureNodeId(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
 
-            return (<HTMLElement>node).innerText;
+            return htmlText ? node.innerHTML : node.innerText;
         };
         ts.loadJSON = function (id: string) {
-            return JSON.parse(this.loadText(id));
+            return JSON.parse(this.text(id));
         };
 
         // file path helpers
@@ -221,6 +264,8 @@ namespace Internal {
             return equals;
         };
 
+        ts.doubleRange = data.NumericRange.Create;
+
         return ts;
     }
 
@@ -235,7 +280,7 @@ namespace Internal {
         };
         ts.evalHTML = DOM.CreateHTMLTableNode;
         ts.appendTable = DOM.AddHTMLTable;
-        
+
         return ts;
     }
 

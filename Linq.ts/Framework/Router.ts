@@ -99,7 +99,7 @@ module Router {
             throw `Module "${module}" is not exists in your web app.`;
         }
 
-        if (Internal.outputEverything()) {
+        if (TypeScript.logging.outputEverything) {
             // 在console中显示table
             var summary: IAppInfo[] = [];
 
@@ -120,7 +120,7 @@ module Router {
     }
 
     export function moduleName(): (link: string) => string {
-        return link => (new TsLinq.URL(link)).fileName;
+        return link => (new TypeScript.URL(link)).fileName;
     }
 
     /**
@@ -139,7 +139,7 @@ module Router {
             });
         }
         if (!hashKey) {
-            gethashKey = link => (new TsLinq.URL(link)).fileName;
+            gethashKey = link => (new TypeScript.URL(link)).fileName;
         } else if (typeof hashKey == "string") {
             gethashKey = Router.queryKey(hashKey);
         } else {
@@ -168,7 +168,7 @@ module Router {
         var size: number[] = DOM.clientSize();
 
         if (!app) {
-            if (Internal.outputWarning()) {
+            if (TypeScript.logging.outputWarning) {
                 console.warn(`[#${appId}] not found!`);
             }
         } else {
@@ -183,7 +183,7 @@ module Router {
      * 根据当前url之中的hash进行相应的页面的显示操作
     */
     function hashChanged(appId: string) {
-        var hash: string = TsLinq.URL.WindowLocation().hash;
+        var hash: string = TypeScript.URL.WindowLocation().hash;
         var url: string = hashLinks.Item(hash);
 
         if (url) {

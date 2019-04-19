@@ -1,0 +1,14 @@
+<div>
+<blockquote id="text"></blockquote>
+</div>
+
+
+<script type="text/javascript" src="visualbasic.wasm.js"></script>
+<script type="text/javascript">
+
+TypeScript.Wasm.RunAssembly("ModuleDocument.wasm", {
+	run: doc => doc.instance.exports.sayHello(),
+	api: {document: true}
+})
+
+</script>
