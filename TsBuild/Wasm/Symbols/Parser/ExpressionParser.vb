@@ -76,9 +76,17 @@ Namespace Symbols.Parser
                     Return DirectCast(value, MemberAccessExpressionSyntax).MemberExpression(symbols)
                 Case GetType(InterpolatedStringExpressionSyntax)
                     Return DirectCast(value, InterpolatedStringExpressionSyntax).StringExpression(symbols)
+                Case GetType(CollectionInitializerSyntax)
+                    Return DirectCast(value, CollectionInitializerSyntax).CreateArray(symbols)
                 Case Else
                     Throw New NotImplementedException(value.GetType.FullName)
             End Select
+        End Function
+
+        <Extension>
+        Public Function CreateArray(newArray As CollectionInitializerSyntax, symbols As SymbolTable) As Expression
+            Dim elements = newArray.Initializers
+
         End Function
 
         <Extension>

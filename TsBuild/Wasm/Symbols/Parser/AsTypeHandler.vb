@@ -95,6 +95,11 @@ Namespace Symbols.Parser
                 Dim token$ = type.Keyword.objectName
 
                 Return Scripting.GetType(token)
+            ElseIf TypeOf asType Is ArrayTypeSyntax Then
+                Dim type = DirectCast(asType, ArrayTypeSyntax)
+                Dim tokenType = [GetType](type.ElementType, symbols)
+
+                Return tokenType.MakeArrayType
             Else
                 Dim type = DirectCast(asType, IdentifierNameSyntax)
                 Dim token$ = type.Identifier.objectName

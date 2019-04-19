@@ -235,7 +235,7 @@ Namespace Symbols.Parser
 
             Return New NamedValue(Of String) With {
                 .Name = name,
-                .Value = Types.Convert2Wasm(type),
+                .Value = Types.Convert2Wasm.TryGetValue(type, [default]:=type.FullName),
                 .Description = [default]
             }
         End Function
