@@ -158,6 +158,8 @@ Namespace Symbols.Parser
 
             Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
 
+
+
             If invoke.ArgumentList Is Nothing Then
                 arguments = {}
             Else

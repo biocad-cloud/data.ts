@@ -64,7 +64,16 @@ Namespace Symbols.Parser
             If method.SubOrFunctionStatement.SubOrFunctionKeyword.Text = "Sub" Then
                 returns = GetType(System.Void)
             Else
-                returns = GetAsType(method.SubOrFunctionStatement.AsClause, symbols)
+                Dim funcAs = method.SubOrFunctionStatement.AsClause
+
+                If funcAs Is Nothing Then
+                    ' 定义为function，但是忘记申明函数的返回类型了
+                    ' 默认返回i32数据类型？
+                    returns = GetType(Integer)
+                Else
+                    returns = GetAsType(funcAs, symbols)
+                End If
+
             End If
 
             Return New NamedValue(Of String) With {

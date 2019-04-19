@@ -170,6 +170,7 @@
     <Compile Include="ForLoopTest.vb" />
     <Compile Include="EnumTest.vb" />
     <Compile Include="boolTest.vb" />
+    <Compile Include="functionTest.vb" />
     <Compile Include="nullreferenceTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
