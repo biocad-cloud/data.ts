@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/20/2019 4:56:33 PM
+    ;; build: 4/20/2019 4:59:05 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -144,7 +144,7 @@
     (local $u i32)
     (local $a i32)
     (local $f i32)
-    (set_local $base64 (call $new.array ))
+    (set_local $base64 (call $new_array ))
     (set_local $f (i32.const 0))
     (set_local $text (call $utf8_encode (get_local $text)))
     ;; Do While (f < text.Length)
@@ -235,7 +235,7 @@
         (local $chars i32)
     (local $n i32)
     (local $r i32)
-    (set_local $chars (call $new.array ))
+    (set_local $chars (call $new_array ))
     (set_local $text (call $string_replace (get_local $text) (call $regexp (i32.const 88) (i32.const 91)) (i32.const 93)))
     (set_local $n (i32.const 0))
     ;; For n As Integer = 0 To text.Length - 1
@@ -270,7 +270,7 @@
     (local $r i32)
     (local $c2 i32)
     (local $c3 i32)
-    (set_local $t (call $new.array ))
+    (set_local $t (call $new_array ))
     (set_local $n (i32.const 0))
     (set_local $r (i32.const 0))
     (set_local $c2 (i32.const 0))

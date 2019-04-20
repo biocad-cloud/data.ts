@@ -62,20 +62,21 @@ Namespace Symbols
 
         Public Overrides Function ToSExpression() As String
             ' create array object in javascript runtime
-            Dim newArray As New FuncInvoke("new.array") With {.Parameters = {}}
+            Dim newArray As New FuncInvoke(JavaScriptImports.Array.NewArray.Name) With {.Parameters = {}}
 
             If Initialize.IsNullOrEmpty Then
                 ' 空数组
                 Return newArray.ToSExpression
             End If
 
-            Dim array As Expression = New FuncInvoke("push.array") With {
+            Dim arrayPush$ = JavaScriptImports.PushArray.Name
+            Dim array As Expression = New FuncInvoke(arrayPush) With {
                 .Parameters = {newArray, Initialize(Scan0)}
             }
 
             ' and then push elements into that new array
             For Each value As Expression In Initialize.Skip(1)
-                array = New FuncInvoke("push.array") With {
+                array = New FuncInvoke(arrayPush) With {
                     .Parameters = {array, value}
                 }
             Next
