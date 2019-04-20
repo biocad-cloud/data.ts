@@ -8,12 +8,12 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("base64")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyTitle("base64 Encoder")>
+<Assembly: AssemblyDescription("base64 Encoder written in VisualBasic.NET WebAssembly")>
+<Assembly: AssemblyCompany("MIT")>
 <Assembly: AssemblyProduct("base64")>
-<Assembly: AssemblyCopyright("Copyright ©  2019")>
-<Assembly: AssemblyTrademark("")>
+<Assembly: AssemblyCopyright("Copyright © I@xieguigang.me 2019")>
+<Assembly: AssemblyTrademark("VisualBasic.wasm.js")>
 
 <Assembly: ComVisible(False)>
 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("2.0.344.4444")>
+<Assembly: AssemblyFileVersion("1.12.0.235")>
