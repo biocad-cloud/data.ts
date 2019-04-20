@@ -151,6 +151,16 @@ Namespace Symbols.Parser
                         New GetLocalVariable With {.var = objName}
                     }
                 }
+            ElseIf symbols.GetObjectSymbol(objName).type Like Types.stringType Then
+                ' 是字符串的一些对象方法
+                Dim api As ImportSymbol = JavaScriptImports.GetStringMethod(memberName)
+
+                Return New FuncInvoke With {
+                    .Reference = api.Name,
+                    .Parameters = {
+                        New GetLocalVariable With {.var = objName}
+                    }
+                }
             Else
                 Throw New NotImplementedException(ref.ToString)
             End If

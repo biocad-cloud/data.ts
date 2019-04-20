@@ -28,6 +28,14 @@ Namespace Symbols.JavaScriptImports
             }
         }
 
+        Public Function GetStringMethod(name As String) As ImportSymbol
+            Select Case name
+                Case "Length" : Return StringLength
+                Case Else
+                    Throw New NotImplementedException
+            End Select
+        End Function
+
         ''' <summary>
         ''' 因为WebAssembly没有自动类型转换，所以在这里会需要对每一种数据类型都imports一个相同的函数来完成
         ''' </summary>
