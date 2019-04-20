@@ -69,15 +69,16 @@ Namespace Symbols.Parser
         <Extension>
         Private Function Join(symbols As SymbolTable, main As ModuleBlockSyntax, enumConstants As EnumSymbol()) As SymbolTable
             Dim members = main.Members.OfType(Of MethodBlockSyntax)
+            Dim moduleLabel$ = main.BlockStatement.Identifier.objectName
 
             If symbols Is Nothing Then
-                Return New SymbolTable(members, enumConstants)
+                Return New SymbolTable(moduleLabel, members, enumConstants)
             Else
                 For Each [const] As EnumSymbol In enumConstants
                     Call symbols.AddEnumType([const])
                 Next
 
-                Return symbols.AddFunctionDeclares(members)
+                Return symbols.AddFunctionDeclares(members, moduleLabel)
             End If
         End Function
 

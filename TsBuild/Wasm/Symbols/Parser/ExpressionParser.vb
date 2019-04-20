@@ -246,19 +246,34 @@ Namespace Symbols.Parser
         ''' <returns></returns>
         <Extension>
         Public Function ObjectInvoke(target As ExpressionSyntax, funcName$, argumentList As ArgumentListSyntax, symbols As SymbolTable) As Expression
-            Dim argumentFirst As Expression
+            Dim argumentFirst As Expression = Nothing
             Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
             Dim leftArguments = funcDeclare.Parameters.Skip(1).ToArray
 
             If TypeOf target Is LiteralExpressionSyntax Then
                 argumentFirst = target.ValueExpression(symbols)
+            ElseIf TypeOf target Is IdentifierNameSyntax Then
+                ' 模块静态引用或者对象实例引用
+                Dim name$ = DirectCast(target, IdentifierNameSyntax).objectName
+
+                If symbols.IsAnyObject(name) Then
+                    ' 是对对象实例的方法引用
+                    argumentFirst = target.ValueExpression(symbols)
+                ElseIf name Like symbols.ModuleNames Then
+                    ' 是对静态模块的方法引用
+                    argumentFirst = Nothing
+                End If
             Else
                 Throw New NotImplementedException
             End If
 
-            Dim arguments As Expression() = argumentFirst _
-                .Join(argumentList.fillParameters(leftArguments, symbols)) _
-                .ToArray
+            Dim arguments As Expression() = argumentList.fillParameters(leftArguments, symbols)
+
+            If Not argumentFirst Is Nothing Then
+                arguments = argumentFirst _
+                    .Join(arguments) _
+                    .ToArray
+            End If
 
             Return New FuncInvoke(funcName) With {
                 .Parameters = arguments

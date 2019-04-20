@@ -104,13 +104,26 @@ Namespace Symbols
             End Get
         End Property
 
+        ''' <summary>
+        ''' 获取所有的静态模块名称
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property ModuleNames As Index(Of String)
+            Get
+                Dim globals = Me.globals.Values.Select(Function(g) g.Module).AsList
+                Dim funcs = functionList.Values.Select(Function(f) f.Module)
+
+                Return globals + funcs
+            End Get
+        End Property
+
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Sub New(methods As IEnumerable(Of MethodBlockSyntax), enums As EnumSymbol())
+        Sub New(module$, methods As IEnumerable(Of MethodBlockSyntax), enums As EnumSymbol())
             For Each constant In enums
                 Call AddEnumType(constant)
             Next
 
-            Call AddFunctionDeclares(methods)
+            Call AddFunctionDeclares(methods, [module])
         End Sub
 
         Friend Sub New(ParamArray locals As DeclareLocal())
@@ -131,16 +144,34 @@ Namespace Symbols
             Return enumConstants(type)
         End Function
 
-        Public Function AddFunctionDeclares(methods As IEnumerable(Of MethodBlockSyntax)) As SymbolTable
+        Public Function AddFunctionDeclares(methods As IEnumerable(Of MethodBlockSyntax), module$) As SymbolTable
             For Each method In methods
                 With method.FuncVariable(Me)
                     functionList(.Name) = New FuncSignature(.ByRef) With {
-                        .Parameters = method.ParseParameters(Me)
+                        .Parameters = method.ParseParameters(Me),
+                        .[Module] = [module]
                     }
                 End With
             Next
 
             Return Me
+        End Function
+
+        ''' <summary>
+        ''' 目标名称引用是否是局部变量或者全局变量所代表的对象实例？
+        ''' </summary>
+        ''' <param name="name"></param>
+        ''' <returns></returns>
+        Public Function IsAnyObject(name As String) As Boolean
+            With name.Trim("$"c, "["c, "]"c)
+                If locals.ContainsKey(.ByRef) Then
+                    Return True
+                ElseIf globals.ContainsKey(.ByRef) Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End With
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
