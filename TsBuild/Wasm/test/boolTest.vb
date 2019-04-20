@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::4cf2d5efee96fab00be443d760a61558, test\boolTest.vb"
+﻿#Region "Microsoft.VisualBasic::3e86b298e88d7a3d1b979cbdb2604987, test\boolTest.vb"
 
     ' Author:
     ' 
@@ -57,4 +57,3 @@ Module boolTest
         End If
     End Function
 End Module
-

@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::0e99dfd1f2bc02890b60c1aa54bbb04b, test\EnumTest.vb"
+﻿#Region "Microsoft.VisualBasic::e560017e0f6e60295e765414531bfba1, test\EnumTest.vb"
 
     ' Author:
     ' 
@@ -108,4 +108,3 @@ Module EnumTest
         Return a
     End Function
 End Module
-

@@ -1,47 +1,49 @@
-﻿#Region "Microsoft.VisualBasic::7ed39b9ca9f45ac692d89ff404ded7be, Symbols\Parser\ExpressionParser.vb"
+﻿#Region "Microsoft.VisualBasic::caa59267215ca7a5b88dc28b2f76d2a4, Symbols\Parser\ExpressionParser.vb"
 
-' Author:
-' 
-'       xieguigang (I@xieguigang.me)
-'       asuka (evia@lilithaf.me)
-' 
-' Copyright (c) 2019 GCModeller Cloud Platform
-' 
-' 
-' MIT License
-' 
-' 
-' Permission is hereby granted, free of charge, to any person obtaining a copy
-' of this software and associated documentation files (the "Software"), to deal
-' in the Software without restriction, including without limitation the rights
-' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-' copies of the Software, and to permit persons to whom the Software is
-' furnished to do so, subject to the following conditions:
-' 
-' The above copyright notice and this permission notice shall be included in all
-' copies or substantial portions of the Software.
-' 
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-' SOFTWARE.
+    ' Author:
+    ' 
+    '       xieguigang (I@xieguigang.me)
+    '       asuka (evia@lilithaf.me)
+    ' 
+    ' Copyright (c) 2019 GCModeller Cloud Platform
+    ' 
+    ' 
+    ' MIT License
+    ' 
+    ' 
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy
+    ' of this software and associated documentation files (the "Software"), to deal
+    ' in the Software without restriction, including without limitation the rights
+    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    ' copies of the Software, and to permit persons to whom the Software is
+    ' furnished to do so, subject to the following conditions:
+    ' 
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
+    ' 
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    ' SOFTWARE.
 
 
 
-' /********************************************************************************/
+    ' /********************************************************************************/
 
-' Summaries:
+    ' Summaries:
 
-'     Module ExpressionParse
-' 
-'         Function: [Select], (+2 Overloads) BinaryStack, ConstantExpression, FunctionInvoke, MemberExpression
-'                   ParenthesizedStack, ReferVariable, UnaryExpression, ValueCType, ValueExpression
-' 
-' 
-' /********************************************************************************/
+    '     Module ExpressionParse
+    ' 
+    '         Function: Argument, ArgumentSequence, (+2 Overloads) BinaryStack, ConstantExpression, CreateArray
+    '                   CreateObject, fillParameters, FunctionInvoke, InvokeFunction, MemberExpression
+    '                   ObjectInvoke, ParenthesizedStack, ReferVariable, StringConstant, UnaryExpression
+    '                   UnaryValue, ValueCType, ValueExpression
+    ' 
+    ' 
+    ' /********************************************************************************/
 
 #End Region
 

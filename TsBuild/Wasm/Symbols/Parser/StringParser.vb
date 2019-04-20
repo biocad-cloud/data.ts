@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::4f0504047f58480115555b18e214ebfa, Symbols\Parser\StringParser.vb"
+﻿#Region "Microsoft.VisualBasic::5c4444ffcc1546e70adf2ddb7ef743a7, Symbols\Parser\StringParser.vb"
 
     ' Author:
     ' 
@@ -37,7 +37,7 @@
 
     '     Module StringParser
     ' 
-    '         Function: getContent, StringAppend, StringExpression
+    '         Function: AnyToString, getContent, StringAppend, StringExpression
     ' 
     '         Sub: addRequired, stringValue
     ' 

@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::09dd71e89e18f83e81bae255a7829eac, Symbols\Symbols.vb"
+﻿#Region "Microsoft.VisualBasic::47450a9d8ebb11ce73435f1a305bbf75, Symbols\Symbols.vb"
 
     ' Author:
     ' 
@@ -39,6 +39,7 @@
     ' 
     '         Properties: [operator], Parameters, Reference
     ' 
+    '         Constructor: (+2 Overloads) Sub New
     '         Function: ToSExpression, TypeInfer
     ' 
     '     Class CommentText
@@ -80,7 +81,7 @@
     ' 
     '     Class DeclareLocal
     ' 
-    '         Properties: SetLocal
+    '         Properties: IsArray, SetLocal
     ' 
     '         Function: ToSExpression
     ' 

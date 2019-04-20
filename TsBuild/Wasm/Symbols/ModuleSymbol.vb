@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::3d11428974e288587425455bf4bf29f6, Symbols\ModuleSymbol.vb"
+﻿#Region "Microsoft.VisualBasic::60277021d17e4037f3167e664171a29d, Symbols\ModuleSymbol.vb"
 
     ' Author:
     ' 
@@ -40,7 +40,8 @@
     '         Properties: [Imports], Exports, Globals, InternalFunctions, LabelName
     '                     Memory
     ' 
-    '         Function: CreateModule, GenericEnumerator, GetEnumerator, ToSExpression, TypeInfer
+    '         Function: CreateModule, GenericEnumerator, GetEnumerator, Join, ToSExpression
+    '                   TypeInfer
     ' 
     ' 
     ' /********************************************************************************/

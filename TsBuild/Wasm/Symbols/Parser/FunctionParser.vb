@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::0082c6d114e0d15609e98fe5a51d1915, Symbols\Parser\FunctionParser.vb"
+﻿#Region "Microsoft.VisualBasic::9f95461685be1f396df314761535df17, Symbols\Parser\FunctionParser.vb"
 
     ' Author:
     ' 
@@ -37,7 +37,9 @@
 
     '     Module FunctionParser
     ' 
-    '         Function: (+2 Overloads) FuncVariable, Parse, ParseParameter, (+3 Overloads) ParseParameters, runParser
+    '         Function: (+2 Overloads) FuncVariable, ParseFunction, ParseParameter, (+3 Overloads) ParseParameters, runParser
+    ' 
+    '         Sub: addImplicitReturns
     ' 
     ' 
     ' /********************************************************************************/

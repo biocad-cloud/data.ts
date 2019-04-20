@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::25ae3d79b1798decb976955c50521213, test\Stringstest.vb"
+﻿#Region "Microsoft.VisualBasic::5169b5808b2b20c22e643fb674ba38da, test\Stringstest.vb"
 
     ' Author:
     ' 
@@ -70,4 +70,3 @@ Module Stringstest
         Return "World"
     End Function
 End Module
-

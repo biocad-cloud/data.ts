@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::2174debf0f01809a644f8b81e677339d, Symbols\Parser\CTypeParser.vb"
+﻿#Region "Microsoft.VisualBasic::4d110052ab099c97dca2ee13efd79903, Symbols\Parser\CTypeParser.vb"
 
     ' Author:
     ' 

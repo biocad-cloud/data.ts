@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::c229a398fa00d971d863478d6921fa1f, Symbols\Memory\ArraySymbol.vb"
+﻿#Region "Microsoft.VisualBasic::d5e91eb373e1f22b93791c1de40cf343, Symbols\Memory\ArraySymbol.vb"
 
     ' Author:
     ' 
@@ -37,7 +37,9 @@
 
     '     Class ArraySymbol
     ' 
+    '         Properties: Initialize, Type
     ' 
+    '         Function: ToSExpression, TypeInfer
     ' 
     ' 
     ' /********************************************************************************/
