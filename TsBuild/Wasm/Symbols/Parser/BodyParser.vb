@@ -49,6 +49,7 @@ Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
+Imports Wasm.Symbols.JavaScriptImports
 
 Namespace Symbols.Parser
 
@@ -244,10 +245,7 @@ Namespace Symbols.Parser
                                 End If
                             End With
 
-                            Call symbols.addRequired(JavaScriptImports.NewArray)
-                            Call symbols.addRequired(JavaScriptImports.PushArray)
-                            Call symbols.addRequired(JavaScriptImports.GetArrayElement)
-                            Call symbols.addRequired(JavaScriptImports.ArrayLength)
+                            Call symbols.doArrayImports
                         End If
                     End If
 

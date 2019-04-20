@@ -1,5 +1,7 @@
-﻿Imports Microsoft.VisualBasic.ComponentModel.Collection
+﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Wasm.Symbols.Parser
 
 Namespace Symbols.JavaScriptImports
 
@@ -75,5 +77,13 @@ Namespace Symbols.JavaScriptImports
         Public Function IsArrayOperation(func As FuncSignature) As Boolean
             Return TypeOf func Is ImportSymbol AndAlso func.Name Like arrayOp
         End Function
+
+        <Extension>
+        Public Sub doArrayImports(symbols As SymbolTable)
+            Call symbols.addRequired(JavaScriptImports.NewArray)
+            Call symbols.addRequired(JavaScriptImports.PushArray)
+            Call symbols.addRequired(JavaScriptImports.GetArrayElement)
+            Call symbols.addRequired(JavaScriptImports.ArrayLength)
+        End Sub
     End Module
 End Namespace
