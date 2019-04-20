@@ -330,8 +330,9 @@
     <Compile Include="Symbols\DeclaredObject\FuncSymbol.vb" />
     <Compile Include="Symbols\DeclaredObject\GlobalVariable.vb" />
     <Compile Include="Symbols\DeclaredObject\JavaScriptImports\Array.vb" />
+    <Compile Include="Symbols\DeclaredObject\JavaScriptImports\String.vb" />
     <Compile Include="Symbols\DeclaredObject\JavaScriptImports\NamespaceDoc.vb" />
-    <Compile Include="Symbols\DeclaredObject\JavaScriptImports\JavaScriptImports.vb" />
+    <Compile Include="Symbols\DeclaredObject\JavaScriptImports\Math.vb" />
     <Compile Include="Symbols\Memory\ArraySymbol.vb" />
     <Compile Include="Symbols\Memory\Memory.vb" />
     <Compile Include="Symbols\Memory\StringSymbol.vb" />
