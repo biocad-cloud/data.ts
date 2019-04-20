@@ -5,12 +5,12 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/20/2019 10:56:58 AM
+    ;; build: 4/20/2019 11:01:07 AM
 
     ;; imports must occur before all non-import definitions
 
     ;; Declare Function debug Lib "console" Alias "log" (any As System.String[]) As i32
-    (func $debug (import "console" "log") (param $any System.String[]) (result i32))
+    (func $debug (import "console" "log") (param $any i32) (result i32))
     
     ;; Only allows one memory block in each module
     (memory (import "env" "bytechunks") 1)
@@ -44,7 +44,7 @@
     
     (func $createArray  (result i32)
         ;; Public Function createArray() As i32
-        (local $str System.String[])
+        (local $str i32)
     (set_local $str (call $push.array (call $push.array (call $push.array (call $push.array (call $push.array (call $new.array ) (i32.const 1)) (i32.const 8)) (i32.const 14)) (i32.const 20)) (i32.const 27)))
     (call $debug (get_local $str))
     (return (i32.const 0))

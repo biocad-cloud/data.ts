@@ -61,7 +61,14 @@ Namespace Symbols.Parser
         ''' <returns></returns>
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function typefit(type As String) As String
-            Return type Or "i32".When((type Like Types.stringType) OrElse type = Types.booleanType)
+            type = type Or "i32".When((type Like Types.stringType) OrElse type = Types.booleanType)
+
+            If type Like Types.Orders Then
+                Return type
+            Else
+                ' all of the class object is memory pointer value
+                Return "i32"
+            End If
         End Function
     End Module
 End Namespace

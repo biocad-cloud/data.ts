@@ -59,7 +59,7 @@ Imports Wasm.Symbols.Parser
 
 Public Class Types
 
-    Public Shared ReadOnly Property Orders As String() = {"i32", "f32", "i64", "f64"}
+    Public Shared ReadOnly Property Orders As Index(Of String) = {"i32", "f32", "i64", "f64"}
 
     Public Shared ReadOnly Property stringType As Index(Of String) = {"char*", "char"}
 
