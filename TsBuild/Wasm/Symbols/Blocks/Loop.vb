@@ -73,7 +73,6 @@
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
-Imports Wasm.Symbols.Parser
 
 Namespace Symbols.Blocks
 
@@ -102,7 +101,15 @@ Namespace Symbols.Blocks
         Public Shared Function InternalBlock(block As IEnumerable(Of Expression), indent As String) As String
             Return block _
                 .SafeQuery _
-                .Select(Function(line) indent & line.ToSExpression) _
+                .Select(Function(line)
+                            If (line.TypeInfer(Nothing) <> "void") Then
+                                line = New drop With {
+                                    .expression = line
+                                }
+                            End If
+
+                            Return indent & line.ToSExpression
+                        End Function) _
                 .JoinBy(ASCII.LF)
         End Function
     End Class
@@ -157,4 +164,19 @@ Namespace Symbols.Blocks
         End Function
     End Class
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    Public Class drop : Inherits Expression
+
+        Public Property expression As Expression
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return "void"
+        End Function
+
+        Public Overrides Function ToSExpression() As String
+            Return $"(drop {expression.ToSExpression})"
+        End Function
+    End Class
 End Namespace
