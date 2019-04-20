@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/21/2019 12:42:08 AM
+    ;; build: 4/21/2019 12:53:18 AM
 
     ;; imports must occur before all non-import definitions
 
@@ -29,14 +29,14 @@
     (func $charAt (import "string" "charAt") (param $text i32) (param $index i32) (result i32))
     ;; Declare Function Join Lib "string" Alias "join" (array As System.Array, delimiter As char*) As char*
     (func $Join (import "string" "join") (param $array i32) (param $delimiter i32) (result i32))
-    ;; Declare Function new_array Lib "array" Alias "create" () As i32
-    (func $new_array (import "array" "create")  (result i32))
-    ;; Declare Function array_push Lib "array" Alias "push" (array As i32, element As object) As i32
-    (func $array_push (import "array" "push") (param $array i32) (param $element i32) (result i32))
-    ;; Declare Function array_get Lib "array" Alias "get" (array As i32, index As i32) As i32
-    (func $array_get (import "array" "get") (param $array i32) (param $index i32) (result i32))
-    ;; Declare Function array_length Lib "array" Alias "length" (array As i32) As i32
-    (func $array_length (import "array" "length") (param $array i32) (result i32))
+    ;; Declare Function new_array Lib "Array" Alias "create" () As i32
+    (func $new_array (import "Array" "create")  (result i32))
+    ;; Declare Function array_push Lib "Array" Alias "push" (array As i32, element As object) As i32
+    (func $array_push (import "Array" "push") (param $array i32) (param $element i32) (result i32))
+    ;; Declare Function array_get Lib "Array" Alias "get" (array As i32, index As i32) As i32
+    (func $array_get (import "Array" "get") (param $array i32) (param $index i32) (result i32))
+    ;; Declare Function array_length Lib "Array" Alias "length" (array As i32) As i32
+    (func $array_length (import "Array" "length") (param $array i32) (result i32))
     
     ;; Only allows one memory block in each module
     (memory (import "env" "bytechunks") 1)

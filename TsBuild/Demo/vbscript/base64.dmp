@@ -107,28 +107,28 @@
 00000c7: 02                                        ; import signature index
 ; import header 10
 00000c8: 05                                        ; string length
-00000c9: 6172 7261 79                             array  ; import module name
+00000c9: 4172 7261 79                             Array  ; import module name
 00000ce: 06                                        ; string length
 00000cf: 6372 6561 7465                           create  ; import field name
 00000d5: 00                                        ; import kind
 00000d6: 03                                        ; import signature index
 ; import header 11
 00000d7: 05                                        ; string length
-00000d8: 6172 7261 79                             array  ; import module name
+00000d8: 4172 7261 79                             Array  ; import module name
 00000dd: 04                                        ; string length
 00000de: 7075 7368                                push  ; import field name
 00000e2: 00                                        ; import kind
 00000e3: 02                                        ; import signature index
 ; import header 12
 00000e4: 05                                        ; string length
-00000e5: 6172 7261 79                             array  ; import module name
+00000e5: 4172 7261 79                             Array  ; import module name
 00000ea: 03                                        ; string length
 00000eb: 6765 74                                  get  ; import field name
 00000ee: 00                                        ; import kind
 00000ef: 02                                        ; import signature index
 ; import header 13
 00000f0: 05                                        ; string length
-00000f1: 6172 7261 79                             array  ; import module name
+00000f1: 4172 7261 79                             Array  ; import module name
 00000f6: 06                                        ; string length
 00000f7: 6c65 6e67 7468                           length  ; import field name
 00000fd: 00                                        ; import kind
@@ -1207,10 +1207,10 @@
 0000090: 7243 6f64 6500 0006 7374 7269 6e67 0a63 
 00000a0: 6861 7243 6f64 6541 7400 0206 7374 7269 
 00000b0: 6e67 0663 6861 7241 7400 0206 7374 7269 
-00000c0: 6e67 046a 6f69 6e00 0205 6172 7261 7906 
-00000d0: 6372 6561 7465 0003 0561 7272 6179 0470 
-00000e0: 7573 6800 0205 6172 7261 7903 6765 7400 
-00000f0: 0205 6172 7261 7906 6c65 6e67 7468 0000 
+00000c0: 6e67 046a 6f69 6e00 0205 4172 7261 7906 
+00000d0: 6372 6561 7465 0003 0541 7272 6179 0470 
+00000e0: 7573 6800 0205 4172 7261 7903 6765 7400 
+00000f0: 0205 4172 7261 7906 6c65 6e67 7468 0000 
 0000100: 0365 6e76 0a62 7974 6563 6875 6e6b 7302 
 0000110: 0001 030e 0d00 0000 0003 0303 0303 0303 
 0000120: 0303 0606 017f 0141 010b 07d0 010d 0665 
