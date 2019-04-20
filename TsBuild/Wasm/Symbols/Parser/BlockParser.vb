@@ -197,7 +197,7 @@ Namespace Symbols.Parser
 
             If TypeOf control Is VariableDeclaratorSyntax Then
                 Dim declareCtl = DirectCast(control, VariableDeclaratorSyntax) _
-                    .ParseDeclarator(symbols, False) _
+                    .ParseDeclarator(symbols, Nothing) _
                     .First
 
                 Return declareCtl

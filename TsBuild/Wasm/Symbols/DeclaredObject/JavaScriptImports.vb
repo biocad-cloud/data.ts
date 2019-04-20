@@ -127,6 +127,17 @@ Namespace Symbols.JavaScriptImports
             }
         }
 
+        Public ReadOnly Property ArrayLength As New ImportSymbol With {
+            .ImportObject = "length",
+            .[Module] = "array",
+            .Name = "array.length",
+            .Package = "array",
+            .Result = "i32",
+            .Parameters = {
+                New NamedValue(Of String)("array", "i32")
+            }
+        }
+
         ReadOnly arrayOp As Index(Of String) = {GetArrayElement.Name, SetArrayElement.Name}
 
         Public Function IsArrayOperation(func As FuncSignature) As Boolean

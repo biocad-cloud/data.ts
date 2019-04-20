@@ -247,6 +247,7 @@ Namespace Symbols.Parser
                             Call symbols.addRequired(JavaScriptImports.NewArray)
                             Call symbols.addRequired(JavaScriptImports.PushArray)
                             Call symbols.addRequired(JavaScriptImports.GetArrayElement)
+                            Call symbols.addRequired(JavaScriptImports.ArrayLength)
                         End If
                     End If
 

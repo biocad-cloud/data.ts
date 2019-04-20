@@ -110,6 +110,14 @@ Namespace Symbols.Parser
                     .type = [const].type,
                     .value = [const].Members(memberName)
                 }
+            ElseIf symbols.GetObjectSymbol(objName).IsArray AndAlso memberName = "Length" Then
+                ' 可能是获取数组长度
+                Return New FuncInvoke With {
+                    .Reference = JavaScriptImports.ArrayLength.Name,
+                    .Parameters = {
+                        New GetLocalVariable With {.var = objName}
+                    }
+                }
             Else
                 Throw New NotImplementedException(ref.ToString)
             End If
