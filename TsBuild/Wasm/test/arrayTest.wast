@@ -5,12 +5,16 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/20/2019 11:01:07 AM
+    ;; build: 4/20/2019 11:07:54 AM
 
     ;; imports must occur before all non-import definitions
 
     ;; Declare Function debug Lib "console" Alias "log" (any As System.String[]) As i32
     (func $debug (import "console" "log") (param $any i32) (result i32))
+    ;; Declare Function new.array Lib "array" Alias "new" () As i32
+    (func $new.array (import "array" "new")  (result i32))
+    ;; Declare Function push.array Lib "array" Alias "push" (array As i32, element As i32) As i32
+    (func $push.array (import "array" "push") (param $array i32) (param $element i32) (result i32))
     
     ;; Only allows one memory block in each module
     (memory (import "env" "bytechunks") 1)

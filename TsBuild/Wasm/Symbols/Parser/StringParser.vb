@@ -74,6 +74,11 @@ Namespace Symbols.Parser
             }
         End Function
 
+        ''' <summary>
+        ''' 尝试添加编程所需的一些基本的API，例如字符串操作，数组操作等
+        ''' </summary>
+        ''' <param name="symbols"></param>
+        ''' <param name="symbol"></param>
         <Extension>
         Public Sub addRequired(symbols As SymbolTable, symbol As ImportSymbol)
             Dim ref$ = symbol.Name

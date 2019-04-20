@@ -72,9 +72,13 @@ Namespace Symbols.JavaScriptImports
 
     Public Module Array
 
-        Public ReadOnly Property ArrayAppend As New ImportSymbol With {
+        ''' <summary>
+        ''' Push element value into a given array and then returns the array intptr
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property PushArray As New ImportSymbol With {
             .ImportObject = "push",
-            .Name = "array.add",
+            .Name = "push.array",
             .[Module] = "array",
             .Package = "array",
             .Result = "i32",
@@ -82,6 +86,19 @@ Namespace Symbols.JavaScriptImports
                 New NamedValue(Of String)("array", "i32"),
                 New NamedValue(Of String)("element", "i32")
             }
+        }
+
+        ''' <summary>
+        ''' Create an new array and then returns the array intptr
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property NewArray As New ImportSymbol With {
+            .ImportObject = "new",
+            .[Module] = "array",
+            .Name = "new.array",
+            .Package = "array",
+            .Result = "i32",
+            .Parameters = {}
         }
 
     End Module
