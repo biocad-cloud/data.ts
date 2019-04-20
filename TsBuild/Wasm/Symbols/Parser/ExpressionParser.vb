@@ -262,6 +262,7 @@ Namespace Symbols.Parser
                 ElseIf name Like symbols.ModuleNames Then
                     ' 是对静态模块的方法引用
                     argumentFirst = Nothing
+                    leftArguments = funcDeclare.Parameters
                 End If
             Else
                 Throw New NotImplementedException
