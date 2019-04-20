@@ -155,6 +155,8 @@ Namespace Symbols.Parser
                 ' 是字符串的一些对象方法
                 Dim api As ImportSymbol = JavaScriptImports.GetStringMethod(memberName)
 
+                Call symbols.addRequired(api)
+
                 Return New FuncInvoke With {
                     .Reference = api.Name,
                     .Parameters = {
