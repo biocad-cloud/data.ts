@@ -91,7 +91,7 @@ Namespace Symbols.JavaScriptImports
         }
 
         Public ReadOnly Property IndexOf As New ImportSymbol With {
-            .ImportObject = "",
+            .ImportObject = "indexOf",
             .[Module] = "string",
             .Name = "string_indexOf",
             .Package = "string",

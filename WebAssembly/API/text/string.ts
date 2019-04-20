@@ -50,5 +50,12 @@
 
             return ObjectManager.addText(result);
         }
+
+        export function indexOf(input: number, find: number): number {
+            let text: string = ObjectManager.readText(input);
+            let findText: string = ObjectManager.readText(find);
+
+            return text.indexOf(findText);
+        }
     }
 }
