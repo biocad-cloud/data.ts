@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/20/2019 11:19:24 AM
+    ;; build: 4/20/2019 11:27:03 AM
 
     ;; imports must occur before all non-import definitions
 
@@ -55,9 +55,9 @@
         (local $str i32)
     (local $strAtFirst i32)
     (set_local $str (call $push.array (call $push.array (call $push.array (call $push.array (call $push.array (call $new.array ) (i32.const 1)) (i32.const 8)) (i32.const 14)) (i32.const 20)) (i32.const 27)))
-    (set_local $strAtFirst (call $str (i32.const 0) (i32.const )))
+    (set_local $strAtFirst (call $array.get (get_local $str) (i32.const 0)))
     (call $debug (get_local $str))
-    (call $print (call $str (i32.const 3) (i32.const )))
+    (call $print (call $array.get (get_local $str) (i32.const 3)))
     (return (i32.const 0))
     )
     )

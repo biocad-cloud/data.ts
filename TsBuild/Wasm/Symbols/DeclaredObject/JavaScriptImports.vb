@@ -112,6 +112,18 @@ Namespace Symbols.JavaScriptImports
                 New NamedValue(Of String)("index", "i32")
             }
         }
+
+        Public ReadOnly Property SetArrayElement As New ImportSymbol With {
+            .ImportObject = "set",
+            .[Module] = "array",
+            .Name = "array.set",
+            .Package = "array",
+            .Result = "i32",
+            .Parameters = {
+                New NamedValue(Of String)("array", "i32"),
+                New NamedValue(Of String)("index", "i32")
+            }
+        }
     End Module
 
     Public Module [String]
