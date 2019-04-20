@@ -37,9 +37,12 @@ Public Module base64Encoder
         text = base64Encoder.utf8_encode(text)
 
         Do While (f < text.Length)
-            n = text.charCodeAt(++f)
-            r = text.charCodeAt(++f)
-            i = text.charCodeAt(++f)
+            n = text.charCodeAt(f)
+            f += 1
+            r = text.charCodeAt(f)
+            f += 1
+            i = text.charCodeAt(f)
+            f += 1
             s = n >> 2
             o = (n And 3) << 4 Or r >> 4
             u = (r And 15) << 2 Or i >> 6
@@ -71,10 +74,15 @@ Public Module base64Encoder
         base64 = base64.Replace(symbolsNotallowed, "")
 
         Do While (f < base64.Length)
-            s = keyStr.IndexOf(base64.charAt(++f))
-            o = keyStr.IndexOf(base64.charAt(++f))
-            u = keyStr.IndexOf(base64.charAt(++f))
-            a = keyStr.IndexOf(base64.charAt(++f))
+            s = keyStr.IndexOf(base64.charAt(f))
+            f += 1
+            o = keyStr.IndexOf(base64.charAt(f))
+            f += 1
+            u = keyStr.IndexOf(base64.charAt(f))
+            f += 1
+            a = keyStr.IndexOf(base64.charAt(f))
+            f += 1
+
             n = s << 2 Or o >> 4
             r = (o And 15) << 4 Or u >> 2
             i = (u And 3) << 6 Or a
