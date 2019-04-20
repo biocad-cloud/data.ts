@@ -194,6 +194,8 @@ Namespace Symbols.Parser
                     Dim target = acc.Expression
                     ' 目标函数名称
                     funcName$ = acc.Name.objectName
+
+                    Return target.ObjectInvoke(funcName, invoke.ArgumentList, symbols)
                 Case Else
                     Throw New NotImplementedException(reference.GetType.FullName)
             End Select
@@ -201,38 +203,52 @@ Namespace Symbols.Parser
             Return symbols.InvokeFunction(funcName, invoke.ArgumentList)
         End Function
 
+        ''' <summary>
+        ''' 需要判断一下target的类型
+        ''' 如果是本地变量，全局变量，常量，则可能是对象实例方法或者拓展方法
+        ''' </summary>
+        ''' <param name="target"></param>
+        ''' <param name="funcName$"></param>
+        ''' <param name="symbols"></param>
+        ''' <returns></returns>
         <Extension>
-        Public Function InvokeFunction(symbols As SymbolTable, funcName$, argumentList As ArgumentListSyntax) As Expression
+        Public Function ObjectInvoke(target As ExpressionSyntax, funcName$, argumentList As ArgumentListSyntax, symbols As SymbolTable) As Expression
+            Dim argumentFirst As Expression
             Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
+            Dim leftArguments = funcDeclare.Parameters.Skip(1).ToArray
+
+            If TypeOf target Is LiteralExpressionSyntax Then
+                argumentFirst = target.ValueExpression(symbols)
+            Else
+                Throw New NotImplementedException
+            End If
+
+            Dim arguments As Expression() = argumentFirst _
+                .Join(argumentList.fillParameters(leftArguments, symbols)) _
+                .ToArray
+
+            Return New FuncInvoke(funcName) With {
+                .Parameters = arguments
+            }
+        End Function
+
+        <Extension>
+        Private Function fillParameters(argumentList As ArgumentListSyntax, funcDeclare As NamedValue(Of String)(), symbols As SymbolTable) As Expression()
             Dim arg As NamedValue(Of String)
-            Dim invokeInputs As ArgumentSyntax()
             Dim input As ArgumentSyntax = Nothing
             Dim arguments As New List(Of Expression)
-
-            If JavaScriptImports.Array.IsArrayOperation(funcDeclare) Then
-                ' 是一个数组元素的读取操作
-                Dim array = New GetLocalVariable With {.var = funcName}
-                Dim index As Expression = argumentList _
-                    .Arguments _
-                    .First _
-                    .Argument(symbols, funcDeclare.Parameters.Last)
-
-                Return New FuncInvoke With {
-                    .Reference = funcDeclare.Name,
-                    .Parameters = {array, index}
-                }
-            End If
+            Dim invokeInputs As ArgumentSyntax()
 
             If argumentList Is Nothing Then
                 invokeInputs = {}
             Else
                 invokeInputs = argumentList _
-                    .ArgumentSequence(funcDeclare.Parameters) _
+                    .ArgumentSequence(funcDeclare) _
                     .ToArray
             End If
 
-            For i As Integer = 0 To funcDeclare.Parameters.Length - 1
-                arg = funcDeclare.Parameters(i)
+            For i As Integer = 0 To funcDeclare.Length - 1
+                arg = funcDeclare(i)
                 input = invokeInputs.ElementAtOrNull(i)
 
                 If input Is Nothing Then
@@ -250,10 +266,32 @@ Namespace Symbols.Parser
                 End If
             Next
 
-            Return New FuncInvoke With {
-                .Reference = funcName,
-                .Parameters = arguments
-            }
+            Return arguments
+        End Function
+
+        <Extension>
+        Public Function InvokeFunction(symbols As SymbolTable, funcName$, argumentList As ArgumentListSyntax) As Expression
+            Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
+
+            If JavaScriptImports.Array.IsArrayOperation(funcDeclare) Then
+                ' 是一个数组元素的读取操作
+                Dim array = New GetLocalVariable With {.var = funcName}
+                Dim index As Expression = argumentList _
+                    .Arguments _
+                    .First _
+                    .Argument(symbols, funcDeclare.Parameters.Last)
+
+                Return New FuncInvoke With {
+                    .Reference = funcDeclare.Name,
+                    .Parameters = {array, index}
+                }
+            Else
+                Dim arguments = argumentList.fillParameters(funcDeclare.Parameters, symbols)
+
+                Return New FuncInvoke(funcName) With {
+                    .Parameters = arguments
+                }
+            End If
         End Function
 
         <Extension>

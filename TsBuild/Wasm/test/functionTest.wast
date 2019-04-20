@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/20/2019 12:41:34 PM
+    ;; build: 4/20/2019 1:07:26 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -17,14 +17,14 @@
 
     ;; Memory data for string constant
     
-    ;; String from 1 with 0 bytes in memory
-    (data (i32.const 1) "\00")
+    ;; String from 1 with 12 bytes in memory
+    (data (i32.const 1) "345566777777\00")
 
-    ;; String from 2 with 20 bytes in memory
-    (data (i32.const 2) "Another string value\00")
+    ;; String from 14 with 20 bytes in memory
+    (data (i32.const 14) "Another string value\00")
 
-    ;; String from 23 with 36 bytes in memory
-    (data (i32.const 23) "This is the optional parameter value\00")
+    ;; String from 35 with 36 bytes in memory
+    (data (i32.const 35) "This is the optional parameter value\00")
     
     
 
@@ -47,8 +47,8 @@
     (func $calls  (result i32)
         ;; Public Function calls() As i32
         
-    (call $Main (i32.const 2) (i32.const 999999))
-    (call $Main (i32.const 23) (i32.const -100))
+    (call $Main (i32.const 14) (i32.const 999999))
+    (call $Main (i32.const 35) (i32.const -100))
     (return (i32.const 0))
     )
     (func $Main (param $args i32) (param $obj i32) (result i32)
