@@ -75,7 +75,10 @@
         */
         function buildFunc(func: object): IWasmFunc {
             let api: IWasmFunc = <any>function () {
-                return (<any>func).apply(this, buildArguments(<any>arguments));
+                let intptr: number = (<any>func).apply(this, buildArguments(<any>arguments));
+                let result = WebAssembly.ObjectManager.getObject(intptr);
+
+                return result;
             }
 
             api.WasmPrototype = <any>func;
