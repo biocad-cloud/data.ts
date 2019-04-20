@@ -46,6 +46,7 @@
 
 Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
@@ -89,11 +90,18 @@ Namespace Symbols.Parser
             Return type
         End Function
 
-
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetAsType([as] As SimpleAsClauseSyntax, symbols As SymbolTable) As Type
             Return [GetType]([as].Type, symbols)
         End Function
+
+        ''' <summary>
+        ''' Generic array type
+        ''' </summary>
+        ReadOnly arrayTypes As Index(Of String) = {
+            NameOf(System.Array),
+            NameOf(System.Collections.IList)
+        }
 
         <Extension>
         Public Function [GetType](asType As TypeSyntax, symbols As SymbolTable) As Type
@@ -114,7 +122,7 @@ Namespace Symbols.Parser
                 If symbols.HaveEnumType(token) Then
                     Dim [const] As EnumSymbol = symbols.GetEnumType(token)
                     Return [const].UnderlyingType
-                ElseIf token = NameOf(System.Array) Then
+                ElseIf token Like arrayTypes Then
                     Return GetType(System.Array)
                 Else
                     Throw New NotImplementedException

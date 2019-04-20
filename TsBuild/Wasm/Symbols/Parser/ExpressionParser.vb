@@ -78,9 +78,34 @@ Namespace Symbols.Parser
                     Return DirectCast(value, InterpolatedStringExpressionSyntax).StringExpression(symbols)
                 Case GetType(CollectionInitializerSyntax)
                     Return DirectCast(value, CollectionInitializerSyntax).CreateArray(symbols)
+                Case GetType(ObjectCreationExpressionSyntax)
+                    Return DirectCast(value, ObjectCreationExpressionSyntax).CreateObject(symbols)
                 Case Else
                     Throw New NotImplementedException(value.GetType.FullName)
             End Select
+        End Function
+
+        <Extension>
+        Public Function CreateObject(create As ObjectCreationExpressionSyntax, symbols As SymbolTable) As Expression
+            Dim type = create.Type
+            Dim typeName$
+
+            If TypeOf type Is GenericNameSyntax Then
+                Dim elementType As Type
+
+                With DirectCast(type, GenericNameSyntax)
+                    typeName = .objectName
+                    elementType = AsTypeHandler.GetType(.TypeArgumentList.Arguments.First, symbols)
+                End With
+
+                If typeName = "List" Then
+                    ' array和list在javascript之中都是一样的
+                    typeName = elementType.MakeArrayType().FullName
+                End If
+            Else
+                Throw New NotImplementedException
+            End If
+
         End Function
 
         <Extension>
