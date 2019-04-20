@@ -62,6 +62,14 @@ Namespace Symbols
         ''' <returns></returns>
         Public Property [Module] As String Implements IDeclaredObject.Module
 
+        Public Function AsLocal() As DeclareLocal
+            Return New DeclareLocal With {
+                .name = name,
+                .init = init,
+                .type = type
+            }
+        End Function
+
         Public Overrides Function ToSExpression() As String
             Return $"(global ${name} (mut {CTypeParser.typefit(type)}) {init.ToSExpression})"
         End Function

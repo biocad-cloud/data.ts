@@ -257,20 +257,29 @@ Namespace Symbols.Parser
         ''' <param name="symbols"></param>
         ''' <returns></returns>
         <Extension>
-        Public Function ObjectInvoke(target As ExpressionSyntax, funcName$, argumentList As ArgumentListSyntax, symbols As SymbolTable) As Expression
+        Public Function ObjectInvoke(target As ExpressionSyntax,
+                                     funcName$,
+                                     argumentList As ArgumentListSyntax,
+                                     symbols As SymbolTable) As Expression
+
             Dim argumentFirst As Expression = Nothing
-            Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
-            Dim leftArguments = funcDeclare.Parameters.Skip(1).ToArray
+            Dim funcDeclare As FuncSignature
+            Dim leftArguments As NamedValue(Of String)()
 
             If TypeOf target Is LiteralExpressionSyntax Then
+                funcDeclare = symbols.GetFunctionSymbol(Nothing, funcName)
                 argumentFirst = target.ValueExpression(symbols)
+                leftArguments = funcDeclare.Parameters.Skip(1).ToArray
             ElseIf TypeOf target Is IdentifierNameSyntax Then
                 ' 模块静态引用或者对象实例引用
                 Dim name$ = DirectCast(target, IdentifierNameSyntax).objectName
 
+                funcDeclare = symbols.GetFunctionSymbol(name, funcName)
+
                 If symbols.IsAnyObject(name) Then
                     ' 是对对象实例的方法引用
                     argumentFirst = target.ValueExpression(symbols)
+                    leftArguments = funcDeclare.Parameters
                 ElseIf name Like symbols.ModuleNames Then
                     ' 是对静态模块的方法引用
                     argumentFirst = Nothing
@@ -332,7 +341,7 @@ Namespace Symbols.Parser
 
         <Extension>
         Public Function InvokeFunction(symbols As SymbolTable, funcName$, argumentList As ArgumentListSyntax) As Expression
-            Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
+            Dim funcDeclare = symbols.GetFunctionSymbol(Nothing, funcName)
 
             If JavaScriptImports.Array.IsArrayOperation(funcDeclare) Then
                 ' 是一个数组元素的读取操作

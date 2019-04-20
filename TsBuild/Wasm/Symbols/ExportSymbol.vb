@@ -76,7 +76,7 @@ Namespace Symbols
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
             If type = "func" Then
-                Return symbolTable.GetFunctionSymbol(target).Result
+                Return symbolTable.GetFunctionSymbol(Nothing, target).Result
             Else
                 Throw New NotImplementedException
             End If

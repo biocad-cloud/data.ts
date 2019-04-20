@@ -1,54 +1,54 @@
 ﻿#Region "Microsoft.VisualBasic::ec807bca603cf2eb09dbcf02a2a02766, Symbols\SymbolTable.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    '       asuka (evia@lilithaf.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    '     Class SymbolTable
-    ' 
-    '         Properties: CurrentSymbol, memory, ModuleNames, NextGuid, Requires
-    ' 
-    '         Constructor: (+2 Overloads) Sub New
-    ' 
-    '         Function: AddFunctionDeclares, GetAllGlobals, GetAllImports, GetAllLocals, GetEnumType
-    '                   GetFunctionSymbol, GetGlobal, GetObjectSymbol, GetUnderlyingType, HaveEnumType
-    '                   IsAnyObject, IsLocal
-    ' 
-    '         Sub: AddEnumType, AddGlobal, AddImports, (+2 Overloads) AddLocal, ClearLocals
-    ' 
-    ' 
-    ' /********************************************************************************/
+'     Class SymbolTable
+' 
+'         Properties: CurrentSymbol, memory, ModuleNames, NextGuid, Requires
+' 
+'         Constructor: (+2 Overloads) Sub New
+' 
+'         Function: AddFunctionDeclares, GetAllGlobals, GetAllImports, GetAllLocals, GetEnumType
+'                   GetFunctionSymbol, GetGlobal, GetObjectSymbol, GetUnderlyingType, HaveEnumType
+'                   IsAnyObject, IsLocal
+' 
+'         Sub: AddEnumType, AddGlobal, AddImports, (+2 Overloads) AddLocal, ClearLocals
+' 
+' 
+' /********************************************************************************/
 
 #End Region
 
@@ -110,7 +110,10 @@ Namespace Symbols
         ''' <returns></returns>
         Public ReadOnly Property ModuleNames As Index(Of String)
             Get
-                Dim globals = Me.globals.Values.Select(Function(g) g.Module).AsList
+                Dim globals = Me.globals _
+                    .Values _
+                    .Select(Function(g) g.Module) _
+                    .AsList
                 Dim funcs = functionList.Values.Select(Function(f) f.Module)
 
                 Return globals + funcs
@@ -234,18 +237,55 @@ Namespace Symbols
         ''' 但是在local之中找到了一个数组，则会返回数组元素获取的语法
         ''' </summary>
         ''' <param name="name"></param>
+        ''' <param name="context">
+        ''' 当这个上下文值为空值的时候，表示为静态方法
+        ''' </param>
         ''' <returns></returns>
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Public Function GetFunctionSymbol(name As String) As FuncSignature
+        Public Function GetFunctionSymbol(context$, name$) As FuncSignature
+            Dim contextObj As DeclareLocal = Nothing
+
+            If Not context.StringEmpty Then
+                contextObj = locals.TryGetValue(context)
+
+                If contextObj Is Nothing Then
+                    With globals.TryGetValue(context)
+                        If Not .IsNothing Then
+                            contextObj = .AsLocal
+                        End If
+                    End With
+                End If
+            End If
+
             name = name.Trim("$"c, "["c, "]"c)
 
-            If functionList.ContainsKey(name) Then
-                Return functionList(name)
-            Else
-                If locals.ContainsKey(name) AndAlso locals(name).IsArray Then
-                    Return JavaScriptImports.GetArrayElement
+            If contextObj Is Nothing Then
+                If functionList.ContainsKey(name) Then
+                    Return functionList(name)
                 Else
-                    Throw New MissingPrimaryKeyException(name)
+                    If locals.ContainsKey(name) AndAlso locals(name).IsArray Then
+                        Return JavaScriptImports.GetArrayElement
+                    Else
+                        Throw New MissingPrimaryKeyException(name)
+                    End If
+                End If
+            Else
+                Dim func As FuncSignature = functionList.TryGetValue(name)
+
+                If Not func Is Nothing AndAlso func.Parameters.First.Value = contextObj.type Then
+                    Return func
+                Else
+                    If contextObj.IsArray Then
+                        ' 可能是是一个List
+                        ' 将List的实例方法映射到javascript的array相关的api上面
+                        Select Case name
+                            Case "Add" : Return functionList(JavaScriptImports.Array.PushArray.Name)
+                            Case Else
+                                Throw New NotImplementedException
+                        End Select
+                    Else
+                        Throw New NotImplementedException
+                    End If
                 End If
             End If
         End Function

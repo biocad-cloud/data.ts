@@ -155,7 +155,7 @@ Namespace Symbols
                     Return Reference.Split("."c).First
                 End If
             Else
-                Return symbolTable.GetFunctionSymbol(Reference).Result
+                Return symbolTable.GetFunctionSymbol(Nothing, Reference).Result
             End If
         End Function
     End Class
