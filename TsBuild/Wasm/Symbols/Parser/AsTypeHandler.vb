@@ -110,9 +110,15 @@ Namespace Symbols.Parser
             Else
                 Dim type = DirectCast(asType, IdentifierNameSyntax)
                 Dim token$ = type.Identifier.objectName
-                Dim [const] As EnumSymbol = symbols.GetEnumType(token)
 
-                Return [const].UnderlyingType
+                If symbols.HaveEnumType(token) Then
+                    Dim [const] As EnumSymbol = symbols.GetEnumType(token)
+                    Return [const].UnderlyingType
+                ElseIf token = NameOf(System.Array) Then
+                    Return GetType(System.Array)
+                Else
+                    Throw New NotImplementedException
+                End If
             End If
         End Function
 
