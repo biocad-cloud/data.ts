@@ -56,7 +56,7 @@ Namespace Symbols.JavaScriptImports
 
         Public ReadOnly Property StringAppend As New ImportSymbol With {
             .ImportObject = "add",
-            .Name = "string.add",
+            .Name = "string_add",
             .Package = "string",
             .[Module] = "string",
             .Result = "char*",
@@ -69,7 +69,7 @@ Namespace Symbols.JavaScriptImports
         Public ReadOnly Property StringLength As New ImportSymbol With {
             .ImportObject = "length",
             .[Module] = "string",
-            .Name = "string.length",
+            .Name = "string_length",
             .Package = "string",
             .Result = "i32",
             .Parameters = {
@@ -80,7 +80,7 @@ Namespace Symbols.JavaScriptImports
         Public ReadOnly Property Replace As New ImportSymbol With {
             .ImportObject = "replace",
             .[Module] = "string",
-            .Name = "string.replace",
+            .Name = "string_replace",
             .Package = "string",
             .Result = "i32",
             .Parameters = {
@@ -93,7 +93,7 @@ Namespace Symbols.JavaScriptImports
         Public ReadOnly Property IndexOf As New ImportSymbol With {
             .ImportObject = "",
             .[Module] = "string",
-            .Name = "string.indexOf",
+            .Name = "string_indexOf",
             .Package = "string",
             .Result = "i32",
             .Parameters = {
@@ -118,7 +118,7 @@ Namespace Symbols.JavaScriptImports
         Public Function ToString(Optional type As String = "i32") As ImportSymbol
             Return New ImportSymbol With {
                 .ImportObject = "toString",
-                .Name = $"{type}.toString",
+                .Name = $"{type}_toString",
                 .[Module] = "string",
                 .Package = "string",
                 .Result = stringType,

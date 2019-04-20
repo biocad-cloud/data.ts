@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/20/2019 4:52:09 PM
+    ;; build: 4/20/2019 4:56:33 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -25,22 +25,22 @@
     (func $isNaN (import "number" "isNaN") (param $x i32) (result i32))
     ;; Declare Function Join Lib "String" Alias "Join" (array As System.Array, delimiter As char*) As char*
     (func $Join (import "String" "Join") (param $array i32) (param $delimiter i32) (result i32))
-    ;; Declare Function string.replace Lib "string" Alias "replace" (input As char*, find As i32, replacement As char*) As i32
-    (func $string.replace (import "string" "replace") (param $input i32) (param $find i32) (param $replacement i32) (result i32))
-    ;; Declare Function string.add Lib "string" Alias "add" (a As char*, b As char*) As char*
-    (func $string.add (import "string" "add") (param $a i32) (param $b i32) (result i32))
-    ;; Declare Function string.length Lib "string" Alias "length" (text As char*) As i32
-    (func $string.length (import "string" "length") (param $text i32) (result i32))
-    ;; Declare Function string.indexOf Lib "string" Alias "" (input As char*, find As char*) As i32
-    (func $string.indexOf (import "string" "") (param $input i32) (param $find i32) (result i32))
-    ;; Declare Function new.array Lib "array" Alias "new" () As i32
-    (func $new.array (import "array" "new")  (result i32))
-    ;; Declare Function push.array Lib "array" Alias "push" (array As i32, element As object) As i32
-    (func $push.array (import "array" "push") (param $array i32) (param $element i32) (result i32))
-    ;; Declare Function array.get Lib "array" Alias "get" (array As i32, index As i32) As i32
-    (func $array.get (import "array" "get") (param $array i32) (param $index i32) (result i32))
-    ;; Declare Function array.length Lib "array" Alias "length" (array As i32) As i32
-    (func $array.length (import "array" "length") (param $array i32) (result i32))
+    ;; Declare Function string_replace Lib "string" Alias "replace" (input As char*, find As i32, replacement As char*) As i32
+    (func $string_replace (import "string" "replace") (param $input i32) (param $find i32) (param $replacement i32) (result i32))
+    ;; Declare Function string_add Lib "string" Alias "add" (a As char*, b As char*) As char*
+    (func $string_add (import "string" "add") (param $a i32) (param $b i32) (result i32))
+    ;; Declare Function string_length Lib "string" Alias "length" (text As char*) As i32
+    (func $string_length (import "string" "length") (param $text i32) (result i32))
+    ;; Declare Function string_indexOf Lib "string" Alias "" (input As char*, find As char*) As i32
+    (func $string_indexOf (import "string" "") (param $input i32) (param $find i32) (result i32))
+    ;; Declare Function new_array Lib "array" Alias "new" () As i32
+    (func $new_array (import "array" "new")  (result i32))
+    ;; Declare Function array_push Lib "array" Alias "push" (array As i32, element As object) As i32
+    (func $array_push (import "array" "push") (param $array i32) (param $element i32) (result i32))
+    ;; Declare Function array_get Lib "array" Alias "get" (array As i32, index As i32) As i32
+    (func $array_get (import "array" "get") (param $array i32) (param $index i32) (result i32))
+    ;; Declare Function array_length Lib "array" Alias "length" (array As i32) As i32
+    (func $array_length (import "array" "length") (param $array i32) (result i32))
     
     ;; Only allows one memory block in each module
     (memory (import "env" "bytechunks") 1)
@@ -153,7 +153,7 @@
     (block $block_9a020000 
         (loop $loop_9b020000
     
-                    (br_if $block_9a020000 (i32.eqz (i32.lt_s (get_local $f) (call $string.length (get_local $text)))))
+                    (br_if $block_9a020000 (i32.eqz (i32.lt_s (get_local $f) (call $string_length (get_local $text)))))
             (set_local $n (call $charCodeAt (get_local $text) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f)))))
             (set_local $r (call $charCodeAt (get_local $text) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f)))))
             (set_local $i (call $charCodeAt (get_local $text) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f)))))
@@ -168,10 +168,10 @@
             (set_local $u (get_local $a))
         ) 
     )
-            (call $push.array (get_local $base64) (call $charAt (get_global $keyStr) (get_local $s)))
-            (call $push.array (get_local $base64) (call $charAt (get_global $keyStr) (get_local $o)))
-            (call $push.array (get_local $base64) (call $charAt (get_global $keyStr) (get_local $u)))
-            (call $push.array (get_local $base64) (call $charAt (get_global $keyStr) (get_local $a)))
+            (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $s)))
+            (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $o)))
+            (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $u)))
+            (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $a)))
             (br $loop_9b020000)
     
         )
@@ -194,32 +194,32 @@
     (set_local $text (i32.const 68))
     (set_local $f (i32.const 0))
     (set_local $symbolsNotallowed (call $regexp (i32.const 69) (i32.const 85)))
-    (set_local $base64 (call $string.replace (get_local $base64) (get_local $symbolsNotallowed) (i32.const 87)))
+    (set_local $base64 (call $string_replace (get_local $base64) (get_local $symbolsNotallowed) (i32.const 87)))
     ;; Do While (f < base64.Length)
     ;; Start Do While Block block_9c020000
     
     (block $block_9c020000 
         (loop $loop_9d020000
     
-                    (br_if $block_9c020000 (i32.eqz (i32.lt_s (get_local $f) (call $string.length (get_local $base64)))))
-            (set_local $s (call $string.indexOf (get_global $keyStr) (call $charAt (get_local $base64) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f))))))
-            (set_local $o (call $string.indexOf (get_global $keyStr) (call $charAt (get_local $base64) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f))))))
-            (set_local $u (call $string.indexOf (get_global $keyStr) (call $charAt (get_local $base64) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f))))))
-            (set_local $a (call $string.indexOf (get_global $keyStr) (call $charAt (get_local $base64) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f))))))
+                    (br_if $block_9c020000 (i32.eqz (i32.lt_s (get_local $f) (call $string_length (get_local $base64)))))
+            (set_local $s (call $string_indexOf (get_global $keyStr) (call $charAt (get_local $base64) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f))))))
+            (set_local $o (call $string_indexOf (get_global $keyStr) (call $charAt (get_local $base64) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f))))))
+            (set_local $u (call $string_indexOf (get_global $keyStr) (call $charAt (get_local $base64) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f))))))
+            (set_local $a (call $string_indexOf (get_global $keyStr) (call $charAt (get_local $base64) (i32.add (i32.const 0) (i32.add (i32.const 0) (get_local $f))))))
             (set_local $n (i32.or (i32.shl (get_local $s) (i32.const 2)) (i32.shr_s (get_local $o) (i32.const 4))))
             (set_local $r (i32.or (i32.shl (i32.and (get_local $o) (i32.const 15)) (i32.const 4)) (i32.shr_s (get_local $u) (i32.const 2))))
             (set_local $i (i32.or (i32.shl (i32.and (get_local $u) (i32.const 3)) (i32.const 6)) (get_local $a)))
-            (set_local $text (call $string.add (get_local $text) (call $fromCharCode (get_local $n))))
+            (set_local $text (call $string_add (get_local $text) (call $fromCharCode (get_local $n))))
             
     (if (i32.ne (get_local $u) (i32.const 64)) 
         (then
-                    (set_local $text (call $string.add (get_local $text) (call $fromCharCode (get_local $r))))
+                    (set_local $text (call $string_add (get_local $text) (call $fromCharCode (get_local $r))))
         ) 
     )
             
     (if (i32.ne (get_local $a) (i32.const 64)) 
         (then
-                    (set_local $text (call $string.add (get_local $text) (call $fromCharCode (get_local $i))))
+                    (set_local $text (call $string_add (get_local $text) (call $fromCharCode (get_local $i))))
         ) 
     )
             (br $loop_9d020000)
@@ -236,24 +236,24 @@
     (local $n i32)
     (local $r i32)
     (set_local $chars (call $new.array ))
-    (set_local $text (call $string.replace (get_local $text) (call $regexp (i32.const 88) (i32.const 91)) (i32.const 93)))
+    (set_local $text (call $string_replace (get_local $text) (call $regexp (i32.const 88) (i32.const 91)) (i32.const 93)))
     (set_local $n (i32.const 0))
     ;; For n As Integer = 0 To text.Length - 1
     
     (block $block_9e020000 
         (loop $loop_9f020000
     
-                    (br_if $block_9e020000 (i32.gt_s (get_local $n) (i32.sub (call $string.length (get_local $text)) (i32.const 1))))
+                    (br_if $block_9e020000 (i32.gt_s (get_local $n) (i32.sub (call $string_length (get_local $text)) (i32.const 1))))
             (set_local $n (i32.add (get_local $n) (i32.const 1)))
             (set_local $r (call $charCodeAt (get_local $text) (get_local $n)))
             
     (if (i32.lt_s (get_local $r) (i32.const 128)) 
         (then
-                    (call $push.array (get_local $chars) (call $fromCharCode (get_local $r)))
+                    (call $array_push (get_local $chars) (call $fromCharCode (get_local $r)))
         ) (else
-                    (call $push.array (get_local $chars) (call $fromCharCode (i32.or (i32.shr_s (get_local $r) (i32.const 12)) (i32.const 224))))
-            (call $push.array (get_local $chars) (call $fromCharCode (i32.or (i32.and (i32.shr_s (get_local $r) (i32.const 6)) (i32.const 63)) (i32.const 128))))
-            (call $push.array (get_local $chars) (call $fromCharCode (i32.or (i32.and (get_local $r) (i32.const 63)) (i32.const 128))))
+                    (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.shr_s (get_local $r) (i32.const 12)) (i32.const 224))))
+            (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.and (i32.shr_s (get_local $r) (i32.const 6)) (i32.const 63)) (i32.const 128))))
+            (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.and (get_local $r) (i32.const 63)) (i32.const 128))))
         )
     )
             (br $loop_9f020000)
@@ -281,17 +281,17 @@
     (block $block_a0020000 
         (loop $loop_a1020000
     
-                    (br_if $block_a0020000 (i32.eqz (i32.lt_s (get_local $n) (call $string.length (get_local $text)))))
+                    (br_if $block_a0020000 (i32.eqz (i32.lt_s (get_local $n) (call $string_length (get_local $text)))))
             (set_local $r (call $charCodeAt (get_local $text) (get_local $n)))
             
     (if (i32.lt_s (get_local $r) (i32.const 128)) 
         (then
-                    (call $push.array (get_local $t) (call $fromCharCode (get_local $r)))
+                    (call $array_push (get_local $t) (call $fromCharCode (get_local $r)))
             (set_local $n (i32.add (get_local $n) (i32.const 1)))
         ) (else
                     (set_local $c2 (call $charCodeAt (get_local $text) (i32.add (get_local $n) (i32.const 1))))
             (set_local $c3 (call $charCodeAt (get_local $text) (i32.add (get_local $n) (i32.const 2))))
-            (call $push.array (get_local $t) (call $fromCharCode (i32.or (i32.or (i32.shl (i32.and (get_local $r) (i32.const 15)) (i32.const 12)) (i32.shl (i32.and (get_local $c2) (i32.const 63)) (i32.const 6))) (i32.and (get_local $c3) (i32.const 63)))))
+            (call $array_push (get_local $t) (call $fromCharCode (i32.or (i32.or (i32.shl (i32.and (get_local $r) (i32.const 15)) (i32.const 12)) (i32.shl (i32.and (get_local $c2) (i32.const 63)) (i32.const 6))) (i32.and (get_local $c3) (i32.const 63)))))
             (set_local $n (i32.add (get_local $n) (i32.const 3)))
         )
     )
