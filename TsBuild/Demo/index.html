@@ -40,9 +40,10 @@
 					console.warn(raw);
 					
 					console.log("decode base64 string from server response:");
-					console.log("base64")
-					
+										
 					var server = GET("base64.php");
+					
+					console.log("base64: " + server)
 					
 					raw = encoder.decode(server);
 					

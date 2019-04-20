@@ -69,7 +69,7 @@
         }
 
         export function isText(intPtr: number): boolean {
-            return !(intPtr in textCache);
+            return intPtr in textCache;
         }
 
         export function getType(hashCode: number): string {

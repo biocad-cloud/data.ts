@@ -138,7 +138,7 @@ var WebAssembly;
         }
         ObjectManager.isNull = isNull;
         function isText(intPtr) {
-            return !(intPtr in textCache);
+            return intPtr in textCache;
         }
         ObjectManager.isText = isText;
         function getType(hashCode) {
@@ -607,16 +607,14 @@ var TypeScript;
             let api = function () {
                 let intptr = func.apply(this, buildArguments(arguments));
                 let result;
-                if (ObjMgr.isNull(intptr)) {
-                    if (ObjMgr.isText(intptr)) {
-                        result = WebAssembly.ObjectManager.readText(intptr);
-                    }
-                    else {
-                        return intptr;
-                    }
+                if (ObjMgr.isText(intptr)) {
+                    result = ObjMgr.readText(intptr);
+                }
+                else if (!ObjMgr.isNull(intptr)) {
+                    result = ObjMgr.getObject(intptr);
                 }
                 else {
-                    result = WebAssembly.ObjectManager.getObject(intptr);
+                    result = intptr;
                 }
                 return result;
             };
