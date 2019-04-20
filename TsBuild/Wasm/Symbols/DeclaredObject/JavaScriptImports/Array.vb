@@ -69,7 +69,7 @@ Namespace Symbols.JavaScriptImports
             .Result = "i32",
             .Parameters = {
                 New NamedValue(Of String)("array", "i32"),
-                New NamedValue(Of String)("element", "i32")
+                New NamedValue(Of String)("element", "object")
             }
         }
 
