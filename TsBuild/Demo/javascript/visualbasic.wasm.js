@@ -617,7 +617,10 @@ var TypeScript;
                     // zero intptr means nothing or value 0
                     value = 0;
                 }
-                else if (typeof value == "string" || typeof value == "object") {
+                else if (typeof value == "string") {
+                    value = WebAssembly.ObjectManager.addText(value);
+                }
+                else if (typeof value == "object") {
                     value = WebAssembly.ObjectManager.addObject(value);
                 }
                 else if (typeof value == "boolean") {
