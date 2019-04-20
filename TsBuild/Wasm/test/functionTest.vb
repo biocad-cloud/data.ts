@@ -50,21 +50,21 @@ Module functionTest
     <Extension>
     Declare Function print Lib "console" Alias "log" (info As String) As Integer
 
-    Public Function extensionFunctiontest()
+    Public Sub extensionFunctiontest()
         Call "345566777777".print
-    End Function
+    End Sub
 
-    Public Function calls()
+    Public Sub calls()
 
         Call Main(obj:=999999, args:="Another string value")
         ' use default
         Call Main()
 
-    End Function
+    End Sub
 
-    Public Function Main(Optional args As String = "This is the optional parameter value", Optional obj As Integer = -100)
+    Public Sub Main(Optional args As String = "This is the optional parameter value", Optional obj As Integer = -100)
         Call print(args)
         Call print(obj)
-    End Function
+    End Sub
 
 End Module

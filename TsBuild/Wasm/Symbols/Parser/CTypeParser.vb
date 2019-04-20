@@ -65,6 +65,8 @@ Namespace Symbols.Parser
 
             If type Like Types.Orders Then
                 Return type
+            ElseIf type = "void" Then
+                Return "void"
             Else
                 ' all of the class object is memory pointer value
                 Return "i32"
