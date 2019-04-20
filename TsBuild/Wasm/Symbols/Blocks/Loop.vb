@@ -102,12 +102,6 @@ Namespace Symbols.Blocks
             Return block _
                 .SafeQuery _
                 .Select(Function(line)
-                            If (line.TypeInfer(Nothing) <> "void") Then
-                                line = New drop With {
-                                    .expression = line
-                                }
-                            End If
-
                             Return indent & line.ToSExpression
                         End Function) _
                 .JoinBy(ASCII.LF)

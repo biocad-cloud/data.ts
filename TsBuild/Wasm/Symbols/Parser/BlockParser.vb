@@ -1,47 +1,47 @@
 ﻿#Region "Microsoft.VisualBasic::324df3abd6eebbd8a59c574464bf0d6a, Symbols\Parser\BlockParser.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    '       asuka (evia@lilithaf.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    '     Module BlockParser
-    ' 
-    '         Function: ctlGetLocal, DoLoop, DoWhile, ForLoop, IfBlock
-    '                   ParseBlockInternal, parseControlVariable, parseForLoopTest, (+2 Overloads) whileCondition, whileLoopInternal
-    ' 
-    ' 
-    ' /********************************************************************************/
+'     Module BlockParser
+' 
+'         Function: ctlGetLocal, DoLoop, DoWhile, ForLoop, IfBlock
+'                   ParseBlockInternal, parseControlVariable, parseForLoopTest, (+2 Overloads) whileCondition, whileLoopInternal
+' 
+' 
+' /********************************************************************************/
 
 #End Region
 
@@ -64,10 +64,15 @@ Namespace Symbols.Parser
                     .ValueExpression(symbols)
             }
             Dim elseBlock As Expression()
-            Dim thenBlock As Expression() = doIf.Statements.ParseBlockInternal(symbols)
+            Dim thenBlock As Expression() = doIf.Statements _
+                .ParseBlockInternal(symbols) _
+                .ToArray
 
             If Not doIf.ElseBlock Is Nothing Then
-                elseBlock = doIf.ElseBlock.Statements.ParseBlockInternal(symbols)
+                elseBlock = doIf.ElseBlock _
+                    .Statements _
+                    .ParseBlockInternal(symbols) _
+                    .ToArray
             Else
                 elseBlock = {}
             End If
@@ -209,21 +214,31 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Friend Function ParseBlockInternal(block As IEnumerable(Of StatementSyntax), symbols As SymbolTable) As Expression()
+        Friend Iterator Function ParseBlockInternal(block As IEnumerable(Of StatementSyntax), symbols As SymbolTable) As IEnumerable(Of Expression)
             Dim lineSymbols As [Variant](Of Expression, Expression())
-            Dim internal As New List(Of Expression)
+            Dim expression As Expression
 
             For Each statement As StatementSyntax In block
                 lineSymbols = statement.ParseExpression(symbols)
 
                 If lineSymbols.GetUnderlyingType.IsInheritsFrom(GetType(Expression)) Then
-                    internal += lineSymbols.TryCast(Of Expression)
+                    expression = lineSymbols.TryCast(Of Expression)
+
+                    If expression.TypeInfer(symbols) <> "void" Then
+                        Yield New drop With {.expression = expression}
+                    Else
+                        Yield expression
+                    End If
                 Else
-                    internal += lineSymbols.TryCast(Of Expression())
+                    For Each line In lineSymbols.TryCast(Of Expression())
+                        If line.TypeInfer(symbols) <> "void" Then
+                            Yield New drop With {.expression = line}
+                        Else
+                            Yield line
+                        End If
+                    Next
                 End If
             Next
-
-            Return internal
         End Function
 
         <Extension>

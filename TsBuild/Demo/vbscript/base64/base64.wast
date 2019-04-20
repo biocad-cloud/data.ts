@@ -5,7 +5,7 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/20/2019 6:20:03 PM
+    ;; build: 4/20/2019 10:02:22 PM
 
     ;; imports must occur before all non-import definitions
 
@@ -168,10 +168,10 @@
             (set_local $u (get_local $a))
         ) 
     )
-            (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $s)))
-            (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $o)))
-            (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $u)))
-            (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $a)))
+            (drop (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $s))))
+            (drop (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $o))))
+            (drop (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $u))))
+            (drop (call $array_push (get_local $base64) (call $charAt (get_global $keyStr) (get_local $a))))
             (br $loop_9b020000)
     
         )
@@ -249,11 +249,11 @@
             
     (if (i32.lt_s (get_local $r) (i32.const 128)) 
         (then
-                    (call $array_push (get_local $chars) (call $fromCharCode (get_local $r)))
+                    (drop (call $array_push (get_local $chars) (call $fromCharCode (get_local $r))))
         ) (else
-                    (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.shr_s (get_local $r) (i32.const 12)) (i32.const 224))))
-            (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.and (i32.shr_s (get_local $r) (i32.const 6)) (i32.const 63)) (i32.const 128))))
-            (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.and (get_local $r) (i32.const 63)) (i32.const 128))))
+                    (drop (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.shr_s (get_local $r) (i32.const 12)) (i32.const 224)))))
+            (drop (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.and (i32.shr_s (get_local $r) (i32.const 6)) (i32.const 63)) (i32.const 128)))))
+            (drop (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.and (get_local $r) (i32.const 63)) (i32.const 128)))))
         )
     )
             (br $loop_9f020000)
@@ -286,12 +286,12 @@
             
     (if (i32.lt_s (get_local $r) (i32.const 128)) 
         (then
-                    (call $array_push (get_local $t) (call $fromCharCode (get_local $r)))
+                    (drop (call $array_push (get_local $t) (call $fromCharCode (get_local $r))))
             (set_local $n (i32.add (get_local $n) (i32.const 1)))
         ) (else
                     (set_local $c2 (call $charCodeAt (get_local $text) (i32.add (get_local $n) (i32.const 1))))
             (set_local $c3 (call $charCodeAt (get_local $text) (i32.add (get_local $n) (i32.const 2))))
-            (call $array_push (get_local $t) (call $fromCharCode (i32.or (i32.or (i32.shl (i32.and (get_local $r) (i32.const 15)) (i32.const 12)) (i32.shl (i32.and (get_local $c2) (i32.const 63)) (i32.const 6))) (i32.and (get_local $c3) (i32.const 63)))))
+            (drop (call $array_push (get_local $t) (call $fromCharCode (i32.or (i32.or (i32.shl (i32.and (get_local $r) (i32.const 15)) (i32.const 12)) (i32.shl (i32.and (get_local $c2) (i32.const 63)) (i32.const 6))) (i32.and (get_local $c3) (i32.const 63))))))
             (set_local $n (i32.add (get_local $n) (i32.const 3)))
         )
     )

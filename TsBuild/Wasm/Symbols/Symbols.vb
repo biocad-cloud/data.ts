@@ -222,7 +222,11 @@ Namespace Symbols
         End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return symbolTable.GetObjectSymbol(var).type
+            If symbolTable Is Nothing Then
+                Return "i32"
+            Else
+                Return symbolTable.GetObjectSymbol(var).type
+            End If
         End Function
     End Class
 
@@ -240,7 +244,7 @@ Namespace Symbols
         End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return symbolTable.GetObjectSymbol(var).type
+            Return "void"
         End Function
     End Class
 
@@ -271,7 +275,7 @@ Namespace Symbols
         End Function
 
         Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
-            Return symbolTable.GetGlobal(var)
+            Return "void"
         End Function
     End Class
 
