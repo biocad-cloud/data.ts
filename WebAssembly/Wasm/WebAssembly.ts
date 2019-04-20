@@ -74,12 +74,17 @@
          * 运行时环境之中
         */
         function buildFunc(func: object): IWasmFunc {
+            let ObjMgr = WebAssembly.ObjectManager;
             let api: IWasmFunc = <any>function () {
                 let intptr: number = (<any>func).apply(this, buildArguments(<any>arguments));
                 let result
 
-                if (WebAssembly.ObjectManager.isNull(intptr)) {
-                    result = WebAssembly.ObjectManager.readText(intptr);
+                if (ObjMgr.isNull(intptr)) {
+                    if (ObjMgr.isText(intptr)) {
+                        result = WebAssembly.ObjectManager.readText(intptr);
+                    } else {
+                        return intptr;
+                    }                    
                 } else {
                     result = WebAssembly.ObjectManager.getObject(intptr);
                 }

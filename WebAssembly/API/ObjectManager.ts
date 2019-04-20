@@ -68,6 +68,10 @@
             return !(intPtr in hashTable);
         }
 
+        export function isText(intPtr: number): boolean {
+            return !(intPtr in textCache);
+        }
+
         export function getType(hashCode: number): string {
             if (hashCode in hashTable) {
                 let type: string;

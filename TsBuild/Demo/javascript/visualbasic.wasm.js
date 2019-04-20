@@ -137,6 +137,10 @@ var WebAssembly;
             return !(intPtr in hashTable);
         }
         ObjectManager.isNull = isNull;
+        function isText(intPtr) {
+            return !(intPtr in textCache);
+        }
+        ObjectManager.isText = isText;
         function getType(hashCode) {
             if (hashCode in hashTable) {
                 let type;
@@ -599,11 +603,17 @@ var TypeScript;
          * 运行时环境之中
         */
         function buildFunc(func) {
+            let ObjMgr = WebAssembly.ObjectManager;
             let api = function () {
                 let intptr = func.apply(this, buildArguments(arguments));
                 let result;
-                if (WebAssembly.ObjectManager.isNull(intptr)) {
-                    result = WebAssembly.ObjectManager.readText(intptr);
+                if (ObjMgr.isNull(intptr)) {
+                    if (ObjMgr.isText(intptr)) {
+                        result = WebAssembly.ObjectManager.readText(intptr);
+                    }
+                    else {
+                        return intptr;
+                    }
                 }
                 else {
                     result = WebAssembly.ObjectManager.getObject(intptr);
