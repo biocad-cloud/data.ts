@@ -1,51 +1,52 @@
 ﻿#Region "Microsoft.VisualBasic::f062faf29696446e7aae3ece7de98765, Symbols\Parser\BlockParser.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    '       asuka (evia@lilithaf.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    '     Module BlockParser
-    ' 
-    '         Function: ctlGetLocal, DoWhile, ForLoop, IfBlock, ParseBlockInternal
-    '                   parseControlVariable, parseForLoopTest, whileCondition
-    ' 
-    ' 
-    ' /********************************************************************************/
+'     Module BlockParser
+' 
+'         Function: ctlGetLocal, DoWhile, ForLoop, IfBlock, ParseBlockInternal
+'                   parseControlVariable, parseForLoopTest, whileCondition
+' 
+' 
+' /********************************************************************************/
 
 #End Region
 
 Imports System.Runtime.CompilerServices
+Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.Language
 Imports Wasm.Symbols.Blocks
@@ -227,17 +228,30 @@ Namespace Symbols.Parser
 
         <Extension>
         Public Iterator Function DoLoop(doLoopBlock As DoLoopBlockSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
+            Dim [do] = doLoopBlock.DoStatement.WhileOrUntilClause
+            Dim condition As Expression = doLoopBlock.DoStatement _
+                .WhileOrUntilClause _
+                .Condition _
+                .whileCondition(symbols)
 
+            If [do].WhileOrUntilKeyword.ValueText = "Until" Then
+                Throw New NotImplementedException
+            Else
+                Yield New CommentText With {.Text = doLoopBlock.DoStatement.ToString}
+
+                For Each line In condition.whileLoopInternal(doLoopBlock.Statements, symbols)
+                    Yield line
+                Next
+            End If
         End Function
 
         <Extension>
-        Public Iterator Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
+        Private Iterator Function whileLoopInternal(condition As Expression, statements As SyntaxList(Of StatementSyntax), symbols As SymbolTable) As IEnumerable(Of Expression)
             Dim block As New [Loop] With {
                 .Guid = $"block_{symbols.NextGuid}",
                 .LoopID = $"loop_{symbols.NextGuid}"
             }
             Dim internal As New List(Of Expression)
-            Dim condition As Expression = whileBlock.whileCondition(symbols)
 
             Yield New CommentText With {.Text = $"Start Do While Block {block.Guid}"}
 
@@ -245,7 +259,7 @@ Namespace Symbols.Parser
                 .BlockLabel = block.Guid,
                 .Condition = condition
             }
-            internal += whileBlock.Statements.ParseBlockInternal(symbols)
+            internal += statements.ParseBlockInternal(symbols)
             internal += New br With {.BlockLabel = block.LoopID}
 
             block.Internal = internal
@@ -255,11 +269,23 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
+        Public Iterator Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
+            Dim condition As Expression = whileBlock.whileCondition(symbols)
+
+            For Each line In condition.whileLoopInternal(whileBlock.Statements, symbols)
+                Yield line
+            Next
+        End Function
+
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        <Extension>
         Private Function whileCondition(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As Expression
-            Dim condition As Expression = whileBlock _
-                .WhileStatement _
-                .Condition _
-                .ValueExpression(symbols)
+            Return whileBlock.WhileStatement.Condition.whileCondition(symbols)
+        End Function
+
+        <Extension>
+        Private Function whileCondition(expression As ExpressionSyntax, symbols As SymbolTable) As Expression
+            Dim condition As Expression = expression.ValueExpression(symbols)
 
             Return New BooleanSymbol With {
                 .Condition = condition,
