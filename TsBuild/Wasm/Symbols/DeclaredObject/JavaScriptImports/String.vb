@@ -4,14 +4,27 @@ Namespace Symbols.JavaScriptImports
 
     Public Module [String]
 
-        Public ReadOnly Property Concatenation As New ImportSymbol With {
+        Const stringType$ = "char*"
+
+        Public ReadOnly Property StringAppend As New ImportSymbol With {
             .ImportObject = "add",
             .Name = "string.add",
             .Package = "string",
             .Result = "char*",
             .Parameters = {
-                New NamedValue(Of String)("a", "char*"),
-                New NamedValue(Of String)("b", "char*")
+                New NamedValue(Of String)("a", stringType),
+                New NamedValue(Of String)("b", stringType)
+            }
+        }
+
+        Public ReadOnly Property StringLength As New ImportSymbol With {
+            .ImportObject = "length",
+            .[Module] = "string",
+            .Name = "string.length",
+            .Package = "string",
+            .Result = "i32",
+            .Parameters = {
+                New NamedValue(Of String)("text", stringType)
             }
         }
 
@@ -25,7 +38,7 @@ Namespace Symbols.JavaScriptImports
                 .ImportObject = "toString",
                 .Name = $"{type}.toString",
                 .Package = "string",
-                .Result = "char*",
+                .Result = stringType,
                 .Parameters = {
                     New NamedValue(Of String)("s", type)
                 }

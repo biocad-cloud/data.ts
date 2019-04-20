@@ -62,7 +62,7 @@ Namespace Symbols.Parser
         ''' <returns></returns>
         <Extension>
         Public Function StringAppend(symbols As SymbolTable, left As Expression, right As Expression) As Expression
-            Dim append = JavaScriptImports.String.Concatenation
+            Dim append = JavaScriptImports.String.StringAppend
 
             ' try add required imports symbol
             Call symbols.addRequired(append)
