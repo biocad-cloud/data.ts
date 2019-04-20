@@ -281,6 +281,13 @@ Namespace Symbols
             End Get
         End Property
 
+        Public ReadOnly Property IsArray As Boolean
+            <MethodImpl(MethodImplOptions.AggressiveInlining)>
+            Get
+                Return Types.IsArray(type)
+            End Get
+        End Property
+
         Public Overrides Function ToSExpression() As String
             Return $"(local ${name} {typefit(type)})"
         End Function

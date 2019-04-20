@@ -196,6 +196,20 @@ Namespace Symbols.Parser
             Dim invokeInputs As ArgumentSyntax()
             Dim input As ArgumentSyntax = Nothing
 
+            If TypeOf funcDeclare Is ImportSymbol AndAlso funcDeclare.Name = JavaScriptImports.GetArrayElement.Name Then
+                ' 是一个数组元素的读取操作
+                Dim array = New GetLocalVariable With {.var = funcName}
+                Dim index As Expression = invoke.ArgumentList _
+                    .Arguments _
+                    .First _
+                    .Argument(symbols, funcDeclare.Parameters.Last)
+
+                Return New FuncInvoke With {
+                    .Reference = funcDeclare.Name,
+                    .Parameters = {array, index}
+                }
+            End If
+
             If invoke.ArgumentList Is Nothing Then
                 invokeInputs = {}
             Else

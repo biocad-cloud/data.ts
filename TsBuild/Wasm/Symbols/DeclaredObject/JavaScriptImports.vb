@@ -101,6 +101,17 @@ Namespace Symbols.JavaScriptImports
             .Parameters = {}
         }
 
+        Public ReadOnly Property GetArrayElement As New ImportSymbol With {
+            .ImportObject = "get",
+            .[Module] = "array",
+            .Name = "array.get",
+            .Package = "array",
+            .Result = "i32",
+            .Parameters = {
+                New NamedValue(Of String)("array", "i32"),
+                New NamedValue(Of String)("index", "i32")
+            }
+        }
     End Module
 
     Public Module [String]

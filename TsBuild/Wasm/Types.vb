@@ -142,6 +142,14 @@ Public Class Types
         Return exp.TypeInfer(symbols) Like integerType
     End Function
 
+    Public Shared Function IsArray(type As String) As Boolean
+        ' instr是从1开始的
+        Dim p = InStr(type, "[]") - 1
+        Dim lastIndex = (type.Length - 2)
+
+        Return p = lastIndex
+    End Function
+
     ''' <summary>
     ''' ``CType`` operator to webassembly 
     ''' ``Datatype conversions, truncations, reinterpretations, promotions, and demotions`` feature.
@@ -153,7 +161,7 @@ Public Class Types
     Public Shared Function [CType](left As String, right As Expression, symbols As SymbolTable) As Expression
         Dim rightTypeInfer$ = right.TypeInfer(symbols)
         Dim rightIsI32 As Boolean = rightTypeInfer = "i32"
-        Dim isArrayType As Boolean = InStr(left, "[]") > 0
+        Dim isArrayType As Boolean = IsArray(left)
 
         If left = rightTypeInfer Then
             Return right

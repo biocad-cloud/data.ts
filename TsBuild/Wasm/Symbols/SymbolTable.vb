@@ -198,9 +198,25 @@ Namespace Symbols
             Call locals.Clear()
         End Sub
 
+        ''' <summary>
+        ''' 因为VB.NET之中，数组的元素获取和函数调用的语法是一样的，所以假若没有找到目标函数
+        ''' 但是在local之中找到了一个数组，则会返回数组元素获取的语法
+        ''' </summary>
+        ''' <param name="name"></param>
+        ''' <returns></returns>
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetFunctionSymbol(name As String) As FuncSignature
-            Return functionList(name.Trim("$"c, "["c, "]"c))
+            name = name.Trim("$"c, "["c, "]"c)
+
+            If functionList.ContainsKey(name) Then
+                Return functionList(name)
+            Else
+                If locals.ContainsKey(name) AndAlso locals(name).IsArray Then
+                    Return JavaScriptImports.GetArrayElement
+                Else
+                    Throw New MissingPrimaryKeyException(name)
+                End If
+            End If
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
