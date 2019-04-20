@@ -1,46 +1,46 @@
 ﻿#Region "Microsoft.VisualBasic::8dc1eed097323e506b40c2b882f6f06f, Compiler\Wabt.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    '       asuka (evia@lilithaf.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    ' Module Wabt
-    ' 
-    '     Constructor: (+1 Overloads) Sub New
-    '     Function: Compile, CompileWast, HexDump, saveTemp
-    ' 
-    ' /********************************************************************************/
+' Module Wabt
+' 
+'     Constructor: (+1 Overloads) Sub New
+'     Function: Compile, CompileWast, HexDump, saveTemp
+' 
+' /********************************************************************************/
 
 #End Region
 
@@ -80,7 +80,7 @@ Public Module Wabt
     ''' <returns></returns>
     <Extension>
     Private Function saveTemp([module] As [Variant](Of ModuleSymbol, String)) As String
-        With App.GetAppSysTempFile(".wast", App.PID)
+        With App.GetAppSysTempFile(".wast", App.PID, "wat2wasm")
             If [module] Like GetType(ModuleSymbol) Then
                 Call CType([module], ModuleSymbol) _
                     .ToSExpression _
@@ -126,7 +126,11 @@ Public Module Wabt
 
     <Extension>
     Public Function HexDump([module] As ModuleSymbol, Optional verbose As Boolean = False) As String
-        Dim config As New wat2wasm With {.verbose = verbose, .dumpModule = True}
+        Dim config As New wat2wasm With {
+            .verbose = verbose,
+            .dumpModule = True,
+            .debugParser = True
+        }
 
         With New IORedirectFile(wat2wasm, $"{saveTemp([module]).CLIPath} {config}")
             Call .Run()

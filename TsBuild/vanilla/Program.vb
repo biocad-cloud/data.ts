@@ -29,6 +29,7 @@ Module Program
     Private Function CompileTargetFileRoutine(file As String, args As CommandLine) As Integer
         Dim moduleSymbol As ModuleSymbol
         Dim out$
+        Dim debug As Boolean = args("/debug")
 
         If file.ExtensionSuffix.TextEquals("vb") Then
             moduleSymbol = Wasm.CreateModule(file)
@@ -39,12 +40,24 @@ Module Program
 
             moduleSymbol = Wasm.CreateModuleFromProject(vbproj:=file)
             out = args("/out") Or $"{vbproj.GetOutputDirectory(profile)}/{vbproj.GetOutputName}.wasm"
+
+            If profile.Split("|"c).First = "Debug" Then
+                debug = True
+            End If
         End If
 
         Call moduleSymbol.ToSExpression.SaveTo(out.ChangeSuffix("wast"))
         Call moduleSymbol.HexDump(verbose:=True).SaveTo(out.ChangeSuffix("dmp"))
 
-        Return Wasm.Compile(moduleSymbol, out) _
+        Dim config As New wat2wasm With {.output = out}
+
+        If debug Then
+            config.debugNames = True
+            config.debugParser = True
+            config.verbose = True
+        End If
+
+        Return Wasm.Compile(moduleSymbol, config) _
             .SaveTo(out.ChangeSuffix("log")) _
             .CLICode
     End Function
