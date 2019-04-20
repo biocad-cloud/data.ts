@@ -7,7 +7,7 @@ Module stringHelpers
     ''' </summary>
     ''' <param name="pattern"></param>
     ''' <returns></returns>
-    Declare Function regexp Lib "regexp" Alias "regexp" (pattern As String, Optional flag$ = "g") As Integer
+    Declare Function regexp Lib "RegExp" Alias "regexp" (pattern As String, Optional flag$ = "g") As Integer
     Declare Function fromCharCode Lib "string" Alias "fromCharCode" (c As Integer) As Char
 
     <Extension>

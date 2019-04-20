@@ -19,8 +19,8 @@
     (func $string_length (import "string" "length") (param $text i32) (result i32))
     ;; Declare Function string_indexOf Lib "string" Alias "indexOf" (input As char*, find As char*) As i32
     (func $string_indexOf (import "string" "indexOf") (param $input i32) (param $find i32) (result i32))
-    ;; Declare Function regexp Lib "regexp" Alias "regexp" (pattern As char*, flag As char*) As i32
-    (func $regexp (import "regexp" "regexp") (param $pattern i32) (param $flag i32) (result i32))
+    ;; Declare Function regexp Lib "RegExp" Alias "regexp" (pattern As char*, flag As char*) As i32
+    (func $regexp (import "RegExp" "regexp") (param $pattern i32) (param $flag i32) (result i32))
     ;; Declare Function fromCharCode Lib "string" Alias "fromCharCode" (c As i32) As char
     (func $fromCharCode (import "string" "fromCharCode") (param $c i32) (result i32))
     ;; Declare Function charCodeAt Lib "string" Alias "charCodeAt" (text As char*, index As i32) As i32
