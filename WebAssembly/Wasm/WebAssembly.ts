@@ -132,6 +132,16 @@
             return assembly;
         }
 
+        function getMath(): any {
+            let runtime = (<any>window);
+            let math = runtime.Math;
+
+            math["isNaN"] = x => runtime.isNaN(x);
+            math["isFinite"] = x => runtime.isFinite(x);
+
+            return math;
+        }
+
         function handleApiDependencies(dependencies: object, opts: Config) {
             var api: apiOptions = opts.api || {
                 document: false,
@@ -143,7 +153,7 @@
 
             // imports the javascript math module for VisualBasic.NET 
             // module by default
-            dependencies["Math"] = (<any>window).Math;
+            dependencies["Math"] = getMath();
             // Andalso imports some basically string api for VisualBasic.NET
             // as well
             dependencies["string"] = WebAssembly.JsString;

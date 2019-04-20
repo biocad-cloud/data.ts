@@ -642,6 +642,13 @@ var TypeScript;
             let assembly = engine.instantiate(module, dependencies);
             return assembly;
         }
+        function getMath() {
+            let runtime = window;
+            let math = runtime.Math;
+            math["isNaN"] = x => runtime.isNaN(x);
+            math["isFinite"] = x => runtime.isFinite(x);
+            return math;
+        }
         function handleApiDependencies(dependencies, opts) {
             var api = opts.api || {
                 document: false,
@@ -652,7 +659,7 @@ var TypeScript;
             };
             // imports the javascript math module for VisualBasic.NET 
             // module by default
-            dependencies["Math"] = window.Math;
+            dependencies["Math"] = getMath();
             // Andalso imports some basically string api for VisualBasic.NET
             // as well
             dependencies["string"] = WebAssembly.JsString;
