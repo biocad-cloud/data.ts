@@ -180,7 +180,6 @@ Namespace Symbols.Parser
         <Extension>
         Public Function FunctionInvoke(invoke As InvocationExpressionSyntax, symbols As SymbolTable) As FuncInvoke
             Dim reference = invoke.Expression
-            Dim arguments As New List(Of Expression)
             Dim funcName$
 
             ' 得到被调用的目标函数的名称符号
@@ -199,15 +198,21 @@ Namespace Symbols.Parser
                     Throw New NotImplementedException(reference.GetType.FullName)
             End Select
 
+            Return symbols.InvokeFunction(funcName, invoke.ArgumentList)
+        End Function
+
+        <Extension>
+        Public Function InvokeFunction(symbols As SymbolTable, funcName$, argumentList As ArgumentListSyntax) As Expression
             Dim funcDeclare = symbols.GetFunctionSymbol(funcName)
             Dim arg As NamedValue(Of String)
             Dim invokeInputs As ArgumentSyntax()
             Dim input As ArgumentSyntax = Nothing
+            Dim arguments As New List(Of Expression)
 
             If JavaScriptImports.Array.IsArrayOperation(funcDeclare) Then
                 ' 是一个数组元素的读取操作
                 Dim array = New GetLocalVariable With {.var = funcName}
-                Dim index As Expression = invoke.ArgumentList _
+                Dim index As Expression = argumentList _
                     .Arguments _
                     .First _
                     .Argument(symbols, funcDeclare.Parameters.Last)
@@ -218,11 +223,10 @@ Namespace Symbols.Parser
                 }
             End If
 
-            If invoke.ArgumentList Is Nothing Then
+            If argumentList Is Nothing Then
                 invokeInputs = {}
             Else
-                invokeInputs = invoke _
-                    .ArgumentList _
+                invokeInputs = argumentList _
                     .ArgumentSequence(funcDeclare.Parameters) _
                     .ToArray
             End If
