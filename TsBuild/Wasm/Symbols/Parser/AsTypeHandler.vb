@@ -1,52 +1,53 @@
 ﻿#Region "Microsoft.VisualBasic::f7ecf866135917ea0e0d6797d469e5cf, Symbols\Parser\AsTypeHandler.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    '       asuka (evia@lilithaf.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    '     Module AsTypeHandler
-    ' 
-    '         Function: [GetType], AsType, GetAsType
-    ' 
-    ' 
-    ' /********************************************************************************/
+'     Module AsTypeHandler
+' 
+'         Function: [GetType], AsType, GetAsType
+' 
+' 
+' /********************************************************************************/
 
 #End Region
 
 Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualBasic.ComponentModel.Collection
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
 
@@ -104,6 +105,18 @@ Namespace Symbols.Parser
         }
 
         <Extension>
+        Public Function GetGenericType(generic As GenericNameSyntax, symbols As SymbolTable) As NamedValue(Of Type)
+            Dim TypeName = generic.objectName
+            Dim types = generic.TypeArgumentList.Arguments
+            Dim elementType = AsTypeHandler.GetType(types.First, symbols)
+
+            Return New NamedValue(Of Type) With {
+                .Name = TypeName,
+                .Value = elementType
+            }
+        End Function
+
+        <Extension>
         Public Function [GetType](asType As TypeSyntax, symbols As SymbolTable) As Type
             If TypeOf asType Is PredefinedTypeSyntax Then
                 Dim type = DirectCast(asType, PredefinedTypeSyntax)
@@ -112,9 +125,19 @@ Namespace Symbols.Parser
                 Return Scripting.GetType(token)
             ElseIf TypeOf asType Is ArrayTypeSyntax Then
                 Dim type = DirectCast(asType, ArrayTypeSyntax)
-                Dim tokenType = [GetType](type.ElementType, symbols)
+                Dim tokenType As Type = [GetType](type.ElementType, symbols)
 
                 Return tokenType.MakeArrayType
+            ElseIf TypeOf asType Is GenericNameSyntax Then
+                Dim generic = DirectCast(asType, GenericNameSyntax)
+                Dim define = generic.GetGenericType(symbols)
+                Dim tokenType = define.Value
+
+                If define.Name = "List" Then
+                    Return tokenType.MakeArrayType
+                Else
+                    Throw New NotImplementedException
+                End If
             Else
                 Dim type = DirectCast(asType, IdentifierNameSyntax)
                 Dim token$ = type.Identifier.objectName
