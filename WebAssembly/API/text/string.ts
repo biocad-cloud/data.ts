@@ -7,7 +7,7 @@
 
         export function fromCharCode(n: number): number {
             let s: string = String.fromCharCode(n);
-            return ObjectManager.addObject(s);
+            return ObjectManager.addText(s);
         }
 
         export function toString(obj: number): number {
@@ -21,14 +21,14 @@
                 s = ObjectManager.getObject(obj).toString();
             }
 
-            return ObjectManager.addObject(s);
+            return ObjectManager.addText(s);
         }
 
         export function add(a: number, b: number): number {
             let str1: string = ObjectManager.readText(a);
             let str2: string = ObjectManager.readText(b);
 
-            return ObjectManager.addObject(str1 + str2);
+            return ObjectManager.addText(str1 + str2);
         }
 
         export function length(text: number): number {
@@ -40,7 +40,7 @@
             let findObj: RegExp | string;
 
             if (ObjectManager.getType(find) == "RegExp") {
-                findObj = ObjectManager.getType(find);
+                findObj = ObjectManager.getObject(find);
             } else {
                 findObj = ObjectManager.readText(find);
             }
@@ -48,7 +48,7 @@
             let replaceStr: string = ObjectManager.readText(replacement);
             let result: string = input.replace(findObj, replaceStr);
 
-            return ObjectManager.addObject(result);
+            return ObjectManager.addText(result);
         }
     }
 }
