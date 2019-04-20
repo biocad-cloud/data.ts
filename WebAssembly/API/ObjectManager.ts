@@ -18,6 +18,11 @@
         */
         export function load(bytes: TypeScript.WasmMemory): void {
             streamReader = new TypeScript.stringReader(bytes);
+            hashCode += 100;
+        }
+
+        export function printTextCache() {
+            console.table(textCache);
         }
 
         /**

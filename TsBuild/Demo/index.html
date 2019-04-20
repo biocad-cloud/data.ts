@@ -23,7 +23,7 @@
 			
 			TypeScript.Wasm.RunAssembly("vbscript/base64.wasm", {
 				run : encoder => {
-					var base64 = encoder.encode("Hello world!");
+					var base64 = encoder.encode("Hi, Hello world!");
 					
 					document.getElementById("base64-display").innerText = base64;
 					
@@ -31,6 +31,8 @@
 					
 					console.log("The raw text of this base64 input is:");
 					console.warn(raw);
+					
+					WebAssembly.ObjectManager.printTextCache();
 				},
 				api: {console: true, text: true, array: true}
 			});

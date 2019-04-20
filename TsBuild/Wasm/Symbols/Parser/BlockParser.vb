@@ -135,8 +135,9 @@ Namespace Symbols.Parser
             Dim doStep = ExpressionParse.BinaryStack(controlVar, stepValue, "+", symbols)
 
             internal += break
-            internal += New SetLocalVariable With {.var = controlVar.var, .value = doStep}
             internal += forBlock.Statements.ParseBlockInternal(symbols)
+            ' 更新循环控制变量的值
+            internal += New SetLocalVariable With {.var = controlVar.var, .value = doStep}
             internal += [next]
             internal += New CommentText With {
                 .Text = $"For Loop Next On {[next].BlockLabel}"

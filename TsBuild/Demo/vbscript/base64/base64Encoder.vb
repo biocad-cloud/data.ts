@@ -5,6 +5,7 @@ Public Module base64Encoder
     Dim keyStr As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
 
     Declare Function isNaN Lib "Math" Alias "isNaN" (x As Integer) As Boolean
+    Declare Sub print Lib "console" Alias "log" (obj As Object)
 
     ''' <summary>
     ''' 将任意文本编码为base64字符串
@@ -96,6 +97,8 @@ Public Module base64Encoder
 
         For n As Integer = 0 To text.Length - 1
             Dim r = charCodeAt(text, n)
+
+            Call print(chars)
 
             If (r < 128) Then
                 chars.Add(fromCharCode(r))

@@ -5,12 +5,14 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/21/2019 12:53:18 AM
+    ;; build: 4/21/2019 1:45:13 AM
 
     ;; imports must occur before all non-import definitions
 
     ;; Declare Function isNaN Lib "Math" Alias "isNaN" (x As i32) As boolean
     (func $isNaN (import "Math" "isNaN") (param $x i32) (result i32))
+    ;; Declare Function print Lib "console" Alias "log" (obj As System.Object) As void
+    (func $print (import "console" "log") (param $obj i32) )
     ;; Declare Function string_replace Lib "string" Alias "replace" (input As char*, find As i32, replacement As char*) As i32
     (func $string_replace (import "string" "replace") (param $input i32) (param $find i32) (param $replacement i32) (result i32))
     ;; Declare Function string_add Lib "string" Alias "add" (a As char*, b As char*) As char*
@@ -247,8 +249,8 @@
         (loop $loop_9f020000
     
                     (br_if $block_9e020000 (i32.gt_s (get_local $n) (i32.sub (call $string_length (get_local $text)) (i32.const 1))))
-            (set_local $n (i32.add (get_local $n) (i32.const 1)))
             (set_local $r (call $charCodeAt (get_local $text) (get_local $n)))
+            (call $print (get_local $chars))
             
     (if (i32.lt_s (get_local $r) (i32.const 128)) 
         (then
@@ -259,6 +261,7 @@
             (drop (call $array_push (get_local $chars) (call $fromCharCode (i32.or (i32.and (get_local $r) (i32.const 63)) (i32.const 128)))))
         )
     )
+            (set_local $n (i32.add (get_local $n) (i32.const 1)))
             (br $loop_9f020000)
             ;; For Loop Next On loop_9f020000
     

@@ -86,8 +86,13 @@ var WebAssembly;
         */
         function load(bytes) {
             streamReader = new TypeScript.stringReader(bytes);
+            hashCode += 100;
         }
         ObjectManager.load = load;
+        function printTextCache() {
+            console.table(textCache);
+        }
+        ObjectManager.printTextCache = printTextCache;
         /**
          * Read text data from WebAssembly runtime its memory block
          *
