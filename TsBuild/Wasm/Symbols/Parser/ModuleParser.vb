@@ -209,7 +209,8 @@ Namespace Symbols.Parser
                     .Result = define.Value,
                     .ImportObject = api.AliasName.Token.ValueText,
                     .Package = api.LibraryName.Token.ValueText,
-                    .[Module] = moduleName
+                    .[Module] = moduleName,
+                    .IsExtensionMethod = api.IsExtensionMethod
                 }
 
                 ' add api symbols for type match in function body
