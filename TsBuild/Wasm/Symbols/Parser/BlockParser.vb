@@ -226,6 +226,11 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
+        Public Iterator Function DoLoop(doLoopBlock As DoLoopBlockSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
+
+        End Function
+
+        <Extension>
         Public Iterator Function DoWhile(whileBlock As WhileBlockSyntax, symbols As SymbolTable) As IEnumerable(Of Expression)
             Dim block As New [Loop] With {
                 .Guid = $"block_{symbols.NextGuid}",
