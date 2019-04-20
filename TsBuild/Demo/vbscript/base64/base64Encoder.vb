@@ -78,13 +78,13 @@ Public Module base64Encoder
             n = s << 2 Or o >> 4
             r = (o And 15) << 4 Or u >> 2
             i = (u And 3) << 6 Or a
-            text = text + fromCharCode(n)
+            text = text & fromCharCode(n)
 
             If (u <> 64) Then
-                text = text + fromCharCode(r)
+                text = text & fromCharCode(r)
             End If
             If (a <> 64) Then
-                text = text + fromCharCode(i)
+                text = text & fromCharCode(i)
             End If
         Loop
 

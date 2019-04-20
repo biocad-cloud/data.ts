@@ -48,6 +48,13 @@ Module arrayTest
     Declare Function debug Lib "console" Alias "log" (any As String()) As Integer
     Declare Function print Lib "console" Alias "log" (any As String) As Integer
 
+    Public Function testListAdd()
+        Dim l As List(Of String) = New List(Of String) From {"Hello", "World"}
+
+        Call l.Add("yes")
+        Call print(l(2))
+    End Function
+
     Public Function arrayLoop()
         ' convert to string and display
         Dim ints As Integer() = {1, 2, 3, 4, 5, 6, 7, 88}

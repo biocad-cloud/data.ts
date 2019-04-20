@@ -209,17 +209,17 @@
             (set_local $n (i32.or (i32.shl (get_local $s) (i32.const 2)) (i32.shr_s (get_local $o) (i32.const 4))))
             (set_local $r (i32.or (i32.shl (i32.and (get_local $o) (i32.const 15)) (i32.const 4)) (i32.shr_s (get_local $u) (i32.const 2))))
             (set_local $i (i32.or (i32.shl (i32.and (get_local $u) (i32.const 3)) (i32.const 6)) (get_local $a)))
-            (set_local $text (char.add (get_local $text) (call $fromCharCode (get_local $n))))
+            (set_local $text (call $string.add (get_local $text) (call $fromCharCode (get_local $n))))
             
     (if (i32.ne (get_local $u) (i32.const 64)) 
         (then
-                    (set_local $text (char.add (get_local $text) (call $fromCharCode (get_local $r))))
+                    (set_local $text (call $string.add (get_local $text) (call $fromCharCode (get_local $r))))
         ) 
     )
             
     (if (i32.ne (get_local $a) (i32.const 64)) 
         (then
-                    (set_local $text (char.add (get_local $text) (call $fromCharCode (get_local $i))))
+                    (set_local $text (call $string.add (get_local $text) (call $fromCharCode (get_local $i))))
         ) 
     )
             (br $loop_9d020000)
