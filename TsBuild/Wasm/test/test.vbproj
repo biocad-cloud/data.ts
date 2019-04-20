@@ -172,6 +172,7 @@
     <Compile Include="boolTest.vb" />
     <Compile Include="functionTest.vb" />
     <Compile Include="arrayTest.vb" />
+    <Compile Include="incrementTest.vb" />
     <Compile Include="nullreferenceTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

@@ -272,18 +272,6 @@ Namespace Symbols.Parser
                         Return .ConstantExpression(type, symbols)
                     End With
                 End If
-            ElseIf TypeOf val Is UnaryExpressionSyntax Then
-                ' unary
-                Dim unary As UnaryExpressionSyntax = val
-                Dim op$ = unary.OperatorToken.ValueText
-                Dim right As LiteralExpression
-
-                With DirectCast(unary.Operand, LiteralExpressionSyntax)
-                    right = .ConstantExpression(type, symbols)
-                    right.value = op & right.value
-                End With
-
-                Return right
             Else
                 Return val.ValueExpression(symbols)
             End If
