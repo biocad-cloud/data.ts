@@ -93,7 +93,11 @@ Namespace Symbols.Parser
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Public Function GetAsType([as] As SimpleAsClauseSyntax, symbols As SymbolTable) As Type
-            Return [GetType]([as].Type, symbols)
+            If [as] Is Nothing Then
+                Return GetType(System.Void)
+            Else
+                Return [GetType]([as].Type, symbols)
+            End If
         End Function
 
         ''' <summary>

@@ -179,7 +179,7 @@ Public Class Types
         Dim rightIsI32 As Boolean = rightTypeInfer = "i32"
         Dim isArrayType As Boolean = IsArray(left)
 
-        If left = "object" OrElse left = "any" Then
+        If left = "object" OrElse left = "any" OrElse left = GetType(Object).FullName Then
             ' 可以传递任意类型给左边
             Return right
         ElseIf left Like stringType AndAlso rightTypeInfer Like stringType Then

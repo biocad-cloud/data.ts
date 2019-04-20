@@ -49,6 +49,7 @@ Module functionTest
 
     <Extension>
     Declare Function print Lib "console" Alias "log" (info As String) As Integer
+    Declare Sub err Lib "console" Alias "error" (message As Object)
 
     Public Sub extensionFunctiontest()
         Call "345566777777".print
@@ -60,11 +61,19 @@ Module functionTest
         ' use default
         Call Main()
 
+        Call outputError()
+
     End Sub
 
     Public Sub Main(Optional args As String = "This is the optional parameter value", Optional obj As Integer = -100)
         Call print(args)
         Call print(obj)
     End Sub
+
+    Public Function outputError() As Single
+        Call err("this is message")
+
+        Return -0.0001
+    End Function
 
 End Module

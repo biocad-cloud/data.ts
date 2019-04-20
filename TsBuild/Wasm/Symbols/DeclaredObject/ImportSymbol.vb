@@ -95,9 +95,16 @@ Namespace Symbols
             Dim params$ = Parameters _
                 .Select(Function(a) a.param) _
                 .JoinBy(" ")
+            Dim returnType$ = typefit(Result)
+
+            If returnType = "void" Then
+                returnType = ""
+            Else
+                returnType = $"(result {typefit(Result)})"
+            End If
 
             Return $";; {VBDeclare}
-    (func ${Name} (import ""{Package}"" ""{ImportObject}"") {params} (result {typefit(Result)}))"
+    (func ${Name} (import ""{Package}"" ""{ImportObject}"") {params} {returnType})"
         End Function
 
         Public Overrides Function ToString() As String
