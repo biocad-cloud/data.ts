@@ -133,8 +133,8 @@ End Module"
 
     Sub FileTest()
         For Each file As String In {
-                "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\arrayTest.vb",
                 "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\functionTest.vb",
+                "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\arrayTest.vb",
             "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\nullreferenceTest.vb",
             "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\Stringstest.vb",
             "E:\repo\xDoc\ts\Linq.ts\TsBuild\Wasm\test\EnumTest.vb",

@@ -1,6 +1,13 @@
-﻿Module functionTest
+﻿Imports System.Runtime.CompilerServices
 
+Module functionTest
+
+    <Extension>
     Declare Function print Lib "console" Alias "log" (info As String) As Integer
+
+    Public Function extensionFunctiontest()
+        Call "345566777777".print
+    End Function
 
     Public Function calls()
 
