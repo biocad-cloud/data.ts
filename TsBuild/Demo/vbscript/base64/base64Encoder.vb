@@ -1,5 +1,14 @@
 ﻿Imports System.Runtime.CompilerServices
 
+''' <summary>
+''' A demo of VB.NET general programming features in WebAssembly
+''' 
+''' 1. extension function is supported
+''' 2. array is supported
+''' 3. numeric operators is supported
+''' 4. if/for/while control flow is supported
+''' 5. string operation is supported
+''' </summary>
 Public Module base64Encoder
 
     Dim keyStr As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
