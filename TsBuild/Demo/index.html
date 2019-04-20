@@ -23,4 +23,17 @@
 		},
 		api: { document: true, console: true }
 	});
+	
+	TypeScript.Wasm.RunAssembly("vbscript/base64.wasm", {
+		run : encoder => {
+			var base64 = encoder.encode("Hello world!");
+			
+			document.getElementById("base64-display").innerText = base64;
+			
+			var raw = encoder.decode(base64);
+			
+			console.warn(raw);
+		},
+		api: {console: true, text: true}
+	});
 </script>
