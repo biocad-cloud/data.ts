@@ -47,6 +47,7 @@
 
 Imports System.Runtime.CompilerServices
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 
 Namespace Symbols.Parser
@@ -96,6 +97,32 @@ Namespace Symbols.Parser
 
         <Extension>
         Public Function ValueAssign(assign As AssignmentStatementSyntax, symbols As SymbolTable) As Expression
+            If TypeOf assign.Left Is IdentifierNameSyntax Then
+                Return symbols.AssignVariable(assign)
+            ElseIf TypeOf assign.Left Is InvocationExpressionSyntax Then
+                ' 对数组的赋值操作
+                Dim left = DirectCast(assign.Left, InvocationExpressionSyntax)
+                Dim arrayName = DirectCast(left.Expression, IdentifierNameSyntax).objectName
+                Dim index As Expression = left.ArgumentList _
+                    .Arguments _
+                    .First _
+                    .Argument(symbols, New NamedValue(Of String)("a", "i32"))
+                Dim arraySymbol As New GetLocalVariable With {.var = arrayName}
+
+                Call symbols.addRequired(JavaScriptImports.SetArrayElement)
+
+                Return New FuncInvoke(JavaScriptImports.SetArrayElement.Name) With {
+                    .Parameters = {
+                        arraySymbol, index, assign.Right.ValueExpression(symbols)
+                    }
+                }
+            Else
+                Throw New NotImplementedException
+            End If
+        End Function
+
+        <Extension>
+        Private Function AssignVariable(symbols As SymbolTable, assign As AssignmentStatementSyntax) As Expression
             Dim var = DirectCast(assign.Left, IdentifierNameSyntax).objectName
             Dim left As Expression
             Dim right = assign.Right.ValueExpression(symbols)
