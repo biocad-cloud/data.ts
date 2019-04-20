@@ -9,5 +9,10 @@
 
         Call debug(str)
         Call print(str(3))
+
+        str(4) = "Hello world"
+
+        Call debug(str)
+        Call print(str(4))
     End Function
 End Module
