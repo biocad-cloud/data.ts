@@ -250,7 +250,6 @@
     
                     (br_if $block_9e020000 (i32.gt_s (get_local $n) (i32.sub (call $string_length (get_local $text)) (i32.const 1))))
             (set_local $r (call $charCodeAt (get_local $text) (get_local $n)))
-            (call $print (get_local $chars))
             
     (if (i32.lt_s (get_local $r) (i32.const 128)) 
         (then

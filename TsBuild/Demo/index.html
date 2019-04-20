@@ -13,6 +13,7 @@
 </div>
 
 <div id="base64-display"></div>
+<div id="base64-display2" style="color: blue; background-color: lightgreen;"></div>
 
 <script type="text/javascript" src="javascript/visualbasic.wasm.js"></script>
 <script type="text/javascript">
@@ -32,11 +33,37 @@
 					console.log("The raw text of this base64 input is:");
 					console.warn(raw);
 					
-					WebAssembly.ObjectManager.printTextCache();
+					console.log("decode base64 string from server response:");
+					console.log("base64")
+					
+					var server = GET("base64.php");
+					
+					raw = encoder.decode(server);
+					
+					console.log("The raw text of this base64 input is:");
+					console.warn(raw);
+					
+					document.getElementById("base64-display2").innerText = raw;
+					
+					// WebAssembly.ObjectManager.printTextCache();
 				},
 				api: {console: true, text: true, array: true}
 			});
 		},
 		api: { document: true, console: true }
 	});	
+	
+	function GET(url) {
+        var request = new XMLHttpRequest();
+
+        // `false` makes the request synchronous
+        request.open('GET', url, false);
+        request.send(null);
+
+        if (request.status === 200) {
+            return request.responseText;
+        } else {
+            return null;
+        }
+    }
 </script>

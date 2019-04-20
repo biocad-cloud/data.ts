@@ -98,7 +98,7 @@ Public Module base64Encoder
         For n As Integer = 0 To text.Length - 1
             Dim r = charCodeAt(text, n)
 
-            Call print(chars)
+            ' Call print(chars)
 
             If (r < 128) Then
                 chars.Add(fromCharCode(r))
