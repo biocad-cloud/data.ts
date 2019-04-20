@@ -76,7 +76,13 @@
         function buildFunc(func: object): IWasmFunc {
             let api: IWasmFunc = <any>function () {
                 let intptr: number = (<any>func).apply(this, buildArguments(<any>arguments));
-                let result = WebAssembly.ObjectManager.getObject(intptr);
+                let result
+
+                if (WebAssembly.ObjectManager.isNull(intptr)) {
+                    result = WebAssembly.ObjectManager.readText(intptr);
+                } else {
+                    result = WebAssembly.ObjectManager.getObject(intptr);
+                }
 
                 return result;
             }

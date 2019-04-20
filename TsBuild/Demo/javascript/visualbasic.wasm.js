@@ -596,7 +596,13 @@ var TypeScript;
         function buildFunc(func) {
             let api = function () {
                 let intptr = func.apply(this, buildArguments(arguments));
-                let result = WebAssembly.ObjectManager.getObject(intptr);
+                let result;
+                if (WebAssembly.ObjectManager.isNull(intptr)) {
+                    result = WebAssembly.ObjectManager.readText(intptr);
+                }
+                else {
+                    result = WebAssembly.ObjectManager.getObject(intptr);
+                }
                 return result;
             };
             api.WasmPrototype = func;
