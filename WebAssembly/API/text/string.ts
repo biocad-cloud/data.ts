@@ -30,5 +30,25 @@
 
             return ObjectManager.addObject(str1 + str2);
         }
+
+        export function length(text: number): number {
+            return ObjectManager.readText(text).length;
+        }
+
+        export function replace(text: number, find: number, replacement: number): number {
+            let input: string = ObjectManager.readText(text);
+            let findObj: RegExp | string;
+
+            if (ObjectManager.getType(find) == "RegExp") {
+                findObj = ObjectManager.getType(find);
+            } else {
+                findObj = ObjectManager.readText(find);
+            }
+
+            let replaceStr: string = ObjectManager.readText(replacement);
+            let result: string = input.replace(findObj, replaceStr);
+
+            return ObjectManager.addObject(result);
+        }
     }
 }

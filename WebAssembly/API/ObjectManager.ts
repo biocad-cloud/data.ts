@@ -9,8 +9,9 @@
         /**
          * 在这里主要是为了避免和内部的数值产生冲突
         */
-        let hashCode: number = 2;
+        let hashCode: number = -999999999;
         let hashTable: object = {};
+        let textCache: object = {};
 
         /**
          * Load WebAssembly memory buffer into Javascript runtime.
@@ -25,11 +26,24 @@
          * @param intptr The memory pointer
         */
         export function readText(intptr: number): string {
-            if ((intptr in hashTable) && typeof hashTable[intptr] == "string") {
+            if (intptr in textCache) {
+                return textCache[intptr];
+            } else if ((intptr in hashTable) && typeof hashTable[intptr] == "string") {
                 return hashTable[intptr];
             } else {
-                return streamReader.readText(intptr);
+                let cache = streamReader.readText(intptr);
+                addText(cache);
+                return cache;
             }
+        }
+
+        export function addText(text: string): number {
+            var key: number = hashCode;
+
+            textCache[key] = text;
+            hashCode++;
+
+            return key;
         }
 
         /**
@@ -72,10 +86,10 @@
          * Add any object to a internal hashTable and then returns its hash code.
         */
         export function addObject(o: any): number {
-            var key: number = -hashCode;
+            var key: number = hashCode;
 
             hashTable[key] = o;
-            hashCode = PrimeHashCode.getNextPrime(hashCode);
+            hashCode++;
 
             return key;
         }
