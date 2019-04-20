@@ -104,7 +104,7 @@ Public Module Wabt
     ''' </returns>
     <Extension>
     Public Function Compile([module] As ModuleSymbol, config As wat2wasm) As String
-        With New IORedirectFile(wat2wasm, $"{saveTemp([module]).CLIPath} {config}")
+        With New IORedirectFile(wat2wasm, $"{saveTemp([module]).CLIPath} {config}", debug:=False)
             Call .Run()
             Return .StandardOutput
         End With
@@ -116,7 +116,7 @@ Public Module Wabt
     ''' <param name="wast">The file text</param>
     ''' <returns></returns>
     Public Function CompileWast(wast As String, config As wat2wasm) As String
-        With New IORedirectFile(wat2wasm, $"{saveTemp(wast).CLIPath} {config}")
+        With New IORedirectFile(wat2wasm, $"{saveTemp(wast).CLIPath} {config}", debug:=False)
             Call config.output.ParentPath.MkDIR
             Call .Run()
 
@@ -132,7 +132,7 @@ Public Module Wabt
             .debugParser = True
         }
 
-        With New IORedirectFile(wat2wasm, $"{saveTemp([module]).CLIPath} {config}")
+        With New IORedirectFile(wat2wasm, $"{saveTemp([module]).CLIPath} {config}", debug:=False)
             Call .Run()
             Return .StandardOutput
         End With
