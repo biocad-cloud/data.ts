@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::b45d9d8b1b083303abc7354022fb662d, test\arrayTest.vb"
+﻿#Region "Microsoft.VisualBasic::1f8c012c8e8a05c2ca9ad63e33b08cd5, test\arrayTest.vb"
 
     ' Author:
     ' 
@@ -72,4 +72,3 @@ Module arrayTest
 
     End Function
 End Module
-

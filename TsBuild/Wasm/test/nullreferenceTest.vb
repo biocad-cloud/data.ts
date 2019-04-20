@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::565a43d57633d91906619d604d9e490c, test\nullreferenceTest.vb"
+﻿#Region "Microsoft.VisualBasic::70222df50f64382b7abf519e70db8a51, test\nullreferenceTest.vb"
 
     ' Author:
     ' 
@@ -68,4 +68,3 @@ Module nullreferenceTest
     End Function
 
 End Module
-

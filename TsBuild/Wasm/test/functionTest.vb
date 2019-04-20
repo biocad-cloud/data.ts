@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::b1ae5c510e992d977465e5d4acb4cfe5, test\functionTest.vb"
+﻿#Region "Microsoft.VisualBasic::c0a01abc0eb6aaa5bf584c2e4fc9f446, test\functionTest.vb"
 
     ' Author:
     ' 
@@ -68,4 +68,3 @@ Module functionTest
     End Function
 
 End Module
-
