@@ -102,7 +102,7 @@ Public Module base64Encoder
     Public Function utf8_encode(text As String) As String
         Dim chars As List(Of String) = New List(Of String)
 
-        text = Replace(text, regexp("rn", "g"), "n")
+        text = text.Replace(regexp("rn", "g"), "n")
 
         For n As Integer = 0 To text.Length - 1
             Dim r = charCodeAt(text, n)

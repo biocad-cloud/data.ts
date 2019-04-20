@@ -118,13 +118,14 @@ Public Module Extensions
             .Values _
             .Where(Function(p) p.PropertyType Is GetType(String)) _
             .ToArray
+        Dim symbols As New SymbolTable With {.memory = memory}
         Dim getStrings As FuncSymbol() = schema _
             .Select(Function(val)
                         Dim name = val.Name
                         Dim string$ = val.GetValue(AssemblyInfo)
 
                         ' readonly function() as string
-                        Return memory.getString(name, [string])
+                        Return symbols.getString(name, [string])
                     End Function) _
             .ToArray
 
@@ -145,7 +146,7 @@ Public Module Extensions
     End Function
 
     <Extension>
-    Private Function getString(memory As Memory, name$, string$) As FuncSymbol
+    Private Function getString(memory As SymbolTable, name$, string$) As FuncSymbol
         Return New FuncSymbol() With {
             .Name = name,
             .Parameters = {},

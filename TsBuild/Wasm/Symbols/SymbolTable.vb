@@ -239,6 +239,7 @@ Namespace Symbols
         ''' <param name="name"></param>
         ''' <param name="context">
         ''' 当这个上下文值为空值的时候，表示为静态方法
+        ''' 这个参数可能是一个对象实例或者类型
         ''' </param>
         ''' <returns></returns>
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -265,6 +266,13 @@ Namespace Symbols
                 Else
                     If locals.ContainsKey(name) AndAlso locals(name).IsArray Then
                         Return JavaScriptImports.GetArrayElement
+                    ElseIf Not context.StringEmpty Then
+                        ' 可能是类型之中所定义的静态方法
+                        If context Like Types.stringType Then
+                            Return getStringInternal(name)
+                        Else
+                            Throw New NotImplementedException
+                        End If
                     Else
                         Throw New MissingPrimaryKeyException(name)
                     End If
@@ -272,7 +280,7 @@ Namespace Symbols
             Else
                 Dim func As FuncSignature = functionList.TryGetValue(name)
 
-                If Not func Is Nothing AndAlso func.Parameters.First.Value = contextObj.type Then
+                If Not func Is Nothing AndAlso typeMatch(func.Parameters.First, contextObj.type) Then
                     Return func
                 Else
                     If contextObj.IsArray Then
@@ -283,10 +291,35 @@ Namespace Symbols
                             Case Else
                                 Throw New NotImplementedException
                         End Select
+                    ElseIf contextObj.type Like Types.stringType Then
+                        Return getStringInternal(name)
                     Else
                         Throw New NotImplementedException
                     End If
                 End If
+            End If
+        End Function
+
+        Private Function getStringInternal(name As String) As FuncSignature
+            Select Case name
+                Case "Replace" : Return functionList(JavaScriptImports.String.Replace.Name)
+                Case "IndexOf" : Return functionList(JavaScriptImports.String.IndexOf.Name)
+                Case Else
+                    Throw New NotImplementedException
+            End Select
+        End Function
+
+        Private Function typeMatch(a As NamedValue(Of String), type$) As Boolean
+            Dim targetIsArray As Boolean = Types.IsArray(type)
+
+            If a.Value = type Then
+                Return True
+            ElseIf a.Value = GetType(System.Array).FullName AndAlso targetIsArray Then
+                Return True
+            ElseIf a.Value = GetType(IList).Name AndAlso targetIsArray Then
+                Return True
+            Else
+                Return False
             End If
         End Function
 

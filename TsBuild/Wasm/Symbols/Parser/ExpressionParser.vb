@@ -279,7 +279,7 @@ Namespace Symbols.Parser
                 If symbols.IsAnyObject(name) Then
                     ' 是对对象实例的方法引用
                     argumentFirst = target.ValueExpression(symbols)
-                    leftArguments = funcDeclare.Parameters
+                    leftArguments = funcDeclare.Parameters.Skip(1).ToArray
                 ElseIf name Like symbols.ModuleNames Then
                     ' 是对静态模块的方法引用
                     argumentFirst = Nothing
@@ -324,7 +324,7 @@ Namespace Symbols.Parser
                 If input Is Nothing Then
                     ' 可选参数的默认值是一个常量
                     If arg.Value = "char*" Then
-                        arguments += symbols.memory.StringConstant(arg.Description)
+                        arguments += symbols.StringConstant(arg.Description)
                     Else
                         arguments += New LiteralExpression With {
                             .type = arg.Value,
@@ -427,7 +427,7 @@ Namespace Symbols.Parser
         ''' <param name="memory">内存设备</param>
         ''' <returns></returns>
         <Extension>
-        Public Function ConstantExpression([const] As LiteralExpressionSyntax, wasmType$, memory As Memory) As Expression
+        Public Function ConstantExpression([const] As LiteralExpressionSyntax, wasmType$, memory As SymbolTable) As Expression
             Dim value As Object = [const].Token.Value
             Dim type As Type
 
@@ -457,7 +457,7 @@ Namespace Symbols.Parser
         End Function
 
         <Extension>
-        Public Function StringConstant(memory As Memory, str As String) As LiteralExpression
+        Public Function StringConstant(memory As SymbolTable, str As String) As LiteralExpression
             Dim intPtr As Object = str
             Dim wasmType$ = Nothing
 

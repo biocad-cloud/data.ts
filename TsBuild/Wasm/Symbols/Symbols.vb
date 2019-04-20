@@ -155,7 +155,15 @@ Namespace Symbols
                     Return Reference.Split("."c).First
                 End If
             Else
-                Return symbolTable.GetFunctionSymbol(Nothing, Reference).Result
+                Dim func As FuncSignature
+
+                If Parameters.IsNullOrEmpty Then
+                    func = symbolTable.GetFunctionSymbol(Nothing, Reference)
+                Else
+                    func = symbolTable.GetFunctionSymbol(Parameters(Scan0).TypeInfer(symbolTable), Reference)
+                End If
+
+                Return func.Result
             End If
         End Function
     End Class
