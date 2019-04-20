@@ -43,4 +43,32 @@
             return a.length;
         }
     }
+
+    export class WasmArray {
+
+        public items: any[];
+        private intptrs: number[];
+
+        public get length(): number {
+            return this.items.length;
+        }
+
+        /**
+         * @param type 0 for number, 1 for string, 2 for others
+        */
+        public constructor(public type: number) {
+            this.items = [];
+            this.intptrs = [];
+        }
+
+        public set(index: number, element: number) {
+            let obj = ObjectManager.getObject(element);
+            this.items[index] = obj;
+            this.intptrs[index] = element;
+        }
+
+        public get(index: number): number {
+            return this.intptrs[index];
+        }
+    }
 }

@@ -10,6 +10,25 @@
             return ObjectManager.addText(s);
         }
 
+        export function charCodeAt(text: number, index: number): number {
+            let input: string = ObjectManager.readText(text);
+            return input.charCodeAt(index);
+        }
+
+        export function charAt(text: number, index: number): number {
+            let input: string = ObjectManager.readText(text);
+            return ObjectManager.addText(input.charAt(index));
+        }
+
+        export function join(text: number, deli: number): number {
+            let inptrs: number[] = ObjectManager.getObject(text);
+            let strs: string[] = inptrs.map(i => ObjectManager.readText(i));
+            let deliText: string = ObjectManager.readText(deli);
+            let output: string = strs.join(deliText);
+
+            return ObjectManager.addText(output);
+        }
+
         export function toString(obj: number): number {
             let s: string;
 

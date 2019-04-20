@@ -4,25 +4,7 @@ Public Module base64Encoder
 
     Dim keyStr As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
 
-    Declare Function regexpReplace Lib "regexp" Alias "replace" (text As String, pattern As Integer, replacement As String) As String
-    ''' <summary>
-    ''' Create a new regexp pattern object from javascript
-    ''' </summary>
-    ''' <param name="pattern"></param>
-    ''' <returns></returns>
-    Declare Function regexp Lib "regexp" Alias "regexp" (pattern As String, Optional flag$ = "g") As Integer
-    Declare Function push Lib "array" Alias "push" (array As Array, element As Object) As Integer
-    Declare Function fromCharCode Lib "String" Alias "fromCharCode" (c As Integer) As Char
-
-    <Extension>
-    Declare Function charCodeAt Lib "String" Alias "CharCodeAt" (text As String, index As Integer) As Integer
-    <Extension>
-    Declare Function charAt Lib "String" Alias "CharAt" (text As String, index As Integer) As String
-
-    Declare Function isNaN Lib "number" Alias "isNaN" (x As Integer) As Boolean
-
-    <Extension>
-    Declare Function Join Lib "String" Alias "Join" (array As IList, delimiter As String) As String
+    Declare Function isNaN Lib "Math" Alias "isNaN" (x As Integer) As Boolean
 
     ''' <summary>
     ''' 将任意文本编码为base64字符串
@@ -34,7 +16,7 @@ Public Module base64Encoder
         Dim n, r, i, s, o, u, a As Integer
         Dim f = 0
 
-        text = base64Encoder.utf8_encode(text)
+        text = text.utf8_encode()
 
         Do While (f < text.Length)
             n = text.charCodeAt(f)
@@ -96,7 +78,7 @@ Public Module base64Encoder
             End If
         Loop
 
-        text = base64Encoder.utf8_decode(text)
+        text = text.utf8_decode()
 
         Return text
     End Function
@@ -107,7 +89,7 @@ Public Module base64Encoder
     ''' </summary>
     ''' <param name="text"></param>
     ''' <returns></returns>
-    Public Function utf8_encode(text As String) As String
+    <Extension> Public Function utf8_encode(text As String) As String
         Dim chars As List(Of String) = New List(Of String)
 
         text = text.Replace(regexp("rn", "g"), "n")
@@ -135,7 +117,7 @@ Public Module base64Encoder
     ''' </summary>
     ''' <param name="text"></param>
     ''' <returns></returns>
-    Public Function utf8_decode(text As String) As String
+    <Extension> Public Function utf8_decode(text As String) As String
         Dim t As List(Of String) = New List(Of String)
         Dim n = 0
         Dim r = 0
