@@ -22,7 +22,50 @@ var WebAssembly;
             return a.indexOf(obj);
         }
         JsArray.indexOf = indexOf;
+        function create() {
+            return WebAssembly.ObjectManager.addObject([]);
+        }
+        JsArray.create = create;
+        function get(array, index) {
+            let a = WebAssembly.ObjectManager.getObject(array);
+            let obj = a[index];
+            return obj;
+        }
+        JsArray.get = get;
+        function set(array, index, value) {
+            let a = WebAssembly.ObjectManager.getObject(array);
+            a[index] = value;
+            return array;
+        }
+        JsArray.set = set;
+        function length(array) {
+            let a = WebAssembly.ObjectManager.getObject(array);
+            return a.length;
+        }
+        JsArray.length = length;
     })(JsArray = WebAssembly.JsArray || (WebAssembly.JsArray = {}));
+    class WasmArray {
+        /**
+         * @param type 0 for number, 1 for string, 2 for others
+        */
+        constructor(type) {
+            this.type = type;
+            this.items = [];
+            this.intptrs = [];
+        }
+        get length() {
+            return this.items.length;
+        }
+        set(index, element) {
+            let obj = WebAssembly.ObjectManager.getObject(element);
+            this.items[index] = obj;
+            this.intptrs[index] = element;
+        }
+        get(index) {
+            return this.intptrs[index];
+        }
+    }
+    WebAssembly.WasmArray = WasmArray;
 })(WebAssembly || (WebAssembly = {}));
 var WebAssembly;
 (function (WebAssembly) {
@@ -35,8 +78,9 @@ var WebAssembly;
         /**
          * 在这里主要是为了避免和内部的数值产生冲突
         */
-        let hashCode = -9999999;
+        let hashCode = -999999999;
         let hashTable = {};
+        let textCache = {};
         /**
          * Load WebAssembly memory buffer into Javascript runtime.
         */
@@ -50,14 +94,26 @@ var WebAssembly;
          * @param intptr The memory pointer
         */
         function readText(intptr) {
-            if ((intptr in hashTable) && typeof hashTable[intptr] == "string") {
+            if (intptr in textCache) {
+                return textCache[intptr];
+            }
+            else if ((intptr in hashTable) && typeof hashTable[intptr] == "string") {
                 return hashTable[intptr];
             }
             else {
-                return streamReader.readText(intptr);
+                let cache = streamReader.readText(intptr);
+                addText(cache);
+                return cache;
             }
         }
         ObjectManager.readText = readText;
+        function addText(text) {
+            var key = hashCode;
+            textCache[key] = text;
+            hashCode++;
+            return key;
+        }
+        ObjectManager.addText = addText;
         /**
          * Get a object using its hash code
          *
@@ -100,11 +156,120 @@ var WebAssembly;
         */
         function addObject(o) {
             var key = hashCode;
-            hashTable[hashCode] = o;
+            hashTable[key] = o;
             hashCode++;
             return key;
         }
         ObjectManager.addObject = addObject;
+    })(ObjectManager = WebAssembly.ObjectManager || (WebAssembly.ObjectManager = {}));
+})(WebAssembly || (WebAssembly = {}));
+var WebAssembly;
+(function (WebAssembly) {
+    var ObjectManager;
+    (function (ObjectManager) {
+        /**
+         * use prime number as hash code to avoid conflicts???
+        */
+        let PrimeHashCode;
+        (function (PrimeHashCode) {
+            const seed = [2, 3, 5, 7];
+            function is_divisible_by(x, y) {
+                return !((x) % (y));
+            }
+            function getNextPrime(n) {
+                for (let x = n; x < 100000; x++) {
+                    if (isPrime(x)) {
+                        return x;
+                    }
+                }
+            }
+            PrimeHashCode.getNextPrime = getNextPrime;
+            /**
+             * 判断是否是质数
+             *
+             * https://github.com/jselbie/isprime/blob/master/isprime.cpp
+            */
+            function isPrime(n) {
+                // 总是确认数值不是负数,所以在这里移除掉这个判断
+                /*
+                if (n <= 1) {
+                    return false;
+                }*/
+                for (let i = 0; i < 4; i++) {
+                    if (seed[i] == n) {
+                        return true;
+                    }
+                    if (is_divisible_by(n, seed[i])) {
+                        return false;
+                    }
+                }
+                /* ============================================
+                    Using the table below as a reference, we can see that the pattern of divisibility by 3 or 5 repeats every 30 sequential values
+                    Any column with an "x" is already a value divisible by 3 or 5. So we can skip several sequences
+                    Net result is that only 26% of all sequential numbers get tested
+                    So instead of testing against every odd number, we can test against numbers that are not divisible by 2,3,or5
+                          003,005,007,009,011,013,015,017,019,021,023,025,027,029,031,033,035,037,039,041,043,045,047,049,051,53,55,57
+                 +                  0       4   6      10  12      16          22  24         *30
+                 3          x           x           x           x           x           x           x           x           x
+                 5              x                   x                   x                   x                   x
+                   ============================================
+                */
+                // ASSERT: d should be in the seed table above, but chances are high that d > sqrt(n)
+                let d = 7;
+                let root = Sqrt(n);
+                let result;
+                // +1 to deal with rounding errors from computing the floored square root
+                const stop = root + 1;
+                while (d <= stop) {
+                    result = is_divisible_by(n, d) ||
+                        is_divisible_by(n, d + 4) ||
+                        is_divisible_by(n, d + 6) ||
+                        is_divisible_by(n, d + 10) ||
+                        is_divisible_by(n, d + 12) ||
+                        is_divisible_by(n, d + 16) ||
+                        is_divisible_by(n, d + 22) ||
+                        is_divisible_by(n, d + 24);
+                    if (result) {
+                        return false;
+                    }
+                    else {
+                        d += 30;
+                    }
+                }
+                return true;
+            }
+            PrimeHashCode.isPrime = isPrime;
+            const SQRT_CAP = 1 << 53;
+            const TWO_POW_32 = 1 << 32;
+            function Sqrt(val) {
+                // if type is unsigned this will be ignored = no runtime  
+                if (val < 0) {
+                    // negative number ERROR  
+                    return 0;
+                }
+                // We really want to use sqrt whenever possible. It gets performed in hardware on most platforms and is much, much faster than the loop below.
+                // But... anything bigger than 2**53 will have some issues inside a double. http://stackoverflow.com/questions/1848700/biggest-integer-that-can-be-stored-in-a-double
+                // So we can only use sqrt reliably when val is less than or equal 2**53
+                if (val <= SQRT_CAP) {
+                    return Math.sqrt(val);
+                }
+                // return an approximate square root that is greather than or equal to the actual square root
+                // any 64 bit number, N,  can be expressed in terms of x and y as
+                // Therefore sqrt(N) = sqrt(x) * sqrt(2^32) + , where z is some value to account for the "y" portion of the equation
+                // but we know that (x+1)<< 32 is always greater than (x<<32)|y, thus we can live with just getting sqrt(x+1) and multiplying the result by 2^16
+                // that will return a slightly greater sqrt, but for computing the stop point below, it will suffice
+                let uval = val;
+                let shift = 0;
+                while (uval >= TWO_POW_32) {
+                    uval = uval >> 32;
+                    shift += 32;
+                }
+                let d2 = Math.sqrt((uval + 1));
+                let result = Math.ceil(d2);
+                result = result << (shift / 2);
+                return result;
+            }
+        })(PrimeHashCode = ObjectManager.PrimeHashCode || (ObjectManager.PrimeHashCode = {}));
     })(ObjectManager = WebAssembly.ObjectManager || (WebAssembly.ObjectManager = {}));
 })(WebAssembly || (WebAssembly = {}));
 var WebAssembly;
@@ -301,9 +466,27 @@ var WebAssembly;
     (function (JsString) {
         function fromCharCode(n) {
             let s = String.fromCharCode(n);
-            return WebAssembly.ObjectManager.addObject(s);
+            return WebAssembly.ObjectManager.addText(s);
         }
         JsString.fromCharCode = fromCharCode;
+        function charCodeAt(text, index) {
+            let input = WebAssembly.ObjectManager.readText(text);
+            return input.charCodeAt(index);
+        }
+        JsString.charCodeAt = charCodeAt;
+        function charAt(text, index) {
+            let input = WebAssembly.ObjectManager.readText(text);
+            return WebAssembly.ObjectManager.addText(input.charAt(index));
+        }
+        JsString.charAt = charAt;
+        function join(text, deli) {
+            let inptrs = WebAssembly.ObjectManager.getObject(text);
+            let strs = inptrs.map(i => WebAssembly.ObjectManager.readText(i));
+            let deliText = WebAssembly.ObjectManager.readText(deli);
+            let output = strs.join(deliText);
+            return WebAssembly.ObjectManager.addText(output);
+        }
+        JsString.join = join;
         function toString(obj) {
             let s;
             if (WebAssembly.ObjectManager.isNull(obj)) {
@@ -314,15 +497,39 @@ var WebAssembly;
                 // 不是空的，说明是一个对象
                 s = WebAssembly.ObjectManager.getObject(obj).toString();
             }
-            return WebAssembly.ObjectManager.addObject(s);
+            return WebAssembly.ObjectManager.addText(s);
         }
         JsString.toString = toString;
         function add(a, b) {
             let str1 = WebAssembly.ObjectManager.readText(a);
             let str2 = WebAssembly.ObjectManager.readText(b);
-            return WebAssembly.ObjectManager.addObject(str1 + str2);
+            return WebAssembly.ObjectManager.addText(str1 + str2);
         }
         JsString.add = add;
+        function length(text) {
+            return WebAssembly.ObjectManager.readText(text).length;
+        }
+        JsString.length = length;
+        function replace(text, find, replacement) {
+            let input = WebAssembly.ObjectManager.readText(text);
+            let findObj;
+            if (WebAssembly.ObjectManager.getType(find) == "RegExp") {
+                findObj = WebAssembly.ObjectManager.getObject(find);
+            }
+            else {
+                findObj = WebAssembly.ObjectManager.readText(find);
+            }
+            let replaceStr = WebAssembly.ObjectManager.readText(replacement);
+            let result = input.replace(findObj, replaceStr);
+            return WebAssembly.ObjectManager.addText(result);
+        }
+        JsString.replace = replace;
+        function indexOf(input, find) {
+            let text = WebAssembly.ObjectManager.readText(input);
+            let findText = WebAssembly.ObjectManager.readText(find);
+            return text.indexOf(findText);
+        }
+        JsString.indexOf = indexOf;
     })(JsString = WebAssembly.JsString || (WebAssembly.JsString = {}));
 })(WebAssembly || (WebAssembly = {}));
 var TypeScript;
@@ -381,29 +588,39 @@ var TypeScript;
             }
             return api;
         }
+        /**
+         * 主要是创建一个对参数的封装函数，因为WebAssembly之中只有4中基础的数值类型
+         * 所以字符串，对象之类的都需要在这里进行封装之后才能够被传递进入WebAssembly
+         * 运行时环境之中
+        */
         function buildFunc(func) {
-            return function () {
-                let params = [];
-                let value;
-                for (var i = 0; i < arguments.length; i++) {
-                    value = arguments[i];
-                    if (!value || typeof value == "undefined") {
-                        // zero intptr means nothing or value 0
-                        value = 0;
-                    }
-                    else if (typeof value == "string" || typeof value == "object") {
-                        value = WebAssembly.ObjectManager.addObject(value);
-                    }
-                    else if (typeof value == "boolean") {
-                        value = value ? 1 : 0;
-                    }
-                    else {
-                        // do nothing
-                    }
-                    params.push(value);
-                }
-                return func.apply(this, params);
+            let api = function () {
+                return func.apply(this, buildArguments(arguments));
             };
+            api.WasmPrototype = func;
+            return api;
+        }
+        function buildArguments(args) {
+            let params = [];
+            let value;
+            for (var i = 0; i < args.length; i++) {
+                value = args[i];
+                if (!value || typeof value == "undefined") {
+                    // zero intptr means nothing or value 0
+                    value = 0;
+                }
+                else if (typeof value == "string" || typeof value == "object") {
+                    value = WebAssembly.ObjectManager.addObject(value);
+                }
+                else if (typeof value == "boolean") {
+                    value = value ? 1 : 0;
+                }
+                else {
+                    // do nothing
+                }
+                params.push(value);
+            }
+            return params;
         }
         function createBytes(opts) {
             let page = opts.page || { init: 10, max: 2048 };
