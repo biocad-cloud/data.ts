@@ -5,36 +5,32 @@
     ;; WASM for VisualBasic.NET
     ;; 
     ;; version: 1.3.0.22
-    ;; build: 4/20/2019 11:12:31 PM
+    ;; build: 4/21/2019 12:42:08 AM
 
     ;; imports must occur before all non-import definitions
 
-    ;; Declare Function regexpReplace Lib "regexp" Alias "replace" (text As char*, pattern As i32, replacement As char*) As char*
-    (func $regexpReplace (import "regexp" "replace") (param $text i32) (param $pattern i32) (param $replacement i32) (result i32))
-    ;; Declare Function regexp Lib "regexp" Alias "regexp" (pattern As char*, flag As char*) As i32
-    (func $regexp (import "regexp" "regexp") (param $pattern i32) (param $flag i32) (result i32))
-    ;; Declare Function push Lib "array" Alias "push" (array As System.Array, element As System.Object) As i32
-    (func $push (import "array" "push") (param $array i32) (param $element i32) (result i32))
-    ;; Declare Function fromCharCode Lib "String" Alias "fromCharCode" (c As i32) As char
-    (func $fromCharCode (import "String" "fromCharCode") (param $c i32) (result i32))
-    ;; Declare Function charCodeAt Lib "String" Alias "CharCodeAt" (text As char*, index As i32) As i32
-    (func $charCodeAt (import "String" "CharCodeAt") (param $text i32) (param $index i32) (result i32))
-    ;; Declare Function charAt Lib "String" Alias "CharAt" (text As char*, index As i32) As char*
-    (func $charAt (import "String" "CharAt") (param $text i32) (param $index i32) (result i32))
-    ;; Declare Function isNaN Lib "number" Alias "isNaN" (x As i32) As boolean
-    (func $isNaN (import "number" "isNaN") (param $x i32) (result i32))
-    ;; Declare Function Join Lib "String" Alias "Join" (array As System.Array, delimiter As char*) As char*
-    (func $Join (import "String" "Join") (param $array i32) (param $delimiter i32) (result i32))
+    ;; Declare Function isNaN Lib "Math" Alias "isNaN" (x As i32) As boolean
+    (func $isNaN (import "Math" "isNaN") (param $x i32) (result i32))
     ;; Declare Function string_replace Lib "string" Alias "replace" (input As char*, find As i32, replacement As char*) As i32
     (func $string_replace (import "string" "replace") (param $input i32) (param $find i32) (param $replacement i32) (result i32))
     ;; Declare Function string_add Lib "string" Alias "add" (a As char*, b As char*) As char*
     (func $string_add (import "string" "add") (param $a i32) (param $b i32) (result i32))
     ;; Declare Function string_length Lib "string" Alias "length" (text As char*) As i32
     (func $string_length (import "string" "length") (param $text i32) (result i32))
-    ;; Declare Function string_indexOf Lib "string" Alias "" (input As char*, find As char*) As i32
-    (func $string_indexOf (import "string" "") (param $input i32) (param $find i32) (result i32))
-    ;; Declare Function new_array Lib "array" Alias "new" () As i32
-    (func $new_array (import "array" "new")  (result i32))
+    ;; Declare Function string_indexOf Lib "string" Alias "indexOf" (input As char*, find As char*) As i32
+    (func $string_indexOf (import "string" "indexOf") (param $input i32) (param $find i32) (result i32))
+    ;; Declare Function regexp Lib "regexp" Alias "regexp" (pattern As char*, flag As char*) As i32
+    (func $regexp (import "regexp" "regexp") (param $pattern i32) (param $flag i32) (result i32))
+    ;; Declare Function fromCharCode Lib "string" Alias "fromCharCode" (c As i32) As char
+    (func $fromCharCode (import "string" "fromCharCode") (param $c i32) (result i32))
+    ;; Declare Function charCodeAt Lib "string" Alias "charCodeAt" (text As char*, index As i32) As i32
+    (func $charCodeAt (import "string" "charCodeAt") (param $text i32) (param $index i32) (result i32))
+    ;; Declare Function charAt Lib "string" Alias "charAt" (text As char*, index As i32) As char*
+    (func $charAt (import "string" "charAt") (param $text i32) (param $index i32) (result i32))
+    ;; Declare Function Join Lib "string" Alias "join" (array As System.Array, delimiter As char*) As char*
+    (func $Join (import "string" "join") (param $array i32) (param $delimiter i32) (result i32))
+    ;; Declare Function new_array Lib "array" Alias "create" () As i32
+    (func $new_array (import "array" "create")  (result i32))
     ;; Declare Function array_push Lib "array" Alias "push" (array As i32, element As object) As i32
     (func $array_push (import "array" "push") (param $array i32) (param $element i32) (result i32))
     ;; Declare Function array_get Lib "array" Alias "get" (array As i32, index As i32) As i32
