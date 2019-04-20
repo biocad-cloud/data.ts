@@ -20,5 +20,27 @@
             let a: number[] = ObjectManager.getObject(array);
             return a.indexOf(obj);
         }
+
+        export function create(): number {
+            return ObjectManager.addObject([]);
+        }
+
+        export function get(array: number, index: number): number {
+            let a: number[] = ObjectManager.getObject(array);
+            let obj: number = a[index];
+
+            return obj;
+        }
+
+        export function set(array: number, index: number, value: number): number {
+            let a: number[] = ObjectManager.getObject(array);
+            a[index] = value;
+            return array;
+        }
+
+        export function length(array: number): number {
+            let a: number[] = ObjectManager.getObject(array);
+            return a.length;
+        }
     }
 }

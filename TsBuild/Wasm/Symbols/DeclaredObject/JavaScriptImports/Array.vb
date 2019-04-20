@@ -78,7 +78,7 @@ Namespace Symbols.JavaScriptImports
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property NewArray As New ImportSymbol With {
-            .ImportObject = "new",
+            .ImportObject = "create",
             .[Module] = "array",
             .Name = "new_array",
             .Package = "array",
