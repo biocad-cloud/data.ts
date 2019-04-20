@@ -70,6 +70,22 @@ Namespace Symbols.JavaScriptImports
 
     End Module
 
+    Public Module Array
+
+        Public ReadOnly Property ArrayAppend As New ImportSymbol With {
+            .ImportObject = "push",
+            .Name = "array.add",
+            .[Module] = "array",
+            .Package = "array",
+            .Result = "i32",
+            .Parameters = {
+                New NamedValue(Of String)("array", "i32"),
+                New NamedValue(Of String)("element", "i32")
+            }
+        }
+
+    End Module
+
     Public Module [String]
 
         Public ReadOnly Property Concatenation As New ImportSymbol With {

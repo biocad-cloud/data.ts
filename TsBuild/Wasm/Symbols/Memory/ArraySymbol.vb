@@ -46,7 +46,38 @@
 
 Namespace Symbols
 
-    Public MustInherit Class ArraySymbol : Inherits Expression
+    ''' <summary>
+    ''' Expression for create an new array
+    ''' </summary>
+    Public Class ArraySymbol : Inherits Expression
 
+        ''' <summary>
+        ''' Element type name
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Type As String
+        Public Property Initialize As Expression()
+
+        Public Overrides Function ToSExpression() As String
+            ' create array object in javascript runtime
+            Dim newArray As New FuncInvoke("new.array") With {.Parameters = {}}
+            Dim array As Expression = New FuncInvoke("push.array") With {
+                .Parameters = {newArray, Initialize(Scan0)}
+            }
+
+            ' and then push elements into that new array
+            For Each value As Expression In Initialize.Skip(1)
+                array = New FuncInvoke("push.array") With {
+                    .Parameters = {array, value}
+                }
+            Next
+
+            ' at last return new array intptr
+            Return array.ToSExpression
+        End Function
+
+        Public Overrides Function TypeInfer(symbolTable As SymbolTable) As String
+            Return Type
+        End Function
     End Class
 End Namespace

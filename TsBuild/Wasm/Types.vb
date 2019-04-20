@@ -153,12 +153,15 @@ Public Class Types
     Public Shared Function [CType](left As String, right As Expression, symbols As SymbolTable) As Expression
         Dim rightTypeInfer$ = right.TypeInfer(symbols)
         Dim rightIsI32 As Boolean = rightTypeInfer = "i32"
+        Dim isArrayType As Boolean = InStr(left, "[]") > 0
 
         If left = rightTypeInfer Then
             Return right
         ElseIf left Like stringType AndAlso rightIsI32 Then
             Return right
         ElseIf left = booleanType AndAlso rightIsI32 Then
+            Return right
+        ElseIf isArrayType AndAlso TypeOf right Is ArraySymbol Then
             Return right
         End If
 

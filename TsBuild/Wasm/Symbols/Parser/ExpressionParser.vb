@@ -85,8 +85,16 @@ Namespace Symbols.Parser
 
         <Extension>
         Public Function CreateArray(newArray As CollectionInitializerSyntax, symbols As SymbolTable) As Expression
-            Dim elements = newArray.Initializers
+            Dim elements = newArray.Initializers _
+                .Select(Function(value)
+                            Return value.ValueExpression(symbols)
+                        End Function) _
+                .ToArray
+            Dim array As New ArraySymbol With {
+                .Initialize = elements
+            }
 
+            Return array
         End Function
 
         <Extension>

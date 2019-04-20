@@ -207,6 +207,16 @@ Namespace Symbols.Parser
                 Else
                     If Not init Is Nothing Then
                         init = Types.CType(type, init, symbols)
+
+                        If TypeOf init Is ArraySymbol Then
+                            With DirectCast(init, ArraySymbol)
+                                .Type = type.Trim("["c, "]"c)
+
+                                If .Type = GetType(String).FullName Then
+                                    .Type = "char*"
+                                End If
+                            End With
+                        End If
                     End If
 
                     Yield New DeclareLocal With {

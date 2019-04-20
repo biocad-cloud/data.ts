@@ -124,6 +124,13 @@ Namespace Symbols
         Public Property Parameters As Expression()
         Public Property [operator] As Boolean
 
+        Sub New()
+        End Sub
+
+        Sub New(funcName As String)
+            Reference = funcName
+        End Sub
+
         Public Overrides Function ToSExpression() As String
             Dim arguments = Parameters _
                 .Select(Function(a)
