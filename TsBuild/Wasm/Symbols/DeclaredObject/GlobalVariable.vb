@@ -1,4 +1,4 @@
-﻿#Region "Microsoft.VisualBasic::c519d9535a18423459ae556e2082e3da, Symbols\DeclaredObject\GlobalVariable.vb"
+﻿#Region "Microsoft.VisualBasic::d2240359067e33c67e3526eac795875b, Symbols\DeclaredObject\GlobalVariable.vb"
 
     ' Author:
     ' 
@@ -39,7 +39,7 @@
     ' 
     '         Properties: [Module]
     ' 
-    '         Function: ToSExpression
+    '         Function: AsLocal, ToSExpression
     ' 
     ' 
     ' /********************************************************************************/
