@@ -1,48 +1,48 @@
 ﻿#Region "Microsoft.VisualBasic::9f95461685be1f396df314761535df17, Symbols\Parser\FunctionParser.vb"
 
-    ' Author:
-    ' 
-    '       xieguigang (I@xieguigang.me)
-    '       asuka (evia@lilithaf.me)
-    ' 
-    ' Copyright (c) 2019 GCModeller Cloud Platform
-    ' 
-    ' 
-    ' MIT License
-    ' 
-    ' 
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy
-    ' of this software and associated documentation files (the "Software"), to deal
-    ' in the Software without restriction, including without limitation the rights
-    ' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    ' copies of the Software, and to permit persons to whom the Software is
-    ' furnished to do so, subject to the following conditions:
-    ' 
-    ' The above copyright notice and this permission notice shall be included in all
-    ' copies or substantial portions of the Software.
-    ' 
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    ' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    ' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    ' SOFTWARE.
+' Author:
+' 
+'       xieguigang (I@xieguigang.me)
+'       asuka (evia@lilithaf.me)
+' 
+' Copyright (c) 2019 GCModeller Cloud Platform
+' 
+' 
+' MIT License
+' 
+' 
+' Permission is hereby granted, free of charge, to any person obtaining a copy
+' of this software and associated documentation files (the "Software"), to deal
+' in the Software without restriction, including without limitation the rights
+' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+' copies of the Software, and to permit persons to whom the Software is
+' furnished to do so, subject to the following conditions:
+' 
+' The above copyright notice and this permission notice shall be included in all
+' copies or substantial portions of the Software.
+' 
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+' SOFTWARE.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    '     Module FunctionParser
-    ' 
-    '         Function: (+2 Overloads) FuncVariable, ParseFunction, ParseParameter, (+3 Overloads) ParseParameters, runParser
-    ' 
-    '         Sub: addImplicitReturns
-    ' 
-    ' 
-    ' /********************************************************************************/
+'     Module FunctionParser
+' 
+'         Function: (+2 Overloads) FuncVariable, ParseFunction, ParseParameter, (+3 Overloads) ParseParameters, runParser
+' 
+'         Sub: addImplicitReturns
+' 
+' 
+' /********************************************************************************/
 
 #End Region
 
@@ -53,6 +53,7 @@ Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.SymbolBuilder.VBLanguage
+Imports Wasm.Symbols.Blocks
 
 Namespace Symbols.Parser
 
@@ -193,18 +194,27 @@ Namespace Symbols.Parser
         End Sub
 
         <Extension>
-        Private Function runParser(symbols As SymbolTable) As Func(Of StatementSyntax, Expression())
-            Return Function(statement As StatementSyntax)
+        Private Function runParser(symbols As SymbolTable) As Func(Of StatementSyntax, IEnumerable(Of Expression))
+            Return Iterator Function(statement As StatementSyntax)
                        Dim expression As [Variant](Of Expression, Expression()) = statement.ParseExpression(symbols)
-                       Dim expressionList As Expression()
 
                        If expression.GetUnderlyingType.IsInheritsFrom(GetType(Expression)) Then
-                           expressionList = {expression.TryCast(Of Expression)}
-                       Else
-                           expressionList = expression
-                       End If
+                           Dim line = expression.TryCast(Of Expression)
 
-                       Return expressionList
+                           If Not TypeOf line Is ReturnValue AndAlso line.TypeInfer(symbols) <> "void" Then
+                               Yield New drop With {.expression = line}
+                           Else
+                               Yield line
+                           End If
+                       Else
+                           For Each line As Expression In expression.TryCast(Of Expression())
+                               If Not TypeOf line Is ReturnValue AndAlso line.TypeInfer(symbols) <> "void" Then
+                                   Yield New drop With {.expression = line}
+                               Else
+                                   Yield line
+                               End If
+                           Next
+                       End If
                    End Function
         End Function
 
