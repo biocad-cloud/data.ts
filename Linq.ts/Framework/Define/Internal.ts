@@ -51,8 +51,20 @@ namespace Internal {
                 }
             });
         };
-        ts.getText = function (url: string, callback: (text: string) => void) {
-            HttpHelpers.GetAsyn(urlSolver(url), callback);
+        ts.getText = function (url: string, callback: (text: string) => void, options = {
+            nullForNotFound: false
+        }) {
+            HttpHelpers.GetAsyn(urlSolver(url), function (text: string, code: number) {
+                if (code != 200) {
+                    if (options.nullForNotFound) {
+                        callback("");
+                    } else {
+                        callback(text);
+                    }
+                } else {
+                    callback(text);
+                }
+            });
         }
         ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
             HttpHelpers.GetAsyn(urlSolver(url), function (response) {

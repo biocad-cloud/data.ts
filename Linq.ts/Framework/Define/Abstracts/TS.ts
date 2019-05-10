@@ -130,7 +130,15 @@
          * @param url 目标数据源，这个参数也支持meta标签查询语法
         */
         get<T>(url: string, callback?: ((response: IMsg<T>) => void)): void;
-        getText(url: string, callback: (text: string) => void): void;
+
+        /**
+         * GET a text file on your web server.
+        */
+        getText(url: string,
+            callback: (text: string) => void,
+            options?: {
+                nullForNotFound: boolean
+            }): void;
 
         /**
          * File upload helper
