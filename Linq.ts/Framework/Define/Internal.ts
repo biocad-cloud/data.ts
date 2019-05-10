@@ -327,11 +327,15 @@ namespace Internal {
     export function queryFunction<T>(handle: object, any: ((() => void) | T | T[]), args: object): any {
         var type: TypeInfo = TypeInfo.typeof(any);
         var typeOf: string = type.typeOf;
-        var eval: any = typeOf in handle ? handle[typeOf]() : null;
+        // symbol renames due to problem in js compress tool
+        //
+        // ERROR - "eval" cannot be redeclared in strict mode
+        //
+        var queryEval: any = typeOf in handle ? handle[typeOf]() : null;
 
         if (type.IsArray) {
             // 转化为序列集合对象，相当于from函数                
-            return (<Handlers.arrayEval<T>>eval).doEval(<T[]>any, type, args);
+            return (<Handlers.arrayEval<T>>queryEval).doEval(<T[]>any, type, args);
         } else if (type.typeOf == "function") {
             // 当html文档加载完毕之后就会执行传递进来的这个
             // 函数进行初始化
@@ -339,7 +343,7 @@ namespace Internal {
         } else if (!isNullOrUndefined(eval)) {
             // 对html文档之中的节点元素进行查询操作
             // 或者创建新的节点
-            return (<Handlers.IEval<T>>eval).doEval(<T>any, type, args);
+            return (<Handlers.IEval<T>>queryEval).doEval(<T>any, type, args);
         } else {
             // Fix for js compress tool error:
             //
