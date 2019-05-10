@@ -341,10 +341,13 @@ namespace Internal {
             // 或者创建新的节点
             return (<Handlers.IEval<T>>eval).doEval(<T>any, type, args);
         } else {
-            eval = handle[type.class];
+            // Fix for js compress tool error:
+            //
+            // ERROR - the "eval" object cannot be reassigned in strict mode
+            let unsureEval = handle[type.class];
 
-            if (!isNullOrUndefined(eval)) {
-                return (<Handlers.IEval<T>>eval()).doEval(<T>any, type, args);
+            if (!isNullOrUndefined(unsureEval)) {
+                return (<Handlers.IEval<T>>unsureEval()).doEval(<T>any, type, args);
             } else {
                 throw `Unsupported data type: ${type.toString()}`;
             }
