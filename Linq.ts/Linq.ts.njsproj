@@ -112,6 +112,9 @@
     <TypeScriptCompile Include="DOM\Extensions\TypeScriptExtends.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\InputValueGetter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Define\Abstracts\TypeScriptArgument.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
