@@ -220,6 +220,9 @@
     <TypeScriptCompile Include="TypeExtensions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Activator.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Collections\Abstract\" />
