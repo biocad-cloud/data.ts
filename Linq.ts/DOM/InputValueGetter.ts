@@ -85,8 +85,45 @@
             }
         };
 
-        export function selectOptions(input: HTMLSelectElement): any {
+        /**
+         * 获取被选中的选项的值的列表
+        */
+        export function selectOptionValues(input: HTMLSelectElement): any {
+            let selects = getSelectedOptions(input);
+            let values = [];
 
+            for (let sel of selects) {
+                var value = sel.value;
+
+                if (!value) {
+                    value = sel.innerText;
+                }
+
+                values.push(value);
+            }
+
+            return values;
+        }
+
+        /**
+         * return array containing references to selected option elements
+        */
+        export function getSelectedOptions(sel: HTMLSelectElement) {
+            var opts: HTMLOptionElement[] = []
+            var opt: HTMLOptionElement;
+
+            // loop through options in select list
+            for (var i = 0, len = sel.options.length; i < len; i++) {
+                opt = sel.options[i];
+
+                // check if selected
+                if (opt.selected) {
+                    // add to array of option elements to return from this function
+                    opts.push(opt);
+                }
+            }
+
+            return opts;
         }
 
         export function largeText(text: HTMLTextAreaElement): any {

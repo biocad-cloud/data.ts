@@ -66,27 +66,6 @@ namespace DOM {
     }
 
     /**
-     * return array containing references to selected option elements
-    */
-    export function getSelectedOptions(sel: HTMLSelectElement) {
-        var opts: HTMLOptionElement[] = []
-        var opt: HTMLOptionElement;
-
-        // loop through options in select list
-        for (var i = 0, len = sel.options.length; i < len; i++) {
-            opt = sel.options[i];
-
-            // check if selected
-            if (opt.selected) {
-                // add to array of option elements to return from this function
-                opts.push(opt);
-            }
-        }
-
-        return opts;
-    }
-
-    /**
      * 向指定id编号的div添加select标签的组件
      * 
      * @param containerID 这个编号不带有``#``前缀，这个容器可以是一个空白的div或者目标``<select>``标签对象的编号，
