@@ -105,7 +105,7 @@ namespace Internal.Handlers {
             } else if (query.type == DOM.QueryTypes.QueryMeta) {
                 // meta标签查询默认是可以在父节点文档之中查询的
                 // 所以在这里不需要context上下文环境
-                return DOM.metaValue(query.expression, (args || {})["default"], context != window);
+                return DOM.InputValueGetter.metaValue(query.expression, (args || {})["default"], context != window);
             } else {
 
                 if (TypeScript.logging.outputEverything) {

@@ -180,7 +180,7 @@ namespace Internal {
             }
 
             metaQuery = tag.join("");
-            url = DOM.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length + 1);
+            url = DOM.InputValueGetter.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length + 1);
         }
 
         return url;

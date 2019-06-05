@@ -4,39 +4,6 @@
 namespace DOM {
 
     /**
-     * Query meta tag content value by name
-     * 
-     * @param allowQueryParent 当当前的文档之中不存在目标meta标签的时候，
-     *    如果当前文档为iframe文档，则是否允许继续往父节点的文档做查询？
-     *    默认为False，即只在当前文档环境之中进行查询操作
-     * @param Default 查询失败的时候所返回来的默认值
-    */
-    export function metaValue(name: string, Default: string = null, allowQueryParent: boolean = false): string {
-        var selector: string = `meta[name~="${name}"]`;
-        var meta: Element = document.querySelector(selector);
-        var getContent = function () {
-            if (meta) {
-                var content: string = meta.getAttribute("content");
-                return content ? content : Default;
-            } else {
-                if (TypeScript.logging.outputWarning) {
-                    console.warn(`${selector} not found in current context!`);
-                }
-
-                return Default;
-            }
-        };
-
-        if (!meta && allowQueryParent) {
-            meta = parent.window
-                .document
-                .querySelector(selector);
-        }
-
-        return getContent();
-    }
-
-    /**
      * File download helper
      * 
      * @param name The file save name for download operation
