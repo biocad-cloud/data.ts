@@ -1,7 +1,33 @@
 ﻿module Activator {
 
-    export function CreateInstance(): any {
+    /**
+     * @param properties 如果这个属性定义集合是一个object，则应该是一个IProperty接口的字典对象
+    */
+    export function CreateInstance(properties: object | NamedValue<IProperty>[]): any {
+        let target: object = Object.create({});
+        let propertyInfo: IProperty;
 
+        if (Array.isArray(properties)) {
+            for (let property of <NamedValue<IProperty>[]>properties) {
+                propertyInfo = property.value;
+
+                Object.defineProperty(target, property.name, <PropertyDescriptor>{
+                    get: propertyInfo.get,
+                    set: propertyInfo.set
+                });
+            }
+        } else {
+            for (let name in <object>properties) {
+                propertyInfo = properties[name];
+
+                Object.defineProperty(target, name, <PropertyDescriptor>{
+                    get: propertyInfo.get,
+                    set: propertyInfo.set
+                });
+            }
+        }
+
+        return target;
     }
 
     /**
