@@ -55,11 +55,35 @@
 
         export function inputValue(input: HTMLInputElement): any {
             if (input.type == "checkbox") {
-                return input.checked;
+                return checkboxInput(input);
             } else {
                 return input.value;
             }
         }
+
+        /**
+         * 这个函数所返回来的值是和checkbox的数量相关的，
+         * 1. 如果有多个checkbox，则会返回一个数组
+         * 2. 反之如果只有一个checkbox，则只会返回一个逻辑值，用来表示是否选中该选项
+        */
+        export function checkboxInput(input: HTMLInputElement) {
+            var inputs = document.getElementsByName(input.name);
+            var values = [];
+
+            if (inputs.length == 1) {
+                return input.checked;
+            } else {
+                inputs.forEach(function (box: HTMLInputElement) {
+                    var value = box.value;
+
+                    if (box.checked) {
+                        values.push(value);
+                    }
+                });
+
+                return values;
+            }
+        };
 
         export function selectOptions(input: HTMLSelectElement): any {
 
