@@ -224,6 +224,7 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
+        ts.value = DOM.InputValueGetter.getValue;
         ts.inject = function (iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>) {
             var frame: HTMLIFrameElement = <any>$ts(iframe);
             var envir: {
