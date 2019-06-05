@@ -1,4 +1,4 @@
-﻿/// <reference path="TS.ts" />
+﻿/// <reference path="./Abstracts/TS.ts" />
 /// <reference path="../../Data/StringHelpers/URL.ts" />
 /// <reference path="../../Data/StringHelpers/PathHelper.ts" />
 /// <reference path="../Modes.ts" />
@@ -11,31 +11,6 @@
 namespace Internal {
 
     export const StringEval = new Handlers.stringEval();
-
-    const warningLevel: number = Modes.development;
-    const anyoutputLevel: number = Modes.debug;
-    const errorOnly: number = Modes.production;
-
-    /**
-     * 应用程序的开发模式：只会输出框架的警告信息
-    */
-    export function outputWarning(): boolean {
-        return $ts.mode <= warningLevel;
-    }
-
-    /**
-     * 框架开发调试模式：会输出所有的调试信息到终端之上
-    */
-    export function outputEverything(): boolean {
-        return $ts.mode == anyoutputLevel;
-    }
-
-    /**
-     * 生产模式：只会输出错误信息
-    */
-    export function outputError(): boolean {
-        return $ts.mode == errorOnly;
-    }
 
     /**
      * 对``$ts``对象的内部实现过程在这里
@@ -76,6 +51,21 @@ namespace Internal {
                 }
             });
         };
+        ts.getText = function (url: string, callback: (text: string) => void, options = {
+            nullForNotFound: false
+        }) {
+            HttpHelpers.GetAsyn(urlSolver(url), function (text: string, code: number) {
+                if (code != 200) {
+                    if (options.nullForNotFound) {
+                        callback("");
+                    } else {
+                        callback(text);
+                    }
+                } else {
+                    callback(text);
+                }
+            });
+        }
         ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
             HttpHelpers.GetAsyn(urlSolver(url), function (response) {
                 if (callback) {
@@ -121,13 +111,29 @@ namespace Internal {
 
         location.path = url.path || "/";
         location.fileName = url.fileName;
-        location.hash = function (trimprefix: boolean = true) {
-            var tag = window.location.hash;
-
-            if (tag && trimprefix && (tag.length > 1)) {
-                return tag.substr(1);
+        location.hash = function (arg: hashArgument | boolean = { trimprefix: true, doJump: false }, urlhash: string = null) {
+            if (!isNullOrUndefined(urlhash)) {
+                if (((typeof arg == "boolean") && (arg === true)) || (<hashArgument>arg).doJump) {
+                    window.location.hash = urlhash;
+                } else {
+                    TypeScript.URL.SetHash(urlhash);
+                }
             } else {
-                return isNullOrUndefined(tag) ? "" : tag;
+                // 获取当前url字符串之中hash标签值
+                var tag = window.location.hash;
+                var trimprefix: boolean;
+
+                if (typeof arg == "boolean") {
+                    trimprefix = arg;
+                } else {
+                    trimprefix = arg.trimprefix;
+                }
+
+                if (tag && trimprefix && (tag.length > 1)) {
+                    return tag.substr(1);
+                } else {
+                    return isNullOrUndefined(tag) ? "" : tag;
+                }
             }
         }
 
@@ -218,13 +224,13 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
-        ts.inject = function (iframe: string, fun: (Delegate.Func | string)[] | string | Delegate.Func) {
+        ts.inject = function (iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>) {
             var frame: HTMLIFrameElement = <any>$ts(iframe);
             var envir: {
-                eval: Delegate.Func
+                eval: Delegate.Func<any>
             } = <any>frame.contentWindow;
 
-            if (Internal.outputEverything()) {
+            if (TypeScript.logging.outputEverything) {
                 console.log(fun);
             }
 
@@ -321,11 +327,15 @@ namespace Internal {
     export function queryFunction<T>(handle: object, any: ((() => void) | T | T[]), args: object): any {
         var type: TypeInfo = TypeInfo.typeof(any);
         var typeOf: string = type.typeOf;
-        var eval: any = typeOf in handle ? handle[typeOf]() : null;
+        // symbol renames due to problem in js compress tool
+        //
+        // ERROR - "eval" cannot be redeclared in strict mode
+        //
+        var queryEval: any = typeOf in handle ? handle[typeOf]() : null;
 
         if (type.IsArray) {
             // 转化为序列集合对象，相当于from函数                
-            return (<Handlers.arrayEval<T>>eval).doEval(<T[]>any, type, args);
+            return (<Handlers.arrayEval<T>>queryEval).doEval(<T[]>any, type, args);
         } else if (type.typeOf == "function") {
             // 当html文档加载完毕之后就会执行传递进来的这个
             // 函数进行初始化
@@ -333,12 +343,15 @@ namespace Internal {
         } else if (!isNullOrUndefined(eval)) {
             // 对html文档之中的节点元素进行查询操作
             // 或者创建新的节点
-            return (<Handlers.IEval<T>>eval).doEval(<T>any, type, args);
+            return (<Handlers.IEval<T>>queryEval).doEval(<T>any, type, args);
         } else {
-            eval = handle[type.class];
+            // Fix for js compress tool error:
+            //
+            // ERROR - the "eval" object cannot be reassigned in strict mode
+            let unsureEval = handle[type.class];
 
-            if (!isNullOrUndefined(eval)) {
-                return (<Handlers.IEval<T>>eval()).doEval(<T>any, type, args);
+            if (!isNullOrUndefined(unsureEval)) {
+                return (<Handlers.IEval<T>>unsureEval()).doEval(<T>any, type, args);
             } else {
                 throw `Unsupported data type: ${type.toString()}`;
             }
