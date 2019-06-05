@@ -211,6 +211,7 @@
     <TypeScriptCompile Include="Framework\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="IProperty.ts" />
     <TypeScriptCompile Include="Type.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
