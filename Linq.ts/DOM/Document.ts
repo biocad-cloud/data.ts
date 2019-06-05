@@ -121,22 +121,32 @@ namespace DOM {
 
     /**
      * 向指定id编号的div添加select标签的组件
+     * 
+     * @param containerID 这个编号不带有``#``前缀，这个容器可以是一个空白的div或者目标``<select>``标签对象的编号，
+     *                    如果目标容器是一个``<select>``标签的时候，则要求selectName和className都必须要是空值
     */
     export function AddSelectOptions(
         items: MapTuple<string, string>[],
-        div: string,
-        selectName: string,
-        className: string = "") {
+        containerID: string,
+        selectName: string = null,
+        className: string = null) {
 
         var options = From(items)
             .Select(item => `<option value="${item.value}">${item.key}</option>`)
             .JoinBy("\n");
-        var html: string = `
-            <select class="${className}" multiple name="${selectName}">
-                ${options}
-            </select>`;
+        var html: string;
 
-        (<HTMLElement>$ts(`#${div}`)).innerHTML = html;
+        if (isNullOrUndefined(selectName) && isNullOrUndefined(className)) {
+            // 是一个<select>标签
+            html = options;
+        } else {
+            html = `
+                <select class="${className}" multiple name="${selectName}">
+                    ${options}
+                </select>`;
+        }
+
+        (<HTMLElement>$ts(`#${containerID}`)).innerHTML = html;
     }
 
     /**
