@@ -101,6 +101,14 @@
         text(id: string, htmlText?: boolean): string;
 
         /**
+         * 这个函数主要是应用于``<input>``, ``<textarea>``以及``<select>``标签对象
+         * 的value属性值的读取操作
+         * 
+         * @param id 目标``<input>``标签对象的``id``编号
+        */
+        value(id: string): any;
+
+        /**
          * isNullOrUndefined
         */
         isNullOrEmpty(obj: any): boolean;
