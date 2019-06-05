@@ -251,7 +251,7 @@ namespace Internal {
             return htmlText ? node.innerHTML : node.innerText;
         };
         ts.loadJSON = function (id: string) {
-            return JSON.parse(this.text(id));
+            return JSON.parse(ts.text(id));
         };
 
         // file path helpers

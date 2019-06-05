@@ -92,6 +92,8 @@
         eval(script: string, lzw_decompress?: boolean, callback?: () => void): void;
 
         /**
+         * 从当前的html页面之中选择一个指定的节点，然后将节点内的文本以json格式进行解析
+         * 
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
         */
         loadJSON(id: string): any;
