@@ -21,6 +21,23 @@
         hash(arg?: hashArgument | boolean, urlhash?: string): string
     }
 
+    export interface HtmlDocumentDeserializer {
+
+        /**
+         * 将目标序列转换为一个表格HTML节点元素
+        */
+        table: <T extends {}>(
+            rows: T[] | IEnumerator<T>,
+            headers?: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[],
+            attrs?: Internal.TypeScriptArgument) => HTMLTableElement;
+
+        selectOptions: (
+            items: MapTuple<string, string>[],
+            containerID: string,
+            selectName?: string,
+            className?: string) => HTMLSelectElement;
+    }
+
     export interface hashArgument {
         doJump?: boolean;
         trimprefix?: boolean;

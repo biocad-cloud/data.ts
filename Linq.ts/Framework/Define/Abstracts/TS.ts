@@ -44,12 +44,9 @@
         ): void;
 
         /**
-         * 将目标序列转换为一个表格HTML节点元素
+         * 将目标序列转换为一个HTML节点元素
         */
-        evalHTML<T extends {}>(
-            rows: T[] | IEnumerator<T>,
-            headers?: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[],
-            attrs?: Internal.TypeScriptArgument): HTMLTableElement;
+        evalHTML: HtmlDocumentDeserializer;
 
         <T>(array: T[]): IEnumerator<T>;
 

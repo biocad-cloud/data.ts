@@ -124,6 +124,7 @@ namespace DOM {
      * 
      * @param containerID 这个编号不带有``#``前缀，这个容器可以是一个空白的div或者目标``<select>``标签对象的编号，
      *                    如果目标容器是一个``<select>``标签的时候，则要求selectName和className都必须要是空值
+     * @param items 这个数组应该是一个``[title => value]``的键值对列表
     */
     export function AddSelectOptions(
         items: MapTuple<string, string>[],
