@@ -51,8 +51,20 @@ namespace Internal {
                 }
             });
         };
-        ts.getText = function (url: string, callback: (text: string) => void) {
-            HttpHelpers.GetAsyn(urlSolver(url), callback);
+        ts.getText = function (url: string, callback: (text: string) => void, options = {
+            nullForNotFound: false
+        }) {
+            HttpHelpers.GetAsyn(urlSolver(url), function (text: string, code: number) {
+                if (code != 200) {
+                    if (options.nullForNotFound) {
+                        callback("");
+                    } else {
+                        callback(text);
+                    }
+                } else {
+                    callback(text);
+                }
+            });
         }
         ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
             HttpHelpers.GetAsyn(urlSolver(url), function (response) {
@@ -168,7 +180,7 @@ namespace Internal {
             }
 
             metaQuery = tag.join("");
-            url = DOM.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length + 1);
+            url = DOM.InputValueGetter.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length + 1);
         }
 
         return url;
@@ -212,6 +224,7 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
+        ts.value = DOM.InputValueGetter.getValue;
         ts.inject = function (iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>) {
             var frame: HTMLIFrameElement = <any>$ts(iframe);
             var envir: {
@@ -239,7 +252,7 @@ namespace Internal {
             return htmlText ? node.innerHTML : node.innerText;
         };
         ts.loadJSON = function (id: string) {
-            return JSON.parse(this.text(id));
+            return JSON.parse(ts.text(id));
         };
 
         // file path helpers
@@ -278,7 +291,10 @@ namespace Internal {
             toObjects: (data: string) => csv.dataframe.Parse(data).Objects(),
             toText: data => csv.toDataFrame(data).buildDoc()
         };
-        ts.evalHTML = DOM.CreateHTMLTableNode;
+        ts.evalHTML = {
+            table: DOM.CreateHTMLTableNode,
+            selectOptions: DOM.AddSelectOptions
+        };
         ts.appendTable = DOM.AddHTMLTable;
 
         return ts;
@@ -315,11 +331,15 @@ namespace Internal {
     export function queryFunction<T>(handle: object, any: ((() => void) | T | T[]), args: object): any {
         var type: TypeInfo = TypeInfo.typeof(any);
         var typeOf: string = type.typeOf;
-        var eval: any = typeOf in handle ? handle[typeOf]() : null;
+        // symbol renames due to problem in js compress tool
+        //
+        // ERROR - "eval" cannot be redeclared in strict mode
+        //
+        var queryEval: any = typeOf in handle ? handle[typeOf]() : null;
 
         if (type.IsArray) {
             // 转化为序列集合对象，相当于from函数                
-            return (<Handlers.arrayEval<T>>eval).doEval(<T[]>any, type, args);
+            return (<Handlers.arrayEval<T>>queryEval).doEval(<T[]>any, type, args);
         } else if (type.typeOf == "function") {
             // 当html文档加载完毕之后就会执行传递进来的这个
             // 函数进行初始化
@@ -327,12 +347,15 @@ namespace Internal {
         } else if (!isNullOrUndefined(eval)) {
             // 对html文档之中的节点元素进行查询操作
             // 或者创建新的节点
-            return (<Handlers.IEval<T>>eval).doEval(<T>any, type, args);
+            return (<Handlers.IEval<T>>queryEval).doEval(<T>any, type, args);
         } else {
-            eval = handle[type.class];
+            // Fix for js compress tool error:
+            //
+            // ERROR - the "eval" object cannot be reassigned in strict mode
+            let unsureEval = handle[type.class];
 
-            if (!isNullOrUndefined(eval)) {
-                return (<Handlers.IEval<T>>eval()).doEval(<T>any, type, args);
+            if (!isNullOrUndefined(unsureEval)) {
+                return (<Handlers.IEval<T>>unsureEval()).doEval(<T>any, type, args);
             } else {
                 throw `Unsupported data type: ${type.toString()}`;
             }

@@ -112,6 +112,12 @@
     <TypeScriptCompile Include="DOM\Extensions\TypeScriptExtends.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\InputValueGetter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\DocumentEvents.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Define\Abstracts\TypeScriptArgument.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -211,6 +217,7 @@
     <TypeScriptCompile Include="Framework\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="IProperty.ts" />
     <TypeScriptCompile Include="Type.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -227,6 +234,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="TypeExtensions.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Activator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>
