@@ -1,5 +1,5 @@
 /// <reference path="./Abstract/Enumerator.ts" />
-/// <reference path="../Data/StackTrace/StackTrace.ts" />
+/// <reference path="../Framework/StackTrace/StackTrace.ts" />
 
 /**
  * 键值对映射哈希表
@@ -41,7 +41,7 @@ class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
     */
     public Item(key: string | number = null): V {
         if (!key) {
-            key = TsLinq.StackTrace.GetCallerMember().memberName;
+            key = Internal.StackTrace.GetCallerMember().memberName;
         }
 
         if (typeof key == "string") {
