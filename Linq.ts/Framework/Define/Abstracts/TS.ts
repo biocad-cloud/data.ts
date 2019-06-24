@@ -44,12 +44,9 @@
         ): void;
 
         /**
-         * 将目标序列转换为一个表格HTML节点元素
+         * 将目标序列转换为一个HTML节点元素
         */
-        evalHTML<T extends {}>(
-            rows: T[] | IEnumerator<T>,
-            headers?: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[],
-            attrs?: Internal.TypeScriptArgument): HTMLTableElement;
+        evalHTML: HtmlDocumentDeserializer;
 
         <T>(array: T[]): IEnumerator<T>;
 
@@ -92,6 +89,8 @@
         eval(script: string, lzw_decompress?: boolean, callback?: () => void): void;
 
         /**
+         * 从当前的html页面之中选择一个指定的节点，然后将节点内的文本以json格式进行解析
+         * 
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
         */
         loadJSON(id: string): any;
@@ -100,6 +99,14 @@
          * @param htmlText 主要是针对``<pre>``标签之中的VB.NET代码
         */
         text(id: string, htmlText?: boolean): string;
+
+        /**
+         * 这个函数主要是应用于``<input>``, ``<textarea>``以及``<select>``标签对象
+         * 的value属性值的读取操作
+         * 
+         * @param id 目标``<input>``标签对象的``id``编号
+        */
+        value(id: string): any;
 
         /**
          * isNullOrUndefined

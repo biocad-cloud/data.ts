@@ -180,7 +180,7 @@ namespace Internal {
             }
 
             metaQuery = tag.join("");
-            url = DOM.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length + 1);
+            url = DOM.InputValueGetter.metaValue(metaQuery, metaQuery, !currentFrame) + url.substr(tag.length + 1);
         }
 
         return url;
@@ -224,6 +224,7 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
+        ts.value = DOM.InputValueGetter.getValue;
         ts.inject = function (iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>) {
             var frame: HTMLIFrameElement = <any>$ts(iframe);
             var envir: {
@@ -251,7 +252,7 @@ namespace Internal {
             return htmlText ? node.innerHTML : node.innerText;
         };
         ts.loadJSON = function (id: string) {
-            return JSON.parse(this.text(id));
+            return JSON.parse(ts.text(id));
         };
 
         // file path helpers
@@ -290,7 +291,10 @@ namespace Internal {
             toObjects: (data: string) => csv.dataframe.Parse(data).Objects(),
             toText: data => csv.toDataFrame(data).buildDoc()
         };
-        ts.evalHTML = DOM.CreateHTMLTableNode;
+        ts.evalHTML = {
+            table: DOM.CreateHTMLTableNode,
+            selectOptions: DOM.AddSelectOptions
+        };
         ts.appendTable = DOM.AddHTMLTable;
 
         return ts;
