@@ -145,7 +145,7 @@ class TypeInfo {
     /**
      * MetaReader对象和字典相似，只不过是没有类型约束，并且为只读集合
     */
-    public static CreateMetaReader<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): TsLinq.MetaReader {
-        return new TsLinq.MetaReader(Activator.CreateObject(nameValues));
+    public static CreateMetaReader<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): TypeScript.Data.MetaReader {
+        return new TypeScript.Data.MetaReader(Activator.CreateObject(nameValues));        
     }
 }
