@@ -36,7 +36,7 @@
     * @param names object的属性名称列表
     * @param init 使用这个函数为该属性指定一个初始值
    */
-    export function EmptyObject<V>(names: string[] | IEnumerator<string>, init: () => V): object {
+    export function EmptyObject<V>(names: string[] | IEnumerator<string>, init: (() => V) | V): object {
         var obj: object = {};
 
         if (typeof init == "function") {
