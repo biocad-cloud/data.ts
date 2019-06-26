@@ -3,6 +3,7 @@
 /// <reference path="../../Data/StringHelpers/PathHelper.ts" />
 /// <reference path="../Modes.ts" />
 /// <reference path="../../DOM/Document.ts" />
+/// <reference path="../../DOM/InputValueGetter.ts" />
 /// <reference path="../../Data/Range.ts" />
 
 /**
