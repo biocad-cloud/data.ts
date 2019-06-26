@@ -40,7 +40,7 @@
 
             switch (input.tagName) {
                 case "input": return inputValue(<any>input);
-                case "select": return selectOptions(<any>input);
+                case "select": return selectOptionValues(<any>input);
                 case "textarea": return largeText(<any>input);
 
                 default:

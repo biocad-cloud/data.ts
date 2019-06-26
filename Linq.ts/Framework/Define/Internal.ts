@@ -308,7 +308,7 @@ namespace Internal {
             var sel: HTMLElement = $ts(query, {
                 context: context
             });
-            var options = DOM.getSelectedOptions(<any>sel);
+            var options = DOM.InputValueGetter.getSelectedOptions(<any>sel);
 
             return new DOMEnumerator<HTMLOptionElement>(options);
         };
@@ -316,7 +316,7 @@ namespace Internal {
             var sel: HTMLElement = $ts(query, {
                 context: context
             });
-            var options = DOM.getSelectedOptions(<any>sel);
+            var options = DOM.InputValueGetter.getSelectedOptions(<any>sel);
 
             if (options.length == 0) {
                 return null;
