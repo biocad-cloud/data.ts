@@ -82,10 +82,10 @@
     <TypeScriptCompile Include="Data\MetaReader.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Data\StackTrace\StackFrame.ts">
+    <TypeScriptCompile Include="Framework\StackTrace\StackFrame.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Data\StackTrace\StackTrace.ts">
+    <TypeScriptCompile Include="Framework\StackTrace\StackTrace.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Data\StringHelpers\StringBuilder.ts">
@@ -110,6 +110,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="DOM\Extensions\TypeScriptExtends.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\InputValueGetter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\DocumentEvents.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Define\Abstracts\TypeScriptArgument.ts">
@@ -211,6 +217,7 @@
     <TypeScriptCompile Include="Framework\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="IProperty.ts" />
     <TypeScriptCompile Include="Type.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -229,12 +236,15 @@
     <TypeScriptCompile Include="TypeExtensions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Activator.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Collections\Abstract\" />
     <Folder Include="Data\Encoder\" />
     <Folder Include="Data\StringHelpers\" />
-    <Folder Include="Data\StackTrace\" />
+    <Folder Include="Framework\StackTrace\" />
     <Folder Include="DOM\Extensions\" />
     <Folder Include="Framework\Define\Handlers\" />
     <Folder Include="Framework\Define\Abstracts\" />
