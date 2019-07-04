@@ -3,6 +3,14 @@
     public size: [number, number];
     public margin: Canvas.Margin;
 
+    public get width(): number {
+        return this.size["0"];
+    }
+
+    public get height(): number {
+        return this.size["1"];
+    }
+
     public constructor(
         size: Canvas.Size | number[] = [960, 600],
         margin: Canvas.Margin = <Canvas.Margin>{
