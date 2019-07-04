@@ -19,6 +19,8 @@
 
         if (!Array.isArray(size)) {
             this.size = [size.width, size.height];
+        } else {
+            this.size = [size[0], size[1]];
         }
 
         this.margin = margin;
