@@ -57,6 +57,9 @@
     <TypeScriptCompile Include="HTMLColors\Colors.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="SvgChart.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Canvas\" />
