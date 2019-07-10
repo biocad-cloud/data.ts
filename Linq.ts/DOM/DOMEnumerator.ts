@@ -143,7 +143,7 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
             var event = function (Event: Event) {
                 handler(element, Event);
             }
-            DOM.addEvent(element, eventName, event);
+            DOM.Events.addEvent(element, eventName, event);
         })
     }
 

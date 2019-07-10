@@ -1,4 +1,4 @@
-﻿namespace DOM {
+﻿namespace DOM.Events {
 
     /**
      * Execute a given function when the document is ready.
