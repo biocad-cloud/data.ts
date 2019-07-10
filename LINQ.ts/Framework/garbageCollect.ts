@@ -1,19 +1,28 @@
-﻿namespace TypeScript.Internal {
+﻿namespace TypeScript {
 
+    /**
+     * https://github.com/natewatson999/js-gc
+    */
     export module garbageCollect {
 
-        export const handler = getHandler();
+        /**
+         * try to do garbageCollect by invoke this function
+        */
+        export const handler: Delegate.Func<any> = getHandler();
 
-        function getHandler () {
+        function getHandler() {
             if (typeof require === "function") {
                 try {
                     require("v8").setFlagsFromString('--expose_gc');
+
                     if (global != null) {
                         if (typeof global.gc == "function") {
                             return global.gc
                         }
                     }
+
                     var vm = require("vm");
+
                     if (vm != null) {
                         if (typeof vm.runInNewContext == "function") {
                             var k = vm.runInNewContext("gc");
@@ -27,68 +36,75 @@
 
             }
             if (typeof window !== 'undefined') {
-                if (window.CollectGarbage) {
-                    return window.CollectGarbage;
+                if ((<any>window).CollectGarbage) {
+                    return (<any>window).CollectGarbage;
                 }
-                if (window.gc) {
-                    return window.gc;
+                if ((<any>window).gc) {
+                    return (<any>window).gc;
                 }
-                if (window.opera) {
-                    if (window.opera.collect) {
-                        return window.opera.collect;
+                if ((<any>window).opera) {
+                    if ((<any>window).opera.collect) {
+                        return (<any>window).opera.collect;
                     }
                 }
-                if (window.QueryInterface) {
-                    return window.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIDOMWindowUtils).garbageCollect;
-                }
+                //if ((<any>window).QueryInterface) {
+                //    return (<any>window).QueryInterface((<any>Components).interfaces.nsIInterfaceRequestor).getInterface((<any>Components).interfaces.nsIDOMWindowUtils).garbageCollect;
+                //}
             }
-            if (typeof ProfilerAgent !== 'undefined') {
-                if (ProfilerAgent.collectGarbage) {
-                    return ProfilerAgent.collectGarbage;
-                }
-            }
+            //if (typeof ProfilerAgent !== 'undefined') {
+            //    if (ProfilerAgent.collectGarbage) {
+            //        return ProfilerAgent.collectGarbage;
+            //    }
+            //}
             if (typeof global !== 'undefined') {
                 if (global.gc) {
                     return global.gc;
                 }
             }
-            if (typeof Duktape == 'object') {
-                if (typeof Duktape.gc) {
-                    return Duktape.gc;
+
+
+            //if (typeof Duktape == 'object') {
+            //    if (typeof Duktape.gc) {
+            //        return Duktape.gc;
+            //    }
+            //}
+            //if (typeof Packages !== 'undefined') {
+            //    if (typeof Packages.java !== 'undefined') {
+            //        if (Packages.java.lang) {
+            //            if (Packages.java.lang) {
+            //                if (Packages.java.lang.System) {
+            //                    return Packages.java.lang.System.gc;
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //if (typeof java !== 'undefined') {
+            //    if (java.lang) {
+            //        if (java.lang) {
+            //            if (java.lang.System) {
+            //                return java.lang.System.gc;
+            //            }
+            //        }
+            //    }
+            //}
+            //if (typeof Java !== 'undefined') {
+            //    if (java.type) {
+            //        return Java.type('java.lang.System').gc;
+            //    }
+            //}
+            //if (typeof CollectGarbage == "function") {
+            //    return CollectGarbage;
+            //}
+            //if (typeof jerry_gc == "function") {
+            //    return jerry_gc;
+            //}
+
+            return function () {
+                if (TypeScript.logging.outputEverything) {
+                    console.log("There is no gc handler could be found currently....");
                 }
-            }
-            if (typeof Packages !== 'undefined') {
-                if (typeof Packages.java !== 'undefined') {
-                    if (Packages.java.lang) {
-                        if (Packages.java.lang) {
-                            if (Packages.java.lang.System) {
-                                return Packages.java.lang.System.gc;
-                            }
-                        }
-                    }
-                }
-            }
-            if (typeof java !== 'undefined') {
-                if (java.lang) {
-                    if (java.lang) {
-                        if (java.lang.System) {
-                            return java.lang.System.gc;
-                        }
-                    }
-                }
-            }
-            if (typeof Java !== 'undefined') {
-                if (java.type) {
-                    return Java.type('java.lang.System').gc;
-                }
-            }
-            if (typeof CollectGarbage == "function") {
-                return CollectGarbage;
-            }
-            if (typeof jerry_gc == "function") {
-                return jerry_gc;
-            }
-            return function () { };
+            };
         }
     }
 }

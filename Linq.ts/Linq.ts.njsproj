@@ -220,7 +220,7 @@
     <TypeScriptCompile Include="Framework\Bootstrap.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\Which.ts">
+    <TypeScriptCompile Include="Collections\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="IProperty.ts" />
