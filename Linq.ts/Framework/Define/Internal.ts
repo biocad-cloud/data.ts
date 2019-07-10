@@ -337,8 +337,11 @@ namespace Internal {
         // ERROR - "eval" cannot be redeclared in strict mode
         //
         var queryEval: any = typeOf in handle ? handle[typeOf]() : null;
+        var isHtmlCollection = (typeOf == "object") && (type.class == "HTMLCollection" || type.class == "NodeListOf");
 
-        if (type.IsArray) {
+        if (isHtmlCollection) {
+            return Internal.Handlers.Shared.HTMLCollection().doEval(<any>any, type, args);
+        } else if (type.IsArray) {
             // 转化为序列集合对象，相当于from函数                
             return (<Handlers.arrayEval<T>>queryEval).doEval(<T[]>any, type, args);
         } else if (type.typeOf == "function") {
