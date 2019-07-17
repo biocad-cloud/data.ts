@@ -344,7 +344,7 @@ namespace Internal {
         } else if (type.typeOf == "function") {
             // 当html文档加载完毕之后就会执行传递进来的这个
             // 函数进行初始化
-            DOM.ready(<() => void>any);
+            DOM.ready(<() => void>any, ["interactive", "complete"], <any>args);
         } else if (!isNullOrUndefined(eval)) {
             // 对html文档之中的节点元素进行查询操作
             // 或者创建新的节点
