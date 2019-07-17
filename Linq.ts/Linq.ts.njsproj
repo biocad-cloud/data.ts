@@ -82,6 +82,9 @@
     <TypeScriptCompile Include="Data\MetaReader.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\DOMQueryTypes.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\StackTrace\StackFrame.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -128,6 +131,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Log4TypeScript.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Framework\garbageCollect.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Helpers\Benchmark.ts">
@@ -214,7 +220,7 @@
     <TypeScriptCompile Include="Framework\Bootstrap.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Framework\Which.ts">
+    <TypeScriptCompile Include="Collections\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="IProperty.ts" />

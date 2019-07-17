@@ -131,7 +131,7 @@ namespace DOM {
             rows.ForEach(r => tbody.appendChild(rowHTML(r)));
         }
 
-        fields.forEach(r => thead.appendChild($ts("<th>").display(r.value)));
+        fields.forEach(r => thead.appendChild($ts("<th>", { id: r.value }).display(r.value)));
 
         return <HTMLTableElement>$ts("<table>", attrs)
             .asExtends
@@ -185,5 +185,5 @@ namespace DOM {
         } else {
             throw `Invalid sequence type: ${type.class}`;
         }
-    }   
+    }
 }
