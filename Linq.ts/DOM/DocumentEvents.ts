@@ -14,7 +14,8 @@
      *                     
     */
     export function ready(fn: () => void, loadComplete: string[] = ["interactive", "complete"], iframe: HTMLIFrameElement = null) {
-        let docObj: Document = isNullOrUndefined(iframe) ? document : iframe.contentDocument;
+        let docObj: Document = isNullOrUndefined(iframe) ? document :
+            (isNullOrUndefined(iframe.contentDocument) ? iframe.contentWindow.document : iframe.contentDocument);
 
         if (typeof fn !== 'function') {
             // Sanity check
