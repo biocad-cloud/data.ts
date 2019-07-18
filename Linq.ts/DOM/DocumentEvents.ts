@@ -19,6 +19,16 @@
         if (typeof fn !== 'function') {
             // Sanity check
             return;
+        } else if (isNullOrUndefined(docObj)) {
+            if ($ts.mode == Modes.production) {
+                console.warn("Target document object is nothing! Current event will not be handled....");
+                return;
+            } else if ($ts.mode == Modes.debug) {
+                console.warn("Target document object is nothing! Current event will not be handled....");
+                console.log("target iframe:");
+                console.warn(iframe.contentWindow);
+                return;
+            }
         } else if (TypeScript.logging.outputEverything) {
             console.log("Add Document.ready event handler.");
             console.log(`document.readyState = ${docObj.readyState}`)
