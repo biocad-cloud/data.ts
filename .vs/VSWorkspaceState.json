@@ -1,10 +1,12 @@
 {
   "ExpandedNodes": [
     "",
+    "\\LINQ.ts",
+    "\\LINQ.ts\\DOM",
     "\\LINQ.ts\\Framework",
     "\\LINQ.ts\\Framework\\Define",
     "\\TsBuild"
   ],
-  "SelectedNode": "\\LINQ.ts",
+  "SelectedNode": "\\LINQ.ts\\DOM\\DocumentEvents.ts",
   "PreviewInSolutionExplorer": false
 }
