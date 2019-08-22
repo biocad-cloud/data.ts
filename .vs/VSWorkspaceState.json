@@ -1,10 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\TsBuild",
-    "\\TsBuild\\Wasm",
-    "\\TsBuild\\Wasm\\Compiler"
+    "\\LINQ.ts",
+    "\\LINQ.ts\\DOM",
+    "\\LINQ.ts\\Framework",
+    "\\LINQ.ts\\Framework\\Define",
+    "\\TsBuild"
   ],
-  "SelectedNode": "\\TsBuild\\Wasm\\Compiler\\Wabt.vb",
+  "SelectedNode": "\\LINQ.ts\\DOM\\DocumentEvents.ts",
   "PreviewInSolutionExplorer": false
 }
