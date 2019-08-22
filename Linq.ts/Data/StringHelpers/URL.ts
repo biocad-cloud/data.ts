@@ -29,6 +29,8 @@ namespace TypeScript {
         public origin: string;
         /**
          * 页面的路径
+         * 
+         * 这是一个绝对路径来的
         */
         public path: string;
         /**
@@ -68,6 +70,11 @@ namespace TypeScript {
 
             if (url.indexOf("#") < 0) {
                 this.hash = "";
+            }
+            // 将页面的路径标准化
+            // 应该是一个从wwwroot起始的绝对路径
+            if (this.path.charAt(0) !== "/") {
+                this.path = `/${this.path}`;
             }
 
             var args: object = URL.UrlQuery(token.value);
