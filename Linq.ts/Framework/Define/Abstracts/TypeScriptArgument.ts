@@ -7,6 +7,9 @@
         */
         (arg: string, caseSensitive?: boolean, Default?: string): string;
 
+        /**
+         * 在``?``查询前面之前出现的，包含有页面文件名，但是不包含有网址的域名，协议名之类的剩余的字符串构成了页面的路径
+        */
         readonly path: string;
         readonly fileName: string;
 

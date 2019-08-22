@@ -39,10 +39,24 @@ abstract class Bootstrap {
         this.hookUnload = null;
     }
 
-    public Init(): void {
-        var vm = this;
+    private isCurrentAppPath(): boolean {
+        let path = $ts.location.path;
+
+        if (TypeScript.logging.outputEverything) {
+            console.log(`Current url path is '${path}'`);
+        }
+
+        return path == this.appName;
+    }
+
+    private isCurrentApp(): boolean {
         var currentAppName: string = this.getCurrentAppPage();
         var awake: boolean;
+
+        if (this.appName.charAt(0) === "/") {
+            // 是一个绝对路径，则按照路径进行判断
+            return this.isCurrentAppPath();
+        }
 
         if (Router.isCaseSensitive()) {
             awake = currentAppName == this.appName;
@@ -55,19 +69,29 @@ abstract class Bootstrap {
             if (TypeScript.logging.outputEverything) {
                 console.log(`%c[${TypeInfo.typeof(this).class}] Continue Sleep as: TRUE = ${currentAppName} <> ${this.appName}`, "color:green;");
             }
-            return;
+            return false;
         } else if (TypeScript.logging.outputEverything) {
             console.log(`%c[${TypeInfo.typeof(this).class}] App(name:=${this.appName}) Init...`, "color:blue;");
         }
 
-        // attach event handlers
-        $ts(() => this.OnDocumentReady());
+        return awake;
+    }
+
+    public Init(): void {
+        var vm = this;
+
+        if (!this.isCurrentApp()) {
+            return;
+        } else {
+            // attach event handlers
+            $ts(() => this.OnDocumentReady());
+        }
 
         // 2019-1-7 因为js是解释执行的，所以OnWindowLoad函数里面的代码之中的this，
         // 可能会被解释为window对象
         // 从而导致出现bug，所以在这里需要使用一个函数的封装来避免这个问题
-        window.onload = () => this.OnWindowLoad();
-        window.onbeforeunload = () => this.OnWindowUnload();
+        window.onload = vm.OnWindowLoad;
+        window.onbeforeunload = vm.OnWindowUnload;
         window.onhashchange = function () {
             var hash = window.location.hash;
             var val = hash.substr(1);
