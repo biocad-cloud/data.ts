@@ -38,7 +38,7 @@
         export function getValue(id: string, strict: boolean = true): any {
             let input = $ts(Internal.Handlers.EnsureNodeId(id));
 
-            switch (input.tagName) {
+            switch (input.tagName.toLowerCase()) {
                 case "input": return inputValue(<any>input);
                 case "select": return selectOptionValues(<any>input);
                 case "textarea": return largeText(<any>input);
