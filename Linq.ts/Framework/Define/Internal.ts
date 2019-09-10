@@ -46,9 +46,18 @@ namespace Internal {
                 sendContentType: (options || {}).sendContentType || true
             };
 
-            HttpHelpers.POST(urlSolver(url), post, function (response) {
+            HttpHelpers.POST(urlSolver(url), post, function (response, code) {
                 if (callback) {
-                    callback(handleJSON(response));
+                    if (code == 200) {
+                        callback(handleJSON(response));
+                    } else {
+                        // handle page not found and internal server error
+                        callback(<IMsg<{}>>{
+                            code: code,
+                            info: response,
+                            url: url
+                        });
+                    }                    
                 }
             });
         };
