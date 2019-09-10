@@ -26,6 +26,15 @@ abstract class Bootstrap {
 
     public abstract get appName(): string;
 
+    /**
+     * 这个函数默认是取出url query之中的app参数字符串作为应用名称
+     * 
+     * @returns 如果没有定义app参数，则默认是返回``/``作为名称
+    */
+    protected get currentAppPage(): string {
+        return getAllUrlParams().Item("app") || <any>$ts("@app") || "/";
+    }
+
     public get appStatus(): string {
         return this.status;
     }
@@ -50,7 +59,7 @@ abstract class Bootstrap {
     }
 
     private isCurrentApp(): boolean {
-        var currentAppName: string = this.getCurrentAppPage();
+        var currentAppName: string = this.currentAppPage;
         var awake: boolean;
 
         if (this.appName.charAt(0) === "/") {
@@ -136,15 +145,6 @@ abstract class Bootstrap {
     */
     protected OnHashChanged(hash: string): void {
         // do nothing
-    }
-
-    /**
-     * 这个函数默认是取出url query之中的app参数字符串作为应用名称
-     * 
-     * @returns 如果没有定义app参数，则默认是返回``/``作为名称
-    */
-    protected getCurrentAppPage(): string {
-        return getAllUrlParams().Item("app") || "/";
     }
 
     public toString(): string {
