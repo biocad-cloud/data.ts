@@ -29,6 +29,14 @@ namespace TypeExtensions {
             extendsNode.display(html);
             return node;
         };
+        obj.append = function (html: string | HTMLElement) {
+            if (typeof html == "string") {
+                html = $ts("<span>").display(html);
+            }
+
+            extendsNode.append(html);
+            return node;
+        }
         obj.show = function () {
             extendsNode.show();
             return node;
