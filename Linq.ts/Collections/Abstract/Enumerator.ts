@@ -294,6 +294,29 @@ class IEnumerator<T> extends LINQIterator<T> {
     }
 
     /**
+     * Split a sequence by elements count
+    */
+    public Split(size: number): IEnumerator<T[]> {
+        let seq: T[][] = [];
+        let row: T[] = [];
+
+        for (let element of this.sequence) {
+            if (row.length < size) {
+                row.push(element);
+            } else {
+                seq.push(row);
+                row = [];
+            }
+        }
+
+        if (row.length > 0) {
+            seq.push(row);
+        }
+
+        return new IEnumerator<T[]>(seq);
+    }
+
+    /**
      * 取出序列之中的前n个元素
     */
     public Take(n: number): IEnumerator<T> {
@@ -312,7 +335,9 @@ class IEnumerator<T> extends LINQIterator<T> {
     */
     public Reverse(): IEnumerator<T> {
         var rseq = this.ToArray().reverse();
-        return new IEnumerator<T>(rseq);
+        var seq = new IEnumerator<T>(rseq);
+
+        return seq;
     }
 
     /**
