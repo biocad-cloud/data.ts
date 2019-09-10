@@ -68,9 +68,18 @@ namespace Internal {
             });
         }
         ts.get = function (url: string, callback?: ((response: IMsg<{}>) => void)) {
-            HttpHelpers.GetAsyn(urlSolver(url), function (response) {
+            HttpHelpers.GetAsyn(urlSolver(url), function (response, code: number) {
                 if (callback) {
-                    callback(handleJSON(response));
+                    if (code == 200) {
+                        callback(handleJSON(response));
+                    } else {
+                        // handle page not found and internal server error
+                        callback(<IMsg<{}>>{
+                            code: code,
+                            info: response,
+                            url: url
+                        });
+                    }
                 }
             });
         };
