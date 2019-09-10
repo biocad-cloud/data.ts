@@ -179,7 +179,12 @@ namespace Internal.Handlers {
                         node.style.display = "none";
                     }
                 } else {
-                    node.setAttribute(name, <string>attrs[name]);
+                    let attrVal: string = <string>attrs[name];
+
+                    if (name == "src" || name == "href") {
+                        attrVal = Internal.urlSolver(attrVal);
+                    }
+                    node.setAttribute(name, attrVal);
                 }
             }
 
