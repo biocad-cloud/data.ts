@@ -105,6 +105,8 @@
          * 的value属性值的读取操作
          * 
          * @param id 目标``<input>``标签对象的``id``编号
+         * 
+         * @returns 对于checkbox类型的input而言，逻辑值是以字符串的形式返回
         */
         value(id: string): any;
 
