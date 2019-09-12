@@ -32,11 +32,35 @@
             }
         }
 
+        function setOption(inputs: DOMEnumerator<IHTMLElement>, value: string) {
+            inputs
+                .Select(a => a.asInput)
+                .Where(a => {
+                    a.checked = false;
+                    return a.value == value;
+                })
+                .First.checked = true;
+        }
+
         function setValues(inputs: DOMEnumerator<IHTMLElement>, value: string, strict: boolean) {
             let first = inputs.First;
 
             switch (first.tagName.toLowerCase()) {
                 case "input":
+                    let type = first.asInput.type;
+
+                    switch (type.toLowerCase()) {
+                        case "checkbox":
+                            setOption(inputs, value);
+                            break;
+
+                        case "radio":
+                            setOption(inputs, value);
+                            break;
+
+                        default:
+                            inputs.attr("value", value);
+                    }
 
                 default:
                     if (strict) {
