@@ -61,6 +61,7 @@
                         default:
                             inputs.attr("value", value);
                     }
+                    break;
 
                 default:
                     if (strict) {
