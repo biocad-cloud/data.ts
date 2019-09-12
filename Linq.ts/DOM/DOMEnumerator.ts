@@ -9,7 +9,17 @@
 // */
 // createElement<K extends keyof HTMLElementTagNameMap>(tagName: K, options ?: ElementCreationOptions): HTMLElementTagNameMap[K];
 
+/**
+ * A collection of html elements with same tag, name or class
+*/
 class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
+
+    /**
+     * 这个只读属性只返回第一个元素的tagName
+    */
+    public get tagName(): string {
+        return this.First.tagName;
+    }
 
     /**
      * 1. IEnumerator

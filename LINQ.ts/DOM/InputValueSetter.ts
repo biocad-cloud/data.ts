@@ -1,6 +1,6 @@
 ﻿namespace DOM {
 
-    export module InputValueGetter {
+    export module InputValueSetter {
 
         /**
          * @param resource name or id
@@ -14,7 +14,7 @@
             let type: TypeInfo = TypeInfo.typeof(input);
 
             if (type.IsEnumerator) {
-                setValues(<any>input, value, strict);
+                setValues(new DOMEnumerator<IHTMLElement>(<any>input), value, strict);
             } else {
                 switch (input.tagName.toLowerCase()) {
                     case "input":
@@ -32,8 +32,20 @@
             }
         }
 
-        function setValues(inputs: IEnumerator<IHTMLElement>, value: string, strict: boolean) {
+        function setValues(inputs: DOMEnumerator<IHTMLElement>, value: string, strict: boolean) {
+            let first = inputs.First;
 
+            switch (first.tagName.toLowerCase()) {
+                case "input":
+
+                default:
+                    if (strict) {
+                        throw `Set value of <${inputs.tagName}> is not supported!`;
+                    } else {
+                        // 强制读取目标节点的value属性值
+                        inputs.attr("value", value);
+                    }
+            }
         }
     }
 }

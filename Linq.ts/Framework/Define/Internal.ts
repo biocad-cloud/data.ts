@@ -57,7 +57,7 @@ namespace Internal {
                             info: response,
                             url: url
                         });
-                    }                    
+                    }
                 }
             });
         };
@@ -243,7 +243,13 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
-        ts.value = DOM.InputValueGetter.getValue;
+        ts.value = function (resource: string, value: string = null, strict: boolean = false) {
+            if (isNullOrUndefined(value)) {
+                return DOM.InputValueGetter.getValue(resource, strict);
+            } else {
+                DOM.InputValueSetter.setValue(resource, value, strict);
+            }
+        }
         ts.inject = function (iframe: string, fun: (Delegate.Func<any> | string)[] | string | Delegate.Func<any>) {
             var frame: HTMLIFrameElement = <any>$ts(iframe);
             var envir: {
