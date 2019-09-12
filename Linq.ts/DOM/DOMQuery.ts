@@ -60,7 +60,7 @@ namespace DOM {
             return <Query>{
                 type: QueryTypes.name,
                 singleNode: isSingle,
-                expression: nameVal
+                expression: `[name='${nameVal}']`
             };
         }
 
