@@ -45,7 +45,7 @@ class TypeInfo {
      * 是否是一个枚举器集合对象？
     */
     public get IsEnumerator(): boolean {
-        return this.typeOf == "object" && this.class == "IEnumerator";
+        return this.typeOf == "object" && (this.class == "IEnumerator" || this.class == "DOMEnumerator");
     }
 
     /**
@@ -140,12 +140,12 @@ class TypeInfo {
         } else {
             return this.typeOf;
         }
-    }   
+    }
 
     /**
      * MetaReader对象和字典相似，只不过是没有类型约束，并且为只读集合
     */
     public static CreateMetaReader<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): TypeScript.Data.MetaReader {
-        return new TypeScript.Data.MetaReader(Activator.CreateObject(nameValues));        
+        return new TypeScript.Data.MetaReader(Activator.CreateObject(nameValues));
     }
 }
