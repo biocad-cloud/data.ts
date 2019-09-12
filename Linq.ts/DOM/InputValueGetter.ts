@@ -40,8 +40,8 @@
          * 如果目标id标记的控件不是输入类型的，则如果处于非严格模式下，
          * 即这个参数为``false``的时候会直接强制读取value属性值
         */
-        export function getValue(id: string, strict: boolean = true): any {
-            let input = $ts(Internal.Handlers.EnsureNodeId(id));
+        export function getValue(resource: string, strict: boolean = true): any {
+            let input: IHTMLElement = $ts(resource);
 
             switch (input.tagName.toLowerCase()) {
                 case "input": return inputValue(<any>input);

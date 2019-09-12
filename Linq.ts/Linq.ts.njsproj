@@ -266,6 +266,9 @@
     <Folder Include="Framework\Define\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DOM\InputValueSetter.ts">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Helpers\Http\Imports.ts">
       <SubType>Code</SubType>
     </Compile>
