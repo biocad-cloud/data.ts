@@ -104,11 +104,13 @@
          * 这个函数主要是应用于``<input>``, ``<textarea>``以及``<select>``标签对象
          * 的value属性值的读取操作
          * 
+         * 但是如果set_value参数不是空的，则会设置参数到目标控件之上
+         * 
          * @param id 目标``<input>``标签对象的``id``编号
          * 
          * @returns 对于checkbox类型的input而言，逻辑值是以字符串的形式返回
         */
-        value(id: string): any;
+        value(id: string, set_value?: string): any;
 
         /**
          * isNullOrUndefined
