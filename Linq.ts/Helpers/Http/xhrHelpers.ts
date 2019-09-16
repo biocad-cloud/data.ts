@@ -132,11 +132,24 @@
         }, callback);
     }
 
-    export function serialize<T extends {}>(a: T): string {
+    export function serialize<T extends {}>(a: T, nullAsStringFactor: boolean = false): string {
         let sb: string[] = [];
+        let value: any;
 
         for (let key of Object.keys(a)) {
-            sb.push(`${key}=${encodeURIComponent(a[key])}`);
+            value = a[key];
+
+            if (isNullOrUndefined(value)) {
+                if (nullAsStringFactor && TypeScript.logging.outputEverything) {
+                    console.warn(`${key} value is nothing!`);
+                    value = "null";
+                } else {
+                    // skip
+                    continue;
+                }
+            }
+
+            sb.push(`${key}=${encodeURIComponent(value)}`);
         }
 
         return sb.join("&");
