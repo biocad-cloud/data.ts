@@ -7,7 +7,10 @@
     /**
      * Console logging helper
     */
-    export class logging {
+    export abstract class logging {
+
+        private constructor() {
+        }
 
         /**
          * 应用程序的开发模式：只会输出框架的警告信息
@@ -34,6 +37,19 @@
             if (this.outputEverything) {
                 console.log(obj);
             }
+        }
+
+        public static runGroup(title: string, program: Delegate.Sub): void {
+            let startTime: number = Date.now();
+
+            console.group(title);
+            program();
+            console.groupEnd();
+
+            let endTime: number = Date.now();
+            let costTime: number = endTime - startTime;
+
+            console.log(`Program '${title}' cost ${costTime}ms to run.`);
         }
     }
 }
