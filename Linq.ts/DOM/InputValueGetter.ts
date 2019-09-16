@@ -98,10 +98,10 @@
             let values = [];
 
             for (let sel of selects) {
-                var value = sel.value;
+                var value = (<HTMLOptionElement>sel).value;
 
                 if (!value) {
-                    value = sel.innerText;
+                    value = (<HTMLOptionElement>sel).innerText;
                 }
 
                 values.push(value);
@@ -113,19 +113,26 @@
         /**
          * return array containing references to selected option elements
         */
-        export function getSelectedOptions(sel: HTMLSelectElement) {
+        export function getSelectedOptions(sel: HTMLSelectElement | DOMEnumerator<HTMLInputElement>) {
             var opts: HTMLOptionElement[] = []
             var opt: HTMLOptionElement;
 
-            // loop through options in select list
-            for (var i = 0, len = sel.options.length; i < len; i++) {
-                opt = sel.options[i];
+            if (sel instanceof HTMLSelectElement) {
+                // loop through options in select list
+                for (var i = 0, len = sel.options.length; i < len; i++) {
+                    opt = sel.options[i];
 
-                // check if selected
-                if (opt.selected) {
-                    // add to array of option elements to return from this function
-                    opts.push(opt);
+                    // check if selected
+                    if (opt.selected) {
+                        // add to array of option elements to return from this function
+                        opts.push(opt);
+                    }
                 }
+            } else {
+                return sel
+                    .Where(i => i.checked)
+                    .Select(i => i.value)
+                    .ToArray(false);
             }
 
             return opts;

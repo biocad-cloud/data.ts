@@ -63,6 +63,7 @@
 
         /**
          * query参数应该是节点id查询表达式
+         * 主要是应用于获取checkbox或者select的结果值获取
         */
         getSelectedOptions(query: string, context?: Window): DOMEnumerator<HTMLOptionElement>;
         /**

@@ -1,6 +1,6 @@
 ﻿namespace DOM.Events {
 
-    var started: boolean;
+    var started: boolean = false;
     var customEvents: {
         hasUpdate: Delegate.Func<boolean>,
         invoke: Delegate.Sub,
@@ -15,8 +15,10 @@
     */
     export function Add(trigger: Delegate.Func<boolean> | StatusChanged, handler: Delegate.Sub, tag: string = null) {
         if (trigger instanceof StatusChanged) {
+            let predicate: StatusChanged = <StatusChanged>trigger;
+
             trigger = function () {
-                return (<StatusChanged>trigger).changed;
+                return predicate.changed;
             }
         }
 
@@ -29,6 +31,10 @@
         if (!started) {
             setInterval(backgroundInternal, 10);
             started = true;
+
+            if (TypeScript.logging.outputEverything) {
+                console.log("Start background worker...");
+            }
         }
     }
 
