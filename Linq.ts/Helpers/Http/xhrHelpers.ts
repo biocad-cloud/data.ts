@@ -132,6 +132,16 @@
         }, callback);
     }
 
+    export function serialize<T extends {}>(a: T): string {
+        let sb: string[] = [];
+
+        for (let key of Object.keys(a)) {
+            sb.push(`${key}=${encodeURIComponent(a[key])}`);
+        }
+
+        return sb.join("&");
+    }
+
     /**
      * 在这个数据包对象之中应该包含有
      * 
