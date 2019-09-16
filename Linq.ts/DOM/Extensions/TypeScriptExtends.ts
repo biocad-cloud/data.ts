@@ -72,6 +72,7 @@ namespace TypeExtensions {
         obj.attr = function (name: string, value: string) {
             if ((name = name.toLowerCase()) == "src" || name == "href") {
                 value = Internal.urlSolver(value, true);
+                TypeScript.logging.log(`set_attr ${name}='${value}'`);
             }
 
             node.setAttribute(name, value);
