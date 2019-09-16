@@ -4,6 +4,7 @@
 /// <reference path="../Modes.ts" />
 /// <reference path="../../DOM/Document.ts" />
 /// <reference path="../../DOM/InputValueGetter.ts" />
+/// <reference path="../../DOM/Events/CustomEvents.ts" />
 /// <reference path="../../Data/Range.ts" />
 
 /**
@@ -303,6 +304,7 @@ namespace Internal {
         };
 
         ts.doubleRange = data.NumericRange.Create;
+        ts.hook = DOM.Events.Add;
 
         return ts;
     }
@@ -333,7 +335,7 @@ namespace Internal {
             var sel: HTMLElement = $ts(query, {
                 context: context
             });
-            var options = DOM.InputValueGetter.getSelectedOptions(<any>sel);
+            var options = <HTMLOptionElement[]>DOM.InputValueGetter.getSelectedOptions(<any>sel);
 
             return new DOMEnumerator<HTMLOptionElement>(options);
         };
@@ -346,7 +348,11 @@ namespace Internal {
             if (options.length == 0) {
                 return null;
             } else {
-                return options[0].value;
+                if (typeof options[0] == "string") {
+                    return options[0];
+                } else {
+                    return (<HTMLOptionElement>options[0]).value;
+                }
             }
         };
 

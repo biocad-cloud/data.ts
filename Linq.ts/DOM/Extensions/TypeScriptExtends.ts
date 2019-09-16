@@ -53,6 +53,13 @@ namespace TypeExtensions {
             extendsNode.removeClass(name);
             return node;
         }
+        obj.onClassChanged = function (className: string, action: Delegate.Sub, includesRemoves?: boolean) {
+            let predicate = new DOM.Events.StatusChanged(function () {
+                return node.classList.contains(className);
+            }, includesRemoves);
+
+            $ts.hook(predicate, action);
+        };
 
         obj.CType = function () {
             return node;
@@ -62,7 +69,16 @@ namespace TypeExtensions {
             return node;
         }
         obj.selects = cssSelector => Internal.Handlers.stringEval.select(cssSelector, node);
+        obj.attr = function (name: string, value: string) {
+            if ((name = name.toLowerCase()) == "src" || name == "href") {
+                value = Internal.urlSolver(value, true);
+                TypeScript.logging.log(`set_attr ${name}='${value}'`);
+            }
 
+            node.setAttribute(name, value);
+
+            return node;
+        }
 
         // 用这个方法可以很方便的从现有的节点进行转换
         // 也可以直接使用new进行构造
