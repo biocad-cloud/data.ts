@@ -31,7 +31,7 @@ interface HTMLExtensions {
     /**
      * 当class列表中指定的class名称出现或者消失的时候将会触发给定的action调用
     */
-    onClassChanged(className: string, action: Delegate.Sub, includesRemoves?: boolean);
+    onClassChanged(className: string, action: Delegate.Sub, includesRemoves?: boolean): void;
 
     /**
      * 清除当前的这个html文档节点元素之中的所有内容
