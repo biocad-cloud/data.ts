@@ -49,7 +49,7 @@
             let endTime: number = Date.now();
             let costTime: number = endTime - startTime;
 
-            console.log(`Program '${title}' cost ${costTime}ms to run.`);
+            logging.log(`Program '${title}' cost ${costTime}ms to run.`, "darkblue");
         }
     }
 }
