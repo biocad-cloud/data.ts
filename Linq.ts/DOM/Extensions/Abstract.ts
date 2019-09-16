@@ -34,6 +34,11 @@ interface HTMLExtensions {
     onClassChanged(className: string, action: Delegate.Sub, includesRemoves?: boolean): void;
 
     /**
+     * Set attribute value of current html element node.
+    */
+    attr(name: string, value: string): IHTMLElement;
+
+    /**
      * 清除当前的这个html文档节点元素之中的所有内容
     */
     clear(): IHTMLElement;
