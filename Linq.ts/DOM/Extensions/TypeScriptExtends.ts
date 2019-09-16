@@ -53,6 +53,13 @@ namespace TypeExtensions {
             extendsNode.removeClass(name);
             return node;
         }
+        obj.onClassChanged = function (className: string, action: Delegate.Sub, includesRemoves?: boolean) {
+            let predicate = new DOM.Events.StatusChanged(function () {
+                return node.classList.contains(className);
+            }, includesRemoves);
+
+            $ts.hook(predicate, action);
+        };
 
         obj.CType = function () {
             return node;

@@ -88,6 +88,9 @@
     <TypeScriptCompile Include="DOM\Events\CustomEvents.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\Events\StatusChanged.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\StackTrace\StackFrame.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

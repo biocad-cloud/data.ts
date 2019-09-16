@@ -13,7 +13,13 @@
      * @param trigger This lambda function detects that custom event is triggered or not.
      * @param handler This lambda function contains the processor code of your custom event.
     */
-    export function Add(trigger: Delegate.Func<boolean>, handler: Delegate.Sub, tag: string = null) {
+    export function Add(trigger: Delegate.Func<boolean> | StatusChanged, handler: Delegate.Sub, tag: string = null) {
+        if (trigger instanceof StatusChanged) {
+            trigger = function () {
+                return (<StatusChanged>trigger).changed;
+            }
+        }
+
         customEvents.push({
             hasUpdate: trigger,
             invoke: handler,
