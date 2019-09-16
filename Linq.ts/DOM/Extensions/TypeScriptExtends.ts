@@ -70,7 +70,12 @@ namespace TypeExtensions {
         }
         obj.selects = cssSelector => Internal.Handlers.stringEval.select(cssSelector, node);
         obj.attr = function (name: string, value: string) {
+            if ((name = name.toLowerCase()) == "src" || name == "href") {
+                value = Internal.urlSolver(value, true);
+            }
+
             node.setAttribute(name, value);
+
             return node;
         }
 
