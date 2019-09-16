@@ -30,10 +30,97 @@
             return $ts.mode == errorOnly;
         }
 
-        public static log(obj, color: string = "black") {
+        public static log(obj, color: string | ConsoleColors = "black") {
+            if (typeof color != "string") {
+                color = ConsoleColors[color].toLowerCase();
+            }
+
             if (this.outputEverything) {
-                console.log(obj);
+                console.log("%c" + obj, `color:${color}`);
             }
         }
+    }
+
+    export enum ConsoleColors {
+
+        /**
+         * The color black.
+        */
+        Black = 0,
+
+        /**
+         * The color blue.
+        */
+        Blue = 9,
+
+        /**
+         * The color cyan (blue - green).
+        */
+        Cyan = 11,
+
+        /**
+         * The color dark blue.
+        */
+        DarkBlue = 1,
+
+        /**
+         * The color dark cyan(dark blue - green).
+        */
+        DarkCyan = 3,
+
+        /**
+         * The color dark gray.
+        */
+        DarkGray = 8,
+
+        /**
+         * The color dark green.
+        */
+        DarkGreen = 2,
+
+        /**
+         * The color dark magenta(dark purplish - red).
+        */
+        DarkMagenta = 5,
+
+        /**
+         * The color dark red.
+        */
+        DarkRed = 4,
+
+        /**
+         * The color dark yellow(ochre).
+        */
+        DarkYellow = 6,
+
+        /**
+         * The color gray.
+        */
+        Gray = 7,
+
+        /**
+         * The color green.
+        */
+        Green = 10,
+
+        /**
+         * The color magenta(purplish - red).
+        */
+        Magenta = 13,
+
+        /**
+         * The color red.
+        */
+        Red = 12,
+
+        /**
+         * The color white.
+        */
+        White = 15,
+
+        /**
+         * The color yellow.
+        */
+        Yellow = 14,
     }
 }
