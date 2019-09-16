@@ -14,7 +14,11 @@
      * @param handler This lambda function contains the processor code of your custom event.
     */
     export function Add(trigger: Delegate.Func<boolean>, handler: Delegate.Sub, tag: string = null) {
-        customEvents.push({ hasUpdate: trigger, invoke: handler, name: tag });
+        customEvents.push({
+            hasUpdate: trigger,
+            invoke: handler,
+            name: tag
+        });
 
         if (!started) {
             setInterval(backgroundInternal, 10);
