@@ -303,6 +303,7 @@ namespace Internal {
         };
 
         ts.doubleRange = data.NumericRange.Create;
+        ts.hook = DOM.Events.Add;
 
         return ts;
     }

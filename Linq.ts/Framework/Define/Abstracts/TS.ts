@@ -32,6 +32,7 @@
          * @param query A selector expression
         */
         select: IquerySelector;
+        hook(trigger: Delegate.Func<boolean>, handler: Delegate.Sub, tag?: string);
 
         /**
          * @param div 应该是带有``#``的id查询表达式
