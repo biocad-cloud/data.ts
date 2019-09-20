@@ -18,9 +18,9 @@ namespace Framework.Extensions {
         var type = TypeInfo.typeof(data);
         var array: T[];
 
-        if (type.IsEnumerator) {
+        if (type.isEnumerator) {
             array = (<IEnumerator<T>>data).ToArray();
-        } else if (type.IsArray) {
+        } else if (type.isArray) {
             array = [...<T[]>data];
         } else {
             var x = <T>data;

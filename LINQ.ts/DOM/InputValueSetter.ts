@@ -13,7 +13,7 @@
             let input = $ts(resource);
             let type: TypeInfo = TypeInfo.typeof(input);
 
-            if (type.IsEnumerator) {
+            if (type.isEnumerator) {
                 setValues(new DOMEnumerator<IHTMLElement>(<any>input), value, strict);
             } else {
                 switch (input.tagName.toLowerCase()) {

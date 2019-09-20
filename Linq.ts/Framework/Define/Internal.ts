@@ -371,7 +371,7 @@ namespace Internal {
 
         if (isHtmlCollection) {
             return Internal.Handlers.Shared.HTMLCollection().doEval(<any>any, type, args);
-        } else if (type.IsArray) {
+        } else if (type.isArray) {
             // 转化为序列集合对象，相当于from函数                
             return (<Handlers.arrayEval<T>>queryEval).doEval(<T[]>any, type, args);
         } else if (type.typeOf == "function") {

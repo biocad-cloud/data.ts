@@ -30,29 +30,29 @@ class TypeInfo {
     /**
      * 是否是js之中的基础类型？
     */
-    public get IsPrimitive(): boolean {
+    public get isPrimitive(): boolean {
         return !this.class;
     }
 
     /**
      * 是否是一个数组集合对象？
     */
-    public get IsArray(): boolean {
+    public get isArray(): boolean {
         return this.typeOf == "array";
     }
 
     /**
      * 是否是一个枚举器集合对象？
     */
-    public get IsEnumerator(): boolean {
+    public get isEnumerator(): boolean {
         return this.typeOf == "object" && (this.class == "IEnumerator" || this.class == "DOMEnumerator");
     }
 
     /**
      * 当前的对象是某种类型的数组集合对象
     */
-    public IsArrayOf(genericType: string): boolean {
-        return this.IsArray && this.class == genericType;
+    public isArrayOf(genericType: string): boolean {
+        return this.isArray && this.class == genericType;
     }
 
     /**
@@ -69,29 +69,37 @@ class TypeInfo {
 
     private static getClassInternal(obj: any, isArray: boolean, isObject: boolean, isNull: boolean): string {
         if (isArray) {
-            var x = (<any>obj)[0];
-            var className: string;
-
-            if ((className = typeof x) == "object") {
-                className = x.constructor.name;
-            } else {
-                // do nothing
-            }
-
-            return className;
+            return this.getElementType(obj);
         } else if (isObject) {
-            if (isNull) {
-                if (TypeScript.logging.outputWarning) {
-                    console.warn(TypeExtensions.objectIsNothing);
-                }
-
-                return "null";
-            } else {
-                return (<any>obj.constructor).name;
-            }
+            return this.getObjectClassName(obj, isNull);
         } else {
             return "";
         }
+    }
+
+    public static getObjectClassName(obj: object, isnull: boolean): string {
+        if (isnull) {
+            if (TypeScript.logging.outputWarning) {
+                console.warn(TypeExtensions.objectIsNothing);
+            }
+
+            return "null";
+        } else {
+            return (<any>obj.constructor).name;
+        }
+    }
+
+    public static getElementType(array: Array<any>): string {
+        var x: any = array[0];
+        var className: string;
+
+        if ((className = typeof x) == "object") {
+            className = x.constructor.name;
+        } else {
+            // do nothing
+        }
+
+        return className;
     }
 
     /**

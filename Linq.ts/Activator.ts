@@ -72,9 +72,9 @@
         let obj: object = {};
         let type = TypeInfo.typeof(nameValues);
 
-        if (type.IsArray && type.class == "MapTuple") {
+        if (type.isArray && type.class == "MapTuple") {
             (<MapTuple<string, V>[]>nameValues).forEach(map => obj[map.key] = map.value);
-        } else if (type.IsArray && type.class == "NamedValue") {
+        } else if (type.isArray && type.class == "NamedValue") {
             (<NamedValue<V>[]>nameValues).forEach(nv => obj[nv.name] = nv.value);
         } else if (type.class == "IEnumerator") {
             var seq = <IEnumerator<any>>nameValues;
