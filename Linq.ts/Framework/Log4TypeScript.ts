@@ -44,7 +44,7 @@
             }
 
             if (this.outputEverything) {
-                if (typeof obj == "object" || color == "na") {
+                if (color == "na" || TypeExtensions.isPrimitive(obj)) {
                     console.log(obj);
                 } else {
                     console.log("%c" + obj, `color:${color}`);
