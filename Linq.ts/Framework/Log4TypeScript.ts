@@ -33,13 +33,24 @@
             return $ts.mode == errorOnly;
         }
 
-        public static log(obj, color: string | ConsoleColors = "black") {
+        /**
+         * 使用这个函数显示object的时候，将不会发生样式的变化
+        */
+        public static log(obj, color: string | ConsoleColors = ConsoleColors.NA) {
             if (typeof color != "string") {
                 color = ConsoleColors[color].toLowerCase();
+            } else {
+                color = color.toLowerCase();
             }
 
             if (this.outputEverything) {
-                console.log("%c" + obj, `color:${color}`);
+                if (typeof obj == "object" || color == "na") {
+                    console.log(obj);
+                } else {
+                    console.log("%c" + obj, `color:${color}`);
+                }
+            } else {
+                // go silent
             }
         }
 
@@ -58,6 +69,11 @@
     }
 
     export enum ConsoleColors {
+
+        /**
+         * do not set the colors
+        */
+        NA = -1,
 
         /**
          * The color black.
