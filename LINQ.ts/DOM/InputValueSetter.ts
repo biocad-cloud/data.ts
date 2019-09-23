@@ -43,6 +43,9 @@
                 .First;
 
             opt.checked = true;
+
+            // view set value result in debug mode
+            TypeScript.logging.log(opt);            
         }
 
         function setValues(inputs: DOMEnumerator<IHTMLElement>, value: string, strict: boolean) {
