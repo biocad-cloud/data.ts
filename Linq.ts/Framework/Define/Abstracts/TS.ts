@@ -35,6 +35,8 @@
         hook(trigger: Delegate.Func<boolean> | DOM.Events.StatusChanged, handler: Delegate.Sub, tag?: string);
 
         /**
+         * 向目标html标签中添加一个表格对象
+         * 
          * @param div 应该是带有``#``的id查询表达式
         */
         appendTable<T extends {}>(
