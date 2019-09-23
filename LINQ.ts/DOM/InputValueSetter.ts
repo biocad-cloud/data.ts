@@ -33,13 +33,16 @@
         }
 
         function setOption(inputs: DOMEnumerator<IHTMLElement>, value: string) {
-            inputs
-                .Select(a => a.asInput)
-                .Where(a => {
-                    a.checked = false;
-                    return a.value == value;
+            let opt: HTMLInputElement = inputs
+                .Select(function (a) {
+                    var input = a.asInput;
+                    input.checked = false;
+                    return input;
                 })
-                .First.checked = true;
+                .Where(a => a.value == value)
+                .First;
+
+            opt.checked = true;
         }
 
         function setValues(inputs: DOMEnumerator<IHTMLElement>, value: string, strict: boolean) {
