@@ -3,10 +3,10 @@
 */
 module DataExtensions {
 
-    export function arrayBufferToBase64(buffer: Array<number>): string {
+    export function arrayBufferToBase64(buffer: Array<number> | ArrayBuffer): string {
         var binary: string = '';
         var bytes = new Uint8Array(buffer);
-        var len = bytes.byteLength;
+        var len: number = bytes.byteLength;
 
         for (var i = 0; i < len; i++) {
             binary += String.fromCharCode(bytes[i]);
@@ -15,12 +15,38 @@ module DataExtensions {
         return window.btoa(binary);
     }
 
+    export function toUri(data: DataURI): string {
+        if (typeof data.data !== "string") {
+            data.data = arrayBufferToBase64(data.data);
+        }
+
+        return `data:${data.mime_type};base64,${data.data}`;
+    }
+
     /**
      * 将uri之中的base64字符串数据转换为一个byte数据流
     */
-    export function uriToBlob(uri: string): Blob {
-        var byteString = window.atob(uri.split(',')[1]);
-        var mimeString = uri.split(',')[0].split(':')[1].split(';')[0]
+    export function uriToBlob(uri: string | DataURI): Blob {
+        var mimeString: string;
+        var buffer: ArrayBuffer;
+
+        if (typeof uri == "string") {
+            var base64: string = uri.split(',')[1];
+
+            mimeString = uri.split(',')[0].split(':')[1].split(';')[0];
+            buffer = base64ToBlob(base64);
+        } else {
+            mimeString = uri.mime_type;
+            buffer = typeof uri.data == "string" ? base64ToBlob(uri.data) : uri.data;
+        }
+
+        return new Blob([buffer], {
+            type: mimeString
+        });
+    }
+
+    export function base64ToBlob(base64: string): ArrayBuffer {
+        var byteString = window.atob(base64);
         var buffer = new ArrayBuffer(byteString.length);
         var intArray = new Uint8Array(buffer);
 
@@ -28,7 +54,7 @@ module DataExtensions {
             intArray[i] = byteString.charCodeAt(i);
         }
 
-        return new Blob([buffer], { type: mimeString });
+        return buffer;
     }
 
     /**

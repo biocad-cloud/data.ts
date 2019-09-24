@@ -229,6 +229,9 @@
     <TypeScriptCompile Include="Collections\Which.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Helpers\Http\DataURI.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="IProperty.ts" />
     <TypeScriptCompile Include="Type.ts">
       <SubType>Code</SubType>

@@ -9,7 +9,7 @@ namespace DOM {
      * @param name The file save name for download operation
      * @param uri The file object to download
     */
-    export function download(name: string, uri: string): void {
+    export function download(name: string, uri: string | DataURI): void {
         if (navigator.msSaveOrOpenBlob) {
             navigator.msSaveOrOpenBlob(DataExtensions.uriToBlob(uri), name);
         } else {
@@ -17,7 +17,7 @@ namespace DOM {
         }
     }
 
-    function downloadImpl(name: string, uri: string): void {
+    function downloadImpl(name: string, uri: string | DataURI): void {
         var saveLink: HTMLAnchorElement = <any>$ts('<a>');
         var downloadSupported = 'download' in saveLink;
 
@@ -41,12 +41,20 @@ namespace DOM {
                     console.warn('This browser does not support object URLs. Falling back to string URL.');
                 }
 
+                if (typeof uri !== "string") {
+                    uri = DataExtensions.toUri(uri);
+                }
+
                 saveLink.href = uri;
             }
 
             saveLink.click();
             document.body.removeChild(saveLink);
         } else {
+            if (typeof uri !== "string") {
+                uri = DataExtensions.toUri(uri);
+            }
+
             window.open(uri, '_temp', 'menubar=no,toolbar=no,status=no');
         }
     }
