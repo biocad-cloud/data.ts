@@ -54,7 +54,19 @@
             }
         }
 
-        public static runGroup(title: string, program: Delegate.Sub): void {
+        public static table<T extends {}>(objects: T[] | string) {
+            if (this.outputEverything) {
+                if (typeof objects == "string") {
+                    objects = JSON.parse(objects);
+                }
+
+                console.table(objects);
+            } else {
+                // go silent
+            }
+        }
+
+        public static runGroup(title: string, program: Delegate.Action): void {
             let startTime: number = Date.now();
 
             console.group(title);

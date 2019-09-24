@@ -183,7 +183,7 @@ module Enumerable {
 
     export function AllKeys<T>(sequence: T[]): string[] {
         return From(sequence)
-            .Select(o => Object.keys(o))
+            .Select(o => Object.keys(<any>o))
             .Unlist<string>()
             .Distinct()
             .ToArray();
