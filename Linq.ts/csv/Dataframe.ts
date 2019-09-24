@@ -213,6 +213,8 @@ namespace csv {
             var allTextLines: IEnumerator<string> = $ts.from(text.split(/\n/));
             var rows: IEnumerator<row>;
 
+            TypeScript.logging.log(`Document data is a ${tsv ? "tsv" : "csv"} file.`, TypeScript.ConsoleColors.Cyan);
+
             if (Strings.Empty(allTextLines.Last)) {
                 // 2019-1-2 因为文本文件很有可能是以空行结尾的
                 // 所以在这里需要做下额外的判断

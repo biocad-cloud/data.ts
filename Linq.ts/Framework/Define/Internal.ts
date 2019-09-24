@@ -315,7 +315,7 @@ namespace Internal {
         }
         ts.from = From;
         ts.csv = {
-            toObjects: (data: string) => csv.dataframe.Parse(data).Objects(),
+            toObjects: (data: string) => csv.dataframe.Parse(data, csv.isTsvFile(data)).Objects(),
             toText: data => csv.toDataFrame(data).buildDoc()
         };
         ts.evalHTML = {

@@ -32,4 +32,12 @@ namespace csv {
             return "" + obj;
         }
     }
+
+    export function isTsvFile(content: string): boolean {
+        let lines: string[] = Strings.lineTokens(content);
+        let countTab = From(lines).Select(l => Strings.Count(l, "\t")).Average();
+        let countComma = From(lines).Select(l => Strings.Count(l, ",")).Average();
+
+        return countTab >= countComma;
+    }
 }

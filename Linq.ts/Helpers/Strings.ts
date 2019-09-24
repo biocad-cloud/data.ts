@@ -416,6 +416,21 @@ module Strings {
     }
 
     /**
+     * Count char numbers appears in the given string value
+    */
+    export function Count(str: string, c: string): number {
+        let counts = 0;
+
+        for (let chr of str) {
+            if (chr == c) {
+                counts = counts + 1;
+            }
+        }
+
+        return counts;
+    }
+
+    /**
      * 将字符串转换为字符数组
      * 
      * @description > https://jsperf.com/convert-string-to-char-code-array/9
