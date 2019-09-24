@@ -316,7 +316,7 @@ namespace Internal {
         ts.from = From;
         ts.csv = {
             toObjects: (data: string) => csv.dataframe.Parse(data, csv.isTsvFile(data)).Objects(),
-            toText: data => csv.toDataFrame(data).buildDoc()
+            toText: (data, tsvOut: boolean = false) => csv.toDataFrame(data).buildDoc(tsvOut)
         };
         ts.evalHTML = {
             table: DOM.CreateHTMLTableNode,

@@ -84,7 +84,7 @@
         /**
          * 将js的对象序列进行序列化，构建出csv格式的文本文档字符串数据
         */
-        toText<T>(data: IEnumerator<T> | T[]): string;
+        toText<T>(data: IEnumerator<T> | T[], outTsv?: boolean): string;
     }
 
     /**

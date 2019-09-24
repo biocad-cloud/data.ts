@@ -8,7 +8,7 @@ namespace csv {
     /**
      * Common Format and MIME Type for Comma-Separated Values (CSV) Files
     */
-    const contentType: string = "text/csv";
+    export const contentType: string = "text/csv";
 
     /**
      * ``csv``文件模型
@@ -77,8 +77,12 @@ namespace csv {
         /**
          * 将当前的这个数据框对象转换为csv文本内容
         */
-        public buildDoc(): string {
-            return this.Select(r => r.rowLine).JoinBy("\n");
+        public buildDoc(tsvFormat: boolean = false): string {
+            if (!tsvFormat) {
+                return this.Select(r => r.rowLine).JoinBy("\n");
+            } else {
+                return this.Select(r => r.JoinBy("\t")).JoinBy("\n");
+            }
         }
 
         /**
