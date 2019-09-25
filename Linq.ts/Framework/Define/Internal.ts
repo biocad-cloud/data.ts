@@ -314,10 +314,10 @@ namespace Internal {
             return IsNullOrEmpty(obj);
         }
         ts.from = From;
-        ts.csv = {
-            toObjects: (data: string) => csv.dataframe.Parse(data, csv.isTsvFile(data)).Objects(),
-            toText: (data, tsvOut: boolean = false) => csv.toDataFrame(data).buildDoc(tsvOut)
-        };
+        ts.csv = csv.dataframe.Parse;
+        ts.csv.toObjects = (data: string) => csv.dataframe.Parse(data, csv.isTsvFile(data)).Objects();
+        ts.csv.toText = (data, tsvOut: boolean = false) => csv.toDataFrame(data).buildDoc(tsvOut);
+
         ts.evalHTML = {
             table: DOM.CreateHTMLTableNode,
             selectOptions: DOM.AddSelectOptions

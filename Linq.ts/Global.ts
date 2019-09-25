@@ -68,7 +68,7 @@ function md5(string: string, key: string = null, raw: string = null): string {
  * 
  * @param source 需要进行数据加工的集合对象
 */
-function From<T>(source: T[] | IEnumerator<T>): IEnumerator<T> {
+function $from<T>(source: T[] | IEnumerator<T>): IEnumerator<T> {
     return new IEnumerator<T>(source);
 }
 
