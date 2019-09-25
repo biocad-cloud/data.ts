@@ -314,7 +314,13 @@ namespace Internal {
             return IsNullOrEmpty(obj);
         }
         ts.from = $from;
-        ts.csv = csv.dataframe.Parse;
+        ts.csv = function (data: string, isTsv?: boolean | Delegate.Func<boolean>) {
+            if (typeof isTsv != "boolean") {
+                isTsv = <boolean>isTsv(data);
+            }
+
+            return csv.dataframe.Parse(data, isTsv);
+        };
         ts.csv.toObjects = (data: string) => csv.dataframe.Parse(data, csv.isTsvFile(data)).Objects();
         ts.csv.toText = (data, tsvOut: boolean = false) => csv.toDataFrame(data).buildDoc(tsvOut);
 
@@ -383,6 +389,8 @@ namespace Internal {
             }
 
             DOM.Events.ready(<() => void>any, ["interactive", "complete"], <any>args);
+        } else if (TypeExtensions.isElement(any)) {
+            return TypeExtensions.Extends(<any>any);
         } else if (!isNullOrUndefined(eval)) {
             // 对html文档之中的节点元素进行查询操作
             // 或者创建新的节点

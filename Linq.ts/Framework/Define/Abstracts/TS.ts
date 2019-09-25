@@ -15,6 +15,12 @@
 
         <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
         <T extends HTMLElement & Node & ChildNode>(nodes: NodeListOf<T>): DOMEnumerator<T>;
+        /**
+         * Extends the properties and methods of the given original html element node.
+         * 
+         * @param element A given html element object.
+        */
+        <T extends HTMLElement>(element: T): IHTMLElement;
 
         /**
          * Create a new node or query a node by its id.
