@@ -165,7 +165,7 @@ function Goto(url: string, currentFrame: boolean = false): void {
 */
 function base64_decode(stream: string): string {
     var data: string[] = Strings.lineTokens(stream);
-    var base64Str: string = From(data)
+    var base64Str: string = $from(data)
         .Where(s => s && s.length > 0)
         .Select(s => s.trim())
         .JoinBy("");
