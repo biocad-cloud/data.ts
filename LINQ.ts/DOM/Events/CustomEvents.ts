@@ -3,7 +3,7 @@
     var started: boolean = false;
     var customEvents: {
         hasUpdate: Delegate.Func<boolean>,
-        invoke: Delegate.Sub,
+        invoke: Delegate.Action,
         name?: string
     }[] = [];
 
@@ -13,7 +13,7 @@
      * @param trigger This lambda function detects that custom event is triggered or not.
      * @param handler This lambda function contains the processor code of your custom event.
     */
-    export function Add(trigger: Delegate.Func<boolean> | StatusChanged, handler: Delegate.Sub, tag: string = null) {
+    export function Add(trigger: Delegate.Func<boolean> | StatusChanged, handler: Delegate.Action, tag: string = null) {
         if (trigger instanceof StatusChanged) {
             let predicate: StatusChanged = <StatusChanged>trigger;
 
