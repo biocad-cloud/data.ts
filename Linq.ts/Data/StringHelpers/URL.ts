@@ -66,7 +66,7 @@ namespace TypeScript {
             this.origin = token.name; token = Strings.GetTagValue(token.value, "?");
             this.path = token.name;
             this.fileName = Strings.Empty(this.path) ? "" : TsLinq.PathHelper.basename(this.path);
-            this.hash = From(url.split("#")).Last;
+            this.hash = $from(url.split("#")).Last;
 
             if (url.indexOf("#") < 0) {
                 this.hash = "";
@@ -138,7 +138,7 @@ namespace TypeScript {
         }
 
         public toString(): string {
-            var query = From(this.query)
+            var query = $from(this.query)
                 .Select(q => `${q.name}=${encodeURIComponent(q.value)}`)
                 .JoinBy("&");
             var url = `${this.protocol}://${this.origin}/${this.path}`;

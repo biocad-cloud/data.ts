@@ -55,7 +55,7 @@ class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
      * 获取这个字典对象之中的所有的键名
     */
     public get Keys(): IEnumerator<string> {
-        return From(Object.keys(this.maps));
+        return $from(Object.keys(this.maps));
     }
 
     /**
@@ -109,7 +109,7 @@ class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
         } else if (type.class == "IEnumerator") {
             return (<IEnumerator<MapTuple<string, V>>>maps).ToArray();
         } else {
-            return From(Object.keys(maps))
+            return $from(Object.keys(maps))
                 .Select(key => new MapTuple<string, V>(key, maps[key]))
                 .ToArray();
         }

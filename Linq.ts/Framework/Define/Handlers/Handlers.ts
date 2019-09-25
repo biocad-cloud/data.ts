@@ -31,7 +31,7 @@ namespace Internal.Handlers {
     export class arrayEval<V> implements IEval<V[]> {
 
         doEval(expr: V[], type: TypeInfo, args: object): any {
-            return From(expr);
+            return $from(expr);
         }
     }
 

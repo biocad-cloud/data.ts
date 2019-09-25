@@ -273,13 +273,13 @@ module Strings {
         }
 
         if (typeof chars == "string") {
-            chars = From(<string[]>Strings.ToCharArray(chars))
+            chars = $from(<string[]>Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
                 .ToArray(false);
         }
 
         return function (chars: number[]) {
-            return From(<string[]>Strings.ToCharArray(str))
+            return $from(<string[]>Strings.ToCharArray(str))
                 .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
                 .Reverse()
                 .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
@@ -294,13 +294,13 @@ module Strings {
         }
 
         if (typeof chars == "string") {
-            chars = From(<string[]>Strings.ToCharArray(chars))
+            chars = $from(<string[]>Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
                 .ToArray(false);
         }
 
         return function (chars: number[]) {
-            return From(<string[]>Strings.ToCharArray(str))
+            return $from(<string[]>Strings.ToCharArray(str))
                 .SkipWhile(c => chars.indexOf(c.charCodeAt(0)) > -1)
                 .JoinBy("");
         }(<number[]>chars);
@@ -312,7 +312,7 @@ module Strings {
         }
 
         if (typeof chars == "string") {
-            chars = From(<string[]>Strings.ToCharArray(chars))
+            chars = $from(<string[]>Strings.ToCharArray(chars))
                 .Select(c => c.charCodeAt(0))
                 .ToArray(false);
         }

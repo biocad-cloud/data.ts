@@ -35,8 +35,8 @@ namespace csv {
 
     export function isTsvFile(content: string): boolean {
         let lines: string[] = Strings.lineTokens(content);
-        let countTab = From(lines).Select(l => Strings.Count(l, "\t")).Average();
-        let countComma = From(lines).Select(l => Strings.Count(l, ",")).Average();
+        let countTab = $from(lines).Select(l => Strings.Count(l, "\t")).Average();
+        let countComma = $from(lines).Select(l => Strings.Count(l, ",")).Average();
 
         return countTab >= countComma;
     }

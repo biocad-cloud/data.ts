@@ -182,7 +182,7 @@ module Enumerable {
     }
 
     export function AllKeys<T>(sequence: T[]): string[] {
-        return From(sequence)
+        return $from(sequence)
             .Select(o => Object.keys(<any>o))
             .Unlist<string>()
             .Distinct()

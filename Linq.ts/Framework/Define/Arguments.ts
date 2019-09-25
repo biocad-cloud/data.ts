@@ -37,7 +37,7 @@
          * 里面的属性名也进行赋值，可能会造成bug
         */
         public static nameFilter(args: object): string[] {
-            return From(Object.keys(args))
+            return $from(Object.keys(args))
                 .Where(name => this.ArgumentNames.indexOf(name) == -1)
                 .ToArray();
         }

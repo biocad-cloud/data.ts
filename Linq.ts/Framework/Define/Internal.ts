@@ -313,7 +313,7 @@ namespace Internal {
         ts.isNullOrEmpty = function (obj: any) {
             return IsNullOrEmpty(obj);
         }
-        ts.from = From;
+        ts.from = $from;
         ts.csv = csv.dataframe.Parse;
         ts.csv.toObjects = (data: string) => csv.dataframe.Parse(data, csv.isTsvFile(data)).Objects();
         ts.csv.toText = (data, tsvOut: boolean = false) => csv.toDataFrame(data).buildDoc(tsvOut);

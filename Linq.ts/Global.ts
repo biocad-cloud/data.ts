@@ -66,6 +66,8 @@ function md5(string: string, key: string = null, raw: string = null): string {
 /**
  * Linq数据流程管线的起始函数
  * 
+ * ``$ts``函数也可以达到与这个函数相同的效果，但是这个函数更快一些
+ * 
  * @param source 需要进行数据加工的集合对象
 */
 function $from<T>(source: T[] | IEnumerator<T>): IEnumerator<T> {

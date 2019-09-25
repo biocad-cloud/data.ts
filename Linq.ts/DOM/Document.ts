@@ -86,7 +86,7 @@ namespace DOM {
         selectName: string = null,
         className: string = null) {
 
-        var options = From(items)
+        var options = $from(items)
             .Select(item => `<option value="${item.value}">${item.key}</option>`)
             .JoinBy("\n");
         var html: string;
@@ -179,7 +179,7 @@ namespace DOM {
         var type = TypeInfo.typeof(headers);
 
         if (type.isArrayOf("string")) {
-            return From(<string[]>headers)
+            return $from(<string[]>headers)
                 .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
         } else if (type.isArrayOf(TypeExtensions.DictionaryMap)) {
