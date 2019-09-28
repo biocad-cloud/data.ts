@@ -8,7 +8,7 @@ namespace csv {
      * @param data 因为这个对象序列对象是具有类型约束的，所以可以直接从第一个
      *    元素对象之中得到所有的属性名称作为csv文件头的数据
     */
-    export function toDataFrame<T>(data: IEnumerator<T> | T[]): dataframe {
+    export function toDataFrame<T extends object>(data: IEnumerator<T> | T[]): dataframe {
         var seq: IEnumerator<T> = Array.isArray(data) ? new IEnumerator<T>(data) : data;
         var header: IEnumerator<string> = $ts(Object.keys(seq.First));
         var rows: IEnumerator<row> = seq

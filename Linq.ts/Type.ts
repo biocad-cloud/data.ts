@@ -120,7 +120,7 @@ class TypeInfo {
             typeInfo.property = [];
             typeInfo.methods = [];
         } else {
-            typeInfo.property = isObject ? Object.keys(obj) : [];
+            typeInfo.property = isObject ? Object.keys(<any>obj) : [];
             typeInfo.methods = TypeInfo.GetObjectMethods(obj);
         }
 
