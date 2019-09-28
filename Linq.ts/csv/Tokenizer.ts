@@ -91,7 +91,7 @@ namespace csv {
      * 是否是转义符<paramref name="escape"/>?
     */
     function StartEscaping(buffer: string[], escape: string = "\\"): boolean {
-        if (IsNullOrEmpty(buffer)) {
+        if (isNullOrEmpty(buffer)) {
             return false;
         } else {
             return buffer[buffer.length - 1] == escape;

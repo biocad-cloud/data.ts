@@ -317,7 +317,7 @@ namespace Internal {
 
     function extendsLINQ(ts: any): any {
         ts.isNullOrEmpty = function (obj: any) {
-            return IsNullOrEmpty(obj);
+            return isNullOrEmpty(obj);
         }
         ts.from = $from;
         ts.csv = function (data: string, isTsv?: boolean | Delegate.Func<boolean>) {
