@@ -65,7 +65,7 @@ namespace Internal.Handlers {
             } else if (context instanceof HTMLElement) {
                 nodes = context.querySelectorAll(cssSelector);
             } else {
-                throw `Unsupported context type: ${TypeInfo.getClass(context)}`;
+                throw `Unsupported context type: ${TypeScript.Reflection.getClass(context)}`;
             }
 
             var it = new DOMEnumerator<T>(<any>nodes);
@@ -73,7 +73,7 @@ namespace Internal.Handlers {
             return it;
         }
 
-        doEval(expr: string, type: TypeInfo, args: object): any {
+        doEval(expr: string, type: TypeScript.Reflection.TypeInfo, args: object): any {
             var query: DOM.Query = DOM.Query.parseQuery(expr);
             var argument: Arguments = stringEval.ensureArguments(args);
             // 默认查询的上下文环境为当前的文档

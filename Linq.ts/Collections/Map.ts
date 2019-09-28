@@ -57,8 +57,8 @@ class NamedValue<T> {
     /**
      * 获取得到变量值的类型定义信息
     */
-    public get TypeOfValue(): TypeInfo {
-        return TypeInfo.typeof(this.value);
+    public get TypeOfValue(): TypeScript.Reflection.TypeInfo {
+        return $ts.typeof(<any>this.value);
     }
 
     /**

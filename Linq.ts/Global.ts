@@ -3,7 +3,7 @@
 /// <reference path="Framework/Define/Handlers/Handlers.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 /// <reference path="Helpers/Strings.ts" />
-/// <reference path="Type.ts" />
+/// <reference path="Framework/Reflection/Type.ts" />
 /// <reference path="Data/Encoder/MD5.ts" />
 /// <reference path="Framework/Define/Internal.ts" />
 

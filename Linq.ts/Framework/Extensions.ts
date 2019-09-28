@@ -15,7 +15,7 @@ namespace Framework.Extensions {
      *     相反只会返回前n个元素，如果n是负数，则不进行任何操作
     */
     export function EnsureArray<T>(data: T | T[] | IEnumerator<T>, n = -1): T[] {
-        var type = TypeInfo.typeof(data);
+        var type = $ts.typeof(<any>data);
         var array: T[];
 
         if (type.isEnumerator) {
