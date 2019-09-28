@@ -54,10 +54,12 @@
             }
         }
 
-        public static table<T extends {}>(objects: T[] | string) {
+        public static table<T extends {}>(objects: T[] | string | IEnumerator<T>) {
             if (this.outputEverything) {
                 if (typeof objects == "string") {
                     objects = JSON.parse(objects);
+                } else if (!Array.isArray(objects)) {
+                    objects = (<IEnumerator<T>>objects).ToArray(false);
                 }
 
                 console.table(objects);

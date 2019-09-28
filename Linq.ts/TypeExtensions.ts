@@ -48,4 +48,15 @@ namespace TypeExtensions {
                 (typeof obj.ownerDocument === "object");
         }
     }
+
+    export function isMessageObject(obj: any): boolean {
+        let type = TypeInfo.typeof(obj);
+        let members = Activator.EmptyObject(type.property, true);
+
+        if ("code" in members && "info" in members && Strings.IsPattern(obj["code"].toString(), /\d+/g)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
