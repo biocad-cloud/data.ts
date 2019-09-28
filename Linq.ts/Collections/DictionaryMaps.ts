@@ -1,5 +1,6 @@
 /// <reference path="./Abstract/Enumerator.ts" />
 /// <reference path="../Framework/StackTrace/StackTrace.ts" />
+/// <reference path="../Framework/Reflection/Reflector.ts" />
 
 /**
  * 键值对映射哈希表
@@ -98,7 +99,7 @@ class Dictionary<V> extends IEnumerator<MapTuple<string, V>>  {
      * 将目标对象转换为一个类型约束的映射序列集合
     */
     public static ObjectMaps<V>(maps: object | MapTuple<string, V>[] | IEnumerator<MapTuple<string, V>>): MapTuple<string, V>[] {
-        var type = $ts.typeof(maps);
+        var type = TypeScript.Reflection.$typeof(maps);
 
         if (isNullOrUndefined(maps)) {
             return [];

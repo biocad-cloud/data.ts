@@ -1,4 +1,6 @@
-﻿namespace TypeScript.Reflection {
+﻿/// <reference path="Type.ts" />
+
+namespace TypeScript.Reflection {
 
     /**
      * 获取某一个对象的类型信息
@@ -54,9 +56,9 @@
 
     export function getClassInternal(obj: any, isArray: boolean, isObject: boolean, isNull: boolean): string {
         if (isArray) {
-            return this.getElementType(obj);
+            return getElementType(obj);
         } else if (isObject) {
-            return this.getObjectClassName(obj, isNull);
+            return getObjectClassName(obj, isNull);
         } else {
             return "";
         }
