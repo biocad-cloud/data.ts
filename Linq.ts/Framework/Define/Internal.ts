@@ -6,6 +6,7 @@
 /// <reference path="../../DOM/InputValueGetter.ts" />
 /// <reference path="../../DOM/Events/CustomEvents.ts" />
 /// <reference path="../../Data/Range.ts" />
+/// <reference path="../Reflection/Reflector.ts" />
 
 /**
  * The internal implementation of the ``$ts`` object.
@@ -311,6 +312,7 @@ namespace Internal {
 
         ts.doubleRange = data.NumericRange.Create;
         ts.hook = DOM.Events.Add;
+        ts.typeof = TypeScript.Reflection.$typeof;
 
         return ts;
     }
@@ -372,7 +374,7 @@ namespace Internal {
     }
 
     export function queryFunction<T>(handle: object, any: ((() => void) | T | T[]), args: object): any {
-        var type: TypeInfo = TypeInfo.typeof(any);
+        var type: TypeScript.Reflection.TypeInfo = TypeScript.Reflection.$typeof(any);
         var typeOf: string = type.typeOf;
         // symbol renames due to problem in js compress tool
         //
@@ -389,7 +391,7 @@ namespace Internal {
         } else if (type.typeOf == "function") {
             // 当html文档加载完毕之后就会执行传递进来的这个
             // 函数进行初始化
-            if (TypeScript.logging.outputEverything && !isNullOrUndefined(args) && TypeInfo.getClass(args) == "HTMLIFrameElement") {
+            if (TypeScript.logging.outputEverything && !isNullOrUndefined(args) && TypeScript.Reflection.getClass(args) == "HTMLIFrameElement") {
                 console.log("Apply a new ready event on iframe:");
                 console.log(args);
             }
