@@ -16,6 +16,13 @@ namespace TypeScript {
         */
         export const urlPattern: RegExp = /((https?)|(ftp))[:]\/{2}\S+\.[a-z]+[^ >"]*/ig;
 
+        export function isFromSameOrigin(url: string): boolean {
+            let URL = new TypeScript.URL(url);
+            let origin1 = URL.origin.toLowerCase();
+            let origin2 = window.location.origin.toLowerCase();
+
+            return origin1 == origin2;
+        }
     }
 
     /**
@@ -27,6 +34,8 @@ namespace TypeScript {
          * 域名
         */
         public origin: string;
+        public port: number;
+
         /**
          * 页面的路径
          * 
@@ -71,10 +80,15 @@ namespace TypeScript {
             if (url.indexOf("#") < 0) {
                 this.hash = "";
             }
-            // 将页面的路径标准化
-            // 应该是一个从wwwroot起始的绝对路径
-            if (this.path.charAt(0) !== "/") {
-                this.path = `/${this.path}`;
+
+            if (!isNullOrUndefined(this.path)) {
+                // 将页面的路径标准化
+                // 应该是一个从wwwroot起始的绝对路径
+                if (this.path.charAt(0) !== "/") {
+                    this.path = `/${this.path}`;
+                }
+            } else {
+                this.path = "/";
             }
 
             var args: object = URL.UrlQuery(token.value);
@@ -82,6 +96,15 @@ namespace TypeScript {
             this.queryArguments = Dictionary
                 .MapSequence<string>(args)
                 .Select(m => new NamedValue<string>(m.key, m.value));
+
+            token = Strings.GetTagValue(this.origin, ":");
+
+            this.origin = token.name;
+            this.port = Strings.Val(token.value);
+
+            if (this.port == 0) {
+                this.port = this.protocol == "https" ? 443 : 80;
+            }
         }
 
         public getArgument(queryName: string, caseSensitive: boolean = true, Default: string = ""): string {

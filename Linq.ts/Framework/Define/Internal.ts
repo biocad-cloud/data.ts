@@ -101,7 +101,11 @@ namespace Internal {
             });
         };
 
-        ts.location = buildURLHelper();
+        if (typeof window != "undefined") {
+            // 这个是运行在web前段，不是services worker中的
+            ts.location = buildURLHelper();
+        }
+        
         ts.parseURL = (url => new TypeScript.URL(url));
         ts.goto = function (url: string, opt: GotoOptions = { currentFrame: false, lambda: false }) {
             if (url.charAt(0) == "#") {
