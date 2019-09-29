@@ -12,6 +12,11 @@
         */
         readonly path: string;
         readonly fileName: string;
+        /**
+         * 在当前的url之中是否包含有查询参数？
+        */
+        readonly hasQueryArguments: boolean;
+        readonly url: TypeScript.URL;
 
         /**
          * 获取当前的url之中的hash值，这个返回来的哈希标签是默认不带``#``符号前缀的

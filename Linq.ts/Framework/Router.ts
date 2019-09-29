@@ -67,7 +67,7 @@ module Router {
     }
 
     export function getAppSummary(app: Bootstrap, module: string = "/"): IAppInfo {
-        var type = TypeInfo.typeof(app);
+        var type = $ts.typeof(app);
         var info = <IAppInfo>{
             module: module,
             appName: app.appName,

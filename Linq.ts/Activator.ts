@@ -1,4 +1,14 @@
-﻿module Activator {
+﻿/**
+ * object creator helper module
+*/
+module Activator {
+
+    /**
+     * MetaReader对象和字典相似，只不过是没有类型约束，并且为只读集合
+    */
+    export function CreateMetaReader<V>(nameValues: NamedValue<V>[] | IEnumerator<NamedValue<V>>): TypeScript.Data.MetaReader {
+        return new TypeScript.Data.MetaReader(Activator.CreateObject(nameValues));
+    }
 
     /**
      * @param properties 如果这个属性定义集合是一个object，则应该是一个IProperty接口的字典对象
@@ -70,7 +80,7 @@
         IEnumerator<MapTuple<string, V>>): object {
 
         let obj: object = {};
-        let type = TypeInfo.typeof(nameValues);
+        let type = TypeScript.Reflection.$typeof(nameValues);
 
         if (type.isArray && type.class == "MapTuple") {
             (<MapTuple<string, V>[]>nameValues).forEach(map => obj[map.key] = map.value);

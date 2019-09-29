@@ -50,6 +50,11 @@ namespace TypeScript {
         };
 
         /**
+         * 未经过解析的查询参数的原始字符串
+        */
+        public queryRawString: string;
+
+        /**
          * 不带拓展名的文件名称
         */
         public fileName: string;
@@ -93,6 +98,7 @@ namespace TypeScript {
 
             var args: object = URL.UrlQuery(token.value);
 
+            this.queryRawString = token.value;
             this.queryArguments = Dictionary
                 .MapSequence<string>(args)
                 .Select(m => new NamedValue<string>(m.key, m.value));

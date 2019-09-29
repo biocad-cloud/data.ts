@@ -14,8 +14,8 @@ class IEnumerator<T> extends LINQIterator<T> {
     /**
      * 获取序列的元素类型
     */
-    public get ElementType(): TypeInfo {
-        return TypeInfo.typeof(this.First);
+    public get ElementType(): TypeScript.Reflection.TypeInfo {
+        return $ts.typeof(<any>this.First);
     };
 
     /**

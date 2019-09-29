@@ -3,7 +3,7 @@
 /// <reference path="Framework/Define/Handlers/Handlers.ts" />
 /// <reference path="Helpers/Extensions.ts" />
 /// <reference path="Helpers/Strings.ts" />
-/// <reference path="Type.ts" />
+/// <reference path="Framework/Reflection/Type.ts" />
 /// <reference path="Data/Encoder/MD5.ts" />
 /// <reference path="Framework/Define/Internal.ts" />
 
@@ -88,7 +88,7 @@ function CharEnumerator(str: string): IEnumerator<string> {
  * 
  * @param array 如果这个数组对象是空值或者未定义，都会被判定为空，如果长度为零，则同样也会被判定为空值
 */
-function IsNullOrEmpty<T>(array: T[] | IEnumerator<T>): boolean {
+function isNullOrEmpty<T>(array: T[] | IEnumerator<T>): boolean {
     if (array == null || array == undefined) {
         return true;
     } else if (Array.isArray(array) && array.length == 0) {

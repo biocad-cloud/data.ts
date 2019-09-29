@@ -10,7 +10,7 @@ namespace TypeExtensions {
     /**
      * 字典类型的元素类型名称字符串
     */
-    export const DictionaryMap: string = TypeInfo.getClass(new MapTuple("", ""));
+    export const DictionaryMap: string = TypeScript.Reflection.getClass(new MapTuple("", ""));
 
     /**
      * Make sure target input is a number
@@ -46,6 +46,17 @@ namespace TypeExtensions {
             return (typeof obj === "object") &&
                 (obj.nodeType === 1) && (typeof obj.style === "object") &&
                 (typeof obj.ownerDocument === "object");
+        }
+    }
+
+    export function isMessageObject(obj: any): boolean {
+        let type = $ts.typeof(obj);
+        let members = Activator.EmptyObject(type.property, true);
+
+        if ("code" in members && "info" in members && Strings.IsPattern(obj["code"].toString(), /\d+/g)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

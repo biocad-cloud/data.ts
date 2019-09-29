@@ -176,7 +176,7 @@ namespace DOM {
      * @param headers ``[propertyName => displayTitle]``
     */
     function headerMaps(headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[]): MapTuple<string, string>[] {
-        var type = TypeInfo.typeof(headers);
+        var type = $ts.typeof(headers);
 
         if (type.isArrayOf("string")) {
             return $from(<string[]>headers)
@@ -188,7 +188,7 @@ namespace DOM {
             return (<IEnumerator<string>>headers)
                 .Select(h => new MapTuple<string, string>(h, h))
                 .ToArray();
-        } else if (type.isEnumerator && TypeInfo.getClass((<IEnumerator<any>>headers).First) == TypeExtensions.DictionaryMap) {
+        } else if (type.isEnumerator && TypeScript.Reflection.getClass((<IEnumerator<any>>headers).First) == TypeExtensions.DictionaryMap) {
             return (<IEnumerator<MapTuple<string, string>>>headers).ToArray();
         } else {
             throw `Invalid sequence type: ${type.class}`;

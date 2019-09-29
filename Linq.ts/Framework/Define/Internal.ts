@@ -6,6 +6,7 @@
 /// <reference path="../../DOM/InputValueGetter.ts" />
 /// <reference path="../../DOM/Events/CustomEvents.ts" />
 /// <reference path="../../Data/Range.ts" />
+/// <reference path="../Reflection/Reflector.ts" />
 
 /**
  * The internal implementation of the ``$ts`` object.
@@ -104,8 +105,8 @@ namespace Internal {
         if (typeof window != "undefined") {
             // 这个是运行在web前段，不是services worker中的
             ts.location = buildURLHelper();
-        }
-        
+        }        
+
         ts.parseURL = (url => new TypeScript.URL(url));
         ts.goto = function (url: string, opt: GotoOptions = { currentFrame: false, lambda: false }) {
             if (url.charAt(0) == "#") {
@@ -133,6 +134,8 @@ namespace Internal {
             return url.getArgument(arg, caseSensitive, Default);
         }
 
+        location.url = url;
+        location.hasQueryArguments = (!isNullOrUndefined(url.query)) && (url.query.length > 0);
         location.path = url.path || "/";
         location.fileName = url.fileName;
         location.hash = function (arg: hashArgument | boolean = { trimprefix: true, doJump: false }, urlhash: string = null) {
@@ -309,13 +312,14 @@ namespace Internal {
 
         ts.doubleRange = data.NumericRange.Create;
         ts.hook = DOM.Events.Add;
+        ts.typeof = TypeScript.Reflection.$typeof;
 
         return ts;
     }
 
     function extendsLINQ(ts: any): any {
         ts.isNullOrEmpty = function (obj: any) {
-            return IsNullOrEmpty(obj);
+            return isNullOrEmpty(obj);
         }
         ts.from = $from;
         ts.csv = function (data: string, isTsv?: boolean | Delegate.Func<boolean>) {
@@ -370,7 +374,7 @@ namespace Internal {
     }
 
     export function queryFunction<T>(handle: object, any: ((() => void) | T | T[]), args: object): any {
-        var type: TypeInfo = TypeInfo.typeof(any);
+        var type: TypeScript.Reflection.TypeInfo = TypeScript.Reflection.$typeof(any);
         var typeOf: string = type.typeOf;
         // symbol renames due to problem in js compress tool
         //
@@ -387,7 +391,7 @@ namespace Internal {
         } else if (type.typeOf == "function") {
             // 当html文档加载完毕之后就会执行传递进来的这个
             // 函数进行初始化
-            if (TypeScript.logging.outputEverything && !isNullOrUndefined(args) && TypeInfo.getClass(args) == "HTMLIFrameElement") {
+            if (TypeScript.logging.outputEverything && !isNullOrUndefined(args) && TypeScript.Reflection.getClass(args) == "HTMLIFrameElement") {
                 console.log("Apply a new ready event on iframe:");
                 console.log(args);
             }

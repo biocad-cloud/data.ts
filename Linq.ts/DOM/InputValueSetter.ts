@@ -11,7 +11,7 @@
         */
         export function setValue(resource: string, value: string, strict: boolean = true) {
             let input = $ts(resource);
-            let type: TypeInfo = TypeInfo.typeof(input);
+            let type: TypeScript.Reflection.TypeInfo = $ts.typeof(input);
 
             if (type.isEnumerator) {
                 setValues(new DOMEnumerator<IHTMLElement>(<any>input), value, strict);
@@ -45,7 +45,7 @@
             opt.checked = true;
 
             // view set value result in debug mode
-            TypeScript.logging.log(opt);            
+            TypeScript.logging.log(opt);
         }
 
         function setValues(inputs: DOMEnumerator<IHTMLElement>, value: string, strict: boolean) {

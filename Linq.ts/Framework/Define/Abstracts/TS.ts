@@ -121,6 +121,8 @@
         */
         value(id: string, set_value?: string, strict?: boolean): any;
 
+        typeof<T extends object>(any: T): TypeScript.Reflection.TypeInfo;
+
         /**
          * isNullOrUndefined
         */

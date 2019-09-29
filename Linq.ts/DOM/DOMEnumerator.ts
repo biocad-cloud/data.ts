@@ -34,7 +34,7 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
      * 这个函数确保所传递进来的集合总是输出一个数组，方便当前的集合对象向其基类型传递数据源
     */
     private static ensureElements<T extends HTMLElement>(elements: T[] | IEnumerator<T> | NodeListOf<T> | HTMLCollection): T[] {
-        var type = TypeInfo.typeof(elements);
+        var type = $ts.typeof(elements);
         var list: T[];
 
         /**
