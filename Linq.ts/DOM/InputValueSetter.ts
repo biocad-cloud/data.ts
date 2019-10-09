@@ -20,6 +20,19 @@
                     case "input":
                         input.asInput.value = value;
                         break;
+                    case "select":
+                        let sel: HTMLSelectElement = <any>input;
+                        let opts = sel.options;
+
+                        for (let i: number = 0; i < opts.length; i++) {
+                            opts.item(i).selected = false;
+
+                            if (opts.item(i).value == value) {
+                                opts.item(i).selected = true;
+                            }
+                        }
+
+                        break;
 
                     default:
                         if (strict) {
