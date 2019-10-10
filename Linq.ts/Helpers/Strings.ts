@@ -26,6 +26,46 @@ module Strings {
     }
 
     /**
+     * 尝试将任意类型的目标对象转换为数值类型
+     * 
+     * @returns 一个数值
+    */
+    export function as_numeric(obj: any): number {
+        return AsNumeric(obj)(obj);
+    }
+
+    /**
+     * 因为在js之中没有类型信息，所以如果要取得类型信息必须要有一个目标对象实例
+     * 所以在这里，函数会需要一个实例对象来取得类型值
+    */
+    export function AsNumeric<T>(obj: T): (x: T) => number {
+        if (obj == null || obj == undefined) {
+            return null;
+        }
+
+        if (typeof obj === 'number') {
+            return x => <number><any>x;
+        } else if (typeof obj === 'boolean') {
+            return x => {
+                if (<boolean><any>x == true) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        } else if (typeof obj == 'undefined') {
+            return x => 0;
+        } else if (typeof obj == 'string') {
+            return x => {
+                return Strings.Val(<string><any>x);
+            }
+        } else {
+            // 其他的所有情况都转换为零
+            return x => 0;
+        }
+    }
+
+    /**
      * 对bytes数值进行格式自动优化显示
      * 
      * @param bytes 
