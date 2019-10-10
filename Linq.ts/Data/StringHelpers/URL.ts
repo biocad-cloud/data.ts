@@ -25,6 +25,25 @@ namespace TypeScript {
         }
 
         /**
+         * 判断目标文本是否可能是一个url字符串
+        */
+        export function isAPossibleUrlPattern(text: string, pattern: RegExp = URLPatterns.urlPattern): boolean {
+            var matches = text.match(pattern);
+
+            if (isNullOrUndefined(matches)) {
+                return false;
+            }
+
+            var match: string = matches[0];
+
+            if (!Strings.Empty(match, true)) {
+                return text.indexOf(match) == 0;
+            } else {
+                return false;
+            }
+        }
+
+        /**
          * 将URL查询字符串解析为字典对象，所传递的查询字符串应该是查询参数部分，即问号之后的部分，而非完整的url
          * 
          * @param queryString URL查询参数
@@ -271,20 +290,11 @@ namespace TypeScript {
             return urls;
         }
 
+        /**
+         * 判断所给定的目标字符串是否是一个base64编码的data uri字符串
+        */
         public static IsWellFormedUriString(uri: string): boolean {
-            var matches = uri.match(URLPatterns.uriPattern);
-
-            if (isNullOrUndefined(matches)) {
-                return false;
-            }
-
-            var match: string = matches[0];
-
-            if (!Strings.Empty(match, true)) {
-                return uri.indexOf(match) == 0;
-            } else {
-                return false;
-            }
+            return URLPatterns.isAPossibleUrlPattern(uri, URLPatterns.uriPattern);
         }
     }
 }
