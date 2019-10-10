@@ -3,6 +3,23 @@
 */
 module DataExtensions {
 
+    export function merge(obj: {}, ...args: {}[]) {
+        var target: object;
+        var key: string;
+
+        for (var i = 0; i < args.length; i++) {
+            target = args[i];
+
+            for (key in target) {
+                if (Object.prototype.hasOwnProperty.call(target, key)) {
+                    obj[key] = target[key];
+                }
+            }
+        }
+
+        return obj;
+    }
+
     export function arrayBufferToBase64(buffer: Array<number> | ArrayBuffer): string {
         var binary: string = '';
         var bytes = new Uint8Array(buffer);

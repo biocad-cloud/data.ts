@@ -105,7 +105,7 @@ namespace Internal {
         if (typeof window != "undefined") {
             // 这个是运行在web前段，不是services worker中的
             ts.location = buildURLHelper();
-        }        
+        }
 
         ts.parseURL = (url => new TypeScript.URL(url));
         ts.goto = function (url: string, opt: GotoOptions = { currentFrame: false, lambda: false }) {
@@ -313,6 +313,9 @@ namespace Internal {
         ts.doubleRange = data.NumericRange.Create;
         ts.hook = DOM.Events.Add;
         ts.typeof = TypeScript.Reflection.$typeof;
+        ts.clone = function (obj: {}) {
+            return DataExtensions.merge(obj, {});
+        };
 
         return ts;
     }
