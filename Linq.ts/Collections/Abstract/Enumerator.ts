@@ -229,7 +229,7 @@ class IEnumerator<T> extends LINQIterator<T> {
      * Get the min value in current sequence.
      * (求取这个序列集合的最小元素，使用这个函数要求序列之中的元素都必须能够被转换为数值)
     */
-    public Min(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
+    public Min(project: (e: T) => number = (e) => Strings.as_numeric(e)): T {
         return Enumerable.OrderBy(this.sequence, project).First;
     }
 
@@ -237,7 +237,7 @@ class IEnumerator<T> extends LINQIterator<T> {
      * Get the max value in current sequence.
      * (求取这个序列集合的最大元素，使用这个函数要求序列之中的元素都必须能够被转换为数值)
     */
-    public Max(project: (e: T) => number = (e) => DataExtensions.as_numeric(e)): T {
+    public Max(project: (e: T) => number = (e) => Strings.as_numeric(e)): T {
         return Enumerable.OrderByDescending(this.sequence, project).First;
     }
 
