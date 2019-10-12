@@ -262,8 +262,8 @@ class IEnumerator<T> extends LINQIterator<T> {
             return Number(e);
         }
 
-        for (var i = 0; i < this.sequence.length; i++) {
-            x += project(this.sequence[i]);
+        for (let val of this.sequence) {
+            x += project(val);
         }
 
         return x;
@@ -397,7 +397,7 @@ class IEnumerator<T> extends LINQIterator<T> {
         var chunks: List<T[]> = new List<T[]>();
         var buffer: T[] = [];
 
-        this.sequence.forEach(x => {
+        for (let x of this.sequence) {
             if (isDelimiter(x)) {
                 chunks.Add(buffer);
 
@@ -409,7 +409,7 @@ class IEnumerator<T> extends LINQIterator<T> {
             } else {
                 buffer.push(x);
             }
-        });
+        }
 
         if (buffer.length > 0) {
             chunks.Add(buffer);
@@ -462,9 +462,11 @@ class IEnumerator<T> extends LINQIterator<T> {
     public Unlist<U>(project: (obj: T) => U[] = (obj: T) => <U[]><any>obj): IEnumerator<U> {
         var list: U[] = [];
 
-        this.ForEach(a => {
-            project(a).forEach(x => list.push(x));
-        })
+        for (let block of this.sequence) {
+            for (let x of project(block)) {
+                list.push(x);
+            }
+        }
 
         return new IEnumerator<U>(list);
     }
@@ -501,15 +503,17 @@ class IEnumerator<T> extends LINQIterator<T> {
             return <V>(<any>X);
         }): Dictionary<V> {
 
-        var maps = {};
+        let maps = {};
+        let key: string;
+        let value: V;
 
-        this.sequence.forEach(x => {
+        for (let x of this.sequence) {
             // 2018-08-11 键名只能够是字符串类型的
-            var key: string = keySelector(x);
-            var value: V = elementSelector(x);
+            key = keySelector(x);
+            value = elementSelector(x);
 
             maps[key] = value;
-        })
+        }
 
         return new Dictionary<V>(maps);
     }
