@@ -279,7 +279,7 @@ namespace Internal {
             }
         };
         ts.text = function (id: string, htmlText: boolean = false) {
-            var nodeID: string = Handlers.EnsureNodeId(id);
+            var nodeID: string = Handlers.makesureElementIdSelector(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
 
             return htmlText ? node.innerHTML : node.innerText;

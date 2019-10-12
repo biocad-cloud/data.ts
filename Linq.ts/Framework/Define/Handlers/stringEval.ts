@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../../DOM/DOMEnumerator.ts" />
+/// <reference path="./DOMQuery.ts" />
 
 namespace Internal.Handlers {
 
@@ -15,7 +16,7 @@ namespace Internal.Handlers {
     /**
      * 这个函数确保给定的id字符串总是以符号``#``开始的
     */
-    export function EnsureNodeId(str: string): string {
+    export function makesureElementIdSelector(str: string): string {
         if (!str) {
             throw "The given node id value is nothing!";
         } else if (str[0] == "#") {
@@ -77,13 +78,11 @@ namespace Internal.Handlers {
             var query: DOM.Query = DOM.Query.parseQuery(expr);
             var argument: Arguments = stringEval.ensureArguments(args);
             // 默认查询的上下文环境为当前的文档
-            var context: Window = argument.context || window;
+            var context: Window | HTMLElement = argument.context || window;
 
             if (query.type == DOM.QueryTypes.id) {
                 // 按照id查询
-                var node: HTMLElement = context
-                    .document
-                    .getElementById(query.expression);
+                var node: HTMLElement = Selector.getElementByIdUnderContext(query.expression, context);
 
                 if (isNullOrUndefined(node)) {
                     if (TypeScript.logging.outputWarning) {
@@ -99,7 +98,7 @@ namespace Internal.Handlers {
                     }
                 }
             } else if (query.type == DOM.QueryTypes.NoQuery) {
-                return stringEval.createNew(expr, argument, context);
+                return stringEval.createNew(expr, argument, <Window>context);
             } else if (!query.singleNode) {
                 return stringEval.select(query.expression, context);
             } else if (query.type == DOM.QueryTypes.QueryMeta) {
@@ -113,9 +112,7 @@ namespace Internal.Handlers {
                 }
 
                 // 只返回第一个满足条件的节点
-                return context
-                    .document
-                    .querySelector(query.expression);
+                return Selector.selectElementsUnderContext(query, context);
             }
         }
 

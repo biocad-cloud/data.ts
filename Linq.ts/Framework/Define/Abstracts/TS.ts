@@ -13,6 +13,8 @@
         */
         mode: Modes;
 
+        //#region "function overloads"
+
         <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
         <T extends HTMLElement & Node & ChildNode>(nodes: NodeListOf<T>): DOMEnumerator<T>;
         /**
@@ -31,6 +33,24 @@
          *              + ``<svg:xx>`` create a svg node.
         */
         <T extends HTMLElement>(query: string, args?: TypeScriptArgument): IHTMLElement;
+
+        <T>(array: T[]): IEnumerator<T>;
+
+        /**
+         * query meta tag by name attribute value for its content.
+         * 
+         * @param meta The meta tag name, it should be start with a ``@`` symbol.
+        */
+        (meta: string): string;
+
+        /**
+         * Handles event on document load ready.
+         * 
+         * @param ready The handler of the target event.
+        */
+        (ready: () => void): void;
+
+        //#endregion
 
         /**
          * Query by class name or tag name
@@ -56,22 +76,6 @@
          * 将目标序列转换为一个HTML节点元素
         */
         evalHTML: HtmlDocumentDeserializer;
-
-        <T>(array: T[]): IEnumerator<T>;
-
-        /**
-         * query meta tag by name attribute value for its content.
-         * 
-         * @param meta The meta tag name, it should be start with a ``@`` symbol.
-        */
-        (meta: string): string;
-
-        /**
-         * Handles event on document load ready.
-         * 
-         * @param ready The handler of the target event.
-        */
-        (ready: () => void): void;
 
         /**
          * 动态的导入脚本
