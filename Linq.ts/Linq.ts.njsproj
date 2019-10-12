@@ -82,6 +82,9 @@
     <TypeScriptCompile Include="Data\MetaReader.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\StringHelpers\URLPatterns.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="DOM\DOMQueryTypes.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
