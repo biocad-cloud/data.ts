@@ -126,7 +126,7 @@
         /**
          * 进行查询操作的上下文环境，这个主要是针对iframe环境之中的操作的
         */
-        context?: Window | HTMLElement;
+        context?: Window | HTMLElement | IHTMLElement;
         title?: string;
         name?: string;
         /**
