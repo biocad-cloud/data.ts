@@ -161,14 +161,14 @@ namespace Internal.Handlers {
                         node.setAttribute(name, <string>classVals);
                     }
                 } else if (name == "style") {
+                    let stylesheet = attrs[name];
 
-                    if (typeof attrs == "string") {
-                        // 不推荐直接使用style字符串进行赋值
-                        node.setAttribute(name, attrs);
+                    if (typeof stylesheet == "string") {
+                        DOM.CSS.Setter.css(node, stylesheet);                      
                     } else {
                         // node.style是一个只读属性，无法直接赋值
-                        for (var propertyName in attrs) {
-                            node.style[propertyName] = attrs[propertyName];
+                        for (var propertyName in stylesheet) {
+                            node.style[propertyName] = stylesheet[propertyName];
                         }
                     }
                 } else if (name == "visible") {
