@@ -107,6 +107,9 @@
     <TypeScriptCompile Include="DOM\CSS\CSSModel.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\CSS\CSSSetter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="DOM\DOMQueryTypes.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
