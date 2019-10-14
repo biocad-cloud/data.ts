@@ -161,7 +161,7 @@ namespace DOM {
         headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
         attrs: Internal.TypeScriptArgument = null) {
 
-        var id = `${div}-table`;
+        var id = `${Strings.Trim(div, "#")}-table`;
 
         if (attrs) {
             if (!attrs.id) { attrs.id = id; }
