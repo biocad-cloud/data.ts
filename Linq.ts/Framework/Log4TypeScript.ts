@@ -33,6 +33,12 @@
             return $ts.mode == errorOnly;
         }
 
+        public static warning(msg: any) {
+            if (this.outputWarning) {
+                console.warn(msg);
+            }
+        }
+
         /**
          * 使用这个函数显示object的时候，将不会发生样式的变化
         */
