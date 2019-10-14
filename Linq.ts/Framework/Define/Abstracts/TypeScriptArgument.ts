@@ -114,6 +114,7 @@
         href?: string;
         text?: string;
         visible?: boolean;
+        alt?: string;
 
         /**
          * 应用于``<a>``标签进行文件下载重命名文件所使用的
@@ -139,9 +140,14 @@
          * 处理HTML节点对象的点击事件，这个属性值应该是一个无参数的函数来的
         */
         onclick?: Delegate.Sub | string;
+        onmouseover?: Delegate.Sub | string;
 
         "data-toggle"?: string;
         "data-target"?: string;
         "aria-hidden"?: boolean;
+
+        usemap?: string;
+        shape?: string;
+        coords?: string;
     }
 }

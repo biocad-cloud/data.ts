@@ -35,6 +35,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Data\ColorManager\Colors.ts" />
     <Content Include="package.json" />
     <Content Include="tsconfig.json" />
   </ItemGroup>
@@ -52,6 +53,18 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="csv\doc.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\ColorManager\algorithm.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\ColorManager\Models.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\ColorManager\util.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\ColorManager\w3color.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Data\Encoder\Base64.ts" />
@@ -86,6 +99,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Data\StringHelpers\URLPatterns.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\Animation\Animation.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\CSS\CSSModel.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="DOM\DOMQueryTypes.ts">
@@ -273,8 +292,11 @@
   <ItemGroup>
     <Folder Include="Collections\Abstract\" />
     <Folder Include="Data\Encoder\" />
+    <Folder Include="Data\ColorManager\" />
     <Folder Include="Data\StringHelpers\" />
     <Folder Include="DOM\Events\" />
+    <Folder Include="DOM\Animation\" />
+    <Folder Include="DOM\CSS\" />
     <Folder Include="Framework\Reflection\" />
     <Folder Include="Framework\StackTrace\" />
     <Folder Include="DOM\Extensions\" />

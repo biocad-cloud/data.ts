@@ -4,7 +4,8 @@
 namespace Internal.Handlers {
 
     const events = {
-        onclick: "onclick"
+        onclick: "onclick",
+        onmouseover: "onmouseover"
     }
     const eventFuncNames: string[] = Object.keys(events);
 
@@ -162,6 +163,7 @@ namespace Internal.Handlers {
                 } else if (name == "style") {
 
                     if (typeof attrs == "string") {
+                        // 不推荐直接使用style字符串进行赋值
                         node.setAttribute(name, attrs);
                     } else {
                         // node.style是一个只读属性，无法直接赋值
@@ -187,14 +189,30 @@ namespace Internal.Handlers {
 
             Arguments.nameFilter(attrs).forEach(name => setAttr(name));
 
-            // 添加事件
-            if (hasKey(attrs, events.onclick)) {
-                let onclick: string | Delegate.Sub = attrs[events.onclick];
+            this.hookEvt(node, events.onclick, attrs);
+            this.hookEvt(node, events.onmouseover, attrs);
+        }
 
-                if (typeof onclick == "string") {
-                    node.setAttribute(events.onclick, onclick);
+        /**
+         * 添加事件
+        */
+        private static hookEvt(node: HTMLElement, evtName: string, attrs: object) {
+            if (hasKey(attrs, evtName)) {
+                let evt: string | Delegate.Sub = attrs[evtName];
+
+                if (typeof evt == "string") {
+                    node.setAttribute(evtName, evt);
                 } else {
-                    node.onclick = onclick;
+                    switch (evtName) {
+                        case events.onclick:
+                            node.onclick = evt;
+                            break;
+                        case events.onmouseover:
+                            node.onmouseover = evt;
+                            break;
+                        default:
+                            TypeScript.logging.log(evtName, TypeScript.ConsoleColors.Yellow);
+                    }                  
                 }
             }
         }
