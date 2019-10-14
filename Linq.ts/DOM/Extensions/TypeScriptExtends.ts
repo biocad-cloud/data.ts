@@ -21,6 +21,16 @@ namespace TypeExtensions {
 
         var extendsNode: HTMLTsElement = new HTMLTsElement(node);
 
+        obj.css = function (stylesheet: string, reset: boolean = false) {
+            if (reset) {
+                node.setAttribute("style", stylesheet);
+            } else {
+                DOM.CSS.Setter.css(node, stylesheet);
+            }
+
+            return node;
+        };
+
         /**
          * 这个拓展函数总是会将节点中的原来的内容清空，然后显示html函数参数
          * 所给定的内容

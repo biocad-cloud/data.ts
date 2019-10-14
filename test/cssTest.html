@@ -8,6 +8,8 @@
 
 var text = $ts("<p>", {style: "background-color: red; font-size: 5em;"}).display("Test style applyer!");
 
+$ts.mode = Modes.debug;
 $ts("#text").display(text);
+$ts("#text").css("color: green;");
 
 </script>

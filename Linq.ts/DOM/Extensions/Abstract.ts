@@ -23,6 +23,11 @@ interface HTMLExtensions {
     append(html: string | HTMLElement | HTMLTsElement | (() => HTMLElement)): IHTMLElement;
 
     /**
+     * @param reset If this parameter is true, then it means all of the style that this node have will be clear up.
+    */
+    css(stylesheet: string, reset?: boolean): IHTMLElement;
+
+    /**
      * 显示当前的节点元素
     */
     show(): IHTMLElement;

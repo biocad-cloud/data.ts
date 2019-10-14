@@ -17,13 +17,15 @@
         let c: string;
 
         while (!i.EndRead) {
-            c = i.MoveNext().Current;
+            c = i.Current;
+
+            i.MoveNext();
 
             if (c == ":") {
-                name = buf.join("");
+                name = buf.join("").trim();
                 buf = [];
             } else if (c == ";") {
-                value = buf.join("");
+                value = buf.join("").trim();
                 buf = [];
 
                 stylesheet.push(new NamedValue(name, value));

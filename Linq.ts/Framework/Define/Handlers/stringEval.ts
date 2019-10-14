@@ -164,7 +164,8 @@ namespace Internal.Handlers {
                     let stylesheet = attrs[name];
 
                     if (typeof stylesheet == "string") {
-                        DOM.CSS.Setter.css(node, stylesheet);                      
+                        // DOM.CSS.Setter.css(node, stylesheet);   
+                        node.setAttribute(name, stylesheet);
                     } else {
                         // node.style是一个只读属性，无法直接赋值
                         for (var propertyName in stylesheet) {
@@ -212,7 +213,7 @@ namespace Internal.Handlers {
                             break;
                         default:
                             TypeScript.logging.log(evtName, TypeScript.ConsoleColors.Yellow);
-                    }                  
+                    }
                 }
             }
         }
