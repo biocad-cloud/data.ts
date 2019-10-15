@@ -1,4 +1,6 @@
-﻿namespace DOM {
+﻿/// <reference path="../Framework/Log4TypeScript.ts" />
+
+namespace DOM {
 
     export module InputValueGetter {
 
@@ -59,8 +61,21 @@
         }
 
         export function inputValue(input: HTMLInputElement): any {
-            if (input.type == "checkbox") {
+            let inputType: string = input.type.toLowerCase();
+
+            if (inputType == "checkbox") {
                 return checkboxInput(input);
+            } else if (inputType == "radio") {
+
+                if (input instanceof DOMEnumerator) {
+                    return (<DOMEnumerator<HTMLInputElement>>input)
+                        .Where(radio => radio.checked)
+                        .FirstOrDefault()
+                        .value;
+                } else {
+                    return input.value;
+                }
+
             } else {
                 return input.value;
             }

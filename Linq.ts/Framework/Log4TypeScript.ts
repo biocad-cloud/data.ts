@@ -1,4 +1,6 @@
-﻿namespace TypeScript {
+﻿///<reference path="./Modes.ts" />
+
+namespace TypeScript {
 
     const warningLevel: number = Modes.development;
     const anyoutputLevel: number = Modes.debug;
