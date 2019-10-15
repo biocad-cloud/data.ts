@@ -1,4 +1,5 @@
 /// <reference path="../DOM/DOMEnumerator.ts" />
+/// <reference path="../DOM/InputValueGetter.ts" />
 
 /**
  * Web应用程序路由器模块
@@ -10,6 +11,11 @@ module Router {
     var hashLinks: Dictionary<string>;
     var webApp: Dictionary<Bootstrap>[];
     var caseSensitive: boolean = true;
+
+    /**
+     * meta标签中的app值
+    */
+    export const appName: string = <any>DOM.InputValueGetter.metaValue("app");
 
     export function isCaseSensitive(): boolean {
         return caseSensitive;

@@ -334,6 +334,15 @@ namespace Internal {
         };
         ts.csv.toObjects = (data: string) => csv.dataframe.Parse(data, csv.isTsvFile(data)).Objects();
         ts.csv.toText = (data, tsvOut: boolean = false) => csv.toDataFrame(data).buildDoc(tsvOut);
+        ts.csv.toUri = function (data: IEnumerator<{}> | {}[], outTsv?: boolean): DataURI {
+            let text: string = $ts.csv.toText(data, outTsv);
+            let url = <DataURI>{
+                mime_type: csv.contentType,
+                data: Base64.encode(text)
+            }
+
+            return url;
+        };
 
         ts.evalHTML = {
             table: DOM.CreateHTMLTableNode,

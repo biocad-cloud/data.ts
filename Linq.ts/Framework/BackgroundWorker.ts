@@ -22,16 +22,18 @@
          * @param args 向脚本模板之中进行赋值操作的变量列表，这个参数应该是一个键值对对象
         */
         public static RunWorker(script: string, onMessage: Delegate.Sub, args: {} = null) {
-            let url: string;
-
             if (TypeScript.URLPatterns.isAPossibleUrlPattern(script)) {
                 // 是一个url，则GET请求然后从文本创建
-                url = this.fetchWorker(script, args);
+                // 进行url网络请求是一个异步的过程
+                this.fetchWorker(script, args, url => BackgroundWorker.registerWorker(script, url, onMessage));
             } else {
-                // 是一个字符串文本，则直接创建一个worker
-                url = this.buildWorker(script, args);
+                // 是一个字符串文本，则直接创建一个worker               
+                // 注册一个新的工作线程
+                this.registerWorker(md5(script), this.buildWorker(script, args), onMessage);
             }
+        }
 
+        private static registerWorker(script: string, url: string, onMessage: Delegate.Sub) {
             BackgroundWorker.$workers[script] = new Worker(url);
             BackgroundWorker.$workers[script].onmessage = onMessage;
         }
@@ -77,9 +79,14 @@
          * 
          * > https://stackoverflow.com/questions/10343913/how-to-create-a-web-worker-from-a-string/10372280#10372280
         */
-        private static fetchWorker(scriptUrl: string, args: {}): string {
+        private static fetchWorker(scriptUrl: string, args: {}, register: Delegate.Sub) {
             // get script text from server
-            return this.buildWorker(HttpHelpers.GET(scriptUrl), args);
+            $ts.getText(scriptUrl, script => {
+                let blobUrl: string = this.buildWorker(script, args);
+
+                TypeScript.logging.log(`Build worker blob url: ${blobUrl}`, TypeScript.ConsoleColors.Gray);
+                register(blobUrl);
+            });
         }
 
         public static Stop(script: string) {

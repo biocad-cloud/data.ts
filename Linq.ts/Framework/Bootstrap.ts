@@ -1,4 +1,5 @@
-﻿
+﻿/// <reference path="./Router.ts" />
+
 /**
  * 实现这个类需要重写下面的方法实现：
  * 
@@ -35,7 +36,7 @@ abstract class Bootstrap {
      * @returns 如果没有定义app参数，则默认是返回``/``作为名称
     */
     protected get currentAppPage(): string {
-        return getAllUrlParams().Item("app") || <any>$ts("@app") || "/";
+        return getAllUrlParams().Item("app") || Router.appName || "/";
     }
 
     public get appStatus(): string {

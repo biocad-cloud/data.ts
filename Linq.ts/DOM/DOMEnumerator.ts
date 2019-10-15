@@ -16,9 +16,25 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
 
     /**
      * 这个只读属性只返回第一个元素的tagName
+     * 
+     * @summary 这个属性名与html的节点元素对象的tagName属性名称保持一致
+     * 方便进行代码的编写操作
     */
     public get tagName(): string {
         return this.First.tagName;
+    }
+
+    /**
+     * 这个只读属性主要是针对于input输入控件组而言的
+     * 
+     * 在假设控件组都是相同类型的情况下, 这个属性直接返回第一个元素的type值
+    */
+    public get type(): string {
+        if (this.tagName.toLowerCase() == "input") {
+            return (<any>this.First).type;
+        } else {
+            return this.tagName;
+        }
     }
 
     /**
