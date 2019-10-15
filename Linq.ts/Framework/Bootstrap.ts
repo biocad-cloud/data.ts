@@ -5,6 +5,9 @@
  * + ``protected abstract init(): void;``
  * + ``public abstract get appName(): string``
  * 
+ * > ``appName``默认规则是php.net的路由规则，也可以将appName写在
+ * > 页面的meta标签的content中，meta标签的name名称应该为``app``
+ * 
  * 可以选择性的重写下面的事件处理器
  * 
  * + ``protected OnDocumentReady(): void``

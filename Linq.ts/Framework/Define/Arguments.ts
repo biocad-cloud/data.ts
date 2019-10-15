@@ -5,7 +5,7 @@
         /**
          * 发生查询的上下文，默认是当前文档
         */
-        public context: Window;
+        public context: Window | HTMLElement;
 
         //#region "meta tag value query"
 

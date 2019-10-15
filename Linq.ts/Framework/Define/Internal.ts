@@ -279,7 +279,7 @@ namespace Internal {
             }
         };
         ts.text = function (id: string, htmlText: boolean = false) {
-            var nodeID: string = Handlers.EnsureNodeId(id);
+            var nodeID: string = Handlers.makesureElementIdSelector(id);
             var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
 
             return htmlText ? node.innerHTML : node.innerText;
@@ -289,20 +289,20 @@ namespace Internal {
         };
 
         // file path helpers
-        ts.parseFileName = TsLinq.PathHelper.fileName;
+        ts.parseFileName = TypeScript.PathHelper.fileName;
 
         /**
          * 得到不带有拓展名的文件名部分的字符串
          * 
          * @param path Full name
         */
-        ts.baseName = TsLinq.PathHelper.basename;
+        ts.baseName = TypeScript.PathHelper.basename;
         /**
          * 得到不带小数点的文件拓展名字符串
          * 
          * @param path Full name
         */
-        ts.extensionName = TsLinq.PathHelper.extensionName;
+        ts.extensionName = TypeScript.PathHelper.extensionName;
         ts.withExtensionName = function (path: string, ext: string) {
             var fileExt: string = $ts.extensionName(path);
             var equals: boolean = fileExt.toLowerCase() == ext.toLowerCase();
@@ -313,6 +313,9 @@ namespace Internal {
         ts.doubleRange = data.NumericRange.Create;
         ts.hook = DOM.Events.Add;
         ts.typeof = TypeScript.Reflection.$typeof;
+        ts.clone = function (obj: {}) {
+            return DataExtensions.merge(obj, {});
+        };
 
         return ts;
     }

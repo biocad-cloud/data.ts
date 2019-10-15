@@ -1,4 +1,4 @@
-﻿namespace TsLinq {
+﻿namespace TypeScript {
 
     /**
      * String helpers for the file path string.

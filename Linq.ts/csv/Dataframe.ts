@@ -214,10 +214,15 @@ namespace csv {
         */
         public static Parse(text: string, tsv: boolean = false): dataframe {
             var parse: (line: string) => row = tsv ? row.ParseTsv : row.Parse;
-            var allTextLines: IEnumerator<string> = $ts.from(text.split(/\n/));
             var rows: IEnumerator<row>;
+            var allTextLines: IEnumerator<string> = $from(text.split(/\n/))
+                .Select(function (l) {
+                    return l
+                        .replace("\r", "")
+                        .replace("\n", "")                        
+                });
 
-            TypeScript.logging.log(`Document data is a ${tsv ? "tsv" : "csv"} file.`, TypeScript.ConsoleColors.Cyan);
+            TypeScript.logging.log(`Document data is a ${tsv ? "tsv" : "csv"} file.`, TypeScript.ConsoleColors.Blue);
 
             if (Strings.Empty(allTextLines.Last)) {
                 // 2019-1-2 因为文本文件很有可能是以空行结尾的

@@ -3,11 +3,13 @@
     export module InputValueSetter {
 
         /**
+         * 设置控件的输入值
+         * 
          * @param resource name or id
          * 
          * @param strict 这个参数主要是针对非输入类型的控件的值获取而言的。
-         * 如果目标id标记的控件不是输入类型的，则如果处于非严格模式下，
-         * 即这个参数为``false``的时候会直接强制读取value属性值
+         *   如果目标id标记的控件不是输入类型的，则如果处于非严格模式下，
+         *   即这个参数为``false``的时候会直接强制读取value属性值
         */
         export function setValue(resource: string, value: string, strict: boolean = true) {
             let input = $ts(resource);
@@ -19,6 +21,9 @@
                 switch (input.tagName.toLowerCase()) {
                     case "input":
                         input.asInput.value = value;
+                        break;
+                    case "select":
+                        setSelection(<any>input, value);
                         break;
 
                     default:
@@ -32,6 +37,21 @@
             }
         }
 
+        function setSelection(sel: HTMLSelectElement, value: string) {
+            let opts = sel.options;
+
+            for (let i: number = 0; i < opts.length; i++) {
+                opts.item(i).selected = false;
+
+                if (opts.item(i).value == value) {
+                    opts.item(i).selected = true;
+                }
+            }
+        }
+
+        /**
+         * Set option value for checkbox or radio button
+        */
         function setOption(inputs: DOMEnumerator<IHTMLElement>, value: string) {
             let opt: HTMLInputElement = inputs
                 .Select(function (a) {
@@ -67,6 +87,9 @@
                         default:
                             inputs.attr("value", value);
                     }
+                    break;
+                case "select":
+                    inputs.ForEach(sel => setSelection(<any>sel, value));
                     break;
 
                 default:

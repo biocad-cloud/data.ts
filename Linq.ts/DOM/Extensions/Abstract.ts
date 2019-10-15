@@ -11,12 +11,21 @@ interface HTMLExtensions {
      * 将当前的这个节点元素转换为拓展封装对象类型
     */
     asExtends: HTMLTsElement;
+    /**
+     * 任然是当前的这个文档节点对象，只不过是更加方便转换为any类型
+    */
+    any: any;
 
     /**
      * 将当前的html文档节点元素之中的显示内容替换为参数所给定的html内容
     */
     display(html: string | HTMLElement | HTMLTsElement | (() => HTMLElement)): IHTMLElement;
     append(html: string | HTMLElement | HTMLTsElement | (() => HTMLElement)): IHTMLElement;
+
+    /**
+     * @param reset If this parameter is true, then it means all of the style that this node have will be clear up.
+    */
+    css(stylesheet: string, reset?: boolean): IHTMLElement;
 
     /**
      * 显示当前的节点元素

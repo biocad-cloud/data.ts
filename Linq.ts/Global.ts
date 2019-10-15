@@ -135,7 +135,8 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
     if (url.indexOf("?") > -1) {
         // if query string exists
         var queryString: string = Strings.GetTagValue(url, '?').value;
-        var args = DataExtensions.parseQueryString(queryString)
+        var args = TypeScript.URLPatterns.parseQueryString(queryString);
+
         return new Dictionary<string>(args);
     } else {
         return new Dictionary<string>({});

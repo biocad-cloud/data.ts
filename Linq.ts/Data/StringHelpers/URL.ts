@@ -1,29 +1,8 @@
 ﻿/// <reference path="./sprintf.ts" />
+/// <reference path="./URLPatterns.ts" />
 /// <reference path="../../Collections/DictionaryMaps.ts" />
 
-namespace TypeScript {
-
-    export module URLPatterns {
-
-        export const hostNamePattern: RegExp = /:\/\/(www[0-9]?\.)?(.[^/:]+)/i;
-
-        /**
-         * Regexp pattern for data uri string
-        */
-        export const uriPattern: RegExp = /data[:]\S+[/]\S+;base64,[a-zA-Z0-9/=+]/ig;
-        /**
-         * Regexp pattern for web browser url string
-        */
-        export const urlPattern: RegExp = /((https?)|(ftp))[:]\/{2}\S+\.[a-z]+[^ >"]*/ig;
-
-        export function isFromSameOrigin(url: string): boolean {
-            let URL = new TypeScript.URL(url);
-            let origin1 = URL.origin.toLowerCase();
-            let origin2 = window.location.origin.toLowerCase();
-
-            return origin1 == origin2;
-        }
-    }
+namespace TypeScript {      
 
     /**
      * URL组成字符串解析模块
@@ -34,6 +13,8 @@ namespace TypeScript {
          * 域名
         */
         public origin: string;
+        public port: number;
+
         /**
          * 页面的路径
          * 
@@ -77,7 +58,7 @@ namespace TypeScript {
             this.protocol = token.name; token = Strings.GetTagValue(token.value, "/");
             this.origin = token.name; token = Strings.GetTagValue(token.value, "?");
             this.path = token.name;
-            this.fileName = Strings.Empty(this.path) ? "" : TsLinq.PathHelper.basename(this.path);
+            this.fileName = Strings.Empty(this.path) ? "" : TypeScript.PathHelper.basename(this.path);
             this.hash = $from(url.split("#")).Last;
 
             if (url.indexOf("#") < 0) {
@@ -100,6 +81,15 @@ namespace TypeScript {
             this.queryArguments = Dictionary
                 .MapSequence<string>(args)
                 .Select(m => new NamedValue<string>(m.key, m.value));
+
+            token = Strings.GetTagValue(this.origin, ":");
+
+            this.origin = token.name;
+            this.port = Strings.Val(token.value);
+
+            if (this.port == 0) {
+                this.port = this.protocol == "https" ? 443 : 80;
+            }
         }
 
         public getArgument(queryName: string, caseSensitive: boolean = true, Default: string = ""): string {
@@ -120,7 +110,7 @@ namespace TypeScript {
         */
         public static UrlQuery(args: string): object {
             if (args) {
-                return DataExtensions.parseQueryString(args, false);
+                return URLPatterns.parseQueryString(args, false);
             } else {
                 return {};
             }
@@ -201,20 +191,11 @@ namespace TypeScript {
             return urls;
         }
 
+        /**
+         * 判断所给定的目标字符串是否是一个base64编码的data uri字符串
+        */
         public static IsWellFormedUriString(uri: string): boolean {
-            var matches = uri.match(URLPatterns.uriPattern);
-
-            if (isNullOrUndefined(matches)) {
-                return false;
-            }
-
-            var match: string = matches[0];
-
-            if (!Strings.Empty(match, true)) {
-                return uri.indexOf(match) == 0;
-            } else {
-                return false;
-            }
+            return URLPatterns.isAPossibleUrlPattern(uri, URLPatterns.uriPattern);
         }
     }
 }
