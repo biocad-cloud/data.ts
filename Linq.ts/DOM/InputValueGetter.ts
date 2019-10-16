@@ -154,7 +154,7 @@ namespace DOM {
         }
 
         export function largeText(text: HTMLTextAreaElement): any {
-
+            return text.value;
         }
     }
 }
