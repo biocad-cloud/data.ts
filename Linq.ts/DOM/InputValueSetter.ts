@@ -25,6 +25,9 @@
                     case "select":
                         setSelection(<any>input, value);
                         break;
+                    case "textarea":
+                        (<HTMLTextAreaElement>input.any).value = value;
+                        break;
 
                     default:
                         if (strict) {
@@ -90,6 +93,9 @@
                     break;
                 case "select":
                     inputs.ForEach(sel => setSelection(<any>sel, value));
+                    break;
+                case "textarea":
+                    inputs.ctype<HTMLTextAreaElement>().ForEach(t => t.value = value);
                     break;
 
                 default:

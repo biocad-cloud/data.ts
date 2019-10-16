@@ -46,6 +46,13 @@ class IEnumerator<T> extends LINQIterator<T> {
         super(IEnumerator.getArray(source));
     }
 
+    /**
+     * 在明确类型信息的情况下进行强制类型转换
+    */
+    public ctype<U>(): IEnumerator<U> {
+        return new IEnumerator<U>(<any>[...this.sequence]);
+    }
+
     private static getArray<T>(source: T[] | IEnumerator<T>): T[] {
         if (!source) {
             return [];
