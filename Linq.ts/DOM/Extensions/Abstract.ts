@@ -28,6 +28,11 @@ interface HTMLExtensions {
     css(stylesheet: string, reset?: boolean): IHTMLElement;
 
     /**
+     * @param enable set this parameter to false to make user can not interact with current element.
+    */
+    interactive(enable: boolean);
+
+    /**
      * 显示当前的节点元素
     */
     show(): IHTMLElement;
