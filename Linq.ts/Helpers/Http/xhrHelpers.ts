@@ -132,9 +132,16 @@
         }, callback);
     }
 
-    export function serialize<T extends {}>(a: T, nullAsStringFactor: boolean = false): string {
+    /**
+     * @param a 如果这个是一个无参数的函数, 则会求值之后再进行序列化
+    */
+    export function serialize<T extends {}>(a: T | Delegate.Func<T>, nullAsStringFactor: boolean = false): string {
         let sb: string[] = [];
         let value: any;
+
+        if (typeof a == "function") {
+            a = (<Delegate.Func<T>>a)();
+        }
 
         for (let key of Object.keys(a)) {
             value = a[key];
