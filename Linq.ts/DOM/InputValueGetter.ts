@@ -64,7 +64,7 @@ namespace DOM {
             let inputType: string = input.type.toLowerCase();
 
             if (inputType == "checkbox") {
-                return checkboxInput(input);
+                return checkboxInput(input, true);
             } else if (inputType == "radio") {
 
                 if (input instanceof DOMEnumerator) {
