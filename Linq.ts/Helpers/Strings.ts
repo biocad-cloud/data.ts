@@ -272,6 +272,22 @@ module Strings {
         return out;
     }
 
+    export function LCase(str: string): string {
+        if (isNullOrUndefined(str)) {
+            return "";
+        } else {
+            return str.toLowerCase();
+        }
+    }
+
+    export function UCase(str: string): string {
+        if (isNullOrUndefined(str)) {
+            return "";
+        } else {
+            return str.toUpperCase();
+        }
+    }
+
     /**
      * Get all regex pattern matches in target text value.
     */
