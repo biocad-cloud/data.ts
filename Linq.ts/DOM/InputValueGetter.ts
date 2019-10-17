@@ -64,7 +64,7 @@ namespace DOM {
             let inputType: string = input.type.toLowerCase();
 
             if (inputType == "checkbox") {
-                return checkboxInput(input);
+                return checkboxInput(input, true);
             } else if (inputType == "radio") {
 
                 if (input instanceof DOMEnumerator) {
@@ -86,20 +86,33 @@ namespace DOM {
          * 1. 如果有多个checkbox，则会返回一个数组
          * 2. 反之如果只有一个checkbox，则只会返回一个逻辑值，用来表示是否选中该选项
         */
-        export function checkboxInput(input: HTMLInputElement) {
-            var inputs = document.getElementsByName(input.name);
-            var values = [];
+        export function checkboxInput(input: HTMLInputElement | DOMEnumerator<HTMLInputElement>, singleAsLogical: boolean = false) {
+            let inputs: DOMEnumerator<HTMLInputElement>;
 
-            if (inputs.length == 1) {
-                return input.checked;
+            if (input instanceof DOMEnumerator) {
+                inputs = <any>input
             } else {
-                inputs.forEach(function (box: HTMLInputElement) {
-                    var value = box.value;
+                inputs = <any>new DOMEnumerator<HTMLInputElement>(<any>document.getElementsByName(input.name));
+            }
 
-                    if (box.checked) {
-                        values.push(value);
-                    }
-                });
+            if (inputs.Count == 1) {
+                let single = inputs.ElementAt(0);
+
+                // check or unchecked
+                // true or false
+                if (singleAsLogical) {
+                    return single.checked;
+                } else if (single.checked) {
+                    return single.value;
+                } else {
+                    return null;
+                }
+
+            } else {
+                let values: string[] = inputs
+                    .Where(c => c.checked)
+                    .Select(box => box.value)
+                    .ToArray(false);
 
                 return values;
             }
