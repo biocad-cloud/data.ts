@@ -68,6 +68,9 @@
     <TypeScriptCompile Include="canvas\Drawing.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="canvas\Provider.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="utils.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

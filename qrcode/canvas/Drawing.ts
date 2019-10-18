@@ -1,7 +1,7 @@
 module TypeScript.QRCode.canvas {
 
     // Drawing in DOM by using Table tag
-    export class DOMDrawer {
+    export class DOMDrawer implements IDrawingProvider {
         constructor(el, htOption) {
             this._el = el;
             this._htOption = htOption;
@@ -59,7 +59,7 @@ module TypeScript.QRCode.canvas {
     * @param {HTMLElement} el
     * @param {Object} htOption QRCode Options
     */
-    export class CanvasDrawer { // Drawing in Canvas
+    export class CanvasDrawer implements IDrawingProvider { // Drawing in Canvas
 
         private _onMakeImage() {
             this._elImage.src = this._elCanvas.toDataURL("image/png");
