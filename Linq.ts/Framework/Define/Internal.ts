@@ -114,10 +114,10 @@ namespace Internal {
                 TypeScript.URL.JumpToHash(url);
             } else if (opt.lambda) {
                 return function () {
-                    Goto(url, opt.currentFrame);
+                    $goto(url, opt.currentFrame);
                 }
             } else {
-                Goto(url, opt.currentFrame);
+                $goto(url, opt.currentFrame);
             }
         }
 

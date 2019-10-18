@@ -151,7 +151,7 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
  * @param url 这个参数支持对meta标签数据的查询操作
  * @param currentFrame 如果这个参数为true，则不会进行父页面的跳转操作
 */
-function Goto(url: string, currentFrame: boolean = false): void {
+function $goto(url: string, currentFrame: boolean = false): void {
     var win: Window = window;
 
     if (!currentFrame) {
