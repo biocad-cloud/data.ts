@@ -9,54 +9,51 @@
  * @author davidshimjs
  * @see <a href="http://www.d-project.com/" target="_blank">http://www.d-project.com/</a>
  * @see <a href="http://jeromeetienne.github.com/jquery-qrcode/" target="_blank">http://jeromeetienne.github.com/jquery-qrcode/</a>
- */
-var QRCode;
+*/
 
-(function () {
-    //---------------------------------------------------------------------
-    // QRCode for JavaScript
-    //
-    // Copyright (c) 2009 Kazuhiko Arase
-    //
-    // URL: http://www.d-project.com/
-    //
-    // Licensed under the MIT license:
-    //   http://www.opensource.org/licenses/mit-license.php
-    //
-    // The word "QR Code" is registered trademark of 
-    // DENSO WAVE INCORPORATED
-    //   http://www.denso-wave.com/qrcode/faqpatent-e.html
-    //
-    //---------------------------------------------------------------------
+//---------------------------------------------------------------------
+// QRCode for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//   http://www.opensource.org/licenses/mit-license.php
+//
+// The word "QR Code" is registered trademark of 
+// DENSO WAVE INCORPORATED
+//   http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
 
-
-
-	/**
-	 * @class QRCode
-	 * @constructor
-	 * @example 
-	 * new QRCode(document.getElementById("test"), "http://jindo.dev.naver.com/collie");
-	 *
-	 * @example
-	 * var oQRCode = new QRCode("test", {
-	 *    text : "http://naver.com",
-	 *    width : 128,
-	 *    height : 128
-	 * });
-	 * 
-	 * oQRCode.clear(); // Clear the QRCode.
-	 * oQRCode.makeCode("http://map.naver.com"); // Re-create the QRCode.
-	 *
-	 * @param {HTMLElement|String} el target element or 'id' attribute of element.
-	 * @param {Object|String} vOption
-	 * @param {String} vOption.text QRCode link data
-	 * @param {Number} [vOption.width=256]
-	 * @param {Number} [vOption.height=256]
-	 * @param {String} [vOption.colorDark="#000000"]
-	 * @param {String} [vOption.colorLight="#ffffff"]
-	 * @param {QRCode.CorrectLevel} [vOption.correctLevel=QRCode.CorrectLevel.H] [L|M|Q|H] 
-	 */
-    QRCode = function (el, vOption) {
+/**
+ * @class QRCode
+ * @constructor
+ * @example 
+ * new QRCode(document.getElementById("test"), "http://jindo.dev.naver.com/collie");
+ *
+ * @example
+ * var oQRCode = new QRCode("test", {
+ *    text : "http://naver.com",
+ *    width : 128,
+ *    height : 128
+ * });
+ * 
+ * oQRCode.clear(); // Clear the QRCode.
+ * oQRCode.makeCode("http://map.naver.com"); // Re-create the QRCode.
+ *
+ * @param {HTMLElement|String} el target element or 'id' attribute of element.
+ * @param {Object|String} vOption
+ * @param {String} vOption.text QRCode link data
+ * @param {Number} [vOption.width=256]
+ * @param {Number} [vOption.height=256]
+ * @param {String} [vOption.colorDark="#000000"]
+ * @param {String} [vOption.colorLight="#ffffff"]
+ * @param {QRCode.CorrectLevel} [vOption.correctLevel=QRCode.CorrectLevel.H] [L|M|Q|H] 
+*/
+class QRCode {
+    public constructor(el, vOption) {
         this._htOption = {
             width: 256,
             height: 256,
@@ -102,7 +99,7 @@ var QRCode;
 	 * 
 	 * @param {String} sText link data
 	 */
-    QRCode.prototype.makeCode = function (sText) {
+    makeCode(sText) {
         this._oQRCode = new QRCodeModel(_getTypeNumber(sText, this._htOption.correctLevel), this._htOption.correctLevel);
         this._oQRCode.addData(sText);
         this._oQRCode.make();
@@ -118,7 +115,7 @@ var QRCode;
 	 * 
 	 * @private
 	 */
-    QRCode.prototype.makeImage = function () {
+    makeImage() {
         if (typeof this._oDrawing.makeImage == "function" && (!this._android || this._android >= 3)) {
             this._oDrawing.makeImage();
         }
@@ -127,12 +124,12 @@ var QRCode;
 	/**
 	 * Clear the QRCode
 	 */
-    QRCode.prototype.clear = function () {
+    clear() {
         this._oDrawing.clear();
     };
 
 	/**
 	 * @name QRCode.CorrectLevel
 	 */
-    QRCode.CorrectLevel = QRErrorCorrectLevel;
-})();
+    CorrectLevel = QRErrorCorrectLevel;
+}
