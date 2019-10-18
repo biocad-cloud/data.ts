@@ -1,11 +1,5 @@
 module TypeScript.QRCode.canvas {
 
-    class config {
-        public get Drawing() {
-            return useSVG ? svgDrawer : (!_isSupportCanvas() ? DOMDrawer : CanvasDrawer)
-        }
-    }
-
     // Drawing in DOM by using Table tag
     export class DOMDrawer {
         constructor(el, htOption) {
