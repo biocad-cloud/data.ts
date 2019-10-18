@@ -35,36 +35,36 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="NewFolder1\QR8bitByte.ts">
+    <TypeScriptCompile Include="algorithm\QR8bitByte.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="NewFolder1\QRCodeModel.ts">
+    <TypeScriptCompile Include="algorithm\QRCodeModel.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="NewFolder1\QRMode.ts">
+    <TypeScriptCompile Include="algorithm\QRMode.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="NewFolder1\QRUtil.ts">
+    <TypeScriptCompile Include="algorithm\QRUtil.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="NewFolder1\QRMath.ts">
+    <TypeScriptCompile Include="algorithm\QRMath.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="NewFolder1\QRPolynomial.ts">
+    <TypeScriptCompile Include="algorithm\QRPolynomial.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="NewFolder1\QRRSBlock.ts">
+    <TypeScriptCompile Include="algorithm\QRRSBlock.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="NewFolder1\QRBitBuffer.ts">
+    <TypeScriptCompile Include="algorithm\QRBitBuffer.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="NewFolder1\QRCodeLimitLength.ts">
+    <TypeScriptCompile Include="algorithm\QRCodeLimitLength.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="NewFolder1\" />
+    <Folder Include="algorithm\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>
