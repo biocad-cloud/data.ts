@@ -290,6 +290,12 @@ namespace Internal {
 
         // file path helpers
         ts.parseFileName = TypeScript.PathHelper.fileName;
+        ts.unixtimestamp = function () {
+            var d: Date = new Date();
+            var timestamp = Math.round(d.getTime());
+
+            return timestamp;
+        };
 
         /**
          * 得到不带有拓展名的文件名部分的字符串

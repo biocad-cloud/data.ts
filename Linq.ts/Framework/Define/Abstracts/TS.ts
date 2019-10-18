@@ -129,6 +129,11 @@
         clone<T>(obj: T): T;
 
         /**
+         * Get unix timestamp of current time
+        */
+        unixtimestamp(): number;
+
+        /**
          * isNullOrUndefined
         */
         isNullOrEmpty(obj: any): boolean;
