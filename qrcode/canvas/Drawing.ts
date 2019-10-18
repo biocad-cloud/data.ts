@@ -58,8 +58,15 @@ module TypeScript.QRCode.canvas {
 
 
     }
-
+    /**
+    * Drawing QRCode by using canvas
+    *
+    * @constructor
+    * @param {HTMLElement} el
+    * @param {Object} htOption QRCode Options
+    */
     export class CanvasDrawer { // Drawing in Canvas
+
         private _onMakeImage() {
             this._elImage.src = this._elCanvas.toDataURL("image/png");
             this._elImage.style.display = "block";
@@ -88,6 +95,23 @@ module TypeScript.QRCode.canvas {
                     drawImage.apply(this, arguments);
                 };
             }
+
+            this._bIsPainted = false;
+            this._android = _getAndroid();
+
+            this._htOption = htOption;
+            this._elCanvas = document.createElement("canvas");
+            this._elCanvas.width = htOption.width;
+            this._elCanvas.height = htOption.height;
+            el.appendChild(this._elCanvas);
+            this._el = el;
+            this._oContext = this._elCanvas.getContext("2d");
+            this._bIsPainted = false;
+            this._elImage = document.createElement("img");
+            this._elImage.alt = "Scan me!";
+            this._elImage.style.display = "none";
+            this._el.appendChild(this._elImage);
+            this._bSupportDataURI = null;
         }
         /**
          * Check whether the user's browser supports Data URI or not
@@ -130,33 +154,8 @@ module TypeScript.QRCode.canvas {
                 self._fFail.call(self);
             }
         };
-    }
-    /**
-     * Drawing QRCode by using canvas
-     * 
-     * @constructor
-     * @param {HTMLElement} el
-     * @param {Object} htOption QRCode Options 
-     */
-    export class Drawing {
-        constructor(el, htOption) {
-            this._bIsPainted = false;
-            this._android = _getAndroid();
 
-            this._htOption = htOption;
-            this._elCanvas = document.createElement("canvas");
-            this._elCanvas.width = htOption.width;
-            this._elCanvas.height = htOption.height;
-            el.appendChild(this._elCanvas);
-            this._el = el;
-            this._oContext = this._elCanvas.getContext("2d");
-            this._bIsPainted = false;
-            this._elImage = document.createElement("img");
-            this._elImage.alt = "Scan me!";
-            this._elImage.style.display = "none";
-            this._el.appendChild(this._elImage);
-            this._bSupportDataURI = null;
-        };
+
 
         /**
          * Draw the QRCode
