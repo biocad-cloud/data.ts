@@ -1,12 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\LINQ.ts",
-    "\\LINQ.ts\\DOM",
-    "\\LINQ.ts\\Framework",
-    "\\LINQ.ts\\Framework\\Define",
-    "\\TsBuild"
+    "\\qrcode"
   ],
-  "SelectedNode": "\\LINQ.ts\\DOM\\DocumentEvents.ts",
+  "SelectedNode": "\\qrcode\\app.ts",
   "PreviewInSolutionExplorer": false
 }
