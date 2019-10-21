@@ -377,7 +377,9 @@ namespace Internal {
             });
             var options = DOM.InputValueGetter.getSelectedOptions(<any>sel);
 
-            if (options.length == 0) {
+            if (typeof options == "boolean") {
+                return options;
+            } else if (options.length == 0) {
                 return null;
             } else {
                 if (typeof options[0] == "string") {
