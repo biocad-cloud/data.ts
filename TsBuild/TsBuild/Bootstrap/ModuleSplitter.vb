@@ -18,10 +18,6 @@ Namespace Bootstrap
             ' app模块在编译出来的js文件中是从最顶层的declare起始的
             Dim modTokens As New List(Of Token)
             Dim stack As New Stack(Of Integer)
-            Dim start%, len%
-            Dim jsBlock$
-            Dim ref$
-            Dim appName$
 
             sourceJs = sourceJs.LineTokens.JoinBy(ASCII.LF)
 
@@ -29,17 +25,7 @@ Namespace Bootstrap
                 If t = TypeScriptTokens.declare AndAlso stack.Count = 0 AndAlso modTokens > 0 Then
                     ' 这个可能是最顶层的模块申明
                     If modTokens.isModuleDefinition Then
-                        start = modTokens.First.start
-                        len = modTokens.Last.ends - modTokens.First.start
-                        jsBlock = sourceJs.Substring(start, len)
-                        appName = modTokens.getAppName
-                        ref = modTokens.getModuleReference
-
-                        Yield New NamedValue(Of String) With {
-                            .Description = appName,
-                            .Name = ref,
-                            .Value = jsBlock
-                        }
+                        Yield modTokens.createModuleInternal(sourceJs)
                     Else
                         modTokens *= 0
                     End If
@@ -51,6 +37,25 @@ Namespace Bootstrap
 
                 modTokens += t
             Next
+
+            If modTokens > 0 AndAlso modTokens.isModuleDefinition Then
+                Yield modTokens.createModuleInternal(sourceJs)
+            End If
+        End Function
+
+        <Extension>
+        Private Function createModuleInternal(modTokens As List(Of Token), sourceJs$) As NamedValue(Of String)
+            Dim start = modTokens.First.start
+            Dim len = modTokens.Last.ends - modTokens.First.start
+            Dim jsBlock = sourceJs.Substring(start, len)
+            Dim appName = modTokens.getAppName
+            Dim ref = modTokens.getModuleReference
+
+            Return New NamedValue(Of String) With {
+                .Description = appName,
+                .Name = ref,
+                .Value = jsBlock
+            }
         End Function
 
         <Extension>
