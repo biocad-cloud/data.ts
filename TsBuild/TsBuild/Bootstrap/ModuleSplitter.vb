@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Text
 
 Namespace Bootstrap
 
@@ -17,11 +18,18 @@ Namespace Bootstrap
             ' app模块在编译出来的js文件中是从最顶层的declare起始的
             Dim modTokens As New List(Of Token)
             Dim stack As New Stack(Of Integer)
+            Dim start%, len%
+            Dim jsBlock$
+
+            sourceJs = sourceJs.LineTokens.JoinBy(ASCII.LF)
 
             For Each t As Token In tokens
                 If t.type = TypeScriptTokens.declare AndAlso stack.Count = 0 AndAlso modTokens > 0 Then
                     ' 这个可能是最顶层的模块申明
-                    Dim jsBlock = sourceJs.Substring(modTokens.First.start, modTokens.Last.ends - modTokens.First.start)
+                    start = modTokens.First.start
+                    len = modTokens.Last.ends - modTokens.First.start
+                    jsBlock = sourceJs.Substring(start, len)
+
                     Pause()
                 ElseIf t.type = TypeScriptTokens.openStack Then
                     stack.Push(t.start)

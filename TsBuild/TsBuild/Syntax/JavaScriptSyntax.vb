@@ -31,7 +31,7 @@ Public Class JavaScriptSyntax
                 Yield New Token With {
                     .text = buffer.CharString,
                     .type = type,
-                    .ends = code.Position,
+                    .ends = code.Position + 1,
                     .start = start
                 }
 
@@ -116,7 +116,7 @@ Public Class JavaScriptSyntax
                     code -= 1
                     Return matchTokenText()
                 End If
-            ElseIf c = ","c Then
+            ElseIf c = ","c OrElse c = ";"c Then
                 If buffer = 0 Then
                     buffer += c
                     Return TypeScriptTokens.delimiter
@@ -124,10 +124,14 @@ Public Class JavaScriptSyntax
                     code -= 1
                     Return matchTokenText()
                 End If
-            ElseIf c = ";"c Then
-                Return matchTokenText()
             ElseIf c = ":"c Then
-                Return TypeScriptTokens.identifier
+                If buffer = 0 Then
+                    buffer += c
+                    Return TypeScriptTokens.delimiter
+                Else
+                    code -= 1
+                    Return matchTokenText()
+                End If
             ElseIf c = """" OrElse c = "'" OrElse c = "`" Then
                 If Not escape.StringContent Then
                     escape.StringContent = True
