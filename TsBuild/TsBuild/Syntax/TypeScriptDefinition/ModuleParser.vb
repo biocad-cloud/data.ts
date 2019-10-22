@@ -25,8 +25,8 @@ Public Class ModuleParser
         Do While (c = ++code) <> ASCII.NUL
             If (type = walkChar(c)) <> TypeScriptTokens.undefined AndAlso buffer > 0 Then
                 Yield New Token With {
-                    .Text = buffer.CharString,
-                    .Type = type
+                    .text = buffer.CharString,
+                    .type = type
                 }
 
                 ' clear buffer

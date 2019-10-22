@@ -1,4 +1,6 @@
-﻿Public Enum TypeScriptTokens
+﻿Imports System.Xml.Serialization
+
+Public Enum TypeScriptTokens
     undefined = 0
     [declare]
     keyword
@@ -13,13 +15,14 @@
     closeStack
 End Enum
 
-Public Class Token
+<XmlType("token")> Public Class Token
 
-    Public Property Text As String
-    Public Property Type As TypeScriptTokens
+    <XmlAttribute("type")> Public Property type As TypeScriptTokens
+    <XmlText>
+    Public Property text As String
 
     Public Overrides Function ToString() As String
-        Return $"[{Type}] {Text}"
+        Return $"[{type}] {text}"
     End Function
 
 End Class
