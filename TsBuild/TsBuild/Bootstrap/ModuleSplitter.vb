@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Emit.Marshal
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Text
 
@@ -82,7 +83,21 @@ Namespace Bootstrap
 
         <Extension>
         Private Function getModuleReference(modTokens As List(Of Token)) As String
+            Dim ref As New List(Of String)
+            Dim i As New Pointer(Of Token)(modTokens)
+            Dim t As Token
 
+            ' 在遇到class标记之前
+            ' 将所有var后面的identifier都拿出来
+            Do While Not i.Current.isClassAnnotation
+                t = ++i
+
+                If t = TypeScriptTokens.declare Then
+                    ref += i.Current.text
+                End If
+            Loop
+
+            Return ref.JoinBy(".")
         End Function
 
         <Extension>
@@ -138,9 +153,14 @@ Namespace Bootstrap
         End Function
 
         <Extension>
+        Private Function isClassAnnotation(t As Token) As Boolean
+            Return t = TypeScriptTokens.comment AndAlso t = "/** @class */"
+        End Function
+
+        <Extension>
         Private Function hasClassAnnotation(modTokens As List(Of Token)) As Boolean
             For Each t As Token In modTokens
-                If t = TypeScriptTokens.comment AndAlso t = "/** @class */" Then
+                If t.isClassAnnotation Then
                     Return True
                 End If
             Next
