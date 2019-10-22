@@ -1,5 +1,4 @@
 ﻿Imports System.Xml.Serialization
-Imports Microsoft.VisualBasic.ComponentModel.Ranges.Model
 
 Public Enum TypeScriptTokens
     undefined = 0
@@ -12,6 +11,8 @@ Public Enum TypeScriptTokens
     typeName
     funcType
     comment
+    logicalLiteral
+    numberLiteral
     constructor
     [operator]
     openStack

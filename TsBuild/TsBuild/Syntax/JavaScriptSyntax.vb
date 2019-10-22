@@ -145,11 +145,22 @@ Public Class JavaScriptSyntax
     End Function
 
     Private Function matchTokenText() As TypeScriptTokens
-        Dim tokenText$ = buffer.CharString
+        Dim tokenText$
+
+        If buffer = 0 Then
+            Return TypeScriptTokens.undefined
+        Else
+            tokenText = buffer.CharString
+        End If
 
         Select Case tokenText
-            Case "this", "function", "return", "for", "if", "else", "switch", "case", "instanceof", "typeof"
+            Case "this", "function", "return", "for", "if", "else", "switch",
+                 "case", "instanceof", "typeof", "new", "delete", "of", "in",
+                 "break", "continute", "throw"
+
                 Return TypeScriptTokens.keyword
+            Case "true", "false"
+                Return TypeScriptTokens.logicalLiteral
             Case "var", "let"
                 Return TypeScriptTokens.declare
             Case "=", ">", "<", "+", "-", "*", "/", "&&", "||", "|", "&", "%", "=>", "<="
@@ -157,7 +168,11 @@ Public Class JavaScriptSyntax
             Case "}", ")"
                 Return TypeScriptTokens.closeStack
             Case Else
-                Return TypeScriptTokens.identifier
+                If tokenText.IsNumeric Then
+                    Return TypeScriptTokens.numberLiteral
+                Else
+                    Return TypeScriptTokens.identifier
+                End If
         End Select
     End Function
 End Class
