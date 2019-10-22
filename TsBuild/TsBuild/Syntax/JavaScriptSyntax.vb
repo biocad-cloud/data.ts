@@ -148,7 +148,7 @@ Public Class JavaScriptSyntax
         Dim tokenText$ = buffer.CharString
 
         Select Case tokenText
-            Case "this", "function", "return", "for", "if", "else", "switch", "case"
+            Case "this", "function", "return", "for", "if", "else", "switch", "case", "instanceof", "typeof"
                 Return TypeScriptTokens.keyword
             Case "var", "let"
                 Return TypeScriptTokens.declare
