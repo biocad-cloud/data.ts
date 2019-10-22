@@ -60,7 +60,24 @@ Namespace Bootstrap
 
         <Extension>
         Private Function getAppName(modTokens As List(Of Token)) As String
+            Dim t As Token
 
+            ' 找到appName之后的往下第一条string
+            For i As Integer = 0 To modTokens.Count - 1
+                t = modTokens(i)
+
+                If t = TypeScriptTokens.string AndAlso t = """appName""" Then
+                    For j As Integer = i + 1 To modTokens.Count - 1
+                        t = modTokens(j)
+
+                        If t = TypeScriptTokens.string Then
+                            Return t.text.GetStackValue("""", """")
+                        End If
+                    Next
+                End If
+            Next
+
+            Throw New EntryPointNotFoundException
         End Function
 
         <Extension>
