@@ -28,5 +28,6 @@ Public Class Escapes
 
     Public Property SingleLineComment As Boolean
     Public Property BlockTextComment As Boolean
+    Public Property StringContent As Boolean
 
 End Class

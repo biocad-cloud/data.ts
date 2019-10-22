@@ -50,6 +50,7 @@ Imports Microsoft.VisualBasic.CommandLine
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Serialization.JSON
+Imports Microsoft.VisualBasic.Text.Xml.Models
 
 Module Program
 
@@ -70,6 +71,23 @@ Module Program
         End Using
 
         Return 0
+    End Function
+
+    <ExportAPI("/bootstrap.loader")>
+    <Usage("/bootstrap.loader /in <app.js> [/out <app.directory>]")>
+    Public Function BootstrapLoader(args As CommandLine) As Integer
+        Dim in$ = args <= "/in"
+        Dim out$ = args("/out") Or ([in].TrimSuffix & ".app/")
+        Dim tokens = New ModuleParser() _
+            .ParseIndex([in]) _
+            .ToArray
+
+#If DEBUG Then
+        Call New XmlList(Of Token) With {
+            .items = tokens
+        }.GetXml _
+         .SaveTo($"{out}/syntax.xml")
+#End If
     End Function
 
     <ExportAPI("/compile")>
