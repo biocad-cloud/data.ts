@@ -2,8 +2,8 @@
 <XmlListOfToken xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" size="325">
   <!--
      model:     TsBuild.Token
-     assembly:  TsBuild, Version=1.456.7234.38212, Culture=neutral, PublicKeyToken=null
-     md5:       69586352bc966e21c6a4db8bfa37647a
+     assembly:  TsBuild, Version=1.456.7234.38287, Culture=neutral, PublicKeyToken=null
+     md5:       455100bdb13bc96e9725cad5ff628f20
      timestamp: Tuesday, October 22, 2019
   -->
   <item type="declare" start="0" ends="5">var</item>

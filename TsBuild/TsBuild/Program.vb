@@ -44,6 +44,7 @@
 
 Imports System.ComponentModel
 Imports System.IO
+Imports System.Text
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio.vbproj
 Imports Microsoft.VisualBasic.CommandLine
@@ -90,11 +91,17 @@ Module Program
         }.GetXml _
          .SaveTo($"{out}/syntax.xml")
 #End If
-        For Each app As NamedValue(Of String) In tokens.PopulateModules([in].ReadAllText)
+        Dim js As New StringBuilder([in].ReadAllText)
+
+        For Each app As NamedValue(Of String) In tokens.PopulateModules(js.ToString)
             Call app.Value.SaveTo($"{out}/modules/{app.Name}.js")
+            Call js.Replace(app.Value, "")
         Next
 
-        Return $"".SaveTo($"{out}/bootstrapLoader.js").CLICode
+        Call js.SaveTo($"{out}/asset.js")
+        Call $"".SaveTo($"{out}/bootstrapLoader.js")
+
+        Return 0
     End Function
 
     <ExportAPI("/compile")>
