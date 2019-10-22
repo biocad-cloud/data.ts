@@ -20,17 +20,29 @@ Namespace Bootstrap
             Dim stack As New Stack(Of Integer)
             Dim start%, len%
             Dim jsBlock$
+            Dim ref$
+            Dim appName$
 
             sourceJs = sourceJs.LineTokens.JoinBy(ASCII.LF)
 
             For Each t As Token In tokens
                 If t.type = TypeScriptTokens.declare AndAlso stack.Count = 0 AndAlso modTokens > 0 Then
                     ' 这个可能是最顶层的模块申明
-                    start = modTokens.First.start
-                    len = modTokens.Last.ends - modTokens.First.start
-                    jsBlock = sourceJs.Substring(start, len)
+                    If modTokens.isModuleDefinition Then
+                        start = modTokens.First.start
+                        len = modTokens.Last.ends - modTokens.First.start
+                        jsBlock = sourceJs.Substring(start, len)
+                        appName = modTokens.getAppName
+                        ref = modTokens.getModuleReference
 
-                    Pause()
+                        Yield New NamedValue(Of String) With {
+                            .Description = appName,
+                            .Name = ref,
+                            .Value = jsBlock
+                        }
+                    Else
+                        modTokens *= 0
+                    End If
                 ElseIf t.type = TypeScriptTokens.openStack Then
                     stack.Push(t.start)
                 ElseIf t.type = TypeScriptTokens.closeStack Then
@@ -39,6 +51,21 @@ Namespace Bootstrap
 
                 modTokens += t
             Next
+        End Function
+
+        <Extension>
+        Private Function getAppName(modTokens As List(Of Token)) As String
+
+        End Function
+
+        <Extension>
+        Private Function getModuleReference(modTokens As List(Of Token)) As String
+
+        End Function
+
+        <Extension>
+        Private Function isModuleDefinition(modTokens As List(Of Token)) As Boolean
+
         End Function
     End Module
 End Namespace
