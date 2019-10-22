@@ -1,0 +1,3 @@
+﻿Module JavaScriptSyntax
+
+End Module

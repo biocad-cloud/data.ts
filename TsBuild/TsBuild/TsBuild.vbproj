@@ -96,9 +96,10 @@
     <Compile Include="Bootstrap\ModuleSplitter.vb" />
     <Compile Include="Bootstrap\NamespaceDoc.vb" />
     <Compile Include="ModuleBuilder\ModuleBuilder.vb" />
-    <Compile Include="ModuleBuilder\Symbols.vb" />
+    <Compile Include="Syntax\TypeScriptDefinition\Symbols.vb" />
     <Compile Include="Symbols.vb" />
-    <Compile Include="ModuleBuilder\ModuleParser.vb" />
+    <Compile Include="Syntax\TypeScriptDefinition\ModuleParser.vb" />
+    <Compile Include="Syntax\JavaScriptSyntax.vb" />
     <Compile Include="tsconfig.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
