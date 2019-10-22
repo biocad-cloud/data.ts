@@ -26,7 +26,7 @@ Namespace Bootstrap
             sourceJs = sourceJs.LineTokens.JoinBy(ASCII.LF)
 
             For Each t As Token In tokens
-                If t.type = TypeScriptTokens.declare AndAlso stack.Count = 0 AndAlso modTokens > 0 Then
+                If t = TypeScriptTokens.declare AndAlso stack.Count = 0 AndAlso modTokens > 0 Then
                     ' 这个可能是最顶层的模块申明
                     If modTokens.isModuleDefinition Then
                         start = modTokens.First.start
@@ -43,9 +43,9 @@ Namespace Bootstrap
                     Else
                         modTokens *= 0
                     End If
-                ElseIf t.type = TypeScriptTokens.openStack Then
+                ElseIf t = TypeScriptTokens.openStack Then
                     stack.Push(t.start)
-                ElseIf t.type = TypeScriptTokens.closeStack Then
+                ElseIf t = TypeScriptTokens.closeStack Then
                     stack.Pop()
                 End If
 
@@ -65,7 +65,65 @@ Namespace Bootstrap
 
         <Extension>
         Private Function isModuleDefinition(modTokens As List(Of Token)) As Boolean
+            ' 是否具有class注释标记
+            If Not modTokens.hasClassAnnotation Then
+                Return False
+            End If
+            If Not modTokens.hasAppNameProperty Then
+                Return False
+            End If
+            If Not modTokens.hasInitFunction Then
+                Return False
+            End If
+            If Not modTokens.hasReferBootstrap Then
+                Return False
+            End If
 
+            Return True
+        End Function
+
+        <Extension>
+        Private Function hasReferBootstrap(modTokens As List(Of Token)) As Boolean
+            For Each t As Token In modTokens
+                If t = TypeScriptTokens.identifier AndAlso t = "Bootstrap" Then
+                    Return True
+                End If
+            Next
+
+            Return False
+        End Function
+
+        <Extension>
+        Private Function hasInitFunction(modTokens As List(Of Token)) As Boolean
+            For Each t As Token In modTokens
+                If t = TypeScriptTokens.identifier AndAlso t.text.EndsWith(".prototype.init") Then
+                    Return True
+                End If
+            Next
+
+            Return False
+        End Function
+
+        <Extension>
+        Private Function hasAppNameProperty(modTokens As List(Of Token)) As Boolean
+            For Each t As Token In modTokens
+                If t = TypeScriptTokens.string AndAlso t = """appName""" Then
+                    Return True
+                End If
+            Next
+
+            Return False
+        End Function
+
+        <Extension>
+        Private Function hasClassAnnotation(modTokens As List(Of Token)) As Boolean
+            For Each t As Token In modTokens
+                If t = TypeScriptTokens.comment AndAlso t = "/** @class */" Then
+                    Return True
+                End If
+            Next
+
+            Return False
         End Function
     End Module
 End Namespace
