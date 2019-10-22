@@ -88,9 +88,11 @@ Public Class JavaScriptSyntax
                     Dim tokenText$ = buffer.CharString
 
                     Select Case tokenText
-                        Case "var", "let", "this"
+                        Case "this"
                             Return TypeScriptTokens.keyword
-                        Case "=", ">", "<", "+", "-", "*", "/", "&&", "||", "|", "&", "%"
+                        Case "var", "let"
+                            Return TypeScriptTokens.declare
+                        Case "=", ">", "<", "+", "-", "*", "/", "&&", "||", "|", "&", "%", "=>", "<="
                             Return TypeScriptTokens.operator
                         Case Else
                             Return TypeScriptTokens.identifier
