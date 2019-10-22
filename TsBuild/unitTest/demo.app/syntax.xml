@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-16"?>
-<XmlListOfToken xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" size="289">
+<XmlListOfToken xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" size="323">
   <!--
      model:     TsBuild.Token
-     assembly:  TsBuild, Version=1.456.7234.37173, Culture=neutral, PublicKeyToken=null
-     md5:       4a596001938e056e285ee46bf24167e7
+     assembly:  TsBuild, Version=1.456.7234.37219, Culture=neutral, PublicKeyToken=null
+     md5:       3e6ee51bc945430197a721a8f0568698
      timestamp: Tuesday, October 22, 2019
   -->
   <item type="declare" start="0" ends="5">var</item>
@@ -36,7 +36,8 @@
   <item type="operator" start="147" ends="151">||</item>
   <item type="openStack" start="150" ends="164">(</item>
   <item type="openStack" start="163" ends="166">{</item>
-  <item type="identifier" start="165" ends="176">__proto__</item>
+  <item type="identifier" start="165" ends="175">__proto__</item>
+  <item type="delimiter" start="174" ends="176">:</item>
   <item type="identifier" start="175" ends="180">[]</item>
   <item type="closeStack" start="179" ends="182">}</item>
   <item type="keyword" start="181" ends="193">instanceof</item>
@@ -51,7 +52,8 @@
   <item type="openStack" start="216" ends="220">{</item>
   <item type="identifier" start="219" ends="232">d.__proto__</item>
   <item type="operator" start="231" ends="234">=</item>
-  <item type="identifier" start="233" ends="236">b</item>
+  <item type="identifier" start="233" ends="235">b</item>
+  <item type="delimiter" start="234" ends="236">;</item>
   <item type="closeStack" start="235" ends="238">}</item>
   <item type="closeStack" start="237" ends="239">)</item>
   <item type="operator" start="238" ends="243">||</item>
@@ -78,8 +80,10 @@
   <item type="closeStack" start="312" ends="314">)</item>
   <item type="identifier" start="313" ends="320">d[p]</item>
   <item type="operator" start="319" ends="322">=</item>
-  <item type="identifier" start="321" ends="327">b[p]</item>
-  <item type="closeStack" start="326" ends="330">}</item>
+  <item type="identifier" start="321" ends="326">b[p]</item>
+  <item type="delimiter" start="325" ends="327">;</item>
+  <item type="closeStack" start="326" ends="329">}</item>
+  <item type="delimiter" start="328" ends="330">;</item>
   <item type="keyword" start="329" ends="346">return</item>
   <item type="identifier" start="345" ends="359">extendStatics</item>
   <item type="openStack" start="358" ends="360">(</item>
@@ -87,7 +91,9 @@
   <item type="delimiter" start="360" ends="362">,</item>
   <item type="identifier" start="361" ends="364">b</item>
   <item type="closeStack" start="363" ends="365">)</item>
-  <item type="closeStack" start="364" ends="373">}</item>
+  <item type="delimiter" start="364" ends="366">;</item>
+  <item type="closeStack" start="365" ends="372">}</item>
+  <item type="delimiter" start="371" ends="373">;</item>
   <item type="keyword" start="372" ends="385">return</item>
   <item type="keyword" start="384" ends="394">function</item>
   <item type="openStack" start="393" ends="395">(</item>
@@ -102,14 +108,16 @@
   <item type="delimiter" start="425" ends="427">,</item>
   <item type="identifier" start="426" ends="429">b</item>
   <item type="closeStack" start="428" ends="430">)</item>
-  <item type="keyword" start="429" ends="449">function</item>
+  <item type="delimiter" start="429" ends="431">;</item>
+  <item type="keyword" start="430" ends="449">function</item>
   <item type="identifier" start="448" ends="451">__</item>
   <item type="openStack" start="450" ends="452">(</item>
   <item type="closeStack" start="451" ends="453">)</item>
   <item type="openStack" start="452" ends="456">{</item>
   <item type="identifier" start="455" ends="473">this.constructor</item>
   <item type="operator" start="472" ends="475">=</item>
-  <item type="identifier" start="474" ends="477">d</item>
+  <item type="identifier" start="474" ends="476">d</item>
+  <item type="delimiter" start="475" ends="477">;</item>
   <item type="closeStack" start="476" ends="480">}</item>
   <item type="identifier" start="479" ends="500">d.prototype</item>
   <item type="operator" start="499" ends="502">=</item>
@@ -121,7 +129,8 @@
   <item type="openStack" start="527" ends="529">(</item>
   <item type="identifier" start="528" ends="530">b</item>
   <item type="closeStack" start="529" ends="531">)</item>
-  <item type="openStack" start="530" ends="535">(</item>
+  <item type="delimiter" start="530" ends="533">:</item>
+  <item type="openStack" start="532" ends="535">(</item>
   <item type="identifier" start="534" ends="548">__.prototype</item>
   <item type="operator" start="547" ends="550">=</item>
   <item type="identifier" start="549" ends="561">b.prototype</item>
@@ -131,12 +140,15 @@
   <item type="openStack" start="568" ends="570">(</item>
   <item type="closeStack" start="569" ends="571">)</item>
   <item type="closeStack" start="570" ends="572">)</item>
-  <item type="closeStack" start="571" ends="580">}</item>
+  <item type="delimiter" start="571" ends="573">;</item>
+  <item type="closeStack" start="572" ends="579">}</item>
+  <item type="delimiter" start="578" ends="580">;</item>
   <item type="closeStack" start="579" ends="582">}</item>
   <item type="closeStack" start="581" ends="583">)</item>
   <item type="openStack" start="582" ends="584">(</item>
   <item type="closeStack" start="583" ends="585">)</item>
-  <item type="comment" start="584" ends="640">/// &lt;reference path="../../../../build/linq.d.ts" /&gt;</item>
+  <item type="delimiter" start="584" ends="586">;</item>
+  <item type="comment" start="585" ends="640">/// &lt;reference path="../../../../build/linq.d.ts" /&gt;</item>
   <item type="identifier" start="639" ends="643">$ts</item>
   <item type="openStack" start="642" ends="644">(</item>
   <item type="keyword" start="643" ends="653">function</item>
@@ -150,13 +162,17 @@
   <item type="openStack" start="710" ends="712">(</item>
   <item type="closeStack" start="711" ends="713">)</item>
   <item type="closeStack" start="712" ends="714">)</item>
-  <item type="identifier" start="713" ends="733">Router.RunApp</item>
+  <item type="delimiter" start="713" ends="715">;</item>
+  <item type="identifier" start="714" ends="733">Router.RunApp</item>
   <item type="openStack" start="732" ends="734">(</item>
   <item type="closeStack" start="733" ends="735">)</item>
-  <item type="closeStack" start="734" ends="738">}</item>
+  <item type="delimiter" start="734" ends="736">;</item>
+  <item type="closeStack" start="735" ends="738">}</item>
   <item type="closeStack" start="737" ends="739">)</item>
-  <item type="declare" start="738" ends="745">var</item>
-  <item type="identifier" start="744" ends="750">demo</item>
+  <item type="delimiter" start="738" ends="740">;</item>
+  <item type="declare" start="739" ends="745">var</item>
+  <item type="identifier" start="744" ends="749">demo</item>
+  <item type="delimiter" start="748" ends="750">;</item>
   <item type="openStack" start="749" ends="752">(</item>
   <item type="keyword" start="751" ends="761">function</item>
   <item type="openStack" start="760" ends="762">(</item>
@@ -164,7 +180,8 @@
   <item type="closeStack" start="765" ends="767">)</item>
   <item type="openStack" start="766" ends="770">{</item>
   <item type="declare" start="769" ends="778">var</item>
-  <item type="identifier" start="777" ends="782">app</item>
+  <item type="identifier" start="777" ends="781">app</item>
+  <item type="delimiter" start="780" ends="782">;</item>
   <item type="openStack" start="781" ends="788">(</item>
   <item type="keyword" start="787" ends="797">function</item>
   <item type="openStack" start="796" ends="798">(</item>
@@ -172,7 +189,8 @@
   <item type="closeStack" start="800" ends="802">)</item>
   <item type="openStack" start="801" ends="805">{</item>
   <item type="declare" start="804" ends="817">var</item>
-  <item type="identifier" start="816" ends="823">pages</item>
+  <item type="identifier" start="816" ends="822">pages</item>
+  <item type="delimiter" start="821" ends="823">;</item>
   <item type="openStack" start="822" ends="833">(</item>
   <item type="keyword" start="832" ends="842">function</item>
   <item type="openStack" start="841" ends="843">(</item>
@@ -195,7 +213,8 @@
   <item type="delimiter" start="949" ends="951">,</item>
   <item type="identifier" start="950" ends="958">_super</item>
   <item type="closeStack" start="957" ends="959">)</item>
-  <item type="keyword" start="958" ends="986">function</item>
+  <item type="delimiter" start="958" ends="960">;</item>
+  <item type="keyword" start="959" ends="986">function</item>
   <item type="identifier" start="985" ends="995">printTest</item>
   <item type="openStack" start="994" ends="996">(</item>
   <item type="closeStack" start="995" ends="997">)</item>
@@ -212,7 +231,8 @@
   <item type="identifier" start="1063" ends="1074">arguments</item>
   <item type="closeStack" start="1073" ends="1075">)</item>
   <item type="operator" start="1074" ends="1079">||</item>
-  <item type="keyword" start="1078" ends="1084">this</item>
+  <item type="keyword" start="1078" ends="1083">this</item>
+  <item type="delimiter" start="1082" ends="1084">;</item>
   <item type="closeStack" start="1083" ends="1103">}</item>
   <item type="identifier" start="1102" ends="1140">Object.defineProperty</item>
   <item type="openStack" start="1139" ends="1141">(</item>
@@ -221,23 +241,29 @@
   <item type="string" start="1160" ends="1171">"appName"</item>
   <item type="delimiter" start="1170" ends="1172">,</item>
   <item type="openStack" start="1171" ends="1175">{</item>
-  <item type="identifier" start="1174" ends="1199">get</item>
+  <item type="identifier" start="1174" ends="1198">get</item>
+  <item type="delimiter" start="1197" ends="1199">:</item>
   <item type="keyword" start="1198" ends="1209">function</item>
   <item type="openStack" start="1208" ends="1210">(</item>
   <item type="closeStack" start="1209" ends="1211">)</item>
   <item type="openStack" start="1210" ends="1214">{</item>
   <item type="keyword" start="1213" ends="1245">return</item>
   <item type="string" start="1244" ends="1252">"index"</item>
-  <item type="closeStack" start="1251" ends="1275">}</item>
+  <item type="delimiter" start="1251" ends="1253">;</item>
+  <item type="closeStack" start="1252" ends="1275">}</item>
   <item type="delimiter" start="1274" ends="1276">,</item>
-  <item type="identifier" start="1275" ends="1308">enumerable</item>
+  <item type="identifier" start="1275" ends="1307">enumerable</item>
+  <item type="delimiter" start="1306" ends="1308">:</item>
   <item type="logicalLiteral" start="1307" ends="1313">true</item>
   <item type="delimiter" start="1312" ends="1314">,</item>
-  <item type="identifier" start="1313" ends="1348">configurable</item>
+  <item type="identifier" start="1313" ends="1347">configurable</item>
+  <item type="delimiter" start="1346" ends="1348">:</item>
   <item type="logicalLiteral" start="1347" ends="1354">true</item>
   <item type="closeStack" start="1353" ends="1371">}</item>
   <item type="closeStack" start="1370" ends="1372">)</item>
-  <item type="identifier" start="1371" ends="1433">printTest.prototype.init</item>
+  <item type="delimiter" start="1371" ends="1373">;</item>
+  <item type="delimiter" start="1372" ends="1391">;</item>
+  <item type="identifier" start="1390" ends="1433">printTest.prototype.init</item>
   <item type="operator" start="1432" ends="1435">=</item>
   <item type="keyword" start="1434" ends="1444">function</item>
   <item type="openStack" start="1443" ends="1445">(</item>
@@ -247,17 +273,22 @@
   <item type="openStack" start="1479" ends="1481">(</item>
   <item type="string" start="1480" ends="1494">'Hello world'</item>
   <item type="closeStack" start="1493" ends="1495">)</item>
-  <item type="closeStack" start="1494" ends="1515">}</item>
+  <item type="delimiter" start="1494" ends="1496">;</item>
+  <item type="closeStack" start="1495" ends="1514">}</item>
+  <item type="delimiter" start="1513" ends="1515">;</item>
   <item type="keyword" start="1514" ends="1539">return</item>
-  <item type="identifier" start="1538" ends="1549">printTest</item>
+  <item type="identifier" start="1538" ends="1548">printTest</item>
+  <item type="delimiter" start="1547" ends="1549">;</item>
   <item type="closeStack" start="1548" ends="1563">}</item>
   <item type="openStack" start="1562" ends="1564">(</item>
   <item type="identifier" start="1563" ends="1573">Bootstrap</item>
   <item type="closeStack" start="1572" ends="1574">)</item>
   <item type="closeStack" start="1573" ends="1575">)</item>
-  <item type="identifier" start="1574" ends="1605">pages.printTest</item>
+  <item type="delimiter" start="1574" ends="1576">;</item>
+  <item type="identifier" start="1575" ends="1605">pages.printTest</item>
   <item type="operator" start="1604" ends="1607">=</item>
-  <item type="identifier" start="1606" ends="1617">printTest</item>
+  <item type="identifier" start="1606" ends="1616">printTest</item>
+  <item type="delimiter" start="1615" ends="1617">;</item>
   <item type="closeStack" start="1616" ends="1627">}</item>
   <item type="closeStack" start="1626" ends="1628">)</item>
   <item type="openStack" start="1627" ends="1629">(</item>
@@ -271,7 +302,8 @@
   <item type="identifier" start="1662" ends="1665">{}</item>
   <item type="closeStack" start="1664" ends="1666">)</item>
   <item type="closeStack" start="1665" ends="1667">)</item>
-  <item type="closeStack" start="1666" ends="1674">}</item>
+  <item type="delimiter" start="1666" ends="1668">;</item>
+  <item type="closeStack" start="1667" ends="1674">}</item>
   <item type="closeStack" start="1673" ends="1675">)</item>
   <item type="openStack" start="1674" ends="1676">(</item>
   <item type="identifier" start="1675" ends="1680">app</item>
@@ -284,7 +316,8 @@
   <item type="identifier" start="1705" ends="1708">{}</item>
   <item type="closeStack" start="1707" ends="1709">)</item>
   <item type="closeStack" start="1708" ends="1710">)</item>
-  <item type="closeStack" start="1709" ends="1713">}</item>
+  <item type="delimiter" start="1709" ends="1711">;</item>
+  <item type="closeStack" start="1710" ends="1713">}</item>
   <item type="closeStack" start="1712" ends="1714">)</item>
   <item type="openStack" start="1713" ends="1715">(</item>
   <item type="identifier" start="1714" ends="1720">demo</item>
@@ -295,4 +328,5 @@
   <item type="identifier" start="1730" ends="1733">{}</item>
   <item type="closeStack" start="1732" ends="1734">)</item>
   <item type="closeStack" start="1733" ends="1735">)</item>
+  <item type="delimiter" start="1734" ends="1736">;</item>
 </XmlListOfToken>

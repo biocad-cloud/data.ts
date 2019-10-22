@@ -16,12 +16,16 @@ $ts(function () {
     Router.AddAppHandler(new demo.app.pages.printTest());
     Router.RunApp();
 });
+// demo test for the js parser
 var demo;
 (function (demo) {
     var app;
     (function (app) {
         var pages;
         (function (pages) {
+            /**
+             * A demo web app for print hello world on console
+            */
             var printTest = /** @class */ (function (_super) {
                 __extends(printTest, _super);
                 function printTest() {
