@@ -108,10 +108,18 @@ Public Class JavaScriptSyntax
                     code -= 1
                     Return matchTokenText()
                 End If
-            ElseIf c = ")"c OrElse c = ","c Then
+            ElseIf c = ")"c Then
                 If buffer = 0 Then
                     buffer += c
                     Return TypeScriptTokens.closeStack
+                Else
+                    code -= 1
+                    Return matchTokenText()
+                End If
+            ElseIf c = ","c Then
+                If buffer = 0 Then
+                    buffer += c
+                    Return TypeScriptTokens.delimiter
                 Else
                     code -= 1
                     Return matchTokenText()
@@ -167,6 +175,8 @@ Public Class JavaScriptSyntax
                 Return TypeScriptTokens.operator
             Case "}", ")"
                 Return TypeScriptTokens.closeStack
+            Case ","
+                Return TypeScriptTokens.delimiter
             Case Else
                 If tokenText.IsNumeric Then
                     Return TypeScriptTokens.numberLiteral

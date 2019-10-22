@@ -11,6 +11,7 @@ Public Enum TypeScriptTokens
     typeName
     funcType
     comment
+    delimiter
     logicalLiteral
     numberLiteral
     constructor

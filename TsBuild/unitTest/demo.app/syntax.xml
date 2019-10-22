@@ -2,8 +2,8 @@
 <XmlListOfToken xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" size="289">
   <!--
      model:     TsBuild.Token
-     assembly:  TsBuild, Version=1.456.7234.36718, Culture=neutral, PublicKeyToken=null
-     md5:       f71199310720150e171dfc52769d76f1
+     assembly:  TsBuild, Version=1.456.7234.36936, Culture=neutral, PublicKeyToken=null
+     md5:       b79d3c070626bed4cc853ec903d094aa
      timestamp: Tuesday, October 22, 2019
   -->
   <item type="declare" start="0" ends="4">var</item>
@@ -26,7 +26,7 @@
   <item type="keyword" start="83" ends="92">function</item>
   <item type="openStack" start="92" ends="93">(</item>
   <item type="identifier" start="93" ends="94">d</item>
-  <item type="closeStack" start="94" ends="95">,</item>
+  <item type="delimiter" start="94" ends="95">,</item>
   <item type="identifier" start="95" ends="97">b</item>
   <item type="closeStack" start="97" ends="98">)</item>
   <item type="openStack" start="98" ends="101">{</item>
@@ -45,7 +45,7 @@
   <item type="keyword" start="201" ends="210">function</item>
   <item type="openStack" start="210" ends="211">(</item>
   <item type="identifier" start="211" ends="212">d</item>
-  <item type="closeStack" start="212" ends="213">,</item>
+  <item type="delimiter" start="212" ends="213">,</item>
   <item type="identifier" start="213" ends="215">b</item>
   <item type="closeStack" start="215" ends="216">)</item>
   <item type="openStack" start="216" ends="219">{</item>
@@ -58,7 +58,7 @@
   <item type="keyword" start="242" ends="263">function</item>
   <item type="openStack" start="263" ends="264">(</item>
   <item type="identifier" start="264" ends="265">d</item>
-  <item type="closeStack" start="265" ends="266">,</item>
+  <item type="delimiter" start="265" ends="266">,</item>
   <item type="identifier" start="266" ends="268">b</item>
   <item type="closeStack" start="268" ends="269">)</item>
   <item type="openStack" start="269" ends="272">{</item>
@@ -84,7 +84,7 @@
   <item type="identifier" start="345" ends="358">extendStatics</item>
   <item type="openStack" start="358" ends="359">(</item>
   <item type="identifier" start="359" ends="360">d</item>
-  <item type="closeStack" start="360" ends="361">,</item>
+  <item type="delimiter" start="360" ends="361">,</item>
   <item type="identifier" start="361" ends="363">b</item>
   <item type="closeStack" start="363" ends="364">)</item>
   <item type="closeStack" start="364" ends="372">}</item>
@@ -92,14 +92,14 @@
   <item type="keyword" start="384" ends="393">function</item>
   <item type="openStack" start="393" ends="394">(</item>
   <item type="identifier" start="394" ends="395">d</item>
-  <item type="closeStack" start="395" ends="396">,</item>
+  <item type="delimiter" start="395" ends="396">,</item>
   <item type="identifier" start="396" ends="398">b</item>
   <item type="closeStack" start="398" ends="399">)</item>
   <item type="openStack" start="399" ends="402">{</item>
   <item type="identifier" start="402" ends="423">extendStatics</item>
   <item type="openStack" start="423" ends="424">(</item>
   <item type="identifier" start="424" ends="425">d</item>
-  <item type="closeStack" start="425" ends="426">,</item>
+  <item type="delimiter" start="425" ends="426">,</item>
   <item type="identifier" start="426" ends="428">b</item>
   <item type="closeStack" start="428" ends="429">)</item>
   <item type="keyword" start="429" ends="448">function</item>
@@ -125,7 +125,7 @@
   <item type="identifier" start="534" ends="547">__.prototype</item>
   <item type="operator" start="547" ends="549">=</item>
   <item type="identifier" start="549" ends="560">b.prototype</item>
-  <item type="closeStack" start="560" ends="561">,</item>
+  <item type="delimiter" start="560" ends="561">,</item>
   <item type="keyword" start="561" ends="566">new</item>
   <item type="identifier" start="566" ends="568">__</item>
   <item type="openStack" start="568" ends="569">(</item>
@@ -192,7 +192,7 @@
   <item type="identifier" start="914" ends="939">__extends</item>
   <item type="openStack" start="939" ends="940">(</item>
   <item type="identifier" start="940" ends="949">printTest</item>
-  <item type="closeStack" start="949" ends="950">,</item>
+  <item type="delimiter" start="949" ends="950">,</item>
   <item type="identifier" start="950" ends="957">_super</item>
   <item type="closeStack" start="957" ends="958">)</item>
   <item type="keyword" start="958" ends="985">function</item>
@@ -208,7 +208,7 @@
   <item type="identifier" start="1045" ends="1057">_super.apply</item>
   <item type="openStack" start="1057" ends="1058">(</item>
   <item type="keyword" start="1058" ends="1062">this</item>
-  <item type="closeStack" start="1062" ends="1063">,</item>
+  <item type="delimiter" start="1062" ends="1063">,</item>
   <item type="identifier" start="1063" ends="1073">arguments</item>
   <item type="closeStack" start="1073" ends="1074">)</item>
   <item type="operator" start="1074" ends="1078">||</item>
@@ -217,9 +217,9 @@
   <item type="identifier" start="1102" ends="1139">Object.defineProperty</item>
   <item type="openStack" start="1139" ends="1140">(</item>
   <item type="identifier" start="1140" ends="1159">printTest.prototype</item>
-  <item type="closeStack" start="1159" ends="1160">,</item>
+  <item type="delimiter" start="1159" ends="1160">,</item>
   <item type="string" start="1160" ends="1170">"appName"</item>
-  <item type="closeStack" start="1170" ends="1171">,</item>
+  <item type="delimiter" start="1170" ends="1171">,</item>
   <item type="openStack" start="1171" ends="1174">{</item>
   <item type="identifier" start="1174" ends="1198">get</item>
   <item type="keyword" start="1198" ends="1208">function</item>
@@ -229,10 +229,10 @@
   <item type="keyword" start="1213" ends="1244">return</item>
   <item type="string" start="1244" ends="1251">"index"</item>
   <item type="closeStack" start="1251" ends="1274">}</item>
-  <item type="closeStack" start="1274" ends="1275">,</item>
+  <item type="delimiter" start="1274" ends="1275">,</item>
   <item type="identifier" start="1275" ends="1307">enumerable</item>
   <item type="logicalLiteral" start="1307" ends="1312">true</item>
-  <item type="closeStack" start="1312" ends="1313">,</item>
+  <item type="delimiter" start="1312" ends="1313">,</item>
   <item type="identifier" start="1313" ends="1347">configurable</item>
   <item type="logicalLiteral" start="1347" ends="1353">true</item>
   <item type="closeStack" start="1353" ends="1370">}</item>
