@@ -79,7 +79,13 @@ Public Class JavaScriptSyntax
                 Return TypeScriptTokens.string
             End If
         Else
-            If c = " "c OrElse c = ASCII.LF Then
+            If c = " "c OrElse c = ASCII.LF OrElse c = ASCII.TAB Then
+                If buffer = 0 Then
+                    ' 只是单纯的一个空白
+                    ' 忽略掉
+                    Return TypeScriptTokens.undefined
+                End If
+
                 ' a string delimiter
                 If bufferEndWith(":") Then
                     Return TypeScriptTokens.identifier
@@ -142,7 +148,7 @@ Public Class JavaScriptSyntax
         Dim tokenText$ = buffer.CharString
 
         Select Case tokenText
-            Case "this", "function"
+            Case "this", "function", "return", "for", "if", "else", "switch", "case"
                 Return TypeScriptTokens.keyword
             Case "var", "let"
                 Return TypeScriptTokens.declare
