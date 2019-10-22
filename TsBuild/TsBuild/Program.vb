@@ -78,8 +78,8 @@ Module Program
     Public Function BootstrapLoader(args As CommandLine) As Integer
         Dim in$ = args <= "/in"
         Dim out$ = args("/out") Or ([in].TrimSuffix & ".app/")
-        Dim tokens = New ModuleParser() _
-            .ParseIndex([in]) _
+        Dim tokens = New JavaScriptSyntax() _
+            .ParseTokens([in]) _
             .ToArray
 
 #If DEBUG Then

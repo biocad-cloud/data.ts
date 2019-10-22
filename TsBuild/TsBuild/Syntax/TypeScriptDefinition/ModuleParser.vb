@@ -77,7 +77,16 @@ Public Class ModuleParser
                 ElseIf bufferEquals("}") Then
                     Return TypeScriptTokens.closeStack
                 Else
-                    Return TypeScriptTokens.identifier
+                    Dim tokenText$ = buffer.CharString
+
+                    Select Case tokenText
+                        Case "var", "let", "this"
+                            Return TypeScriptTokens.keyword
+                        Case "=", ">", "<", "+", "-", "*", "/", "&&", "||", "|", "&", "%"
+                            Return TypeScriptTokens.operator
+                        Case Else
+                            Return TypeScriptTokens.identifier
+                    End Select
                 End If
             ElseIf c = "("c Then
                 Return TypeScriptTokens.functionName
