@@ -1,4 +1,5 @@
 ﻿Imports System.Xml.Serialization
+Imports Microsoft.VisualBasic.ComponentModel.Ranges.Model
 
 Public Enum TypeScriptTokens
     undefined = 0
@@ -6,6 +7,7 @@ Public Enum TypeScriptTokens
     keyword
     [function]
     functionName
+    functionCalls
     identifier
     typeName
     funcType
@@ -24,6 +26,9 @@ End Enum
 
     <XmlAttribute("type")> Public Property type As TypeScriptTokens
     <XmlText> Public Property text As String
+
+    <XmlAttribute> Public Property start As Integer
+    <XmlAttribute> Public Property ends As Integer
 
     Public Overrides Function ToString() As String
         Return $"[{type}] {text}"

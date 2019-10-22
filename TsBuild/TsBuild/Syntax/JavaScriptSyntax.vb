@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.VisualBasic.Emit.Marshal
 Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Text
 
 ''' <summary>
@@ -9,6 +10,7 @@ Public Class JavaScriptSyntax
 
     Dim escape As New JavaScriptEscapes
     Dim buffer As New List(Of Char)
+    Dim code As Pointer(Of Char)
 
     Private Function getTextCode(text As String) As Pointer(Of Char)
         text = text.SolveStream
@@ -18,19 +20,24 @@ Public Class JavaScriptSyntax
     End Function
 
     Public Iterator Function ParseTokens(text As String) As IEnumerable(Of Token)
-        Dim code As Pointer(Of Char) = getTextCode(text)
         Dim c As Value(Of Char) = ""
         Dim type As Value(Of TypeScriptTokens) = TypeScriptTokens.undefined
+        Dim start As Integer = 0
+
+        Me.code = text.DoCall(AddressOf getTextCode)
 
         Do While (c = ++code) <> ASCII.NUL
             If (type = walkChar(c)) <> TypeScriptTokens.undefined AndAlso buffer > 0 Then
                 Yield New Token With {
                     .text = buffer.CharString,
-                    .type = type
+                    .type = type,
+                    .ends = code.Position,
+                    .start = start
                 }
 
                 ' clear buffer
                 buffer *= 0
+                start = code.Position
             End If
         Loop
     End Function
@@ -85,25 +92,26 @@ Public Class JavaScriptSyntax
                 ElseIf bufferEquals("}") Then
                     Return TypeScriptTokens.closeStack
                 Else
-                    Dim tokenText$ = buffer.CharString
-
-                    Select Case tokenText
-                        Case "this"
-                            Return TypeScriptTokens.keyword
-                        Case "var", "let"
-                            Return TypeScriptTokens.declare
-                        Case "=", ">", "<", "+", "-", "*", "/", "&&", "||", "|", "&", "%", "=>", "<="
-                            Return TypeScriptTokens.operator
-                        Case Else
-                            Return TypeScriptTokens.identifier
-                    End Select
+                    Return matchTokenText()
                 End If
             ElseIf c = "("c Then
-                Return TypeScriptTokens.functionName
+                If buffer = 0 Then
+                    buffer += c
+                    Return TypeScriptTokens.openStack
+                Else
+                    code -= 1
+                    Return matchTokenText()
+                End If
             ElseIf c = ")"c OrElse c = ","c Then
-                Return TypeScriptTokens.typeName
+                If buffer = 0 Then
+                    buffer += c
+                    Return TypeScriptTokens.closeStack
+                Else
+                    code -= 1
+                    Return matchTokenText()
+                End If
             ElseIf c = ";"c Then
-                Return TypeScriptTokens.funcType
+                Return matchTokenText()
             ElseIf c = ":"c Then
                 Return TypeScriptTokens.identifier
             ElseIf c = """" OrElse c = "'" OrElse c = "`" Then
@@ -128,5 +136,22 @@ Public Class JavaScriptSyntax
         End If
 
         Return TypeScriptTokens.undefined
+    End Function
+
+    Private Function matchTokenText() As TypeScriptTokens
+        Dim tokenText$ = buffer.CharString
+
+        Select Case tokenText
+            Case "this", "function"
+                Return TypeScriptTokens.keyword
+            Case "var", "let"
+                Return TypeScriptTokens.declare
+            Case "=", ">", "<", "+", "-", "*", "/", "&&", "||", "|", "&", "%", "=>", "<="
+                Return TypeScriptTokens.operator
+            Case "}", ")"
+                Return TypeScriptTokens.closeStack
+            Case Else
+                Return TypeScriptTokens.identifier
+        End Select
     End Function
 End Class
