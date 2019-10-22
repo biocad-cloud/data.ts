@@ -12,7 +12,7 @@ Public Class JavaScriptSyntax
     Dim buffer As New List(Of Char)
     Dim code As Pointer(Of Char)
 
-    Private Function getTextCode(text As String) As Pointer(Of Char)
+    Private Shared Function getTextCode(text As String) As Pointer(Of Char)
         text = text.SolveStream
         text = text.LineTokens.JoinBy(ASCII.LF)
 
