@@ -53,7 +53,6 @@ Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Serialization.JSON
 Imports Microsoft.VisualBasic.Text
-Imports Microsoft.VisualBasic.Text.Xml.Models
 Imports TsBuild.Bootstrap
 
 Module Program
