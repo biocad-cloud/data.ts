@@ -93,6 +93,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bootstrap\ModuleSplitter.vb" />
+    <Compile Include="Bootstrap\NamespaceDoc.vb" />
     <Compile Include="ModuleBuilder\ModuleBuilder.vb" />
     <Compile Include="ModuleBuilder\Symbols.vb" />
     <Compile Include="Symbols.vb" />
