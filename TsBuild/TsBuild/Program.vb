@@ -76,7 +76,7 @@ Module Program
     End Function
 
     <ExportAPI("/bootstrap.loader")>
-    <Usage("/bootstrap.loader /in <app.js> [/out <app.directory>]")>
+    <Usage("/bootstrap.loader /in <app.js> [/debug /out <app.directory>]")>
     Public Function BootstrapLoader(args As CommandLine) As Integer
         Dim in$ = args <= "/in"
         Dim out$ = args("/out") Or ([in].TrimSuffix & ".app/")
@@ -84,12 +84,13 @@ Module Program
             .ParseTokens([in]) _
             .ToArray
 
-#If DEBUG Then
-        Call New XmlList(Of Token) With {
-            .items = tokens
-        }.GetXml _
-         .SaveTo($"{out}/syntax.xml")
-#End If
+        If args("/debug") Then
+            Call New XmlList(Of Token) With {
+                .items = tokens
+            }.GetXml _
+             .SaveTo($"{out}/syntax.xml")
+        End If
+
         For Each app As NamedValue(Of String) In tokens.PopulateModules([in].ReadAllText)
             Call app.Value.SaveTo($"{out}/modules/{app.Name}.js")
         Next
