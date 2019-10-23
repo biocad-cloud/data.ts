@@ -12,7 +12,7 @@ Public Class JavaScriptSyntax
     Dim buffer As New List(Of Char)
     Dim code As Pointer(Of Char)
 
-    Private Function getTextCode(text As String) As Pointer(Of Char)
+    Private Shared Function getTextCode(text As String) As Pointer(Of Char)
         text = text.SolveStream
         text = text.LineTokens.JoinBy(ASCII.LF)
 
@@ -31,7 +31,7 @@ Public Class JavaScriptSyntax
                 Yield New Token With {
                     .text = buffer.CharString,
                     .type = type,
-                    .ends = code.Position,
+                    .ends = code.Position + 1,
                     .start = start
                 }
 
@@ -91,7 +91,7 @@ Public Class JavaScriptSyntax
                     Return TypeScriptTokens.identifier
                 ElseIf bufferEndWith("(") Then
                     Return TypeScriptTokens.functionName
-                ElseIf buffer.CharString Like Symbols.Keywords Then
+                ElseIf buffer.CharString Like TypeScriptSymbols.Keywords Then
                     Return TypeScriptTokens.keyword
                 ElseIf bufferEquals("{") Then
                     Return TypeScriptTokens.openStack
@@ -108,7 +108,7 @@ Public Class JavaScriptSyntax
                     code -= 1
                     Return matchTokenText()
                 End If
-            ElseIf c = ")"c OrElse c = ","c Then
+            ElseIf c = ")"c Then
                 If buffer = 0 Then
                     buffer += c
                     Return TypeScriptTokens.closeStack
@@ -116,10 +116,22 @@ Public Class JavaScriptSyntax
                     code -= 1
                     Return matchTokenText()
                 End If
-            ElseIf c = ";"c Then
-                Return matchTokenText()
+            ElseIf c = ","c OrElse c = ";"c Then
+                If buffer = 0 Then
+                    buffer += c
+                    Return TypeScriptTokens.delimiter
+                Else
+                    code -= 1
+                    Return matchTokenText()
+                End If
             ElseIf c = ":"c Then
-                Return TypeScriptTokens.identifier
+                If buffer = 0 Then
+                    buffer += c
+                    Return TypeScriptTokens.delimiter
+                Else
+                    code -= 1
+                    Return matchTokenText()
+                End If
             ElseIf c = """" OrElse c = "'" OrElse c = "`" Then
                 If Not escape.StringContent Then
                     escape.StringContent = True
@@ -167,6 +179,8 @@ Public Class JavaScriptSyntax
                 Return TypeScriptTokens.operator
             Case "}", ")"
                 Return TypeScriptTokens.closeStack
+            Case ","
+                Return TypeScriptTokens.delimiter
             Case Else
                 If tokenText.IsNumeric Then
                     Return TypeScriptTokens.numberLiteral

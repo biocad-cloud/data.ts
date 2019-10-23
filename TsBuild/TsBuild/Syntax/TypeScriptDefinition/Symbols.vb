@@ -11,6 +11,7 @@ Public Enum TypeScriptTokens
     typeName
     funcType
     comment
+    delimiter
     logicalLiteral
     numberLiteral
     constructor
@@ -35,6 +36,21 @@ End Enum
         Return $"[{type}] {text}"
     End Function
 
+    Public Shared Operator =(t As Token, type As TypeScriptTokens) As Boolean
+        Return t.type = type
+    End Operator
+
+    Public Shared Operator <>(t As Token, type As TypeScriptTokens) As Boolean
+        Return t.type <> type
+    End Operator
+
+    Public Shared Operator <>(t As Token, text As String) As Boolean
+        Return t.text <> text
+    End Operator
+
+    Public Shared Operator =(t As Token, text As String) As Boolean
+        Return t.text = text
+    End Operator
 End Class
 
 Public Class Escapes

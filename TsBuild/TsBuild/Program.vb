@@ -44,6 +44,7 @@
 
 Imports System.ComponentModel
 Imports System.IO
+Imports System.Text
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.ApplicationServices.Development.VisualStudio.vbproj
 Imports Microsoft.VisualBasic.CommandLine
@@ -51,7 +52,7 @@ Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Serialization.JSON
-Imports Microsoft.VisualBasic.Text.Xml.Models
+Imports Microsoft.VisualBasic.Text
 Imports TsBuild.Bootstrap
 
 Module Program
@@ -93,9 +94,13 @@ Module Program
 
         For Each app As NamedValue(Of String) In tokens.PopulateModules([in].ReadAllText)
             Call app.Value.SaveTo($"{out}/modules/{app.Name}.js")
+            Call js.Replace(app.Value, "")
         Next
 
-        Return $"".SaveTo($"{out}/bootstrapLoader.js").CLICode
+        Call js.SaveTo($"{out}/asset.js")
+        Call $"".SaveTo($"{out}/bootstrapLoader.js")
+
+        Return 0
     End Function
 
     <ExportAPI("/compile")>

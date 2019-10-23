@@ -70,7 +70,7 @@ Public Class ModuleParser
                     Return TypeScriptTokens.identifier
                 ElseIf bufferEndWith("(") Then
                     Return TypeScriptTokens.functionName
-                ElseIf buffer.CharString Like Symbols.Keywords Then
+                ElseIf buffer.CharString Like TypeScriptSymbols.Keywords Then
                     Return TypeScriptTokens.keyword
                 ElseIf bufferEquals("{") Then
                     Return TypeScriptTokens.openStack
