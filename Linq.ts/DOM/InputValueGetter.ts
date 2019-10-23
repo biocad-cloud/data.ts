@@ -156,6 +156,12 @@ namespace DOM {
                         opts.push(opt);
                     }
                 }
+            } else if (sel instanceof HTMLInputElement) {
+                if (sel.checked) {
+                    return sel.value;
+                } else {
+                    return false;
+                }
             } else {
                 return sel
                     .Where(i => i.checked)

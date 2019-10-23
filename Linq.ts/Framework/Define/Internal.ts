@@ -114,10 +114,10 @@ namespace Internal {
                 TypeScript.URL.JumpToHash(url);
             } else if (opt.lambda) {
                 return function () {
-                    Goto(url, opt.currentFrame);
+                    $goto(url, opt.currentFrame);
                 }
             } else {
-                Goto(url, opt.currentFrame);
+                $goto(url, opt.currentFrame);
             }
         }
 
@@ -290,6 +290,12 @@ namespace Internal {
 
         // file path helpers
         ts.parseFileName = TypeScript.PathHelper.fileName;
+        ts.unixtimestamp = function () {
+            var d: Date = new Date();
+            var timestamp = Math.round(d.getTime());
+
+            return timestamp;
+        };
 
         /**
          * 得到不带有拓展名的文件名部分的字符串
@@ -371,7 +377,9 @@ namespace Internal {
             });
             var options = DOM.InputValueGetter.getSelectedOptions(<any>sel);
 
-            if (options.length == 0) {
+            if (typeof options == "boolean") {
+                return options;
+            } else if (options.length == 0) {
                 return null;
             } else {
                 if (typeof options[0] == "string") {
