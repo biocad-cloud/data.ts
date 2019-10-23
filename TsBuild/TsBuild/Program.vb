@@ -95,12 +95,20 @@ Module Program
 
         Dim js As New StringBuilder([in].ReadAllText.LineTokens.JoinBy(ASCII.LF))
 
+        ' 下面的for循环保存的是最终所使用的app的class的定义
+        ' 对于abstract属性的抽象模型，是保存于asset.js文件中
+        ' 直接进行加载的
         For Each app As NamedValue(Of String) In tokens.PopulateModules(js.ToString)
             Call app.Value.SaveTo($"{out}/modules/{app.Name}.js")
             Call js.Replace(app.Value, "")
         Next
 
         Call js.SaveTo($"{out}/asset.js")
+
+        ' 提供应用程序的启动框架
+        ' 首先加载bootstrapLoader模块
+        ' 然后根据当前的appName加载对应的app脚本模块
+        ' 运行app class
         Call $"".SaveTo($"{out}/bootstrapLoader.js")
 
         Return 0
