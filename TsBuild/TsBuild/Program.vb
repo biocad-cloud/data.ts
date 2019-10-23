@@ -53,6 +53,7 @@ Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Serialization.JSON
 Imports Microsoft.VisualBasic.Text
+Imports Microsoft.VisualBasic.Text.Xml.Models
 Imports TsBuild.Bootstrap
 
 Module Program
@@ -92,7 +93,9 @@ Module Program
              .SaveTo($"{out}/syntax.xml")
         End If
 
-        For Each app As NamedValue(Of String) In tokens.PopulateModules([in].ReadAllText)
+        Dim js As New StringBuilder([in].ReadAllText.LineTokens.JoinBy(ASCII.LF))
+
+        For Each app As NamedValue(Of String) In tokens.PopulateModules(js.ToString)
             Call app.Value.SaveTo($"{out}/modules/{app.Name}.js")
             Call js.Replace(app.Value, "")
         Next
