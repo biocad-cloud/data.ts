@@ -31,7 +31,7 @@ Public Class JavaScriptSyntax
                 Yield New Token With {
                     .text = buffer.CharString,
                     .type = type,
-                    .ends = code.Position + 1,
+                    .ends = code.Position,
                     .start = start
                 }
 
