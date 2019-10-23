@@ -53,6 +53,7 @@ Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Serialization.JSON
 Imports Microsoft.VisualBasic.Text
+Imports Microsoft.VisualBasic.Text.Xml.Models
 Imports TsBuild.Bootstrap
 
 Module Program
@@ -77,7 +78,7 @@ Module Program
     End Function
 
     <ExportAPI("/bootstrap.loader")>
-    <Usage("/bootstrap.loader /in <app.js> [/out <app.directory>]")>
+    <Usage("/bootstrap.loader /in <app.js> [/debug /out <app.directory>]")>
     Public Function BootstrapLoader(args As CommandLine) As Integer
         Dim in$ = args <= "/in"
         Dim out$ = args("/out") Or ([in].TrimSuffix & ".app/")
@@ -85,20 +86,29 @@ Module Program
             .ParseTokens([in]) _
             .ToArray
 
-#If DEBUG Then
-        Call New XmlList(Of Token) With {
-            .items = tokens
-        }.GetXml _
-         .SaveTo($"{out}/syntax.xml")
-#End If
-        Dim js As New StringBuilder([in].ReadAllLines.JoinBy(ASCII.LF))
+        If args("/debug") Then
+            Call New XmlList(Of Token) With {
+                .items = tokens
+            }.GetXml _
+             .SaveTo($"{out}/syntax.xml")
+        End If
 
+        Dim js As New StringBuilder([in].ReadAllText.LineTokens.JoinBy(ASCII.LF))
+
+        ' 下面的for循环保存的是最终所使用的app的class的定义
+        ' 对于abstract属性的抽象模型，是保存于asset.js文件中
+        ' 直接进行加载的
         For Each app As NamedValue(Of String) In tokens.PopulateModules(js.ToString)
             Call app.Value.SaveTo($"{out}/modules/{app.Name}.js")
             Call js.Replace(app.Value, "")
         Next
 
         Call js.SaveTo($"{out}/asset.js")
+
+        ' 提供应用程序的启动框架
+        ' 首先加载bootstrapLoader模块
+        ' 然后根据当前的appName加载对应的app脚本模块
+        ' 运行app class
         Call $"".SaveTo($"{out}/bootstrapLoader.js")
 
         Return 0
