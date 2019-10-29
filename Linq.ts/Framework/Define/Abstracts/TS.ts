@@ -206,6 +206,10 @@
         csv: IcsvHelperApi;
 
         /**
+         * 将目标字符串解释为一个逻辑值
+        */
+        parseBool(text: string): boolean;
+        /**
          * 解析的结果为``filename.ext``的完整文件名格式
          * 
          * @param path Full name
