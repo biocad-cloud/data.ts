@@ -15,7 +15,7 @@
 
         //#region "function overloads"
 
-        <T extends HTMLElement>(nodes: NodeListOf<T>): DOMEnumerator<T>;
+        <T extends HTMLElement>(nodes: NodeListOf<Element>): DOMEnumerator<T>;
         <T extends HTMLElement & Node & ChildNode>(nodes: NodeListOf<T>): DOMEnumerator<T>;
         /**
          * Extends the properties and methods of the given original html element node.
