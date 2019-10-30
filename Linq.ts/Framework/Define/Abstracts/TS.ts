@@ -15,6 +15,11 @@
 
         //#region "function overloads"
 
+        /**
+         * 将一个通过类名称或者标签名称进行选择的节点列表转换为一个节点枚举器
+         * 
+         * ##### 20191030 在这里为了重载的兼容性，nodes参数就从原来的T泛型变更为现在Element基本类型
+        */
         <T extends HTMLElement>(nodes: NodeListOf<Element>): DOMEnumerator<T>;
         <T extends HTMLElement & Node & ChildNode>(nodes: NodeListOf<T>): DOMEnumerator<T>;
         /**
