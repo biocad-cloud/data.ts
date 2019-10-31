@@ -19,6 +19,7 @@ Namespace Bootstrap
             ' app模块在编译出来的js文件中是从最顶层的declare起始的
             Dim modTokens As New List(Of Token)
             Dim stack As New Stack(Of Integer)
+            Dim jsModule As NamedValue(Of String)
 
             sourceJs = sourceJs.LineTokens.JoinBy(ASCII.LF)
 
@@ -26,10 +27,14 @@ Namespace Bootstrap
                 If t = TypeScriptTokens.declare AndAlso stack.Count = 0 AndAlso modTokens > 0 Then
                     ' 这个可能是最顶层的模块申明
                     If modTokens.isModuleDefinition Then
-                        Yield modTokens.createModuleInternal(sourceJs)
-                    Else
-                        modTokens *= 0
+                        jsModule = modTokens.createModuleInternal(sourceJs)
+
+                        If Not jsModule.IsEmpty Then
+                            Yield jsModule
+                        End If
                     End If
+
+                    modTokens *= 0
                 ElseIf t = TypeScriptTokens.openStack Then
                     stack.Push(t.start)
                 ElseIf t = TypeScriptTokens.closeStack Then
@@ -51,6 +56,12 @@ Namespace Bootstrap
             Dim jsBlock = sourceJs.Substring(start, len)
             Dim appName = modTokens.getAppName
             Dim ref = modTokens.getModuleReference
+
+            ' 不是最终的app模块
+            ' 忽略掉
+            If appName.StringEmpty Then
+                Return Nothing
+            End If
 
             Return New NamedValue(Of String) With {
                 .Description = appName,
@@ -78,7 +89,7 @@ Namespace Bootstrap
                 End If
             Next
 
-            Throw New EntryPointNotFoundException
+            Return Nothing
         End Function
 
         <Extension>
@@ -106,17 +117,14 @@ Namespace Bootstrap
             If Not modTokens.hasClassAnnotation Then
                 Return False
             End If
-            If Not modTokens.hasAppNameProperty Then
-                Return False
-            End If
-            If Not modTokens.hasInitFunction Then
-                Return False
-            End If
-            If Not modTokens.hasReferBootstrap Then
-                Return False
+
+            ' 因为模块之间可能存在继承关系
+            ' 所以在这里只需要至少满足下面的条件即可
+            If modTokens.hasAppNameProperty OrElse modTokens.hasInitFunction OrElse modTokens.hasReferBootstrap Then
+                Return True
             End If
 
-            Return True
+            Return False
         End Function
 
         <Extension>
