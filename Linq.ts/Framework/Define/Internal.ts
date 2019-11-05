@@ -288,8 +288,42 @@ namespace Internal {
             return JSON.parse(ts.text(id));
         };
 
+        let TRUE = {
+            "✔": true,
+            "T": true,
+            "true": true,
+            "True": true,
+            "TRUE": true,
+            "yes": true,
+            "success": true,
+            "pass": true
+        };
+        let FALSE = {
+            "✘": false,
+            "F": false,
+            "false": false,
+            "FALSE": false,
+            "False": false,
+            "wrong": false,
+            "failure": false
+        }
+
         // file path helpers
         ts.parseFileName = TypeScript.PathHelper.fileName;
+        ts.parseBool = function (text: string | number): boolean {
+            if (isNullOrUndefined(text)) {
+                return false;
+            } else if (typeof text == "number") {
+                return text !== 0;
+            } else if (text in TRUE) {
+                return true;
+            } else if (text in FALSE) {
+                return false;
+            } else {
+                // all of the none null value will be interpret as boolean true
+                return true;
+            }
+        };
         ts.unixtimestamp = function () {
             var d: Date = new Date();
             var timestamp = Math.round(d.getTime());

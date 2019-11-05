@@ -122,7 +122,7 @@ namespace DOM {
          * 获取被选中的选项的值的列表
         */
         export function selectOptionValues(input: HTMLSelectElement): any {
-            let selects = getSelectedOptions(input);
+            let selects: HTMLOptionElement[] = <any>getSelectedOptions(input);
             let values = [];
 
             for (let sel of selects) {
