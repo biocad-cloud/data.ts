@@ -193,12 +193,12 @@ namespace Internal {
             // 去除第一个@标记符号之后进行查询
             // 因为url可能会带有@，所以可能会出现误查询的情况，所以在这里默认值设置为url
             // 当误查询的时候就会查询不到结果的时候，就可以返回当前的url值了
-            var tag: string[] = [];
-            var c: string;
-            var metaQuery: string;
+            let tag: string[] = [];
+            let c: string;
+            let metaQuery: string;
 
             // 第一个符号是@符号，跳过
-            for (var i: number = 1; i < url.length; i++) {
+            for (let i: number = 1; i < url.length; i++) {
                 if (isValidSymbol(c = url.charAt(i))) {
                     tag.push(c);
                 } else {
@@ -279,10 +279,13 @@ namespace Internal {
             }
         };
         ts.text = function (id: string, htmlText: boolean = false) {
-            var nodeID: string = Handlers.makesureElementIdSelector(id);
-            var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
+            let nodeID: string = Handlers.makesureElementIdSelector(id);
+            let node: IHTMLElement = stringEval.doEval(nodeID, null, null);
+            let text: string = htmlText ? node.innerHTML : node.innerText;
 
-            return htmlText ? node.innerHTML : node.innerText;
+            TypeScript.logging.log(text, TypeScript.ConsoleColors.DarkGreen);
+
+            return text;
         };
         ts.loadJSON = function (id: string) {
             return JSON.parse(ts.text(id));
@@ -425,8 +428,8 @@ namespace Internal {
                     return (<HTMLOptionElement>options[0]).value;
                 }
             }
-        };                
-        
+        };
+
         return ts;
     }
 
