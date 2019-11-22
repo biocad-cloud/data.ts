@@ -78,6 +78,7 @@
          * @returns 返回被选中的项目的value属性值
         */
         getOption(query: string, context?: Window): string;
+        getSelects(id: string): HTMLSelectElement;
     }
 
     export interface IcsvHelperApi {

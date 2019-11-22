@@ -85,7 +85,11 @@ namespace TypeExtensions {
                 TypeScript.logging.log(`set_attr ${name}='${value}'`);
             }
 
-            node.setAttribute(name, value);
+            if (isNullOrUndefined(value)) {
+                node.removeAttribute(name);
+            } else {
+                node.setAttribute(name, value);
+            }
 
             return node;
         }

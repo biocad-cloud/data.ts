@@ -19,19 +19,19 @@ namespace Internal {
      * 对``$ts``对象的内部实现过程在这里
     */
     export function Static<T>(): TypeScript {
-        var handle = Internal.Handlers.Shared;
-        var ins: any = (any: ((() => void) | T | T[]), args: object) => queryFunction(handle, any, args);
+        let handle = Internal.Handlers.Shared;
+        let symbolInstance: any = (any: ((() => void) | T | T[]), args: object) => queryFunction(handle, any, args);
 
         const stringEval = handle.string();
 
-        ins.mode = Modes.production;
+        symbolInstance.mode = Modes.production;
 
-        ins = extendsUtils(ins, stringEval);
-        ins = extendsLINQ(ins);
-        ins = extendsHttpHelpers(ins);
-        ins = extendsSelector(ins);
+        symbolInstance = extendsUtils(symbolInstance, stringEval);
+        symbolInstance = extendsLINQ(symbolInstance);
+        symbolInstance = extendsHttpHelpers(symbolInstance);
+        symbolInstance = extendsSelector(symbolInstance);
 
-        return <TypeScript>ins;
+        return <TypeScript>symbolInstance;
     }
 
     function extendsHttpHelpers(ts: any): any {
@@ -394,9 +394,12 @@ namespace Internal {
     }
 
     function extendsSelector(ts: any): any {
+        let DOMquery = Internal.Handlers.Shared.string();
+
         ts.select = function (query: string, context: Window = window) {
             return Handlers.stringEval.select(query, context);
         }
+        ts.select.getSelects = (id => DOMquery.doEval(id, null, null));
         ts.select.getSelectedOptions = function (query: string, context: Window = window) {
             var sel: HTMLElement = $ts(query, {
                 context: context
@@ -422,8 +425,8 @@ namespace Internal {
                     return (<HTMLOptionElement>options[0]).value;
                 }
             }
-        };
-
+        };                
+        
         return ts;
     }
 
