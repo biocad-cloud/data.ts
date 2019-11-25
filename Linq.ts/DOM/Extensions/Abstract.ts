@@ -48,7 +48,14 @@ interface HTMLExtensions {
     onClassChanged(className: string, action: Delegate.Sub, includesRemoves?: boolean): void;
 
     /**
-     * Set attribute value of current html element node.
+     * Set/Delete attribute value of current html element node.
+     * 
+     * @param name HTMLelement attribute name
+     * @param value The attribute value to be set, if this parameter is value nothing, 
+     *     then it means delete the target attribute from the given html node element.
+     *  
+     * @returns This function will returns the source html element node after 
+     *          the node attribute operation.
     */
     attr(name: string, value: string): IHTMLElement;
 
