@@ -4,6 +4,19 @@
 namespace DOM {
 
     /**
+     * 判断当前的页面是否显示在一个iframe之中
+     * 
+     * https://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
+    */
+    export function inIframe(): boolean {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+
+    /**
      * File download helper
      * 
      * @param name The file save name for download operation

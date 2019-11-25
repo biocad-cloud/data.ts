@@ -219,10 +219,15 @@ namespace csv {
                 .Select(function (l) {
                     return l
                         .replace("\r", "")
-                        .replace("\n", "")                        
+                        .replace("\n", "")
                 });
 
             TypeScript.logging.log(`Document data is a ${tsv ? "tsv" : "csv"} file.`, TypeScript.ConsoleColors.Blue);
+
+            if ($ts.mode == Modes.debug) {
+                console.log("Peeks of your input table data:");
+                console.table(this.head(allTextLines, parse));
+            }
 
             if (Strings.Empty(allTextLines.Last)) {
                 // 2019-1-2 因为文本文件很有可能是以空行结尾的
@@ -238,6 +243,14 @@ namespace csv {
             }
 
             return new dataframe(rows);
+        }
+
+        public static head(allTextLines: IEnumerator<string>, parse: (line: string) => row) {
+            return allTextLines
+                .Take(6)
+                .Select(parse)
+                .Select(r => r.ToArray(false))
+                .ToArray();
         }
     }
 
