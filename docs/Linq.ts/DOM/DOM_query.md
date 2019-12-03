@@ -10,6 +10,17 @@ Get node by id operation in Linq.js library is based on the ``context.getElement
 
 We recommended that query a single node by id through ``$ts`` static symbol function directly and using the ``$ts.select`` symbol function for query node set by class name. Both of these two kind of html node element query, their query expression syntax is a valid css query expression as for query a node by id you should apply the ``#id`` expression and the class name query is ``.class``. But the Linq.js implements these two kind of node elemenet query operation in different way when compares with the css selector query. For implements a node query by id and node set query by class name, the Linq.js library will trim the first prefix ``#`` or ``.`` symbol, and the get the id or class name value, then apply to the ``context.getElementById`` or ``document.getElementsByClassName`` function.
 
+For an instance example of these two query operation:
+
+```ts
+// get element by id
+let id = $ts("#id");
+// get node set by class name
+let list = $ts.select(".list");
+```
+
+> All of the node element that query by id from the ``$ts`` static symbol function is a kind of extended node element, for more details information about the extended node element, please read this help document: [**&lt;Extended Html Element>**](./extended_node.md).
+
 ## Get by CSS selector
 
 The css selector is works based on the ``context.querySelectorAll`` or the ``document.querySelector``, which accept the css query text and then given a set of node collection of a single node element.
@@ -52,6 +63,8 @@ For create a new node by using Linq.js library, its is very easy that invoke the
 // The $ts function will create a new HTMLAnchorElement for your code
 let a = $ts("<a>");
 ```
+
+> All of the node element that created by the ``$ts`` static symbol function is a kind of extended node element, for more details information about the extended node element, please read this help document: [**&lt;Extended Html Element>**](./extended_node.md).
 
 For add initialize attribute value or binding the events for the new node element, just using the query argument of the ``$ts`` static symbol function, an instance example as:
 
