@@ -1,11 +1,15 @@
-## Using the ``$ts`` object
+# Using the ``$ts`` static symbol
+
+The ``$ts`` symbol is very similar to the jQuery ``$`` symbol. Through the ``$ts`` static symbol, you can access most of the web development api that comes with the ``Linq.js`` library.
+
+## DOM operations
 
 #### 1. Query a node by Id / nodes by class
 
 ```ts
-// a single node
+// get a single node by id
 var node  = $ts("#xxxxx");
-// a node collection
+// query a node collection by class type
 var nodes = $ts(".xxxxx");
 ```
 
@@ -16,14 +20,14 @@ Example:
 ```html
 <div id="test"></div>
 <script>
-var node = $ts("#test");
+let node = $ts("#test");
 </script>
 ```
 
 #### 2. Create a node by tag name
 
 ```ts
-var node = $ts("<tagName>", arguments);
+let node = $ts("<tagName>", arguments);
 ```
 
 Example:
@@ -31,8 +35,8 @@ Example:
 ```html
 <div id="test"></div>
 <script>
-var node = $ts("#test");
-var link = $ts("<a>", {
+let node = $ts("#test");
+let link = $ts("<a>", {
     class: "link",
     id: "download",
     href: "javascript:void(0);",
@@ -48,7 +52,7 @@ node.display(link);
 Will generate a new ``<a>`` tag node and add in div ``#test``:
 
 ```html
-<!-- Generated html -->
+<!-- generated html -->
 <div id="test">
 <a class="link" id="download" href="javascript:void(0);">Hello world</a>
 </div>
@@ -59,24 +63,5 @@ Will generate a new ``<a>`` tag node and add in div ``#test``:
 The selector query function will create a html node element collection: [DOMEnumerator](../Linq.ts/DOM/DOMEnumerator.ts).
 
 ```ts
-var nodes = $ts.select("css-selector"); 
+let nodes = $ts.select("css-selector"); 
 ```
-
-## Namespace and Modules
-
-#### 1. Framework Global objects
-
-1. [Global.ts](../Linq.ts/Global.ts): Export global function and global objects from this framework.
-2. [Type.ts](../Linq.ts/Type.ts): Get object type information, not working for object type: ``{...}``
-
-#### 2. DOM helper
-
-[DOM](../Linq.ts/DOM/)
-
-#### 3. Collections
-
-[Collections](../Linq.ts/Collections/)
-
-#### 4. csv data frame helper
-
-[csv](../Linq.ts/csv/)
