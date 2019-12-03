@@ -8,3 +8,23 @@ There is a great programming feature in .NET framework is the extension method, 
 
 As we've mention above, by invoke the ``$ts`` static symbol function, you will get a extended html element node after get element by id or create new node operation, so that here is some operation that you can pipeline your code in a caller chaining:
 
+```ts
+// All of the function that listed below returns the node element itself
+// So that you can continute reference to the same node in the next function call
+// to create a pipeline style like chaining code
+IHTMLElement.display(content)
+IHTMLElement.clear()
+IHTMLElement.append(node)
+IHTMLElement.attr(name, value)
+IHTMLElement.addClass(className)
+IHTMLElement.removeClass(className)
+IHTMLElement.css(stylesheet)
+IHTMLElement.show()
+IHTMLElement.hide()
+```
+
+As the example function that show above returns the node itself to the caller, so that we could implements such example code chaining like:
+
+```ts
+
+```
