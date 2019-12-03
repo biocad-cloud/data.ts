@@ -1,0 +1,7 @@
+# Library Structure
+
+The ``Linq.js`` library consist with three parts of the content for the web development:
+
+1. [Global function](./global_functions.md)
+2. [``$ts`` static symbol](./ts_symbol.md)
+3. [Namespace and modules]()
