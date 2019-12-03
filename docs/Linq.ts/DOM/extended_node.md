@@ -26,5 +26,20 @@ IHTMLElement.hide()
 As the example function that show above returns the node itself to the caller, so that we could implements such example code chaining like:
 
 ```ts
+$ts("#data-table-div")
+    .clear()
+    .addClass("active")
+    .display("<p>display content!</p>")
+    .append("<img src='image.png'>")
+    .css("width: 100%")
+    .show();
+```
 
+The demo code show above will update such html content in your page:
+
+```html
+<div id="data-table-div" class="active" style="width: 100%; display:block;">
+<p>display content!</p>
+<img src='image.png'>
+</div>
 ```
