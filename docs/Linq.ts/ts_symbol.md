@@ -4,7 +4,7 @@ The ``$ts`` symbol is very similar to the jQuery ``$`` symbol. Through the ``$ts
 
 ## DOM operations
 
-#### 1. Query a node by Id / nodes by class
+### 1. Query a node by Id / nodes by class
 
 ```ts
 // get a single node by id
@@ -13,7 +13,7 @@ var node  = $ts("#xxxxx");
 var nodes = $ts(".xxxxx");
 ```
 
-> NOTE: The class name selector query will create a html node element collection: [DOMEnumerator](../Linq.ts/DOM/DOMEnumerator.ts).
+> NOTE: The class name selector query will create a html node element collection: [DOMEnumerator](../Linq.ts/DOM/DOMEnumerator.ts). It is not recommended that query a node collection by class through ``$ts`` static function symbol in typescript, as you developing your web app under typescript, and the typed result of the ``$ts`` static function symbol is returns a extended node element by default, so it is not convenient for coding in typescript when query a set of node collection by ``$ts`` static function symbol. For more details information about DOM query in Linq.js library, please read the help document [**&lt;DOM query>**](./DOM/DOM_query.md)
 
 Example:
 
@@ -24,7 +24,7 @@ let node = $ts("#test");
 </script>
 ```
 
-#### 2. Create a node by tag name
+### 2. Create a node by tag name
 
 ```ts
 let node = $ts("<tagName>", arguments);
@@ -58,7 +58,7 @@ Will generate a new ``<a>`` tag node and add in div ``#test``:
 </div>
 ```
 
-#### 3. Query nodes by css selector
+### 3. Query nodes by css selector
 
 The selector query function will create a html node element collection: [DOMEnumerator](../Linq.ts/DOM/DOMEnumerator.ts).
 
