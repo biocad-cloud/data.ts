@@ -4,7 +4,11 @@ The DOM query operation in Linq.js library is consist with 3 kinds of expression
 
 ## Get by id and get by class
 
-Get by id operation in Linq.js library is based on the ``context.getElementById`` and get by class is based on the ````
+Get node by id operation in Linq.js library is based on the ``context.getElementById`` and get node collection by class is based on the ``document.getElementsByClassName`` method.
+
+> The ``context`` object could be a html ``Document`` object or a specific ``HTMLElement`` for limits the value range.
+
+We recommended that query a single node by id through ``$ts`` static symbol function directly and using the ``$ts.select`` symbol function for query node set by class name. Both of these two kind of html node element query, their query expression syntax is a valid css query expression as for query a node by id you should apply the ``#id`` expression and the class name query is ``.class``. But the Linq.js implements these two kind of node elemenet query operation in different way when compares with the css selector query. For implements a node query by id and node set query by class name, the Linq.js library will trim the first prefix ``#`` or ``.`` symbol, and the get the id or class name value, then apply to the ``context.getElementById`` or ``document.getElementsByClassName`` function.
 
 ## Get by CSS selector
 
