@@ -19,19 +19,19 @@ namespace Internal {
      * 对``$ts``对象的内部实现过程在这里
     */
     export function Static<T>(): TypeScript {
-        var handle = Internal.Handlers.Shared;
-        var ins: any = (any: ((() => void) | T | T[]), args: object) => queryFunction(handle, any, args);
+        let handle = Internal.Handlers.Shared;
+        let symbolInstance: any = (any: ((() => void) | T | T[]), args: object) => queryFunction(handle, any, args);
 
         const stringEval = handle.string();
 
-        ins.mode = Modes.production;
+        symbolInstance.mode = Modes.production;
 
-        ins = extendsUtils(ins, stringEval);
-        ins = extendsLINQ(ins);
-        ins = extendsHttpHelpers(ins);
-        ins = extendsSelector(ins);
+        symbolInstance = extendsUtils(symbolInstance, stringEval);
+        symbolInstance = extendsLINQ(symbolInstance);
+        symbolInstance = extendsHttpHelpers(symbolInstance);
+        symbolInstance = extendsSelector(symbolInstance);
 
-        return <TypeScript>ins;
+        return <TypeScript>symbolInstance;
     }
 
     function extendsHttpHelpers(ts: any): any {
@@ -193,12 +193,12 @@ namespace Internal {
             // 去除第一个@标记符号之后进行查询
             // 因为url可能会带有@，所以可能会出现误查询的情况，所以在这里默认值设置为url
             // 当误查询的时候就会查询不到结果的时候，就可以返回当前的url值了
-            var tag: string[] = [];
-            var c: string;
-            var metaQuery: string;
+            let tag: string[] = [];
+            let c: string;
+            let metaQuery: string;
 
             // 第一个符号是@符号，跳过
-            for (var i: number = 1; i < url.length; i++) {
+            for (let i: number = 1; i < url.length; i++) {
                 if (isValidSymbol(c = url.charAt(i))) {
                     tag.push(c);
                 } else {
@@ -279,10 +279,13 @@ namespace Internal {
             }
         };
         ts.text = function (id: string, htmlText: boolean = false) {
-            var nodeID: string = Handlers.makesureElementIdSelector(id);
-            var node: IHTMLElement = stringEval.doEval(nodeID, null, null);
+            let nodeID: string = Handlers.makesureElementIdSelector(id);
+            let node: IHTMLElement = stringEval.doEval(nodeID, null, null);
+            let text: string = htmlText ? node.innerHTML : node.innerText;
 
-            return htmlText ? node.innerHTML : node.innerText;
+            TypeScript.logging.log(text, TypeScript.ConsoleColors.DarkGreen);
+
+            return text;
         };
         ts.loadJSON = function (id: string) {
             return JSON.parse(ts.text(id));
@@ -394,9 +397,12 @@ namespace Internal {
     }
 
     function extendsSelector(ts: any): any {
+        let DOMquery = Internal.Handlers.Shared.string();
+
         ts.select = function (query: string, context: Window = window) {
             return Handlers.stringEval.select(query, context);
         }
+        ts.select.getSelects = (id => DOMquery.doEval(id, null, null));
         ts.select.getSelectedOptions = function (query: string, context: Window = window) {
             var sel: HTMLElement = $ts(query, {
                 context: context
