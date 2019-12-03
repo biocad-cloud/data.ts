@@ -4,6 +4,8 @@ The DOM query operation in Linq.js library is consist with 3 kinds of expression
 
 ## Get by id and get by class
 
+Get by id operation in Linq.js library is based on the ``context.getElementById`` and get by class is based on the ````
+
 ## Get by CSS selector
 
 The css selector is works based on the ``context.querySelectorAll`` or the ``document.querySelector``, which accept the css query text and then given a set of node collection of a single node element.
