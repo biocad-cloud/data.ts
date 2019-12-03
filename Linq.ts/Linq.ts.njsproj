@@ -119,6 +119,9 @@
     <TypeScriptCompile Include="DOM\Events\StatusChanged.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Framework\Define\Abstracts\SymbolAppends.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Define\Handlers\DOMQuery.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

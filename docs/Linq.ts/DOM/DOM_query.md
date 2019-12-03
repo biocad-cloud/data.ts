@@ -40,5 +40,40 @@ For implements the meta tag value query in ``$ts`` static symbol function, the `
 
 ## Create new node
 
+For create a new node by using Linq.js library, its is very easy that invoke the ``$ts`` static symbol function by passing the ``<tagName>`` as parameter value, an instance example as:
 
+```ts
+// The $ts function will create a new HTMLAnchorElement for your code
+let a = $ts("<a>");
+```
 
+For add initialize attribute value or binding the events for the new node element, just using the query argument of the ``$ts`` static symbol function, an instance example as:
+
+```ts
+let a = $ts("<a>", {
+    class: ["btn", "btn-blue"],
+    type: "button",
+    href: "javascript:void(0);",
+    onclick: function () {
+        // 在页面的meta信息中有project_id
+        // 如果analysis_file参数为空，则上传新文件
+        // 反之，编辑现有的分析文件
+        window.open(`/project/file?analysis_file=${file.id}`, "_blank");
+    }
+});
+```
+
+Using Linq.js library for create a new html node element is very convenient when compare with the vanilla js as your must write this long code example in vanilla js:
+
+```js
+let a = document.createElement("a");
+
+a.setAttribute("class", "btn btn-blue");
+a.setAttribute("type", "button");
+a.setAttribute("href", "javascript:void(0);");
+a.onclick = function() {
+    window.open(`/project/file?analysis_file=${file.id}`, "_blank");
+};
+```
+
+For more details information about ``$ts`` query parameter, please view this source file: [TypeScriptArgument.ts](https://github.com/biocad-cloud/data.ts/blob/master/Linq.ts/Framework/Define/Abstracts/TypeScriptArgument.ts)
