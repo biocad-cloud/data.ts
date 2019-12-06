@@ -163,6 +163,10 @@ function $goto(url: string, currentFrame: boolean = false): void {
     win.location.href = Internal.urlSolver(url, currentFrame);
 }
 
+function $download(url: string, rename: string = null) {
+    DOM.download(rename, url, true);
+}
+
 /**
  * 这个函数会自动处理多行的情况
 */
