@@ -20,7 +20,7 @@ interface HTMLExtensions {
      * 将当前的html文档节点元素之中的显示内容替换为参数所给定的html内容
     */
     display(html: string | HTMLElement | HTMLTsElement | (() => HTMLElement)): IHTMLElement;
-    append(html: string | HTMLElement | HTMLTsElement | (() => HTMLElement)): IHTMLElement;
+    append(...html: (string | HTMLElement | HTMLTsElement | (() => HTMLElement))[]): IHTMLElement;
 
     /**
      * @param reset If this parameter is true, then it means all of the style that this node have will be clear up.
