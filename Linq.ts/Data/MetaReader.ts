@@ -6,15 +6,12 @@ namespace TypeScript.Data {
     export class MetaReader {
 
         /**
-         * 字典对象
+         * 
+         * @param meta 字典对象
          * 
          * > 在这里不使用Dictionary对象是因为该对象为一个强类型约束对象
         */
-        private readonly meta: object;
-
-        public constructor(meta: object) {
-            this.meta = meta;
-        }
+        public constructor(private readonly meta: object) { }
 
         /**
          * Read meta object value by call name
