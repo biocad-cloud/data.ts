@@ -243,3 +243,7 @@ const $input = function (query: string | HTMLElement, args?: Internal.TypeScript
 const $link = function (query: string | HTMLElement, args?: Internal.TypeScriptArgument): IHTMLLinkElement {
     return Internal.typeGenericElement<IHTMLLinkElement>(query, args);
 };
+
+const $iframe = function (query: string | HTMLElement, args?: Internal.TypeScriptArgument): HTMLIFrameElement {
+    return Internal.typeGenericElement<HTMLIFrameElement>(query, args);
+};
