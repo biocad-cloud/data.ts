@@ -43,6 +43,7 @@ namespace Internal {
     }
 
     function extendsHttpHelpers(ts: any): any {
+        ts.url = urlSolver;
         ts.post = function (url: string, data: object | FormData,
             callback?: ((response: IMsg<{}>) => void),
             options?: {
