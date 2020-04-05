@@ -21,6 +21,7 @@
         text?: string;
         visible?: boolean;
         alt?: string;
+        checked?: boolean;
 
         /**
          * 应用于``<a>``标签进行文件下载重命名文件所使用的

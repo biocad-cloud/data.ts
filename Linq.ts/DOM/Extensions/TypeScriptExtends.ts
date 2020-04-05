@@ -49,7 +49,7 @@ namespace TypeExtensions {
             extendsNode.display(html);
             return node;
         };
-        obj.append = function (html: any) {
+        obj.appendElement = function (html: any) {
 
             // a(args[])
             if (Array.isArray(html)) {
