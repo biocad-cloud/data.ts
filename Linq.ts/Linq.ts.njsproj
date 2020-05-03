@@ -295,6 +295,9 @@
     <TypeScriptCompile Include="Activator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="RequireGlobal.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Collections\Abstract\" />
