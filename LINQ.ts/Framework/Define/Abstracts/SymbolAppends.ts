@@ -83,6 +83,9 @@
 
     export interface IcsvHelperApi {
 
+        /**
+         * parse the given text into dataframe object.
+        */
         (data: string, isTsv?: boolean | ((data: string) => boolean)): csv.dataframe;
 
         /**
@@ -94,6 +97,9 @@
         */
         toText<T>(data: IEnumerator<T> | T[], outTsv?: boolean): string;
 
+        /**
+         * build csv or tsv from target object sequence and then encode as base64 uri
+        */
         toUri<T>(data: IEnumerator<T> | T[], outTsv?: boolean): DataURI;
     }
 }

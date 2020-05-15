@@ -43,17 +43,34 @@
         */
         value?: string | number | boolean;
         for?: string;
+        tabindex?: number;
+
+        "max-width"?: string;
+        frameborder?: string;
+        border?: string;
+
+        marginwidth?: string;
+        marginheight?: string;
+        scrolling?: string;
+        allowtransparency?: string;
 
         /**
          * 处理HTML节点对象的点击事件，这个属性值应该是一个无参数的函数来的
         */
         onclick?: Delegate.Sub | string;
         onmouseover?: Delegate.Sub | string;
+        /**
+         * 主要是应用于输入控件
+        */
+        onchange?: Delegate.Sub | string;
 
         "data-toggle"?: string;
         "data-target"?: string;
         "aria-hidden"?: boolean;
 
+        "aria-labelledby"?: string;
+
+        role?: string;
         usemap?: string;
         shape?: string;
         coords?: string;
