@@ -7,6 +7,7 @@
 /// <reference path="../../DOM/Events/CustomEvents.ts" />
 /// <reference path="../../Data/Range.ts" />
 /// <reference path="../Reflection/Reflector.ts" />
+/// <reference path="../../csv/doc.ts" />
 
 /**
  * The internal implementation of the ``$ts`` object.
@@ -384,6 +385,7 @@ namespace Internal {
 
             return csv.dataframe.Parse(data, isTsv);
         };
+        ts.csv.isTsvFile = csv.isTsvFile;
         ts.csv.toObjects = (data: string) => csv.dataframe.Parse(data, csv.isTsvFile(data)).Objects();
         ts.csv.toText = (data, tsvOut: boolean = false) => csv.toDataFrame(data).buildDoc(tsvOut);
         ts.csv.toUri = function (data: IEnumerator<{}> | {}[], outTsv?: boolean): DataURI {

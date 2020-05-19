@@ -88,6 +88,8 @@
         */
         (data: string, isTsv?: boolean | ((data: string) => boolean)): csv.dataframe;
 
+        isTsvFile(data: string): boolean;
+
         /**
          * 将csv文档文本进行解析，然后反序列化为js对象的集合
         */
