@@ -7,6 +7,7 @@
 /// <reference path="../../DOM/Events/CustomEvents.ts" />
 /// <reference path="../../Data/Range.ts" />
 /// <reference path="../Reflection/Reflector.ts" />
+/// <reference path="../../csv/doc.ts" />
 
 /**
  * The internal implementation of the ``$ts`` object.
@@ -14,6 +15,14 @@
 namespace Internal {
 
     export const StringEval = new Handlers.stringEval();
+
+    export function typeGenericElement<T extends HTMLElement>(query: string | HTMLElement, args?: Internal.TypeScriptArgument): T {
+        if (typeof query == "string") {
+            return Internal.StringEval.doEval(query, null, args);
+        } else {
+            return <any>query;
+        }
+    }
 
     /**
      * 对``$ts``对象的内部实现过程在这里
@@ -35,6 +44,7 @@ namespace Internal {
     }
 
     function extendsHttpHelpers(ts: any): any {
+        ts.url = urlSolver;
         ts.post = function (url: string, data: object | FormData,
             callback?: ((response: IMsg<{}>) => void),
             options?: {
@@ -375,6 +385,7 @@ namespace Internal {
 
             return csv.dataframe.Parse(data, isTsv);
         };
+        ts.csv.isTsvFile = csv.isTsvFile;
         ts.csv.toObjects = (data: string) => csv.dataframe.Parse(data, csv.isTsvFile(data)).Objects();
         ts.csv.toText = (data, tsvOut: boolean = false) => csv.toDataFrame(data).buildDoc(tsvOut);
         ts.csv.toUri = function (data: IEnumerator<{}> | {}[], outTsv?: boolean): DataURI {
@@ -400,16 +411,26 @@ namespace Internal {
         let DOMquery = Internal.Handlers.Shared.string();
 
         ts.select = function (query: string, context: Window = window) {
-            return Handlers.stringEval.select(query, context);
+            let dom = Handlers.stringEval.select(query, context);
+
+            if (dom.Count == 0) {
+                TypeScript.logging.warning(`select query of '${query}' returns no data...`);
+            }
+
+            return dom;
         }
         ts.select.getSelects = (id => DOMquery.doEval(id, null, null));
         ts.select.getSelectedOptions = function (query: string, context: Window = window) {
-            var sel: HTMLElement = $ts(query, {
+            let sel: HTMLElement = $ts(query, {
                 context: context
             });
-            var options = <HTMLOptionElement[]>DOM.InputValueGetter.getSelectedOptions(<any>sel);
+            let options = <any>DOM.InputValueGetter.getSelectedOptions(<any>sel);
 
-            return new DOMEnumerator<HTMLOptionElement>(options);
+            if (Array.isArray(options) && typeof options[0] == "string") {
+                return options;
+            } else {
+                return new DOMEnumerator<HTMLOptionElement>(options);
+            }
         };
         ts.select.getOption = function (query: string, context: Window = window) {
             var sel: HTMLElement = $ts(query, {
