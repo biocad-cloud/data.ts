@@ -23,6 +23,8 @@ export module EventHandles {
                 let method: Delegate.Action = app[methodName];
 
                 $ts(`#${methodName}`).onclick = method;
+
+                console.info(`%c[${type.class}] hook onclick for #${methodName}...`, "color:green;");
             }
         }
     }

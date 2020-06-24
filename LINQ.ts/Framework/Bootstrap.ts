@@ -1,5 +1,7 @@
 ﻿/// <reference path="./Router.ts" />
 
+import { EventHandles } from "./EventHandles";
+
 /**
  * 实现这个类需要重写下面的方法实现：
  * 
@@ -108,6 +110,8 @@ abstract class Bootstrap {
 
             vm.OnHashChanged(val);
         };
+
+        EventHandles.hookEventHandles(this);
 
         this.init();
         this.status = "Running";
