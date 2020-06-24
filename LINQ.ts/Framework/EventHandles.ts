@@ -14,5 +14,16 @@ export module EventHandles {
         return id;
     }
 
- 
+    export function hookEventHandles(app: {}) {
+        let elements: {} = $from(findAllElementId()).ToDictionary(id => id).Object;
+        let type = TypeScript.Reflection.$typeof(app);
+
+        for (let methodName of type.methods) {
+            if (methodName in elements) {
+                let method: Delegate.Action = app[methodName];
+
+                $ts(`#${methodName}`).onclick = method;
+            }
+        }
+    }
 }
