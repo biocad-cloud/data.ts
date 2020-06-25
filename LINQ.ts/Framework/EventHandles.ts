@@ -5,8 +5,8 @@ namespace Internal {
         /**
          * find all elements' id on current html page
         */
-        export function findAllElementId(): string[] {
-            let elements = document.querySelectorAll('*[id]');
+        export function findAllElement(attr: "id" | "name" = "id"): string[] {
+            let elements = document.querySelectorAll(`*[${attr}]`);
             let id: string[] = [];
 
             for (let node of $ts(elements).ToArray(false)) {
@@ -17,9 +17,10 @@ namespace Internal {
         }
 
         export function hookEventHandles(app: {}) {
-            let elements: string[] = findAllElementId();
+            let elements: string[] = findAllElement();
             let type = TypeScript.Reflection.$typeof(app);
 
+            // handle clicks
             for (let methodName of type.methods) {
                 if (elements.indexOf(methodName) > -1) {
                     $ts(`#${methodName}`).onclick = <any>function (handler, evt): any {
@@ -27,6 +28,28 @@ namespace Internal {
                     }
 
                     console.info(`%c[${type.class}] hook onclick for #${methodName}...`, "color:green;");
+                }
+            }
+
+            elements = findAllElement("name");
+
+            for (let methodName of type.methods) {
+                if (elements.indexOf(methodName) > -1) {
+                    let onchange = app[methodName];
+                    let arguments = parseFunctionArgumentNames(onchange);
+
+                    if (arguments.length == 1 && arguments[0] == "value") {
+                        document.getElementsByName(methodName).forEach(function (a) {
+                            let tag = a.tagName.toLowerCase();
+
+                            if (tag == "input" || tag == "select") {
+                                a.onchange = function () {
+                                    let value = DOM.InputValueGetter.unifyGetValue(a);
+                                    return app[methodName](value);
+                                }
+                            }
+                        });
+                    }
                 }
             }
         }
