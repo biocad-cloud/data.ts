@@ -23,11 +23,15 @@ namespace Internal {
             // handle clicks
             for (let methodName of type.methods) {
                 if (elements.indexOf(methodName) > -1) {
-                    $ts(`#${methodName}`).onclick = <any>function (handler, evt): any {
-                        return app[methodName](handler, evt);
-                    }
+                    let arguments = parseFunctionArgumentNames(app[methodName]);
 
-                    console.info(`%c[${type.class}] hook onclick for #${methodName}...`, "color:green;");
+                    if (arguments.length == 0 || arguments.length == 2) {
+                        $ts(`#${methodName}`).onclick = <any>function (handler, evt): any {
+                            return app[methodName](handler, evt);
+                        }
+
+                        console.info(`%c[${type.class}] hook onclick for #${methodName}...`, "color:green;");
+                    }
                 }
             }
 
@@ -42,11 +46,27 @@ namespace Internal {
                         document.getElementsByName(methodName).forEach(function (a) {
                             let tag = a.tagName.toLowerCase();
 
-                            if (tag == "input" || tag == "select") {
+                            if (tag == "input" || tag == "textarea") {
+                                let type = a.getAttribute("type");
+
+                                if (!isNullOrUndefined(type) && type.toLowerCase() == "file") {
+                                    a.onchange = function () {
+                                        let value = $input(a).files;
+                                        return app[methodName](value);
+                                    }
+                                } else {
+                                    a.onchange = function () {
+                                        let value = DOM.InputValueGetter.unifyGetValue(a);
+                                        return app[methodName](value);
+                                    }
+                                }
+                            } else if (tag == "select") {
                                 a.onchange = function () {
                                     let value = DOM.InputValueGetter.unifyGetValue(a);
                                     return app[methodName](value);
                                 }
+                            } else {
+                                TypeScript.logging.log(`invalid tag name: ${a.tagName}!`, "red");
                             }
                         });
                     }
