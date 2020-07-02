@@ -109,6 +109,8 @@ abstract class Bootstrap {
             vm.OnHashChanged(val);
         };
 
+        Internal.EventHandles.hookEventHandles(this);
+
         this.init();
         this.status = "Running";
     }

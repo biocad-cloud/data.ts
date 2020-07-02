@@ -38,6 +38,8 @@
         context?: Window | HTMLElement | IHTMLElement;
         title?: string;
         name?: string;
+        placeholder?: string;
+
         /**
          * HTML的输入控件的预设值
         */
@@ -57,16 +59,26 @@
         /**
          * 处理HTML节点对象的点击事件，这个属性值应该是一个无参数的函数来的
         */
-        onclick?: Delegate.Sub | string;
-        onmouseover?: Delegate.Sub | string;
+        onclick?: HtmlEventHandler;
+        onmouseover?: HtmlEventHandler;
         /**
          * 主要是应用于输入控件
         */
-        onchange?: Delegate.Sub | string;
+        onchange?: HtmlEventHandler;
+        /**
+         * 失去焦点
+        */
+        onblur?: HtmlEventHandler;
+        onfocusout?: HtmlEventHandler;
+        /**
+         * 获得焦点
+        */
+        onfocus?: HtmlEventHandler;
 
         "data-toggle"?: string;
         "data-target"?: string;
         "aria-hidden"?: boolean;
+        "data-content"?: string;
 
         "aria-labelledby"?: string;
 
@@ -75,4 +87,6 @@
         shape?: string;
         coords?: string;
     }
+
+    type HtmlEventHandler = Delegate.Sub | string;
 }
