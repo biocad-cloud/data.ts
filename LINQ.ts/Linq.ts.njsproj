@@ -129,6 +129,9 @@
     <TypeScriptCompile Include="Framework\Reflection\Reflector.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Framework\Reflection\Internal.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\StackTrace\StackFrame.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
