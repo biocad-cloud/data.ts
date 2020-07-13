@@ -17,7 +17,7 @@ module Strings {
     export const Z: number = "Z".charCodeAt(0);
 
     export const numericPattern: RegExp = /[-]?\d+(\.\d+)?/g;
-    export const integerPattern: RegExp = /[0-9]+/g;
+    export const integerPattern: RegExp = /[-]?[0-9]+/g;
 
     export function PadLeft(text: string, padLen: number, c: string = " ") {
         if (Strings.Empty(text)) {
@@ -29,7 +29,7 @@ module Strings {
         if (padLen < 0) {
             return text;
         } else {
-            return text + DataExtensions.Dim(padLen, c).join("");
+            return DataExtensions.Dim(padLen, c).join("") + text;
         }
     }
 
