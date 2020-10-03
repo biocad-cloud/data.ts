@@ -37,6 +37,8 @@ namespace DOM {
         if (downloadSupported) {
             saveLink.download = name;
             saveLink.style.display = 'none';
+            saveLink.target = "__blank";
+            saveLink.type = "application/octet-stream";
             document.body.appendChild(saveLink);
 
             if (isUrl && typeof uri == "string") {
