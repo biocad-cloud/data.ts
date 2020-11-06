@@ -1,5 +1,8 @@
 namespace TypeScript.Data {
 
+    /**
+     * an argument update helper
+    */
     export class Arguments {
 
         /**
@@ -10,9 +13,11 @@ namespace TypeScript.Data {
          * ``[key => category]`` pairs
         */
         private categories: {} = {};
+        private changes: string[] = [];
 
-        public constructor(args: {} = {}) {
+        public constructor(args: {} = {}, categories: {} = {}) {
             this.args = $clone(args);
+            this.categories = $clone(categories);
         }
 
         /**
@@ -34,6 +39,43 @@ namespace TypeScript.Data {
             }
 
             return group;
+        }
+
+        public set(key: string, value: any) {
+            this.args[key] = value;
+
+            if (key in this.categories) {
+                this.changes.push(this.categories[key]);
+            }
+        }
+
+        public get(key: string) {
+            if (key in this.args) {
+                return this.args[key];
+            } else {
+                return null;
+            }
+        }
+
+        public getUpdates(reset: boolean = true): {} {
+            let updates: {} = {};
+
+            for (let cat of $from(this.changes).Distinct().ToArray()) {
+                updates[cat] = true;
+            }
+
+            if (reset) {
+                this.changes = [];
+            }
+
+            return updates;
+        }
+
+        /**
+         * to url query parameters
+        */
+        public toString(): string {
+            return HttpHelpers.serialize(this.args);
         }
     }
 }

@@ -102,6 +102,9 @@
     <TypeScriptCompile Include="Data\StringHelpers\URLPatterns.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\Arguments.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="DOM\Animation\Animation.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
