@@ -107,8 +107,12 @@ namespace TypeScript.Data {
         public getUpdatedCategories(reset: boolean = true): {} {
             let updates: {} = {};
 
-            for (let cat of $from(this.changes).Distinct().ToArray()) {
-                updates[cat] = true;
+            if (this.changes.length == 0) {
+                return {};
+            } else {
+                for (let cat of $from(this.changes).Distinct().ToArray()) {
+                    updates[cat] = true;
+                }
             }
 
             if (reset) {
