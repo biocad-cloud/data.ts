@@ -20,6 +20,39 @@ namespace TypeScript.Data {
             this.categories = $clone(categories);
         }
 
+        public reset() {
+            this.changes = [];
+        }
+
+        public setObject(newVals: {}) {
+            this.reset();
+
+            for (let name in newVals) {
+                this.set(name, newVals[name]);
+            }
+
+            return this.getUpdatedCategories(true);
+        }
+
+        /**
+         * test that argument value is changed or not?
+        */
+        public assert(key: string, value: any): boolean {
+            let oldVal: any = this.args[key];
+
+            if (isNullOrUndefined(value) && isNullOrUndefined(oldVal)) {
+                return false;
+            }
+
+            if (isNullOrUndefined(value)) {
+                return true;
+            } else if (isNullOrUndefined(oldVal)) {
+                return true;
+            } else {
+                return value !== oldVal;
+            }
+        }
+
         /**
          * set argument category group.
          * 
@@ -57,7 +90,7 @@ namespace TypeScript.Data {
             }
         }
 
-        public getUpdates(reset: boolean = true): {} {
+        public getUpdatedCategories(reset: boolean = true): {} {
             let updates: {} = {};
 
             for (let cat of $from(this.changes).Distinct().ToArray()) {
