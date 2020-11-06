@@ -12,12 +12,26 @@ namespace TypeScript.Data {
         /**
          * ``[key => category]`` pairs
         */
-        private categories: {} = {};
+        private categories: {};
         private changes: string[] = [];
 
+        /**
+         * create a new argument helper
+         * 
+         * @param args the ``[key => value]`` pairs
+         * @param categories a collection object of ``[category => keys[]]``
+        */
         public constructor(args: {} = {}, categories: {} = {}) {
             this.args = $clone(args);
-            this.categories = $clone(categories);
+            this.categories = {};
+
+            for (let category in categories) {
+                let keys: string[] = categories[category];
+
+                for (let key of keys) {
+                    this.categories[key] = category;
+                }
+            }
         }
 
         public reset() {
