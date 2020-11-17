@@ -172,7 +172,9 @@ class IEnumerator<T> extends LINQIterator<T> {
         keySelector: (o: T) => TKey,
         compares?: (a: TKey, b: TKey) => number): IEnumerator<Group<TKey, T>> {
 
-        if (isNullOrUndefined(compares)) {
+        if (this.Count == 0) {
+            return <any>$from([]);
+        } else if (isNullOrUndefined(compares)) {
             let x = keySelector(this.First);
 
             switch (typeof x) {
