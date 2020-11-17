@@ -112,12 +112,14 @@
          * 
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
         */
-        loadJSON(id: string): any;
+        loadJSON(id: string, defaultVal?: any): any;
         /**
+         * 从当前的html页面之中选择一个指定的节点，然后返回节点内的文本
+         * 
          * @param id HTML元素的id，可以同时兼容编号和带``#``的编号
          * @param htmlText 主要是针对``<pre>``标签之中的VB.NET代码
         */
-        text(id: string, htmlText?: boolean): string;
+        text(id: string, htmlText?: boolean, defaultVal?: string): string;
 
         /**
          * 这个函数主要是应用于``<input>``, ``<textarea>``以及``<select>``标签对象

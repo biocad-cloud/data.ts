@@ -288,17 +288,29 @@ namespace Internal {
                 envir.eval(fun.toString());
             }
         };
-        ts.text = function (id: string, htmlText: boolean = false) {
+        ts.text = function (id: string, htmlText: boolean = false, defaultVal: string = null) {
             let nodeID: string = Handlers.makesureElementIdSelector(id);
             let node: IHTMLElement = stringEval.doEval(nodeID, null, null);
-            let text: string = htmlText ? node.innerHTML : node.innerText;
+            let text: string;
+
+            if (isNullOrUndefined(node)) {
+                return defaultVal;
+            } else {
+                text = htmlText ? node.innerHTML : node.innerText;
+            }
 
             TypeScript.logging.log(text, TypeScript.ConsoleColors.DarkGreen);
 
             return text;
         };
-        ts.loadJSON = function (id: string) {
-            return JSON.parse(ts.text(id));
+        ts.loadJSON = function (id: string, defaultVal: any = null) {
+            let text: string = ts.text(id);
+
+            if (isNullOrUndefined(text)) {
+                return defaultVal;
+            } else {
+                return JSON.parse(text);
+            }
         };
 
         let TRUE = {
