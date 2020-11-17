@@ -6,7 +6,8 @@ namespace Internal.Handlers {
     const events = {
         onclick: "onclick",
         onmouseover: "onmouseover",
-        onchange: "onchange"
+        onchange: "onchange",
+        onblur: "onblur"
     }
     const eventFuncNames: string[] = Object.keys(events);
 
@@ -228,15 +229,25 @@ namespace Internal.Handlers {
                 if (typeof evt == "string") {
                     node.setAttribute(evtName, evt);
                 } else {
+                    let handler: any = function (vm: GlobalEventHandlers, event: MouseEvent) {
+                        return (<any>evt)(vm, event, node);
+                    }
+
                     switch (evtName) {
                         case events.onclick:
-                            node.onclick = evt;
+                            node.onclick = handler;
                             break;
+
                         case events.onmouseover:
-                            node.onmouseover = evt;
+                            node.onmouseover = handler;
                             break;
+
                         case events.onchange:
-                            node.onchange = evt;
+                            node.onchange = handler;
+                            break;
+
+                        case events.onblur:
+                            node.onblur = handler;
                             break;
 
                         default:
