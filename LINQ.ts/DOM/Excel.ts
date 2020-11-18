@@ -44,14 +44,19 @@ namespace DOM.Excel {
 
     export function ToHtml(table: HTMLTableElement): string {
         let html = new StringBuilder("", "\n");
+        let body = table.tBodies.item(0);
 
         html.AppendLine("<table>");
 
         html.AppendLine("<thead>");
-        html.AppendLine(rowHTML(table.tHead.rows.item(0)))
+        html.AppendLine(rowHTML(table.tHead.rows.item(0), true))
         html.AppendLine("</thead>");
 
         html.AppendLine("<tbody>");
+
+        for (let i: number = 0; i < body.rows.length; i++) {
+            html.AppendLine(rowHTML(body.rows.item(i), false))
+        }
 
         html.AppendLine("</tbody>");
 
@@ -60,7 +65,7 @@ namespace DOM.Excel {
         return html.toString();
     }
 
-    function rowHTML(thead: HTMLTableRowElement): string {
+    function rowHTML(thead: HTMLTableRowElement, isThead: boolean): string {
         console.log(thead);
     }
 }
