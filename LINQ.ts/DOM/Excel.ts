@@ -49,13 +49,13 @@ namespace DOM.Excel {
         html.AppendLine("<table>");
 
         html.AppendLine("<thead>");
-        html.AppendLine(rowHTML(table.tHead.rows.item(0), true))
+        html.AppendLine(rowHtml(table.tHead.rows.item(0), true))
         html.AppendLine("</thead>");
 
         html.AppendLine("<tbody>");
 
         for (let i: number = 0; i < body.rows.length; i++) {
-            html.AppendLine(rowHTML(body.rows.item(i), false))
+            html.AppendLine(rowHtml(body.rows.item(i), false))
         }
 
         html.AppendLine("</tbody>");
@@ -65,7 +65,18 @@ namespace DOM.Excel {
         return html.toString();
     }
 
-    function rowHTML(thead: HTMLTableRowElement, isThead: boolean): string {
-        console.log(thead);
+    function rowHtml(row: HTMLTableRowElement, isTHead: boolean): string {
+        let keyword: string = isTHead ? "th" : "td";
+        let columns: string[] = [];
+
+        for (let i: number = 0; i < row.cells.length; i++) {
+            columns.push(`<${keyword}>${cellHtml(row.cells.item(i))}</${keyword}>`);
+        }
+
+        return `<tr>${columns.join("")}</tr>`;
+    }
+
+    function cellHtml(cell: HTMLElement): string {
+
     }
 }
