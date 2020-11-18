@@ -123,6 +123,9 @@
     <TypeScriptCompile Include="DOM\Events\StatusChanged.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\Excel.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Define\Abstracts\SymbolAppends.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

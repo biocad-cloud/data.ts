@@ -96,3 +96,11 @@ interface IHTMLInputElement extends HTMLInputElement, HTMLExtensions { }
  * 带有拓展元素的链接标签对象
 */
 interface IHTMLLinkElement extends HTMLAnchorElement, HTMLExtensions { }
+
+interface IHTMLTableElement extends HTMLTableElement, HTMLExtensions {
+
+    /**
+     * save current table element as an excel data file
+    */
+    excel(fileName: string, sheetName: string);
+}
