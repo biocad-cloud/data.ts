@@ -1,31 +1,57 @@
+
+<style type="text/css">
+    .title {
+        font-size: 2em;
+        font-weight: bold;
+        color: blue;
+        background-color: aqua;
+    }
+</style>
+
 <script type="text/javascript" src="../../build/linq.js"></script>
 
 <body>
+    <table id="test" style="width: 100%;">
+        <thead class="title">
+            <tr>
+                <th>item</th>
+                <th>value</th>
+                <th>note</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: 0.9em;">
+            <tr>
+                <td>key</td>
+                <td><a href="#">value</a></td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>
+                    <span style="color: red;">key</span>
+                </td>
+                <td>
+                    value
 
-<table id="test" style="width: 100%;">
-<thead>
-<tr>
-<th>item</th>
-<th>value</th>
-<th>note</th>
-</tr>
-</thead>
-<tbody style="font-size: 0.9em;">
-<tr>
-<td>key</td>
-<td>value</td>
-<td>2</td>
-</tr>
-<tr>
-<td><span style="color: red;">key</span></td>
-<td>value</td>
-<td><button>hello</button> <strong>world!</strong></td>
-</tr>
-</tbody>
-</table>
+                    <script>
 
+                        var a = function () {
+                            console.log("this is a script block");
+                        }
+                    </script>
+                </td>
+                <td>
+                    <button>hello</button>
+                    <strong>
+                        world!
+
+                        <script type="text/javascript">var aa = 111;</script>
+                    </strong>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 
 <script>
-$table("#test").excel("test.xls", "data-table");
+    $table("#test").excel("test.xls", "data-table");
 </script>

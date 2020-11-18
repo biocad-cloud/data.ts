@@ -91,7 +91,11 @@ namespace DOM.Excel {
     function cellHtml(cell: HTMLElement): string {
         let html: string = cell.innerHTML;
 
+        // removes html form controls
         html = html.replace(/<\/?button.*?>/ig, "");
+
+        // removes <script> code blocks
+        html = html.replace(/\\\\<script(.+?)\\\\<\/script\\\\>/ig, "");
 
         console.log(html);
 
