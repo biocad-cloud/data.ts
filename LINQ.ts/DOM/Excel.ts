@@ -97,6 +97,7 @@ namespace DOM.Excel {
 
         // removes html form controls
         html = html.replace(/[<]\/?button([\s\S]*?)[>]/ig, "");
+        html = html.replace(/[<]select([\s\S]*?)[<]\/select[>]/ig, "");
 
         // removes <script> code blocks
         // https://stackoverflow.com/questions/28889767/javascript-regex-to-match-multiple-lines
