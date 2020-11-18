@@ -1,0 +1,26 @@
+<script type="text/javascript" src="../../build/linq.js"></script>
+
+<body>
+
+<table id="test">
+<thead>
+<tr>
+<th>item</th>
+<th>value</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td>value</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+
+<script>
+$table("#test").excel("test.xls", "data-table");
+</script>
