@@ -248,6 +248,12 @@ const $iframe = function (query: string | HTMLElement, args?: Internal.TypeScrip
     return Internal.typeGenericElement<HTMLIFrameElement>(query, args);
 };
 
+const $table = function (query: string | HTMLElement, args?: Internal.TypeScriptArgument) {
+    let table: IHTMLTableElement = <any>Internal.typeGenericElement<HTMLIFrameElement>(query, args);
+    table.excel = (fileName, sheetName) => DOM.Excel.excel(table, fileName, sheetName);
+    return table;
+}
+
 /**
  * 进行对象的浅克隆
 */
