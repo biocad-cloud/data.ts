@@ -2,18 +2,18 @@ namespace DOM.Excel {
 
     export const contentType: string = "application/vnd.ms-excel";
 
-    export function attatchDownload(a: HTMLAnchorElement, table: string | HTMLTableElement, sheetName: string = "Sheet1") {
-        excel(<any>(typeof table == "string" ? $ts(table) : table), a.download, sheetName);
+    export function attatchDownload(a: HTMLAnchorElement, table: string | HTMLTableElement, sheetName: string = "Sheet1", filters: string[] = null) {
+        excel(<any>(typeof table == "string" ? $ts(table) : table), a.download, sheetName, filters);
     }
 
-    export function excel(table: HTMLTableElement, fileName: string, sheetName: string) {
+    export function excel(table: HTMLTableElement, fileName: string, sheetName: string, filters: string[] = null) {
         DOM.download(fileName, <DataURI>{
             mime_type: Excel.contentType,
-            data: Base64.encode(ToExcel(table, sheetName))
+            data: Base64.encode(ToExcel(table, sheetName, filters))
         });
     }
 
-    export function ToExcel(table: HTMLTableElement, sheetName: string): string {
+    export function ToExcel(table: HTMLTableElement, sheetName: string, filters: string[] = null): string {
         let html = new StringBuilder("", "\n");
 
         html.AppendLine(`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">`);
@@ -39,14 +39,14 @@ namespace DOM.Excel {
 `);
         html.AppendLine(`</head>`);
         html.AppendLine(`<body>`);
-        html.AppendLine(ToHtml(table));
+        html.AppendLine(ToHtml(table, filters));
         html.AppendLine(`</body>`);
         html.AppendLine(`</html>`);
 
         return html.toString();
     }
 
-    export function ToHtml(table: HTMLTableElement): string {
+    export function ToHtml(table: HTMLTableElement, filters: string[] = null): string {
         let html = new StringBuilder("", "\n");
         let body = table.tBodies.item(0);
         let theader = table.tHead.rows.item(0);
@@ -102,7 +102,7 @@ namespace DOM.Excel {
         // https://stackoverflow.com/questions/28889767/javascript-regex-to-match-multiple-lines
         html = html.replace(/[<]script([\s\S]*?)[<]\/script[>]/ig, "");
 
-        console.log(html);
+        // console.log(html);
 
         return html;
     }

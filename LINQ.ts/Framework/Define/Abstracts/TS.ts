@@ -222,7 +222,7 @@
         /**
          * 添加一个点击事件：点击目标连接将目标表格保存为一个Excel文件
         */
-        excel(a: string | HTMLAnchorElement, table: string | HTMLTableElement, sheetName: string);
+        excel(a: string | HTMLAnchorElement, table: string | HTMLTableElement, sheetName: string, filters?: string[]);
 
         /**
          * 将目标字符串解释为一个逻辑值

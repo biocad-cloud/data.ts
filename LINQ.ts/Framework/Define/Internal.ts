@@ -312,13 +312,9 @@ namespace Internal {
                 return JSON.parse(text);
             }
         };
-        ts.excel = function (a: string | HTMLAnchorElement, table: string | HTMLTableElement, sheetName: string) {
+        ts.excel = function (a: string | HTMLAnchorElement, table: string | HTMLTableElement, sheetName: string, filters: string[] = null) {
             $ts(<any>a).onclick = function () {
-                if (typeof table == "string") {
-                    table = $table(table);
-                }
-
-                DOM.Excel.attatchDownload($link(a), table, sheetName);
+                DOM.Excel.attatchDownload($link(a), typeof table == "string" ? $table(table) : table, sheetName, filters);
             }
         };
 
