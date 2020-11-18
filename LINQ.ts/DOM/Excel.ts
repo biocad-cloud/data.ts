@@ -45,6 +45,22 @@ namespace DOM.Excel {
     export function ToHtml(table: HTMLTableElement): string {
         let html = new StringBuilder("", "\n");
 
+        html.AppendLine("<table>");
+
+        html.AppendLine("<thead>");
+        html.AppendLine(rowHTML(table.tHead.rows.item(0)))
+        html.AppendLine("</thead>");
+
+        html.AppendLine("<tbody>");
+
+        html.AppendLine("</tbody>");
+
+        html.AppendLine("</table>");
+
         return html.toString();
+    }
+
+    function rowHTML(thead: HTMLTableRowElement): string {
+        console.log(thead);
     }
 }
