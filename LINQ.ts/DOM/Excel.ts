@@ -45,14 +45,15 @@ namespace DOM.Excel {
     export function ToHtml(table: HTMLTableElement): string {
         let html = new StringBuilder("", "\n");
         let body = table.tBodies.item(0);
+        let theader = table.tHead.rows.item(0);
 
-        html.AppendLine("<table>");
+        html.AppendLine(tagOpenWithCssStyle(table));
 
-        html.AppendLine("<thead>");
-        html.AppendLine(rowHtml(table.tHead.rows.item(0), true))
+        html.AppendLine(tagOpenWithCssStyle(table.tHead));
+        html.AppendLine(rowHtml(theader, true))
         html.AppendLine("</thead>");
 
-        html.AppendLine("<tbody>");
+        html.AppendLine(tagOpenWithCssStyle(body));
 
         for (let i: number = 0; i < body.rows.length; i++) {
             html.AppendLine(rowHtml(body.rows.item(i), false))
@@ -65,6 +66,17 @@ namespace DOM.Excel {
         return html.toString();
     }
 
+    function tagOpenWithCssStyle(node: HTMLElement): string {
+        let tagName: string = node.tagName;
+        let css: string = node.style.cssText;
+
+        if (Strings.Empty(css, true)) {
+            return `<${tagName}>`;
+        } else {
+            return `<${tagName} style="${css}">`;
+        }
+    }
+
     function rowHtml(row: HTMLTableRowElement, isTHead: boolean): string {
         let keyword: string = isTHead ? "th" : "td";
         let columns: string[] = [];
@@ -73,10 +85,16 @@ namespace DOM.Excel {
             columns.push(`<${keyword}>${cellHtml(row.cells.item(i))}</${keyword}>`);
         }
 
-        return `<tr>${columns.join("")}</tr>`;
+        return `${tagOpenWithCssStyle(row)}${columns.join("")}</tr>`;
     }
 
     function cellHtml(cell: HTMLElement): string {
+        let html: string = cell.innerHTML;
 
+        html = html.replace(/<\/?button.*?>/ig, "");
+
+        console.log(html);
+
+        return html;
     }
 }
