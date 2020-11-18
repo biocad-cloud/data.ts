@@ -67,7 +67,7 @@ namespace DOM.Excel {
     }
 
     function tagOpenWithCssStyle(node: HTMLElement): string {
-        let tagName: string = node.tagName;
+        let tagName: string = node.tagName.toLowerCase();
         let css: string = node.style.cssText;
 
         if (Strings.Empty(css, true)) {
@@ -92,10 +92,11 @@ namespace DOM.Excel {
         let html: string = cell.innerHTML;
 
         // removes html form controls
-        html = html.replace(/<\/?button.*?>/ig, "");
+        html = html.replace(/[<]\/?button([\s\S]*?)[>]/ig, "");
 
         // removes <script> code blocks
-        html = html.replace(/\\\\<script(.+?)\\\\<\/script\\\\>/ig, "");
+        // https://stackoverflow.com/questions/28889767/javascript-regex-to-match-multiple-lines
+        html = html.replace(/[<]script([\s\S]*?)[<]\/script[>]/ig, "");
 
         console.log(html);
 
