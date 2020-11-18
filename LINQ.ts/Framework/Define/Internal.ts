@@ -312,6 +312,15 @@ namespace Internal {
                 return JSON.parse(text);
             }
         };
+        ts.excel = function (a: string | HTMLAnchorElement, table: string | HTMLTableElement, sheetName: string) {
+            $ts(<any>a).onclick = function () {
+                if (typeof table == "string") {
+                    table = $table(table);
+                }
+
+                DOM.Excel.attatchDownload($link(a), table, sheetName);
+            }
+        };
 
         let TRUE = {
             "✔": true,

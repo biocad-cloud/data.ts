@@ -2,11 +2,8 @@ namespace DOM.Excel {
 
     export const contentType: string = "application/vnd.ms-excel";
 
-    export function attatchDownload(a: HTMLAnchorElement, table_id: string, sheetName: string = "Sheet1") {
-        let fileName: string = a.download;
-        let table: IHTMLTableElement = $table(table_id);
-
-        excel(table, fileName, sheetName);
+    export function attatchDownload(a: HTMLAnchorElement, table: string | HTMLTableElement, sheetName: string = "Sheet1") {
+        excel(<any>(typeof table == "string" ? $ts(table) : table), a.download, sheetName);
     }
 
     export function excel(table: HTMLTableElement, fileName: string, sheetName: string) {
