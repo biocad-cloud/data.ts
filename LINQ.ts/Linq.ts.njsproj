@@ -102,6 +102,9 @@
     <TypeScriptCompile Include="Data\StringHelpers\URLPatterns.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\Arguments.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="DOM\Animation\Animation.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -118,6 +121,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="DOM\Events\StatusChanged.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="DOM\Excel.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Framework\Define\Abstracts\SymbolAppends.ts">

@@ -59,15 +59,25 @@
 
         /**
          * 处理HTML节点对象的点击事件，这个属性值应该是一个无参数的函数来的
+         * 
+         * ``(handler, event, htmlelement)``
         */
         onclick?: HtmlEventHandler;
+
+        /**
+         * ``(handler, event, htmlelement)``
+        */
         onmouseover?: HtmlEventHandler;
         /**
          * 主要是应用于输入控件
+         * 
+         * ``(handler, event, htmlelement)``
         */
         onchange?: HtmlEventHandler;
         /**
          * 失去焦点
+         * 
+         * ``(handler, event, htmlelement)``
         */
         onblur?: HtmlEventHandler;
         onfocusout?: HtmlEventHandler;
@@ -89,5 +99,7 @@
         coords?: string;
     }
 
-    type HtmlEventHandler = Delegate.Sub | string;
+    export interface IHtmlEventHandler { (handler: GlobalEventHandlers, event: Event, element: HTMLElement): void; }
+
+    type HtmlEventHandler = Delegate.Action | IHtmlEventHandler | string;
 }
