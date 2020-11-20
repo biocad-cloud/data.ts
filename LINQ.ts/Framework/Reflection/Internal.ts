@@ -1,8 +1,8 @@
-/**
- * 这里的函数主要是用来解决经过gcc工具压缩之后，原来的名字被破坏掉了的bug
-*/
 namespace TypeScript.Reflection.Internal {
 
+    /**
+     * fix bugs of gcc compression
+    */
     export function isEnumeratorSignature(type: TypeInfo): boolean {
         let p = {
             "i": false,

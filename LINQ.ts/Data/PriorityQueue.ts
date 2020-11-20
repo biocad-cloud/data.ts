@@ -19,9 +19,9 @@ namespace TypeScript.Data {
          *
         */
         public enqueue(obj: T) {
-            var last = this.Last;
-            var q = this.Q;
-            var x = new QueueItem(obj);
+            let last = this.Last;
+            let q = this.Q;
+            let x = new QueueItem(obj);
 
             q.push(x);
 
@@ -32,10 +32,10 @@ namespace TypeScript.Data {
         }
 
         public extract(i: number): QueueItem<T> {
-            var q = this.Q;
-            var x_above = q[i - 1];
-            var x_below = q[i + 1];
-            var x = q.splice(i, 1)[0];
+            let q = this.Q;
+            let x_above = q[i - 1];
+            let x_below = q[i + 1];
+            let x = q.splice(i, 1)[0];
 
             if (x_above) {
                 x_above.below = x_below;
@@ -53,13 +53,11 @@ namespace TypeScript.Data {
     }
 
     export class QueueItem<T> {
-        public value: T;
+
         public below: QueueItem<T>;
         public above: QueueItem<T>;
 
-        public constructor(x: T) {
-            this.value = x;
-        }
+        public constructor(public value: T) { }
 
         public toString(): string {
             return this.value.toString();
