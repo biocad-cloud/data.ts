@@ -1,6 +1,6 @@
 /// <reference path="../Collections/Abstract/Enumerator.ts" />
 
-namespace TsLinq {
+namespace TypeScript.Data {
 
     export class PriorityQueue<T> extends IEnumerator<QueueItem<T>> {
 

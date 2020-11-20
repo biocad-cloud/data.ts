@@ -2,7 +2,7 @@
 /// <reference path="./URLPatterns.ts" />
 /// <reference path="../../Collections/DictionaryMaps.ts" />
 
-namespace TypeScript {      
+namespace TypeScript {
 
     /**
      * URL组成字符串解析模块
@@ -53,7 +53,7 @@ namespace TypeScript {
         */
         public constructor(url: string) {
             // http://localhost/router.html#http://localhost/b.html
-            var token = Strings.GetTagValue(url, "://");
+            let token = Strings.GetTagValue(url, "://");
 
             this.protocol = token.name; token = Strings.GetTagValue(token.value, "/");
             this.origin = token.name; token = Strings.GetTagValue(token.value, "?");
@@ -75,7 +75,7 @@ namespace TypeScript {
                 this.path = "/";
             }
 
-            var args: object = URL.UrlQuery(token.value);
+            let args: object = URL.UrlQuery(token.value);
 
             this.queryRawString = token.value;
             this.queryArguments = Dictionary
@@ -146,10 +146,10 @@ namespace TypeScript {
         }
 
         public toString(): string {
-            var query = $from(this.query)
+            let query = $from(this.query)
                 .Select(q => `${q.name}=${encodeURIComponent(q.value)}`)
                 .JoinBy("&");
-            var url = `${this.protocol}://${this.origin}/${this.path}`;
+            let url = `${this.protocol}://${this.origin}/${this.path}`;
 
             if (query) {
                 url = url + "?" + query;
@@ -169,7 +169,7 @@ namespace TypeScript {
          * 获取所给定的URL之中的host名称字符串，如果解析失败会返回空值
         */
         public static getHostName(url: string): string {
-            var match: RegExpMatchArray = url.match(URLPatterns.hostNamePattern);
+            let match: RegExpMatchArray = url.match(URLPatterns.hostNamePattern);
 
             if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
                 return match[2];
