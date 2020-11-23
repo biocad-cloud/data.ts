@@ -9,13 +9,13 @@
          * 只保留文件名（已经去除了文件夹路径以及文件名最后的拓展名部分）
         */
         export function basename(fileName: string): string {
-            var nameTokens: string[] = $from(Strings.RTrim(fileName, "/").split("/")).Last.split(".");
+            let nameTokens: string[] = $from(Strings.RTrim(fileName, "/").split("/")).Last.split(".");
 
             if (nameTokens.length == 1) {
                 return nameTokens[0];
             }
 
-            var name: string = new IEnumerator<string>(nameTokens)
+            let name: string = new IEnumerator<string>(nameTokens)
                 .Take(nameTokens.length - 1)
                 .JoinBy(".");
 
@@ -23,7 +23,7 @@
         }
 
         export function extensionName(fileName: string): string {
-            var nameTokens: string[] = $from(Strings.RTrim(fileName, "/").split("/")).Last.split(".");
+            let nameTokens: string[] = $from(Strings.RTrim(fileName, "/").split("/")).Last.split(".");
 
             if (nameTokens.length == 1) {
                 // 没有拓展名
