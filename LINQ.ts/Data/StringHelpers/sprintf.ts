@@ -117,7 +117,8 @@
             // 没有格式化参数的占位符，则直接输出原本的字符串
             return format;
         } else {
-            // console.log(parsed);
+            TypeScript.logging.log("string format parse result:", TypeScript.ConsoleColors.Magenta);
+            TypeScript.logging.log(parsed);
         }
 
         if (argv.length < convCount) {

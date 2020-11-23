@@ -56,6 +56,9 @@
         return d.ToArray(false);
     }
 
+    /**
+     * 用于做字符串模糊匹配
+    */
     export function ComputeDistance(source: string, target: string, score: IScoreFunc = defaultScore): number {
         let d: number[][] = DistanceMatrix(source, target, score);
         let distance: number = d[d.length - 1][d[0].length - 1];
