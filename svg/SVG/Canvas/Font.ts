@@ -2,24 +2,15 @@ namespace Canvas {
 
     export class Font implements ICSSStyle {
 
-        public size: string;
-        public family: string;
-        public bold: boolean;
-        public italic: boolean;
-
-        constructor(family: string,
-            size: any = "12px",
-            bold: boolean = false,
-            italic: boolean = false) {
-
-            this.size = size;
-            this.family = family;
-            this.bold = bold;
-            this.italic = italic;
+        constructor(
+            public family: string,
+            public size: any = "12px",
+            public bold: boolean = false,
+            public italic: boolean = false) {
         }
 
         public Styling(node: SVGElement): SVGElement {
-            var styles = [];
+            let styles = [];
 
             if (this.bold) styles.push("bold");
             if (this.italic) styles.push("italic");
@@ -32,7 +23,7 @@ namespace Canvas {
         }
 
         public CSSStyle(): string {
-            var styles = [];
+            let styles = [];
 
             if (this.bold) styles.push("bold");
             if (this.italic) styles.push("italic");

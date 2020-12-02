@@ -51,11 +51,10 @@ namespace Internal.EventHandles {
             let onchange = app[publicMethodName];
             let arguments = parseFunctionArgumentNames(onchange);
             let id: string = publicMethodName.replace(onchangeToken, "");
+            let a = document.getElementById(id);
+            let tag = a.tagName.toLowerCase();
 
             if (arguments.length == 1 && arguments[0] == "value") {
-                let a = document.getElementById(id);
-                let tag = a.tagName.toLowerCase();
-
                 if (tag == "input" || tag == "textarea") {
                     let type = a.getAttribute("type");
 
@@ -77,6 +76,10 @@ namespace Internal.EventHandles {
                     }
                 } else {
                     TypeScript.logging.log(`invalid tag name: ${a.tagName}!`, "red");
+                }
+            } else if (arguments.length == 0) {
+                $input(a).onchange = function () {
+                    return app[publicMethodName]();
                 }
             }
         }

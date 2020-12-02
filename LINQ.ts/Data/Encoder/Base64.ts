@@ -29,9 +29,9 @@ module Base64 {
      * 将任意文本编码为base64字符串
     */
     export function encode(text: string): string {
-        var base64: string[] = [];
-        var n, r, i, s, o, u, a;
-        var f = 0;
+        let base64: string[] = [];
+        let n, r, i, s, o, u, a;
+        let f = 0;
 
         text = Base64.utf8_encode(text);
 
@@ -76,10 +76,10 @@ module Base64 {
     }
 
     export function decode_rawBuffer(base64: string): number[] {
-        var buffer: number[] = [];
-        var n, r, i;
-        var s, o, u, a;
-        var f = 0;
+        let buffer: number[] = [];
+        let n, r, i;
+        let s, o, u, a;
+        let f = 0;
 
         base64 = base64.replace(/[^A-Za-z0-9+/=]/g, "");
 
@@ -107,13 +107,16 @@ module Base64 {
     /**
      * 将base64字符串解码为字节数组->普通数组
      */
-    export function bytes_decode(str: string, num: number): number[] {
-        let arr:number[] = [];
+    export function bytes_decode(str: string): number[] {
+        let arr: number[] = [];
         let base64 = new Uint8Array(decode_rawBuffer(str));
         let view = new DataView(base64.buffer);
-        for (var i = 0; i < num; i++) {
+        let num = base64.length / 8;
+
+        for (let i: number = 0; i < num; i++) {
             arr.push(view.getFloat64(i * 8));
         }
+
         return arr;
     }
 
@@ -121,12 +124,12 @@ module Base64 {
      * 将文本转换为utf8编码的文本字符串
     */
     export function utf8_encode(text: string): string {
-        var chars: string[] = [];
+        let chars: string[] = [];
 
         text = text.replace(/rn/g, "n");
 
-        for (var n = 0; n < text.length; n++) {
-            var r = text.charCodeAt(n);
+        for (let n = 0; n < text.length; n++) {
+            let r = text.charCodeAt(n);
 
             if (r < 128) {
                 chars.push(String.fromCharCode(r));
@@ -147,11 +150,11 @@ module Base64 {
      * 将utf8编码的文本转换为原来的文本
     */
     export function utf8_decode(text: string): string {
-        var t: string[] = [];
-        var n = 0;
-        var r = 0;
-        var c2 = 0;
-        var c3 = 0;
+        let t: string[] = [];
+        let n = 0;
+        let r = 0;
+        let c2 = 0;
+        let c3 = 0;
 
         while (n < text.length) {
             r = text.charCodeAt(n);
