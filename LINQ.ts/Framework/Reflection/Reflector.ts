@@ -66,7 +66,7 @@ namespace TypeScript.Reflection {
 
     export function getObjectClassName(obj: object, isnull: boolean): string {
         if (isnull) {
-            TypeScript.logging.log(TypeExtensions.objectIsNothing);
+            TypeScript.logging.warning(TypeExtensions.objectIsNothing);
 
             return "null";
         } else {
