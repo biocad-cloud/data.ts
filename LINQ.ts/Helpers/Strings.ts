@@ -19,6 +19,14 @@ module Strings {
     export const numericPattern: RegExp = /[-]?\d+(\.\d+)?/g;
     export const integerPattern: RegExp = /[-]?[0-9]+/g;
 
+    export const logical = {
+        "T": true, "F": false,
+        "true": true, "false": false,
+        "TRUE": true, "FALSE": false,
+        "yes": true, "no": false,
+        "right": true, "wrong": false
+    };
+
     export function PadLeft(text: string, padLen: number, c: string = " ") {
         if (Strings.Empty(text)) {
             return DataExtensions.Dim(padLen, c).join("");

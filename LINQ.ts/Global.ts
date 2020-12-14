@@ -181,6 +181,22 @@ function base64_decode(stream: string): string {
     return text;
 }
 
+function parseBoolean(text: any): boolean {
+    if (typeof text == "boolean") {
+        return text;
+    } else if (typeof text == "number") {
+        return text != 0;
+    } else if (typeof text == "string") {
+        if (text in Strings.logical) {
+            return Strings.logical[text];
+        } else {
+            return true;
+        }
+    } else {
+        return !isNullOrUndefined(text);
+    }
+}
+
 /**
  * 这个函数什么也不做，主要是用于默认的参数值
 */
