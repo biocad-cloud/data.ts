@@ -418,7 +418,7 @@ class IEnumerator<T> extends LINQIterator<T> {
     /**
      * 对序列中的元素进行去重
     */
-    public Distinct(key: (o: T) => string = o => o.toString()): IEnumerator<T> {
+    public Distinct(key: (o: T) => string = o => isNullOrUndefined(o) ? "" : o.toString()): IEnumerator<T> {
         return this
             .GroupBy(key, Strings.CompareTo)
             .Select(group => group.First);
