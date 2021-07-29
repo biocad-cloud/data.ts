@@ -96,6 +96,9 @@
     <TypeScriptCompile Include="Collections\SlideWindow.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Data\Encoder\Bencode.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Data\MetaReader.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
