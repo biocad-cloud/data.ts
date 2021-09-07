@@ -13,16 +13,16 @@ class Graphics {
     /**
      * The css z-index layer order
     */
-    private z: number;
+    private z: number = 1;
 
     /**
      * 创建一个SVG画布对象
      * 
      * @param div div id
     */
-    public constructor(div: string) {
+    public constructor(div: string | HTMLElement) {
         this.svg = SvgUtils.svgNode("svg", { "version": "1.1" });
-        this.container = document.getElementById(div);
+        this.container = typeof div == "string" ? document.getElementById(div) : <HTMLElement>div;
         this.container.appendChild(this.svg);
     }
 
@@ -140,10 +140,11 @@ class Graphics {
     public drawRectangle(rect: Canvas.Rectangle,
         border: Canvas.Pen = Canvas.Pens.Black(),
         fill: Canvas.Color = null,
+        onclick: Delegate.Action = null,
         id: string = null,
         className: string = null): Graphics {
 
-        var attrs = {
+        const attrs = {
             "x": rect.left.toString(),
             "y": rect.top.toString(),
             "width": rect.width.toString(),
@@ -155,7 +156,8 @@ class Graphics {
         if (className) attrs["class"] = className;
         if (fill) attrs["fill"] = fill.ToHtmlColor();
 
-        var node = border.Styling(SvgUtils.svgNode("rect", attrs));
+        const node = border.Styling(SvgUtils.svgNode("rect", attrs));
+        node.onclick = onclick;
         this.svg.appendChild(node);
 
         return this;
