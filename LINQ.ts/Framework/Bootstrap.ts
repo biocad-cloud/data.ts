@@ -36,7 +36,7 @@ abstract class Bootstrap {
      * @returns 如果没有定义app参数，则默认是返回``/``作为名称
     */
     protected get currentAppPage(): string {
-        return getAllUrlParams().Item("app") || Router.appName || "/";
+        return Router.appName || getAllUrlParams().Item("app") || "/";
     }
 
     public get appStatus(): "Sleep" | "Running" {
