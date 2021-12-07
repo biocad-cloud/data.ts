@@ -116,13 +116,17 @@ namespace Internal.EventHandles {
     const ARGUMENT_NAMES = /([^\s,]+)/g;
 
     export function parseFunctionArgumentNames(func: any): string[] {
-        let fnStr = func.toString().replace(STRIP_COMMENTS, '');
-        let result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
-
-        if (result === null) {
+        if (isNullOrUndefined(func)) {
             return [];
         } else {
-            return result;
+            const fnStr = func.toString().replace(STRIP_COMMENTS, '');
+            const result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+
+            if (result === null) {
+                return [];
+            } else {
+                return result;
+            }
         }
     }
 }
