@@ -19,6 +19,10 @@ namespace Internal.EventHandles {
     */
     function hookOnClicks(app: {}, elements: string[], type: TypeScript.Reflection.TypeInfo) {
         for (let publicMethodName of type.methods) {
+            if (Strings.Empty(publicMethodName, false)) {
+                continue;
+            }
+
             const name_noclick: string = publicMethodName
                 .replace("_click", "")
                 .replace("_onclick", "");
