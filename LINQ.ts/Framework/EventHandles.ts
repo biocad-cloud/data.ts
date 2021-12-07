@@ -19,18 +19,32 @@ namespace Internal.EventHandles {
     */
     function hookOnClicks(app: {}, elements: string[], type: TypeScript.Reflection.TypeInfo) {
         for (let publicMethodName of type.methods) {
-            if (elements.indexOf(publicMethodName) > -1) {
-                let arguments = parseFunctionArgumentNames(app[publicMethodName]);
+            const name_noclick: string = publicMethodName
+                .replace("_click", "")
+                .replace("_onclick", "");
 
-                if (arguments.length == 0 || arguments.length == 2) {
-                    $ts(`#${publicMethodName}`).onclick = <any>function (handler, evt): any {
-                        return app[publicMethodName](handler, evt);
-                    }
-
-                    TypeScript.logging.log(`[${type.class}] hook onclick for #${publicMethodName}...`, TypeScript.ConsoleColors.Green);
-                }
+            if (!tryHookClickEvent(app, elements, publicMethodName, type.class)) {
+                tryHookClickEvent(app, elements, name_noclick, type.class)
             }
         }
+    }
+
+    function tryHookClickEvent(app: {}, elements: string[], publicMethodName: string, typeName: string): boolean {
+        if (elements.indexOf(publicMethodName) > -1) {
+            let arguments = parseFunctionArgumentNames(app[publicMethodName]);
+
+            if (arguments.length == 0 || arguments.length == 2) {
+                $ts(`#${publicMethodName}`).onclick = <any>function (handler, evt): any {
+                    return app[publicMethodName](handler, evt);
+                }
+
+                TypeScript.logging.log(`[${typeName}] hook onclick for #${publicMethodName}...`, TypeScript.ConsoleColors.Green);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     const onchangeToken: string = "_onchange";
