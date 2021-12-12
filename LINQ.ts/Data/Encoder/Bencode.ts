@@ -69,7 +69,7 @@ module Bencode {
     }
 
     export function decode(str: string): any {
-        decodeImpl(str)[1];
+        return decodeImpl(str)[1];
     }
 
     export function encode(object: any): string {
