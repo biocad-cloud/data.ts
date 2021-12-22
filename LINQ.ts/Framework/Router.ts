@@ -96,6 +96,10 @@ module Router {
 
     /**
      * 从这个函数开始执行整个Web应用程序
+     * 
+     * @description appName orders:
+     * 
+     *    meta(app) -> url app=... -> /
     */
     export function RunApp(module = "/") {
         TypeScript.logging.log(TypeScript.URL.WindowLocation());

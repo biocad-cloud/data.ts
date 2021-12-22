@@ -19,18 +19,41 @@ namespace Internal.EventHandles {
     */
     function hookOnClicks(app: {}, elements: string[], type: TypeScript.Reflection.TypeInfo) {
         for (let publicMethodName of type.methods) {
-            if (elements.indexOf(publicMethodName) > -1) {
-                let arguments = parseFunctionArgumentNames(app[publicMethodName]);
+            if (Strings.Empty(publicMethodName, false)) {
+                continue;
+            }
 
-                if (arguments.length == 0 || arguments.length == 2) {
-                    $ts(`#${publicMethodName}`).onclick = <any>function (handler, evt): any {
-                        return app[publicMethodName](handler, evt);
-                    }
+            const name_noclick: string = publicMethodName
+                .replace("_click", "")
+                .replace("_onclick", "");
 
-                    TypeScript.logging.log(`[${type.class}] hook onclick for #${publicMethodName}...`, TypeScript.ConsoleColors.Green);
-                }
+            if (!tryHookClickEvent(app, elements, publicMethodName, publicMethodName)) {
+                tryHookClickEvent(app, elements, name_noclick, publicMethodName)
             }
         }
+    }
+
+    function tryHookClickEvent(
+        app: {},
+        elements: string[],
+        publicMethodName: string,
+        eventRawName: string): boolean {
+
+        if (elements.indexOf(publicMethodName) > -1) {
+            let arguments = parseFunctionArgumentNames(app[publicMethodName]);
+
+            if (arguments.length == 0 || arguments.length == 2) {
+                $ts(`#${publicMethodName}`).onclick = <any>function (handler, evt): any {
+                    return app[eventRawName](handler, evt);
+                }
+
+                TypeScript.logging.log(`[EVENT ${eventRawName}] hook onclick for #${publicMethodName}...`, TypeScript.ConsoleColors.Green);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     const onchangeToken: string = "_onchange";
@@ -98,13 +121,17 @@ namespace Internal.EventHandles {
     const ARGUMENT_NAMES = /([^\s,]+)/g;
 
     export function parseFunctionArgumentNames(func: any): string[] {
-        let fnStr = func.toString().replace(STRIP_COMMENTS, '');
-        let result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
-
-        if (result === null) {
+        if (isNullOrUndefined(func)) {
             return [];
         } else {
-            return result;
+            const fnStr = func.toString().replace(STRIP_COMMENTS, '');
+            const result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+
+            if (result === null) {
+                return [];
+            } else {
+                return result;
+            }
         }
     }
 }
