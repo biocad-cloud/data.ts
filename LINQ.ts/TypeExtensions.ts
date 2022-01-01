@@ -59,4 +59,23 @@ namespace TypeExtensions {
             return false;
         }
     }
+
+    /**
+     * Check js environment
+    */
+    export function checkENV(): ENV {
+        // https://stackoverflow.com/questions/5113374/javascript-check-if-variable-exists-is-defined-initialized
+        // JavaScript check if variable exists (is defined/initialized)
+
+        if (typeof Window !== 'undefined') {
+            return ENV.browser;
+        } else {
+            return ENV.node;
+        }
+    }
+}
+
+enum ENV {
+    browser,
+    node
 }
