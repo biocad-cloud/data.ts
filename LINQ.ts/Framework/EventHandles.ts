@@ -77,7 +77,10 @@ namespace Internal.EventHandles {
             let a = document.getElementById(id);
             let tag = a.tagName.toLowerCase();
 
-            if (arguments.length == 1 && arguments[0] == "value") {
+            // 20221004 parameter name rule:
+            // 1. value, raw js script
+            // 2. a, compressed via gcc, resulted min js
+            if (arguments.length == 1 && ((arguments[0] == "value") || (arguments[0] == "a"))) {
                 if (tag == "input" || tag == "textarea") {
                     let type = a.getAttribute("type");
 
