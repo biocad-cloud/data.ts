@@ -188,6 +188,9 @@ class DOMEnumerator<T extends HTMLElement> extends IEnumerator<T> {
     */
     public onClick(handler: (sender: T, event: MouseEvent) => void) {
         this.ForEach(element => {
+            // clear event handler which is assigned
+            // to this html node before
+            element.removeAttribute('onclick');
             element.onclick = function (this: HTMLElement, ev: MouseEvent) {
                 handler(<T>this, ev);
                 return <any>false;
