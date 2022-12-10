@@ -52,22 +52,22 @@
         return new Blob([arr], { type: contentTypes.binary })
     };
 
-    export function getBlob(url: string, callback: (Blob) => void) {
-        var oReq = new XMLHttpRequest();
-        oReq.open("GET", url, true);
-        oReq.responseType = "arraybuffer";
-        oReq.onload = function (oEvent) {
-            var arrayBuffer = oReq.response; // 注意：不是 oReq.responseText
+    export function getBlob(url: string, callback: (Uint8Array) => void) {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", url, true);
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function (oEvent) {
+            var arrayBuffer = xhr.response; // 注意：不是 oReq.responseText
 
             if (arrayBuffer) {
-                var byteArray = new Uint8Array(arrayBuffer);
-                var blob = new Blob([byteArray], { type: contentTypes.binary });
-
-                callback(blob);
+                // var byteArray = new Uint8Array(arrayBuffer);
+                // var blob = new Blob([byteArray], { type: contentTypes.binary });
+                callback(new Uint8Array(arrayBuffer));
             }
         };
 
-        oReq.send(null);
+        xhr.send(null);
     }
 
     /**
