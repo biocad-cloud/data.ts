@@ -107,11 +107,18 @@ module Base64 {
     /**
      * 将base64字符串解码为字节数组->普通数组
      */
-    export function bytes_decode(str: string): number[] {
+    export function bytes_decode(str: string, size: number = null): number[] {
         let arr: number[] = [];
         let base64 = new Uint8Array(decode_rawBuffer(str));
         let view = new DataView(base64.buffer);
         let num = base64.length / 8;
+
+        if (!isNullOrUndefined(size)) {
+            if (num != parseInt(size.toString())) {
+                console.log(str);
+                throw `invalid base64 string, decode size(${num}) is not equals to the size(${size}) verification!`;
+            }
+        }
 
         for (let i: number = 0; i < num; i++) {
             arr.push(view.getFloat64(i * 8));
