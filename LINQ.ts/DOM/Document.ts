@@ -133,7 +133,8 @@ namespace DOM {
     export function CreateHTMLTableNode<T extends {}>(
         rows: T[] | IEnumerator<T>,
         headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
-        attrs: Internal.TypeScriptArgument = null): HTMLTableElement {
+        attrs: Internal.TypeScriptArgument = null,
+        foreachRow: stylingRow<T> = null): HTMLTableElement {
 
         var thead: HTMLElement = $ts("<tr>");
         var tbody: HTMLElement = $ts("<tbody>");
@@ -146,9 +147,14 @@ namespace DOM {
         }
 
         var rowHTML = function (r: object) {
-            var tr: HTMLElement = $ts("<tr>");
+            var tr: HTMLTableRowElement = <any>$ts("<tr>");
             // 在这里将会控制列的显示
             fields.forEach(m => tr.appendChild($ts("<td>").display(r[m.key])));
+
+            if (foreachRow) {
+                foreachRow(<any>r, tr);
+            }
+
             return tr;
         }
 
@@ -167,6 +173,10 @@ namespace DOM {
             .HTMLElement;
     }
 
+    export interface stylingRow<T> {
+        (obj: T, row: HTMLTableRowElement): void;
+    }
+
     /**
      * 向给定编号的div对象之中添加一个表格对象
      * 
@@ -178,7 +188,8 @@ namespace DOM {
         rows: T[] | IEnumerator<T>,
         div: string,
         headers: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[] = null,
-        attrs: Internal.TypeScriptArgument = null) {
+        attrs: Internal.TypeScriptArgument = null,
+        foreachRow: stylingRow<T> = null) {
 
         var id = `${Strings.Trim(div, "#")}-table`;
 
@@ -188,7 +199,7 @@ namespace DOM {
             attrs = { id: id };
         }
 
-        $ts(div).appendChild(CreateHTMLTableNode(rows, headers, attrs));
+        $ts(div).appendChild(CreateHTMLTableNode(rows, headers, attrs, foreachRow));
     }
 
     /**

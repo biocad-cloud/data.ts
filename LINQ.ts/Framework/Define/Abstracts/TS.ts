@@ -75,7 +75,8 @@
             rows: T[] | IEnumerator<T>,
             div: string,
             headers?: string[] | IEnumerator<string> | IEnumerator<MapTuple<string, string>> | MapTuple<string, string>[],
-            attrs?: Internal.TypeScriptArgument
+            attrs?: Internal.TypeScriptArgument,
+            foreachRow?: (obj: T, row: HTMLTableRowElement) => void
         ): void;
 
         /**
