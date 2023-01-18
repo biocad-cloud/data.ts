@@ -16,7 +16,12 @@
         /**
          * 传统的表单post格式
         */
-        www: "application/x-www-form-urlencoded"
+        www: "application/x-www-form-urlencoded",
+        /**
+         * ascii char bytes
+        */
+        blob: "text/plain; charset=x-user-defined",
+        binary: "application/octet-stream"
     }
 
     export interface httpCallback {
@@ -32,6 +37,37 @@
             // object类型都会被转换为json发送回服务器
             return contentTypes.json;
         }
+    }
+
+    /**
+     * Receiving binary data in older browsers
+    */
+    export function binaryToBlob(data: string): Blob {
+        var l = data.length, arr = new Uint8Array(l);
+
+        for (var i = 0; i < l; i++) {
+            arr[i] = data.charCodeAt(i) & 0xff; // 扔掉的高位字节 (f7)
+        }
+
+        return new Blob([arr], { type: contentTypes.binary })
+    };
+
+    export function getBlob(url: string, callback: (Uint8Array) => void) {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", url, true);
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function (oEvent) {
+            var arrayBuffer = xhr.response; // 注意：不是 oReq.responseText
+
+            if (arrayBuffer) {
+                // var byteArray = new Uint8Array(arrayBuffer);
+                // var blob = new Blob([byteArray], { type: contentTypes.binary });
+                callback(new Uint8Array(arrayBuffer));
+            }
+        };
+
+        xhr.send(null);
     }
 
     /**
@@ -57,7 +93,7 @@
      * 
      * @param callback ``callback(http.responseText, http.status)``
     */
-    export function GetAsyn(url: string, callback: httpCallback) {
+    export function GetAsyn(url: string, callback: httpCallback, mime_overrides: string = null) {
         var http = new XMLHttpRequest();
 
         http.open("GET", url, true);
@@ -72,6 +108,11 @@
                 callback(http.response || http.responseText, http.status, contentType);
             }
         }
+
+        if (!Strings.Empty(mime_overrides)) {
+            http.overrideMimeType(mime_overrides);
+        }
+
         http.send(null);
     }
 

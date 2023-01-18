@@ -64,7 +64,7 @@ namespace Internal.Handlers {
             // 返回节点集合
             var nodes: NodeListOf<HTMLElement>;
 
-            if (context instanceof Window) {
+            if ((TypeExtensions.checkENV() == ENV.browser) && context instanceof Window) {
                 nodes = context
                     .document
                     .querySelectorAll(cssSelector);
