@@ -39,23 +39,28 @@ module Enumerable {
      * 进行数据序列的排序操作
      * 
     */
-    export function OrderBy<T>(source: T[], key: (e: T) => number): IEnumerator<T> {
+    export function OrderBy<T>(source: T[], key: (e: T) => number | string): IEnumerator<T> {
         // array clone
         var clone: T[] = [...source];
 
         clone.sort((a, b) => {
+            const va = key(a);
+            const vb = key(b);
+            const na = typeof va == "string" ? Strings.hashCode(va) : va;
+            const nb = typeof vb == "string" ? Strings.hashCode(vb) : vb;
             // a - b
-            return key(a) - key(b);
+            return na - nb;
         });
         // console.log("clone");
         // console.log(clone);
         return new IEnumerator<T>(clone);
     }
 
-    export function OrderByDescending<T>(source: T[], key: (e: T) => number): IEnumerator<T> {
+    export function OrderByDescending<T>(source: T[], key: (e: T) => number | string): IEnumerator<T> {
         return Enumerable.OrderBy(source, (e) => {
             // b - a
-            return -key(e);
+            const val = key(e);
+            return typeof val == "string" ? -Strings.hashCode(val) : -val;
         });
     }
 
@@ -191,5 +196,5 @@ module Enumerable {
             .Unlist<string>()
             .Distinct()
             .ToArray();
-    }   
+    }
 }
