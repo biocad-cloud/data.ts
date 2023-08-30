@@ -1,5 +1,7 @@
 namespace OADate {
 
+    // https://github.com/blikblum/oadate
+    
     const defaultOffset = new Date().getTimezoneOffset()
 
     // code below extracted from https://github.com/markitondemand/moment-msdate
