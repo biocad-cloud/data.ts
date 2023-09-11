@@ -290,7 +290,7 @@ class IEnumerator<T> extends LINQIterator<T> {
      * @returns An ``System.Linq.IOrderedEnumerable<T>`` whose elements are 
      *          sorted according to a key.
     */
-    public OrderBy(key: (e: T) => number): IEnumerator<T> {
+    public OrderBy(key: (e: T) => number | string): IEnumerator<T> {
         return Enumerable.OrderBy(this.sequence, key);
     }
 
@@ -302,7 +302,7 @@ class IEnumerator<T> extends LINQIterator<T> {
      * @returns An ``System.Linq.IOrderedEnumerable<T>`` whose elements are 
      *          sorted in descending order according to a key.
     */
-    public OrderByDescending(key: (e: T) => number): IEnumerator<T> {
+    public OrderByDescending(key: (e: T) => number | string): IEnumerator<T> {
         return Enumerable.OrderByDescending(this.sequence, key);
     }
 
