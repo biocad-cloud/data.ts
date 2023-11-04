@@ -57,6 +57,12 @@ namespace Internal.EventHandles {
     }
 
     const onchangeToken: string = "_onchange";
+    const pars: {} = {
+        "value": true,
+        "a": true,
+        "val": true,
+        "str": true
+    };
 
     // <input id="email" />
     // email_onchange(value: string) {
@@ -80,7 +86,7 @@ namespace Internal.EventHandles {
             // 20221004 parameter name rule:
             // 1. value, raw js script
             // 2. a, compressed via gcc, resulted min js
-            if (arguments.length == 1 && ((arguments[0] == "value") || (arguments[0] == "a"))) {
+            if (arguments.length == 1 && arguments[0] in pars) {
                 if (tag == "input" || tag == "textarea") {
                     let type = a.getAttribute("type");
 
