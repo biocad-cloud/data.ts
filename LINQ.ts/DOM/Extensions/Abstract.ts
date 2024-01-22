@@ -49,6 +49,7 @@ interface HTMLExtensions {
     hide(): IHTMLElement;
     addClass(name: string): IHTMLElement;
     removeClass(name: string): IHTMLElement;
+    hasClass(name: string): boolean;
     /**
      * 当class列表中指定的class名称出现或者消失的时候将会触发给定的action调用
     */

@@ -79,6 +79,9 @@ namespace TypeExtensions {
             extendsNode.removeClass(name);
             return node;
         }
+        obj.hasClass = function (name: string): boolean {
+            return node.classList.contains(name);
+        }
         obj.onClassChanged = function (className: string, action: Delegate.Sub, includesRemoves?: boolean) {
             let predicate = new DOM.Events.StatusChanged(function () {
                 return node.classList.contains(className);
