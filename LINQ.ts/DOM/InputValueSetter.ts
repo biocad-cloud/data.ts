@@ -52,6 +52,18 @@
             }
         }
 
+        function setChecks(inputs: DOMEnumerator<IHTMLElement>, value: boolean) {
+            for (let input of inputs.Select(i => <HTMLInputElement><any>input).ToArray()) {
+                input.value = value.toString();
+
+                if (value) {
+                    input.checked = true;
+                } else {
+                    input.checked = false;
+                }
+            }
+        }
+
         /**
          * Set option value for checkbox or radio button
         */
@@ -80,7 +92,7 @@
 
                     switch (type.toLowerCase()) {
                         case "checkbox":
-                            setOption(inputs, value);
+                            setChecks(inputs, typeof value === "string" ? parseBoolean(value) : value);
                             break;
 
                         case "radio":
