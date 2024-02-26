@@ -261,7 +261,7 @@ namespace Internal {
             }
             HttpHelpers.Imports.doEval(script, callback);
         }
-        ts.value = function (resource: string, value: string = null, strict: boolean = false) {
+        ts.value = function (resource: string, value: string | number | boolean = null, strict: boolean = false) {
             if (isNullOrUndefined(value)) {
                 return DOM.InputValueGetter.getValue(resource, strict);
             } else {
