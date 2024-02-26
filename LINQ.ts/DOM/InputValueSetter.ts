@@ -53,7 +53,7 @@
         }
 
         function setChecks(inputs: DOMEnumerator<IHTMLElement>, value: boolean) {
-            for (let input of inputs.Select(i => <HTMLInputElement><any>input).ToArray()) {
+            for (let input of inputs.Select(i => <HTMLInputElement><any>i).ToArray()) {
                 input.value = value.toString();
 
                 if (value) {
