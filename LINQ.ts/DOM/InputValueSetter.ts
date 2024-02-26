@@ -20,7 +20,7 @@
             } else {
                 switch (input.tagName.toLowerCase()) {
                     case "input":
-                        input.asInput.value = value;
+                        setValues(new DOMEnumerator<IHTMLElement>([input]), value, strict);
                         break;
                     case "select":
                         setSelection(<any>input, value);
