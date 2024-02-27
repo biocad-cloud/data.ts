@@ -132,7 +132,7 @@
          * 
          * @returns 对于checkbox类型的input而言，逻辑值是以字符串的形式返回
         */
-        value(id: string, set_value?: string, strict?: boolean): any;
+        value(id: string, set_value?: string | number | boolean, strict?: boolean): any;
 
         typeof<T extends object>(any: T): TypeScript.Reflection.TypeInfo;
         clone<T>(obj: T): T;

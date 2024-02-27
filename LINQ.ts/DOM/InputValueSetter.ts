@@ -11,16 +11,24 @@
          *   如果目标id标记的控件不是输入类型的，则如果处于非严格模式下，
          *   即这个参数为``false``的时候会直接强制读取value属性值
         */
-        export function setValue(resource: string, value: string, strict: boolean = true) {
+        export function setValue(resource: string, value: string | number | boolean, strict: boolean = true) {
             let input = $ts(resource);
             let type: TypeScript.Reflection.TypeInfo = $ts.typeof(input);
+
+            if (isNullOrUndefined(value)) {
+                value = "0";
+            }
+
+            if (!(typeof value === "string")) {
+                value = value.toString();
+            }
 
             if (type.isEnumerator) {
                 setValues(new DOMEnumerator<IHTMLElement>(<any>input), value, strict);
             } else {
                 switch (input.tagName.toLowerCase()) {
                     case "input":
-                        input.asInput.value = value;
+                        setValues(new DOMEnumerator<IHTMLElement>([input]), value, strict);
                         break;
                     case "select":
                         setSelection(<any>input, value);
@@ -48,6 +56,18 @@
 
                 if (opts.item(i).value == value) {
                     opts.item(i).selected = true;
+                }
+            }
+        }
+
+        function setChecks(inputs: DOMEnumerator<IHTMLElement>, value: boolean) {
+            for (let input of inputs.Select(i => <HTMLInputElement><any>i).ToArray()) {
+                input.value = value.toString();
+
+                if (value) {
+                    input.checked = true;
+                } else {
+                    input.checked = false;
                 }
             }
         }
@@ -80,7 +100,7 @@
 
                     switch (type.toLowerCase()) {
                         case "checkbox":
-                            setOption(inputs, value);
+                            setChecks(inputs, typeof value === "string" ? parseBoolean(value) : value);
                             break;
 
                         case "radio":
