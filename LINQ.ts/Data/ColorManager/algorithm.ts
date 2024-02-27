@@ -1,8 +1,10 @@
 namespace TypeScript.ColorManager {
 
-    export function hslToRgb(hue, sat, light) {
-        var t1, t2, r, g, b;
+    export function hslToRgb(hue: number, sat: number, light: number) {
+        let t1: number, t2: number, r: number, g: number, b: number;
+
         hue = hue / 60;
+
         if (light <= 0.5) {
             t2 = light * (sat + 1);
         } else {
@@ -14,7 +16,7 @@ namespace TypeScript.ColorManager {
         b = hueToRgb(t1, t2, hue - 2) * 255;
         return { r: r, g: g, b: b };
     }
-    export function hueToRgb(t1, t2, hue) {
+    export function hueToRgb(t1: number, t2: number, hue: number) {
         if (hue < 0) hue += 6;
         if (hue >= 6) hue -= 6;
         if (hue < 1) return (t2 - t1) * hue + t1;
@@ -22,8 +24,8 @@ namespace TypeScript.ColorManager {
         else if (hue < 4) return (t2 - t1) * (4 - hue) + t1;
         else return t1;
     }
-    export function hwbToRgb(hue, white, black) {
-        var i, rgb, rgbArr = [], tot;
+    export function hwbToRgb(hue: number, white: number, black: number) {
+        var i: number, rgb, rgbArr: number[] = [], tot: number;
         rgb = hslToRgb(hue, 1, 0.50);
         rgbArr[0] = rgb.r / 255;
         rgbArr[1] = rgb.g / 255;
@@ -40,16 +42,16 @@ namespace TypeScript.ColorManager {
         }
         return { r: rgbArr[0], g: rgbArr[1], b: rgbArr[2] };
     }
-    export function cmykToRgb(c, m, y, k) {
-        var r, g, b;
+    export function cmykToRgb(c: number, m: number, y: number, k: number) {
+        var r: number, g: number, b: number;
         r = 255 - ((Math.min(1, c * (1 - k) + k)) * 255);
         g = 255 - ((Math.min(1, m * (1 - k) + k)) * 255);
         b = 255 - ((Math.min(1, y * (1 - k) + k)) * 255);
         return { r: r, g: g, b: b };
     }
 
-    export function rgbToHsl(r, g, b) {
-        var min, max, i, l, s, maxcolor, h, rgb = [];
+    export function rgbToHsl(r: number, g: number, b: number) {
+        var min: number, max: number, i: number, l: number, s: number, maxcolor: number, h: number, rgb: number[] = [];
         rgb[0] = r / 255;
         rgb[1] = g / 255;
         rgb[2] = b / 255;
@@ -86,7 +88,7 @@ namespace TypeScript.ColorManager {
         return { h: h, s: s, l: l };
     }
     export function rgbToHwb(r: number, g: number, b: number) {
-        var h, w, bl;
+        var h: number, w: number, bl: number;
         r = r / 255;
         g = g / 255;
         b = b / 255;
@@ -107,7 +109,7 @@ namespace TypeScript.ColorManager {
         return { h: h, w: w, b: bl };
     }
     export function rgbToCmyk(r: number, g: number, b: number) {
-        var c, m, y, k;
+        var c: number, m: number, y: number, k: number;
         r = r / 255;
         g = g / 255;
         b = b / 255;

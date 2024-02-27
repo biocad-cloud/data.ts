@@ -21,24 +21,8 @@ namespace TypeScript.ColorManager {
         public ncol: string;
         public valid: boolean;
 
-        public static get emptyObject(): IW3color {
-            return <IW3color>{
-                red: 0,
-                green: 0,
-                blue: 0,
-                hue: 0,
-                sat: 0,
-                lightness: 0,
-                whiteness: 0,
-                blackness: 0,
-                cyan: 0,
-                magenta: 0,
-                yellow: 0,
-                black: 0,
-                ncol: "R",
-                opacity: 1,
-                valid: false
-            };
+        public static get emptyObject(): w3color {
+            return color();
         }
 
         public constructor(color: string | IW3color = null, elmnt: HTMLElement = null) {
@@ -108,6 +92,10 @@ namespace TypeScript.ColorManager {
             }
             return "";
         }
+
+        /**
+         * to html hex color value: #XXXXXX
+        */
         toHexString() {
             var r = toHex(this.red);
             var g = toHex(this.green);
