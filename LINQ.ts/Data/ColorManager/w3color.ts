@@ -5,21 +5,21 @@ namespace TypeScript.ColorManager {
     */
     export class w3color implements IW3color {
 
-        public red: number;
-        public blue: number;
-        public green: number;
-        public hue: number;
-        public sat: number;
-        public opacity: number;
-        public whiteness: number;
-        public lightness: number;
-        public blackness: number;
-        public cyan: number;
-        public magenta: number;
-        public yellow: number;
-        public black: number;
-        public ncol: string;
-        public valid: boolean;
+        public red: number = 0;
+        public blue: number = 0;
+        public green: number = 0;
+        public hue: number = 0;
+        public sat: number = 0;
+        public opacity: number = 1;
+        public whiteness: number = 0;
+        public lightness: number = 0;
+        public blackness: number = 0;
+        public cyan: number = 0;
+        public magenta: number = 0;
+        public yellow: number = 0;
+        public black: number = 0;
+        public ncol: string = "R";
+        public valid: boolean = false;
 
         public static get emptyObject(): w3color {
             return color();
@@ -27,13 +27,12 @@ namespace TypeScript.ColorManager {
 
         public constructor(color: string | IW3color = null, elmnt: HTMLElement = null) {
             if (!isNullOrUndefined(color)) {
+                // make value copy to current color object
                 if (typeof color == "string") {
                     this.attachValues(toColorObject(color));
                 } else {
                     this.attachValues(color);
                 }
-            } else {
-                this.attachValues(w3color.emptyObject);
             }
 
             if (!isNullOrUndefined(elmnt)) {
@@ -158,7 +157,10 @@ namespace TypeScript.ColorManager {
             this.attachValues(color);
         }
 
-        private attachValues(color: IW3color) {
+        /**
+         * copy values from another color object to current object
+        */
+        public attachValues(color: IW3color) {
             this.red = color.red;
             this.green = color.green;
             this.blue = color.blue;
