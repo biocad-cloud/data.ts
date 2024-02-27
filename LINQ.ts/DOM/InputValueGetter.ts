@@ -94,7 +94,14 @@ namespace DOM {
             if (input instanceof DOMEnumerator) {
                 inputs = <any>input
             } else {
-                inputs = <any>new DOMEnumerator<HTMLInputElement>(<any>document.getElementsByName(input.name));
+                const list = document.getElementsByName(input.name);
+
+                if (isNullOrUndefined(list) || list.length == 0) {
+                    console.warn(`no checkbox input with name('${input.name}') could be found, you should check the input tag name attribute value is valid or not?`);
+                    console.warn(input);
+                }
+
+                inputs = <any>new DOMEnumerator<HTMLInputElement>(<any>list);
             }
 
             if (inputs.Count == 1) {
