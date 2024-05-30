@@ -161,11 +161,15 @@
          * 请尽量使用upload方法进行文件的上传
          * 
          * @param url 目标数据源，这个参数也支持meta标签的查询语法
+         * @param options
+         *    1. sendContentType
+         *    2. wrapPlantTextError 当后台正常返回一段存文本（但是无法被解析为json），是否封装为一个错误消息给调用函数？
         */
         post<T>(url: string, data: object | FormData,
             callback?: ((response: IMsg<T>) => void),
             options?: {
-                sendContentType?: boolean
+                sendContentType?: boolean,
+                wrapPlantTextError?: boolean
             }): void;
         /**
          * 请注意：这个函数只会接受来自后端的json返回，如果不是json格式，则可能会解析出错

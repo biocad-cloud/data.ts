@@ -48,20 +48,22 @@ namespace Internal {
         ts.post = function (url: string, data: object | FormData,
             callback?: ((response: IMsg<{}>) => void),
             options?: {
-                sendContentType?: boolean
+                sendContentType?: boolean,
+                wrapPlantTextError?: boolean
             }) {
 
+            var opts = options ?? {};
             var contentType: string = HttpHelpers.measureContentType(data);
             var post = <HttpHelpers.PostData>{
                 type: contentType,
                 data: data,
-                sendContentType: (options || {}).sendContentType || true
+                sendContentType: opts.sendContentType || true
             };
 
             HttpHelpers.POST(urlSolver(url), post, function (response, code) {
                 if (callback) {
                     if (code == 200) {
-                        callback(handleJSON(response));
+                        callback(handleJSON(response, opts.wrapPlantTextError ?? false));
                     } else {
                         // handle page not found and internal server error
                         callback(<IMsg<{}>>{
@@ -92,7 +94,7 @@ namespace Internal {
             HttpHelpers.GetAsyn(urlSolver(url), function (response, code: number) {
                 if (callback) {
                     if (code == 200) {
-                        callback(handleJSON(response));
+                        callback(handleJSON(response, true));
                     } else {
                         // handle page not found and internal server error
                         callback(<IMsg<{}>>{
@@ -107,7 +109,7 @@ namespace Internal {
         ts.upload = function (url: string, file: File, callback?: ((response: IMsg<{}>) => void)) {
             HttpHelpers.UploadFile(urlSolver(url), file, null, function (response) {
                 if (callback) {
-                    callback(handleJSON(response));
+                    callback(handleJSON(response, true));
                 }
             });
         };
@@ -223,7 +225,7 @@ namespace Internal {
         return url;
     }
 
-    function handleJSON(response: any): any {
+    function handleJSON(response: any, wrapPlantTextError: boolean): any {
         if (typeof response == "string") {
 
             /*
@@ -236,10 +238,17 @@ namespace Internal {
             try {
                 return JSON.parse(response);
             } catch (ex) {
-                console.error("Invalid json text: ");
-                console.error(response);
+                if (wrapPlantTextError) {
+                    return <IMsg<string>>{
+                        code: 500,
+                        info: response
+                    }
+                } else {
+                    console.error("Invalid json text: ");
+                    console.error(response);
 
-                throw ex;
+                    throw ex;
+                }
             }
         } else {
             return response;
