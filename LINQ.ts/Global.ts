@@ -152,7 +152,7 @@ function getAllUrlParams(url: string = window.location.href): Dictionary<string>
  * @param currentFrame 如果这个参数为true，则不会进行父页面的跳转操作
 */
 function $goto(url: string, currentFrame: boolean = false): void {
-    var win: Window = window;
+    let win: Window = window;
 
     if (!currentFrame) {
         // 从最顶层的文档页面进行跳转
@@ -160,7 +160,13 @@ function $goto(url: string, currentFrame: boolean = false): void {
         win = window.top;
     }
 
-    win.location.href = Internal.urlSolver(url, currentFrame);
+    url = Internal.urlSolver(url, currentFrame);
+
+    if (url.substring(0, 1) == "#") {
+        DOM.Animation.scrollTo(url);
+    } else {
+        win.location.href = url;
+    }
 }
 
 function $download(url: string, rename: string = null) {
