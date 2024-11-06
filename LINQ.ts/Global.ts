@@ -292,3 +292,20 @@ function $clone<T extends {}>(obj: T): T {
 
     return <any>copy;
 }
+
+/**
+ * check of current environment is on Microsoft WebView2 control?
+*/
+function check_webview2() {
+    let win = <any>window;
+
+    if (win.chrome && win.chrome.webview) {
+        // 当前环境是WebView2
+        TypeScript.logging.log("Running in WebView2", TypeScript.ConsoleColors.Blue);
+        return true;
+    } else {
+        // 当前环境不是WebView2      
+        TypeScript.logging.log("Not running in WebView2", TypeScript.ConsoleColors.DarkRed);
+        return false;
+    }
+}
