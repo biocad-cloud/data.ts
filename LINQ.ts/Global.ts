@@ -177,7 +177,7 @@ function $download(url: string, rename: string = null) {
  * download the data inside a given html table element tag or typescript dataframe object or treated a collection of the object as table data in excel table file.
 */
 function $downloadExcel(table: HTMLTableElement | csv.dataframe | {}[], sheetName: string, fileName: string = "download.xlsx") {
-    if (!(table instanceof HTMLTableElement || table instanceof csv.dataframe)) {
+    if (Array.isArray(table)) {
         table = csv.toDataFrame(table);
     }
 

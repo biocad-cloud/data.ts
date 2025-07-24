@@ -20,7 +20,7 @@ namespace DOM.Excel {
     export function excel(table: HTMLTableElement | csv.dataframe, fileName: string, sheetName: string, filters: string[] = null) {
         let html: string = null;
 
-        if (table instanceof HTMLTableElement) {
+        if (!(table instanceof csv.dataframe)) {
             html = ToExcel(table, sheetName, filters);
         } else {
             html = csv.HTML.toHTMLTable(table);
