@@ -2,10 +2,19 @@ namespace DOM.Excel {
 
     export const contentType: string = "application/vnd.ms-excel";
 
+    /**
+     * Download the excel table file
+     * 
+     * just use the download attribute of the given &lt;a> tag as the file name.
+     * this function call the ``excel`` function for make the table download
+    */
     export function attatchDownload(a: HTMLAnchorElement, table: string | HTMLTableElement, sheetName: string = "Sheet1", filters: string[] = null) {
         excel(<any>(typeof table == "string" ? $ts(table) : table), a.download, sheetName, filters);
     }
 
+    /**
+     * Download the excel table file
+    */
     export function excel(table: HTMLTableElement, fileName: string, sheetName: string, filters: string[] = null) {
         DOM.download(fileName, <DataURI>{
             mime_type: Excel.contentType,
