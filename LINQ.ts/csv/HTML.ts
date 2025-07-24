@@ -20,16 +20,19 @@ namespace csv.HTML {
             .JoinBy("\n");
 
         return `
-            <table class="${tblClass}">
-                <thead>
-                    <tr>${th}</tr>
-                </thead>
-                <tbody>
-                    ${tr}
-                </tbody>
-            </table>`;
+<table class="${tblClass}">
+    <thead>
+        <tr>${th}</tr>
+    </thead>
+    <tbody>
+        ${tr}
+    </tbody>
+</table>`;
     }
 
+    /**
+     * cast the object collection as the dataframe object and then call ``toHTMLTable`` function for cast dataframe as the html string
+    */
     export function createHTMLTable<T extends object>(data: IEnumerator<T>, tblClass: string[] = bootstrap): string {
         return toHTMLTable(csv.toDataFrame(data), tblClass);
     }

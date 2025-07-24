@@ -14,15 +14,32 @@ namespace DOM.Excel {
 
     /**
      * Download the excel table file
+     * 
+     * @param table should be a html table tag element object or a typescript dataframe object.
     */
-    export function excel(table: HTMLTableElement, fileName: string, sheetName: string, filters: string[] = null) {
+    export function excel(table: HTMLTableElement | csv.dataframe, fileName: string, sheetName: string, filters: string[] = null) {
+        let html: string = null;
+
+        if (table instanceof HTMLTableElement) {
+            html = ToExcel(table, sheetName, filters);
+        } else {
+            html = csv.HTML.toHTMLTable(table);
+        }
+
         DOM.download(fileName, <DataURI>{
             mime_type: Excel.contentType,
-            data: Base64.encode(ToExcel(table, sheetName, filters))
+            data: Base64.encode(html)
         });
     }
 
     export function ToExcel(table: HTMLTableElement, sheetName: string, filters: string[] = null): string {
+        return excelHtml(() => ToHtml(table, filters), sheetName);
+    }
+
+    /**
+     * @param table a delegate function for get table html string
+    */
+    export function excelHtml(table: Delegate.Func<string>, sheetName: string): string {
         let html = new StringBuilder("", "\n");
 
         html.AppendLine(`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">`);
@@ -48,7 +65,7 @@ namespace DOM.Excel {
 `);
         html.AppendLine(`</head>`);
         html.AppendLine(`<body>`);
-        html.AppendLine(ToHtml(table, filters));
+        html.AppendLine(table());
         html.AppendLine(`</body>`);
         html.AppendLine(`</html>`);
 
