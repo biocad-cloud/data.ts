@@ -129,8 +129,21 @@ namespace DOM.Excel {
         // https://stackoverflow.com/questions/28889767/javascript-regex-to-match-multiple-lines
         html = html.replace(/[<]script([\s\S]*?)[<]\/script[>]/ig, "");
 
-        // console.log(html);
+        // 创建临时容器来解析HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
 
-        return html;
+        // 查找并处理所有<a>标签
+        const links = tempDiv.querySelectorAll('a');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('/')) {
+                // 构建绝对URL（保留原始路径的尾部斜杠）
+                const absoluteUrl = window.location.origin + href;
+                link.setAttribute('href', absoluteUrl);
+            }
+        });
+
+        return tempDiv.innerHTML;
     }
 }
