@@ -11,6 +11,6 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "npm": "^11.4.2"
+    "npm": "^11.6.2"
   }
 }
